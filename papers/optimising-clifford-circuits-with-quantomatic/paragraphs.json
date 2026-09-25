@@ -1909,8 +1909,8 @@
     ],
     "sourceText": "Lemma 4.5. Let t ∈ZXs(1,1) be a line graph; then t∗↔s for some s ∈ZXs(1,1) which has the followingproperties:",
     "explanations": {
-      "it-intermediate": "(continua la definizione di grafo lineare, chiarendo la struttura a catena...)",
-      "it-expert": "(continuazione della definizione di line graph)"
+      "it-intermediate": "Lemma 4.5: sia t∈ZX_s(1,1) un grafo lineare; allora t∗↔s per qualche s∈ZX_s(1,1) che ha le seguenti proprietà (elenco a seguire) — questo lemma dà una forma normale intermedia ('Pauli-standard') per i grafi lineari, passo chiave nella dimostrazione costruttiva.",
+      "it-expert": "Lemma 4.5: ogni line graph in ZX_s è riscrivibile in forma 'Pauli-standard' con le proprietà elencate di seguito — risultato tecnico intermedio, usato nella prova costruttiva alternativa di Prop. 4.4."
     }
   },
   {
@@ -1928,8 +1928,8 @@
     ],
     "sourceText": "• its vertices form an alternating sequence of Z(α) and X(β) vertices, where none of the labels arezero;",
     "explanations": {
-      "it-intermediate": "Lemma 4.5: sia t∈ZX_s(1,1) un grafo lineare; allora t∗↔s per qualche s∈ZX_s(1,1) che ha le seguenti proprietà (elenco a seguire) — questo lemma dà una forma normale intermedia ('Pauli-standard') per i grafi lineari, passo chiave nella dimostrazione costruttiva.",
-      "it-expert": "Lemma 4.5: ogni line graph in ZX_s è riscrivibile in forma 'Pauli-standard' con le proprietà elencate di seguito — risultato tecnico intermedio, usato nella prova costruttiva alternativa di Prop. 4.4."
+      "it-intermediate": "• i suoi vertici formano una sequenza alternata di vertici Z(α) e X(β), dove nessuna delle etichette è zero;",
+      "it-expert": "Proprietà 1 della forma Pauli-standard: sequenza alternata Z/X, tutte le etichette non nulle (niente vertici 'invisibili')."
     }
   },
   {
@@ -1947,8 +1947,8 @@
     ],
     "sourceText": "• it contains at most two Pauli vertices, and if present these are ﬁrst vertices after the input.",
     "explanations": {
-      "it-intermediate": "• i suoi vertici formano una sequenza alternata di vertici Z(α) e X(β), dove nessuna delle etichette è zero;",
-      "it-expert": "Proprietà 1 della forma Pauli-standard: sequenza alternata Z/X, tutte le etichette non nulle (niente vertici 'invisibili')."
+      "it-intermediate": "• contiene al massimo due vertici Pauli, e se presenti sono i primi vertici dopo l'input.",
+      "it-expert": "Proprietà 2: al più 2 Pauli, posizionati subito dopo l'input (se presenti) — forma canonica che concentra i Pauli all'inizio."
     }
   },
   {
@@ -1966,8 +1966,8 @@
     ],
     "sourceText": "We say that s is in Pauli-standard form.",
     "explanations": {
-      "it-intermediate": "• contiene al massimo due vertici Pauli, e se presenti sono i primi vertici dopo l'input.",
-      "it-expert": "Proprietà 2: al più 2 Pauli, posizionati subito dopo l'input (se presenti) — forma canonica che concentra i Pauli all'inizio."
+      "it-intermediate": "Si dice che s è in forma 'Pauli-standard'.",
+      "it-expert": "Nomenclatura fissata: 'Pauli-standard form' = le due proprietà sopra."
     }
   },
   {
@@ -1997,8 +1997,8 @@
     ],
     "sourceText": "Proof. Observe that by applying the H-euler rule all the H vertices can be removed. Then, by repeatedapplication of the spider and identity rules, we obtain a graph of alternating coloured vertices, none ofwhich are labelled by zero. Now we proceed by induction; deﬁne m(t) =∑v is a Pauli pos(v)",
     "explanations": {
-      "it-intermediate": "Si dice che s è in forma 'Pauli-standard'.",
-      "it-expert": "Nomenclatura fissata: 'Pauli-standard form' = le due proprietà sopra."
+      "it-intermediate": "Dimostrazione: si osservi che applicando la regola H-euler tutti i vertici H possono essere rimossi. Poi, applicando ripetutamente le regole spider e identità, si ottiene un grafo con sequenza alternata...",
+      "it-expert": "Proof del Lemma 4.5: (1) elimina H via H-euler, (2) fusione via spider+identity per ottenere l'alternanza Z/X, poi si procede a spostare/eliminare i Pauli in eccesso (blocco successivo)."
     }
   },
   {
@@ -2034,8 +2034,8 @@
     ],
     "sourceText": "Observe that if m(t) < 2 then t has the required form. Otherwise there is at least one Pauli vertex v withpos(v) ≥2. Suppose that v is a Pauli Z vertex; then we may rewrite t∗↔t′ by the following rewrites: ∗→α−β γπ ∗→α +πγ −β αβγπ",
     "explanations": {
-      "it-intermediate": "Dimostrazione: si osservi che applicando la regola H-euler tutti i vertici H possono essere rimossi. Poi, applicando ripetutamente le regole spider e identità, si ottiene un grafo con sequenza alternata...",
-      "it-expert": "Proof del Lemma 4.5: (1) elimina H via H-euler, (2) fusione via spider+identity per ottenere l'alternanza Z/X, poi si procede a spostare/eliminare i Pauli in eccesso (blocco successivo)."
+      "it-intermediate": "Si osservi che se m(t)<2 allora t ha già la forma richiesta. Altrimenti c'è almeno un vertice Pauli v con pos(v)≥2. Si supponga che v sia un vertice Pauli Z; allora si può riscrivere t∗↔t′...",
+      "it-expert": "Caso induttivo: se ci sono ≥2 Pauli 'fuori posto' (pos≥2), si applica una riscrittura mirata (usando π-commute) per farli 'scivolare' verso l'inizio, riducendo il conteggio ad ogni passo."
     }
   },
   {
@@ -2053,8 +2053,8 @@
     ],
     "sourceText": "and applying the identity rule if possible. Note that Z(α +π) is never a Pauli, so the number of Paulisis not increased, and the number vertices overall is reduced. If X(γ −β) is a Pauli then its position ispos(v) −1. Hence m(t′) < m(t), and result is achieved by induction. If v is a Pauli X vertex, then thesame argument goes through with the colours reversed.",
     "explanations": {
-      "it-intermediate": "Si osservi che se m(t)<2 allora t ha già la forma richiesta. Altrimenti c'è almeno un vertice Pauli v con pos(v)≥2. Si supponga che v sia un vertice Pauli Z; allora si può riscrivere t∗↔t′...",
-      "it-expert": "Caso induttivo: se ci sono ≥2 Pauli 'fuori posto' (pos≥2), si applica una riscrittura mirata (usando π-commute) per farli 'scivolare' verso l'inizio, riducendo il conteggio ad ogni passo."
+      "it-intermediate": "...e applicando la regola identità se possibile. Si noti che Z(α+π) non è mai un Pauli, quindi il numero di Pauli non aumenta, e il numero totale di vertici si riduce. Se X(γ−β) è...",
+      "it-expert": "Argomento di terminazione: la riscrittura non aumenta mai il conteggio di Pauli e riduce il conteggio totale di vertici → il processo termina (misura ben fondata), dimostrando il Lemma 4.5 per induzione."
     }
   },
   {
@@ -2168,8 +2168,8 @@
     ],
     "sourceText": "Lemma 4.6. We have the following equations: ∗↔−−− ∗↔+++ ∗↔−−− +++ ∗↔++− ∗↔−−+ ∗↔++− −−+ ∗↔−+− ∗↔+−+ ∗↔−+− +−+ ∗↔+−− ∗↔−++ ∗↔+−− −++",
     "explanations": {
-      "it-intermediate": "...e applicando la regola identità se possibile. Si noti che Z(α+π) non è mai un Pauli, quindi il numero di Pauli non aumenta, e il numero totale di vertici si riduce. Se X(γ−β) è...",
-      "it-expert": "Argomento di terminazione: la riscrittura non aumenta mai il conteggio di Pauli e riduce il conteggio totale di vertici → il processo termina (misura ben fondata), dimostrando il Lemma 4.5 per induzione."
+      "it-intermediate": "Lemma 4.6: valgono le seguenti equazioni (una serie di identità esplicite tra piccoli diagrammi ZX_s, organizzate in due gruppi di equivalenze cicliche) — queste catalogano le equivalenze tra le sequenze di 3 vertici Pauli-standard.",
+      "it-expert": "Lemma 4.6: catalogo esplicito di equivalenze cicliche tra sequenze a 3 vertici in forma Pauli-standard (due orbite di 4 elementi ciascuna sotto l'azione ciclica di *↔) — usato in Prop. 4.4 per collassare i casi n=3 senza-Pauli."
     }
   },
   {
@@ -2223,8 +2223,8 @@
     ],
     "sourceText": "Proof. For the ﬁrst sequence of equations, consider the following rewrites ∗→−−− ∗→+π−− +++ ∗→++π− ∗→+++ ∗→−−−",
     "explanations": {
-      "it-intermediate": "Lemma 4.6: valgono le seguenti equazioni (una serie di identità esplicite tra piccoli diagrammi ZX_s, organizzate in due gruppi di equivalenze cicliche) — queste catalogano le equivalenze tra le sequenze di 3 vertici Pauli-standard.",
-      "it-expert": "Lemma 4.6: catalogo esplicito di equivalenze cicliche tra sequenze a 3 vertici in forma Pauli-standard (due orbite di 4 elementi ciascuna sotto l'azione ciclica di *↔) — usato in Prop. 4.4 per collassare i casi n=3 senza-Pauli."
+      "it-intermediate": "Dimostrazione: per la prima sequenza di equazioni, si considerino le seguenti riscritture (catena esplicita di passi applicando regole note)...",
+      "it-expert": "Proof del Lemma 4.6, prima orbita: catena esplicita di riscritture (usando in particolare il Lemma 3.5, come indicato nel blocco successivo)."
     }
   },
   {
@@ -2242,8 +2242,8 @@
     ],
     "sourceText": "where the ﬁrst and last steps use Lemma 3.5. The other three cases are established using very similarreasoning.",
     "explanations": {
-      "it-intermediate": "Dimostrazione: per la prima sequenza di equazioni, si considerino le seguenti riscritture (catena esplicita di passi applicando regole note)...",
-      "it-expert": "Proof del Lemma 4.6, prima orbita: catena esplicita di riscritture (usando in particolare il Lemma 3.5, come indicato nel blocco successivo)."
+      "it-intermediate": "...dove il primo e l'ultimo passo usano il Lemma 3.5 (la regola di cambio colore vista prima). Gli altri tre casi sono stabiliti con un ragionamento molto simile.",
+      "it-expert": "Riuso esplicito del Lemma 3.5 (color-change) nei passi chiave; gli altri 3 casi dell'orbita seguono per simmetria/ragionamento analogo (non ripetuto per esteso)."
     }
   },
   {
@@ -2261,8 +2261,8 @@
     ],
     "sourceText": "Alternative proof of Prop 4.4. First observe that for any t ∈Cliff(1,1) its image T(t) has the form ofa line graph. Now, by Lemma 4.5, T(t) ∗↔t1 where t1 is in Pauli-standard form. Now we proceed byinduction on n, the number of vertices of t1.",
     "explanations": {
-      "it-intermediate": "...dove il primo e l'ultimo passo usano il Lemma 3.5 (la regola di cambio colore vista prima). Gli altri tre casi sono stabiliti con un ragionamento molto simile.",
-      "it-expert": "Riuso esplicito del Lemma 3.5 (color-change) nei passi chiave; gli altri 3 casi dell'orbita seguono per simmetria/ragionamento analogo (non ripetuto per esteso)."
+      "it-intermediate": "Dimostrazione alternativa della Proposizione 4.4: per prima cosa si osservi che per ogni t∈Cliff(1,1) la sua immagine T(t) ha la forma di un grafo lineare. Ora, per il Lemma 4.5, T(t)∗↔t1 dove t1 è in forma Pauli-standard.",
+      "it-expert": "Inizio della prova costruttiva: T(t) è un line graph (segue dalla struttura di T) → Lemma 4.5 dà t1 in Pauli-standard form → segue case-analysis sul numero n di vertici non-Pauli in t1 (blocchi successivi)."
     }
   },
   {
@@ -2280,8 +2280,8 @@
     ],
     "sourceText": "If n = 0 or 1 then t1 is already in C1. If n = 2 and t1 has no Pauli nodes, then t1 is already in C1;otherwise t1",
     "explanations": {
-      "it-intermediate": "Dimostrazione alternativa della Proposizione 4.4: per prima cosa si osservi che per ogni t∈Cliff(1,1) la sua immagine T(t) ha la forma di un grafo lineare. Ora, per il Lemma 4.5, T(t)∗↔t1 dove t1 è in forma Pauli-standard.",
-      "it-expert": "Inizio della prova costruttiva: T(t) è un line graph (segue dalla struttura di T) → Lemma 4.5 dà t1 in Pauli-standard form → segue case-analysis sul numero n di vertici non-Pauli in t1 (blocchi successivi)."
+      "it-intermediate": "Se n=0 o 1 allora t1 è già in C1. Se n=2 e t1 non ha nodi Pauli, allora t1 è già in C1; altrimenti t1...",
+      "it-expert": "Case n=0,1: banale, già in C1. Case n=2 senza Pauli: già in C1; con Pauli, richiede un passo ulteriore (blocco successivo)."
     }
   },
   {
@@ -2311,8 +2311,8 @@
     ],
     "sourceText": "∗↔c for some c in C1 by the π-commute rule.If n = 3 and t1 contains at least one Pauli vertex, then by applying the π commute and spider rules, t1can rewrite to a term with only two vertices or fewer. For example ∗→−αβ +π(1) αβπ",
     "explanations": {
-      "it-intermediate": "Se n=0 o 1 allora t1 è già in C1. Se n=2 e t1 non ha nodi Pauli, allora t1 è già in C1; altrimenti t1...",
-      "it-expert": "Case n=0,1: banale, già in C1. Case n=2 senza Pauli: già in C1; con Pauli, richiede un passo ulteriore (blocco successivo)."
+      "it-intermediate": "...∗↔c per qualche c in C1 tramite la regola π-commute. Se n=3 e t1 contiene almeno un vertice Pauli, allora applicando le regole π-commute e spider, t1 può essere riscritto in un termine con solo due...",
+      "it-expert": "Case n=2 con Pauli: riducibile via π-commute. Case n=3 con Pauli: riduzione a 2 vertici via π-commute+spider, ricondotto ai casi precedenti."
     }
   },
   {
@@ -2330,8 +2330,8 @@
     ],
     "sourceText": "Otherwise, none of the vertices are Paulis; there are 16 line graphs of this form; by Lemma 4.6 these arepartitioned in four equivalence classes. Each of the four equivalence classes contains an element of C1,hence t1",
     "explanations": {
-      "it-intermediate": "...∗↔c per qualche c in C1 tramite la regola π-commute. Se n=3 e t1 contiene almeno un vertice Pauli, allora applicando le regole π-commute e spider, t1 può essere riscritto in un termine con solo due...",
-      "it-expert": "Case n=2 con Pauli: riducibile via π-commute. Case n=3 con Pauli: riduzione a 2 vertici via π-commute+spider, ricondotto ai casi precedenti."
+      "it-intermediate": "Altrimenti, nessuno dei vertici è Pauli; ci sono 16 grafi lineari di questa forma; per il Lemma 4.6 questi sono partizionati in quattro classi di equivalenza. Ciascuna delle quattro classi di equivalenza...",
+      "it-expert": "Case n=3 senza Pauli: enumerazione esaustiva (16 possibilità) partizionata in 4 classi via Lemma 4.6 — ogni classe si riduce a un rappresentante in C1."
     }
   },
   {
@@ -2349,8 +2349,8 @@
     ],
     "sourceText": "∗↔c ∈C1.Finally, suppose n ≥4. If t1 has any Pauli vertices, then t1",
     "explanations": {
-      "it-intermediate": "Altrimenti, nessuno dei vertici è Pauli; ci sono 16 grafi lineari di questa forma; per il Lemma 4.6 questi sono partizionati in quattro classi di equivalenza. Ciascuna delle quattro classi di equivalenza...",
-      "it-expert": "Case n=3 senza Pauli: enumerazione esaustiva (16 possibilità) partizionata in 4 classi via Lemma 4.6 — ogni classe si riduce a un rappresentante in C1."
+      "it-intermediate": "...∗↔c∈C1. Infine, si supponga n≥4. Se t1 ha qualche vertice Pauli, allora t1...",
+      "it-expert": "Chiusura caso n=3. Case n≥4 con Pauli: riduzione ulteriore (blocco successivo)."
     }
   },
   {
@@ -2368,8 +2368,8 @@
     ],
     "sourceText": "∗↔t2 by (1) where t2 has strictly fewer Paulivertices, and strictly fewer vertices overall. Otherwise, t1 has no Pauli vertices; therefore any sequence ofvertices of length three can be rewritten, using Lemma 4.6, to a sequence with the colours exchanged.Then by applying the spider and identity rules, and Lemma 4.5 t1",
     "explanations": {
-      "it-intermediate": "...∗↔c∈C1. Infine, si supponga n≥4. Se t1 ha qualche vertice Pauli, allora t1...",
-      "it-expert": "Chiusura caso n=3. Case n≥4 con Pauli: riduzione ulteriore (blocco successivo)."
+      "it-intermediate": "...∗↔t2 per (1) dove t2 ha strettamente meno vertici Pauli, e strettamente meno vertici in totale. Altrimenti, t1 non ha vertici Pauli; quindi qualsiasi sequenza di vertici di lunghezza tre c...",
+      "it-expert": "Case n≥4 con Pauli: riduzione stretta (misura decrescente) via un passo esplicito. Case n≥4 senza Pauli: ogni tripletta di vertici consecutivi rientra nel Lemma 4.6, applicabile localmente."
     }
   },
   {
@@ -2387,8 +2387,8 @@
     ],
     "sourceText": "∗→t2 where t2 is in Pauli standard formand has strictly fewer vertices than t1. Hence we obtain the result by induction.",
     "explanations": {
-      "it-intermediate": "...∗↔t2 per (1) dove t2 ha strettamente meno vertici Pauli, e strettamente meno vertici in totale. Altrimenti, t1 non ha vertici Pauli; quindi qualsiasi sequenza di vertici di lunghezza tre c...",
-      "it-expert": "Case n≥4 con Pauli: riduzione stretta (misura decrescente) via un passo esplicito. Case n≥4 senza Pauli: ogni tripletta di vertici consecutivi rientra nel Lemma 4.6, applicabile localmente."
+      "it-intermediate": "...∗↔t2 dove t2 è in forma Pauli-standard e ha strettamente meno vertici di t1. Si ottiene quindi il risultato per induzione.",
+      "it-expert": "Chiusura per induzione forte sul numero di vertici — completa la dimostrazione costruttiva alternativa di Prop. 4.4, fornendo così l'ALGORITMO (non solo l'esistenza) cercato."
     }
   },
   {
@@ -2412,8 +2412,8 @@
     ],
     "sourceText": "By enumerating all diagrams with fewer than four vertices, it’s easy to check that no c ∈C1 is equivalentto a smaller diagram, so these diagrams are the minimal forms for C1. 4.22-Qubit Cliffords",
     "explanations": {
-      "it-intermediate": "...∗↔t2 dove t2 è in forma Pauli-standard e ha strettamente meno vertici di t1. Si ottiene quindi il risultato per induzione.",
-      "it-expert": "Chiusura per induzione forte sul numero di vertici — completa la dimostrazione costruttiva alternativa di Prop. 4.4, fornendo così l'ALGORITMO (non solo l'esistenza) cercato."
+      "it-intermediate": "Enumerando tutti i diagrammi con meno di quattro vertici, è facile verificare che nessun c∈C1 è equivalente a un diagramma più piccolo, quindi questi diagrammi sono le forme minimali per C1. Sottosezione 4.2: 'Clifford a 2 qubit'.",
+      "it-expert": "Verifica di minimalità per C1 (nessuna forma più piccola esiste, per enumerazione esaustiva sotto 4 vertici) — chiude la caratterizzazione di C1 come vere forme NORMALI MINIME, non solo canoniche. Inizio §4.2, 2-Qubit Cliffords."
     }
   },
   {
@@ -2431,8 +2431,8 @@
     ],
     "sourceText": "Let C2 be the set of diagrams deﬁned in Figure 4. Notice that C2 has 242(1+1+9+9) = 11520 elements.As in the case of C1, all the elements of C2 are evidently circuits, and it can be mechanically checked thatthey are all distinct under the standard interpretation. Hence we adopt C2 as the normal forms for C2.Again, by the completeness of the axioms (Thm 4.3) we can immediately conclude that every 2-qubitClifford circuit is equivalent to some k ∈C2. Zooming in a little closer we have the following:",
     "explanations": {
-      "it-intermediate": "Enumerando tutti i diagrammi con meno di quattro vertici, è facile verificare che nessun c∈C1 è equivalente a un diagramma più piccolo, quindi questi diagrammi sono le forme minimali per C1. Sottosezione 4.2: 'Clifford a 2 qubit'.",
-      "it-expert": "Verifica di minimalità per C1 (nessuna forma più piccola esiste, per enumerazione esaustiva sotto 4 vertici) — chiude la caratterizzazione di C1 come vere forme NORMALI MINIME, non solo canoniche. Inizio §4.2, 2-Qubit Cliffords."
+      "it-intermediate": "Sia C2 l'insieme dei diagrammi definiti in Figura 4. Si noti che C2 ha 24²·(1+1+9+9)=11520 elementi — combaciando esattamente con |C2| calcolato algebricamente all'inizio del paper. Come nel caso di C1, tutti gli elementi di C2 sono evidentemente circuiti, e si può...",
+      "it-expert": "C2 (Fig. 4) = 24²×20=11520 elementi, esattamente |C2|(gruppo) — verifica di consistenza cruciale: il conteggio combinatorio del catalogo esplicito combacia con la cardinalità algebrica calcolata in §2, confermando che il catalogo copre l'intero gruppo senza ridondanze né lacune."
     }
   },
   {
@@ -2450,8 +2450,8 @@
     ],
     "sourceText": "Proposition 4.7. Let k ∈C2 and let g be a generator of C2 as a ZX-calculus term; then g ◦k ∗↔k′ forsome k′ ∈C2.",
     "explanations": {
-      "it-intermediate": "Sia C2 l'insieme dei diagrammi definiti in Figura 4. Si noti che C2 ha 24²·(1+1+9+9)=11520 elementi — combaciando esattamente con |C2| calcolato algebricamente all'inizio del paper. Come nel caso di C1, tutti gli elementi di C2 sono evidentemente circuiti, e si può...",
-      "it-expert": "C2 (Fig. 4) = 24²×20=11520 elementi, esattamente |C2|(gruppo) — verifica di consistenza cruciale: il conteggio combinatorio del catalogo esplicito combacia con la cardinalità algebrica calcolata in §2, confermando che il catalogo copre l'intero gruppo senza ridondanze né lacune."
+      "it-intermediate": "Proposizione 4.7: sia k∈C2 e sia g un generatore di C2 come termine ZX-calculus; allora g∘k∗↔k′ per qualche k′∈C2 — questa è la proprietà di 'chiusura': applicare un generatore a una forma standard produce sempre un'altra forma standard, il che è essenziale per un algoritmo di riduzione incrementale.",
+      "it-expert": "Prop. 4.7: C2 è chiuso sotto composizione a sinistra con un generatore (g∘k∗↔k'∈C2) — proprietà di chiusura algoritmicamente cruciale: permette di ridurre un circuito PASSO PER PASSO mantenendo sempre una forma catalogata, invece di dover ricostruire da zero ogni volta (la dimostrazione dettagliata, rimandata in parte all'Appendice C, enumera i casi per ciascun tipo di generatore g)."
     }
   },
   {
@@ -2553,8 +2553,8 @@
     ],
     "sourceText": "C1 C1 C1 C1 A A C2 C2 C2 C2 B B where C1,C2 ∈C1, A ∈A and B ∈B. A = {,+,++}B = {,+,++} Figure 4: C2 : standard minimal forms for two-qubit Cliffords",
     "explanations": {
-      "it-intermediate": "Proposizione 4.7: sia k∈C2 e sia g un generatore di C2 come termine ZX-calculus; allora g∘k∗↔k′ per qualche k′∈C2 — questa è la proprietà di 'chiusura': applicare un generatore a una forma standard produce sempre un'altra forma standard, il che è essenziale per un algoritmo di riduzione incrementale.",
-      "it-expert": "Prop. 4.7: C2 è chiuso sotto composizione a sinistra con un generatore (g∘k∗↔k'∈C2) — proprietà di chiusura algoritmicamente cruciale: permette di ridurre un circuito PASSO PER PASSO mantenendo sempre una forma catalogata, invece di dover ricostruire da zero ogni volta (la dimostrazione dettagliata, rimandata in parte all'Appendice C, enumera i casi per ciascun tipo di generatore g)."
+      "it-intermediate": "Figura 4: la forma standard minimale per i Clifford a due qubit — struttura a 'sandwich': un Clifford a 1 qubit su ciascun filo (C1,C1), seguito da elementi A,B da piccoli insiemi ausiliari, poi un CNOT, poi ancora C1,C1 — dove A={vuoto,+,++} e B analogamente.",
+      "it-expert": "Fig. 4: forma normale C2 = C1⊗C1 seguiti da A,B∈{∅,+,++} (fattori Pauli 'extra' pre-CNOT), poi CNOT, poi C1⊗C1 — struttura layered che generalizza la costruzione a 1-qubit, con al centro un solo CNOT (il minimo necessario per generare entanglement a 2-qubit)."
     }
   },
   {
@@ -2572,8 +2572,8 @@
     ],
     "sourceText": "Proof. Notice that the 1-qubit Cliffords C1 and C2 which occur in k play no part in the computation, hencewe ignore them.",
     "explanations": {
-      "it-intermediate": "Figura 4: la forma standard minimale per i Clifford a due qubit — struttura a 'sandwich': un Clifford a 1 qubit su ciascun filo (C1,C1), seguito da elementi A,B da piccoli insiemi ausiliari, poi un CNOT, poi ancora C1,C1 — dove A={vuoto,+,++} e B analogamente.",
-      "it-expert": "Fig. 4: forma normale C2 = C1⊗C1 seguiti da A,B∈{∅,+,++} (fattori Pauli 'extra' pre-CNOT), poi CNOT, poi C1⊗C1 — struttura layered che generalizza la costruzione a 1-qubit, con al centro un solo CNOT (il minimo necessario per generare entanglement a 2-qubit)."
+      "it-intermediate": "Dimostrazione: si noti che i Clifford a 1 qubit C1 e C2 che compaiono in k non giocano alcun ruolo nel calcolo, quindi li si ignora (si concentra l'attenzione sulla parte centrale del diagramma).",
+      "it-expert": "Prova di Prop. 4.7: i fattori C1 esterni 'passano attraverso' inalterati — la prova si concentra solo sull'interazione tra g e la parte centrale (CNOT + fattori A,B) del sandwich."
     }
   },
   {
@@ -2591,8 +2591,8 @@
     ],
     "sourceText": "There are effectively four choices for g : (u ⊗id), (id ⊗u), CNOT, or σ, where u ranges over thegenerators of C1. If g = σ, the result is trivial.",
     "explanations": {
-      "it-intermediate": "Dimostrazione: si noti che i Clifford a 1 qubit C1 e C2 che compaiono in k non giocano alcun ruolo nel calcolo, quindi li si ignora (si concentra l'attenzione sulla parte centrale del diagramma).",
-      "it-expert": "Prova di Prop. 4.7: i fattori C1 esterni 'passano attraverso' inalterati — la prova si concentra solo sull'interazione tra g e la parte centrale (CNOT + fattori A,B) del sandwich."
+      "it-intermediate": "Ci sono effettivamente quattro scelte per g: (u⊗id), (id⊗u), CNOT, o σ (lo scambio), dove u varia sui generatori di C1. Se g=σ, il risultato è banale.",
+      "it-expert": "Case analysis su g (4 tipi di generatore): local-Clifford su un filo, CNOT, o swap σ — case σ banale (commuta trivialmente con la struttura sandwich)."
     }
   },
   {
@@ -2610,8 +2610,8 @@
     ],
     "sourceText": "Further, for any u ∈C1, we have (u⊗id)◦CNOT = (a⊗id)◦CNOT ◦(u1 ⊗u2) for some u1,u2 ∈C1and a ∈A, either by commuting vertices of the same colour, or taking out factors of Paulis. Similarly(id ⊗u)◦CNOT = (id ⊗b)◦CNOT◦(u1 ⊗u2) for some b ∈B. Hence the only non-trival cases to considerare:",
     "explanations": {
-      "it-intermediate": "Ci sono effettivamente quattro scelte per g: (u⊗id), (id⊗u), CNOT, o σ (lo scambio), dove u varia sui generatori di C1. Se g=σ, il risultato è banale.",
-      "it-expert": "Case analysis su g (4 tipi di generatore): local-Clifford su un filo, CNOT, o swap σ — case σ banale (commuta trivialmente con la struttura sandwich)."
+      "it-intermediate": "Inoltre, per ogni u∈C1, si ha (u⊗id)∘CNOT=(a⊗id)∘CNOT∘(u1⊗u2) per opportuni u1,u2∈C1 e a∈A, sia commutando vertici dello stesso colore sia estraendo fattori di Pauli...",
+      "it-expert": "Case g=local-Clifford: riscrittura che 'fa passare' u attraverso il CNOT verso l'altra estremità del sandwich (commutazione + estrazione di fattori Pauli in A), riconducendo al case g=CNOT."
     }
   },
   {
@@ -2719,8 +2719,8 @@
     ],
     "sourceText": "1. g = CNOT and k = (a⊗b)◦CNOT. There are nine possibilities for this case, of which we considertwo here. If a = x+ and b = id, then by using the bialgebra rule we reduce as shown in (i) below. Ifa = x+ and b = z+, then a similar argument yields (ii). −+ + − +∗↔ + + + + + ∗↔ (i) (ii) − + + + +",
     "explanations": {
-      "it-intermediate": "Inoltre, per ogni u∈C1, si ha (u⊗id)∘CNOT=(a⊗id)∘CNOT∘(u1⊗u2) per opportuni u1,u2∈C1 e a∈A, sia commutando vertici dello stesso colore sia estraendo fattori di Pauli...",
-      "it-expert": "Case g=local-Clifford: riscrittura che 'fa passare' u attraverso il CNOT verso l'altra estremità del sandwich (commutazione + estrazione di fattori Pauli in A), riconducendo al case g=CNOT."
+      "it-intermediate": "1. g=CNOT e k=(a⊗b)∘CNOT: ci sono nove possibilità per questo caso, di cui se ne considerano due qui. Se a=x+ e b=id, usando la regola bialgebra si riduce come mostrato...",
+      "it-expert": "Case principale g=CNOT, k=(a⊗b)∘CNOT: 9 sotto-casi (per le combinazioni a,b∈A×B); 2 lavorati esplicitamente, gli altri per analogia (bialgebra rule come strumento chiave)."
     }
   },
   {
@@ -2738,8 +2738,8 @@
     ],
     "sourceText": "They remaining cases can all be derived from these two, except the case where a = b = id, which istrivial.",
     "explanations": {
-      "it-intermediate": "1. g=CNOT e k=(a⊗b)∘CNOT: ci sono nove possibilità per questo caso, di cui se ne considerano due qui. Se a=x+ e b=id, usando la regola bialgebra si riduce come mostrato...",
-      "it-expert": "Case principale g=CNOT, k=(a⊗b)∘CNOT: 9 sotto-casi (per le combinazioni a,b∈A×B); 2 lavorati esplicitamente, gli altri per analogia (bialgebra rule come strumento chiave)."
+      "it-intermediate": "I casi rimanenti possono tutti essere derivati da questi due, eccetto il caso a=b=id, che è banale.",
+      "it-expert": "Chiusura del case 1: generalizzazione per analogia dagli esempi lavorati; caso a=b=id banale."
     }
   },
   {
@@ -2823,8 +2823,8 @@
     ],
     "sourceText": "2. g = CNOT and k = (b⊗a)◦σ ◦CNOT. In this case we have (iii) below. However, by exploiting theH rules we have the equivalence (iv) so this case can be reduced to the previous one. a −− + + b ∗↔ (iv)∗↔ (iii) −− + + a b",
     "explanations": {
-      "it-intermediate": "I casi rimanenti possono tutti essere derivati da questi due, eccetto il caso a=b=id, che è banale.",
-      "it-expert": "Chiusura del case 1: generalizzazione per analogia dagli esempi lavorati; caso a=b=id banale."
+      "it-intermediate": "2. g=CNOT e k=(b⊗a)∘σ∘CNOT: in questo caso si ha l'equazione (iii) qui sotto. Tuttavia, sfruttando le regole H si ha l'equivalenza (iv), quindi questo caso si può ricondurre al precedente.",
+      "it-expert": "Case 2 (k con swap σ): riconducibile al case 1 tramite le H-rules (equivalenza (iv), dimostrata esplicitamente in App. C)."
     }
   },
   {
@@ -2842,8 +2842,8 @@
     ],
     "sourceText": "3. g = CNOT and k = σ. Again we can apply (iv).",
     "explanations": {
-      "it-intermediate": "2. g=CNOT e k=(b⊗a)∘σ∘CNOT: in questo caso si ha l'equazione (iii) qui sotto. Tuttavia, sfruttando le regole H si ha l'equivalenza (iv), quindi questo caso si può ricondurre al precedente.",
-      "it-expert": "Case 2 (k con swap σ): riconducibile al case 1 tramite le H-rules (equivalenza (iv), dimostrata esplicitamente in App. C)."
+      "it-intermediate": "3. g=CNOT e k=σ: di nuovo si può applicare (iv).",
+      "it-expert": "Case 3 (k=σ puro): stesso argomento (iv) del case 2."
     }
   },
   {
@@ -2861,8 +2861,8 @@
     ],
     "sourceText": "As in the single qubit case these reductions will provide the basis for the rewrite rules of our optimiser.",
     "explanations": {
-      "it-intermediate": "3. g=CNOT e k=σ: di nuovo si può applicare (iv).",
-      "it-expert": "Case 3 (k=σ puro): stesso argomento (iv) del case 2."
+      "it-intermediate": "Come nel caso a un qubit, queste riduzioni (i casi della Proposizione 4.7) diventeranno le regole di riscrittura dell'ottimizzatore: ogni caso dimostrato qui è una regola che Quantomatic potrà applicare automaticamente.",
+      "it-expert": "Come per C1, i casi della Prop. 4.7 vengono orientati e diventano direttamente il rule-set (C2 rules) della fase di semplificazione."
     }
   },
   {
@@ -2880,8 +2880,8 @@
     ],
     "sourceText": "We brieﬂy sketch the Quantomatic system; for a full description see [18]; to obtain it, see [17].",
     "explanations": {
-      "it-intermediate": "Intestazione di sezione: '5 Quantomatic' — qui viene descritto lo strumento software usato per implementare tutto quanto sopra.",
-      "it-expert": "Sezione 5, Quantomatic — descrizione del proof assistant/rewrite engine sottostante."
+      "it-intermediate": "Si presenta brevemente il sistema Quantomatic; per una descrizione completa si veda [18]; per ottenerlo, si veda [17].",
+      "it-expert": "Overview sketch di Quantomatic, rimandando a [17,18] per i dettagli completi (paper originale + repository)."
     }
   },
   {
@@ -2899,8 +2899,8 @@
     ],
     "sourceText": "Quantomatic is an interactive theorem prover which can prove equations between terms of the ZX-calculus. The user draws the desired term in the graphical editor, and builds the proof by applying rewrite",
     "explanations": {
-      "it-intermediate": "Si presenta brevemente il sistema Quantomatic; per una descrizione completa si veda [18]; per ottenerlo, si veda [17].",
-      "it-expert": "Overview sketch di Quantomatic, rimandando a [17,18] per i dettagli completi (paper originale + repository)."
+      "it-intermediate": "Quantomatic è un dimostratore di teoremi interattivo in grado di dimostrare equazioni tra termini dello ZX-calculus. L'utente disegna il termine desiderato nell'editor grafico, e costruisce la dimostrazione...",
+      "it-expert": "Architettura base: interactive theorem prover per equazioni tra termini ZX — GUI grafica per disegnare diagrammi, poi costruzione della prova per applicazione di regole."
     }
   },
   {
@@ -2918,8 +2918,8 @@
     ],
     "sourceText": "rules to the current graph. A rewrite rule is a directed equation, i.e. a pair of graphs which have the sameboundary. Rules are applied in two-step process. First the system searches for subgraphs of the termwhich are isomorphic to the LHS of the rule; each such subgraph is called a match. Quantomatic displaysall the possible matches of the chosen rule in the current term, and allows the user to select where the ruleis to be applied. The matched subgraph is then replaced by the RHS of the rule to produce a new term. Aproof therefore consists of a sequence of terms linked by the application of a particular rule at a particularlocation in the term.",
     "explanations": {
-      "it-intermediate": "Quantomatic è un dimostratore di teoremi interattivo in grado di dimostrare equazioni tra termini dello ZX-calculus. L'utente disegna il termine desiderato nell'editor grafico, e costruisce la dimostrazione...",
-      "it-expert": "Architettura base: interactive theorem prover per equazioni tra termini ZX — GUI grafica per disegnare diagrammi, poi costruzione della prova per applicazione di regole."
+      "it-intermediate": "...applicando le regole al grafo corrente. Una regola di riscrittura è un'equazione diretta, cioè una coppia di grafi che hanno lo stesso bordo. Le regole vengono applicate in un processo a due fasi: prima il sistema cerca...",
+      "it-expert": "Meccanica del rewriting: una rule = coppia di grafi con boundary condiviso (LHS→RHS); applicazione in due fasi — pattern-matching (ricerca sottografo) poi sostituzione."
     }
   },
   {
@@ -2937,8 +2937,8 @@
     ],
     "sourceText": "Quantomatic allows the user to deﬁne automated proof tactics, known as simpliﬁcation procedures orsimprocs. The name is slightly misleading since there is no need for a simproc to actually simplify thegraph, in the sense of reducing the number of vertices or edges; however failure to do so will typicallyresult in non-termination. Simprocs are written in the Python programming language, interpreted by thebuilt-in Jython interpreter [1], and augmented with various tactic combinators. The most useful of theseare:",
     "explanations": {
-      "it-intermediate": "...applicando le regole al grafo corrente. Una regola di riscrittura è un'equazione diretta, cioè una coppia di grafi che hanno lo stesso bordo. Le regole vengono applicate in un processo a due fasi: prima il sistema cerca...",
-      "it-expert": "Meccanica del rewriting: una rule = coppia di grafi con boundary condiviso (LHS→RHS); applicazione in due fasi — pattern-matching (ricerca sottografo) poi sostituzione."
+      "it-intermediate": "Quantomatic permette all'utente di definire tattiche di dimostrazione automatizzate, chiamate procedure di semplificazione o 'simproc'. Il nome è leggermente fuorviante poiché non c'è alcun bisogno che un simproc...",
+      "it-expert": "Meccanismo di automazione: 'simprocs' (simplification procedures) — combinatori di rewrite programmabili, il building block su cui è costruito l'intero optimiser (nome un po' fuorviante: non necessariamente 'semplificano' in senso stretto, come chiarito subito dopo)."
     }
   },
   {
@@ -2956,8 +2956,8 @@
     ],
     "sourceText": "• REWRITE(r) : given a rule r, apply the rewrite to the ﬁrst match found.",
     "explanations": {
-      "it-intermediate": "Quantomatic permette all'utente di definire tattiche di dimostrazione automatizzate, chiamate procedure di semplificazione o 'simproc'. Il nome è leggermente fuorviante poiché non c'è alcun bisogno che un simproc...",
-      "it-expert": "Meccanismo di automazione: 'simprocs' (simplification procedures) — combinatori di rewrite programmabili, il building block su cui è costruito l'intero optimiser (nome un po' fuorviante: non necessariamente 'semplificano' in senso stretto, come chiarito subito dopo)."
+      "it-intermediate": "• REWRITE(r): data una regola r, applica la riscrittura alla prima corrispondenza trovata — la primitiva di rewriting più basilare.",
+      "it-expert": "Combinatore primitivo REWRITE(r): applica r al primo match trovato (ricerca non guidata, primo risultato del matcher)."
     }
   },
   {
@@ -2975,8 +2975,8 @@
     ],
     "sourceText": "• REWRITE_METRIC(r, m) : given a rule r and a metric function m : ZX →N apply the rewrite tothe ﬁrst match found which reduces the metric.",
     "explanations": {
-      "it-intermediate": "• REWRITE(r): data una regola r, applica la riscrittura alla prima corrispondenza trovata — la primitiva di rewriting più basilare.",
-      "it-expert": "Combinatore primitivo REWRITE(r): applica r al primo match trovato (ricerca non guidata, primo risultato del matcher)."
+      "it-intermediate": "• REWRITE_METRIC(r,m): dati una regola r e una funzione metrica m:ZX→N, applica la riscrittura alla prima corrispondenza trovata che riduce la metrica — permette di guidare la ricerca verso un obiettivo quantitativo (es. numero di vertici).",
+      "it-expert": "Combinatore REWRITE_METRIC(r,m): applica r solo se il match riduce m — greedy hill-climbing rispetto a una metrica arbitraria, meccanismo usato pesantemente nella fase di 'commutation' dell'optimiser (§6)."
     }
   },
   {
@@ -2994,8 +2994,8 @@
     ],
     "sourceText": "• REWRITE_TARGETED(r, v, t) ; given a rule r, a vertex v in the LHS of the rule, and a targetingfunction t : ZX →Vert apply the rewrite r to the ﬁrst match where vertex v of the rule is matched tothe vertex t(G) in the term.",
     "explanations": {
-      "it-intermediate": "• REWRITE_METRIC(r,m): dati una regola r e una funzione metrica m:ZX→N, applica la riscrittura alla prima corrispondenza trovata che riduce la metrica — permette di guidare la ricerca verso un obiettivo quantitativo (es. numero di vertici).",
-      "it-expert": "Combinatore REWRITE_METRIC(r,m): applica r solo se il match riduce m — greedy hill-climbing rispetto a una metrica arbitraria, meccanismo usato pesantemente nella fase di 'commutation' dell'optimiser (§6)."
+      "it-intermediate": "• REWRITE_TARGETED(r,v,t): data una regola r, un vertice v nel lato sinistro della regola, e una funzione di targeting t:ZX→Vert, applica la riscrittura r alla prima corrispondenza in cui il vertice v della regola...",
+      "it-expert": "Combinatore REWRITE_TARGETED(r,v,t): vincola il match a corrispondere v con un vertice specifico scelto da t — controllo fine su DOVE applicare la regola (essenziale quando esistono match multipli non equivalenti, come nel caso ambiguo discusso più avanti in §6)."
     }
   },
   {
@@ -3013,8 +3013,8 @@
     ],
     "sourceText": "All of these combinators can also accept a list of rules, in which case the rewrites are attempted in theorder of the list. Simprocs can be combined in sequence, and also using the combinator REDUCE(s)which repeats the simproc s until no new rewrites can be performed.",
     "explanations": {
-      "it-intermediate": "• REWRITE_TARGETED(r,v,t): data una regola r, un vertice v nel lato sinistro della regola, e una funzione di targeting t:ZX→Vert, applica la riscrittura r alla prima corrispondenza in cui il vertice v della regola...",
-      "it-expert": "Combinatore REWRITE_TARGETED(r,v,t): vincola il match a corrispondere v con un vertice specifico scelto da t — controllo fine su DOVE applicare la regola (essenziale quando esistono match multipli non equivalenti, come nel caso ambiguo discusso più avanti in §6)."
+      "it-intermediate": "Tutti questi combinatori possono anche accettare una lista di regole, nel qual caso le riscritture vengono tentate nell'ordine della lista. I simproc possono essere combinati in sequenza, e anche usando...",
+      "it-expert": "Composizionalità: combinatori accettano liste di regole (provate in ordine) e sono componibili sequenzialmente/con altri operatori (es. iterazione fino a punto fisso) — algebra di combinatori che permette di costruire l'optimiser completo dai building block primitivi."
     }
   },
   {
@@ -3032,8 +3032,8 @@
     ],
     "sourceText": "An important point is that when multiple matches are obtained, the system will select one withoutuser intervention. Which rewrite is selected depends on the internal representation of the term, and iseffectively non-deterministic.",
     "explanations": {
-      "it-intermediate": "Tutti questi combinatori possono anche accettare una lista di regole, nel qual caso le riscritture vengono tentate nell'ordine della lista. I simproc possono essere combinati in sequenza, e anche usando...",
-      "it-expert": "Composizionalità: combinatori accettano liste di regole (provate in ordine) e sono componibili sequenzialmente/con altri operatori (es. iterazione fino a punto fisso) — algebra di combinatori che permette di costruire l'optimiser completo dai building block primitivi."
+      "it-intermediate": "Un punto importante è che quando si trovano più corrispondenze, il sistema ne sceglie una senza intervento dell'utente. Quale riscrittura viene selezionata dipende dalla rappresentazione interna...",
+      "it-expert": "Punto tecnico rilevante: non-determinismo del matcher — quando esistono match multipli, la scelta dipende da dettagli implementativi interni (ordine di rappresentazione), non da una politica esplicita, il che rende necessarie le funzioni di targeting quando il comportamento di default non è quello desiderato."
     }
   },
   {
@@ -3051,8 +3051,8 @@
     ],
     "sourceText": "The axioms of the ZX-calculus, considered as a rewrite system, are neither terminating nor conﬂuent:for example, if G →G′ via the π-commute rule then the rule can be applied again immediately to rewriteG′ →G. This and similar cases can easily lead to a non-terminating rewrite strategy. Further althoughmany of the axioms can be oriented in a direction which reduces the graph complexity, the resultingrewrite system is no longer complete with respect to the standard interpretation: in some cases it isnecessary to increase the graph size to derive a desired equation.",
     "explanations": {
-      "it-intermediate": "Un punto importante è che quando si trovano più corrispondenze, il sistema ne sceglie una senza intervento dell'utente. Quale riscrittura viene selezionata dipende dalla rappresentazione interna...",
-      "it-expert": "Punto tecnico rilevante: non-determinismo del matcher — quando esistono match multipli, la scelta dipende da dettagli implementativi interni (ordine di rappresentazione), non da una politica esplicita, il che rende necessarie le funzioni di targeting quando il comportamento di default non è quello desiderato."
+      "it-intermediate": "Un problema di fondo: usati come regole di riscrittura, gli assiomi dello ZX-calculus non garantiscono di terminare né di arrivare a un risultato unico. Ad esempio la regola π-commute si può riapplicare subito al contrario, tornando al grafo di partenza all'infinito. E se si orientano le regole solo nel verso che semplifica il grafo, si perde la completezza: a volte, per dimostrare un'uguaglianza, bisogna prima far crescere il diagramma.",
+      "it-expert": "Gli assiomi ZX come sistema di riscrittura non sono né terminanti né confluenti (π-commute è auto-inversa, quindi strategie ingenue ciclano). Orientarli per ridurre la complessità rompe la completezza rispetto a ⟦·⟧: alcune derivazioni richiedono passi che aumentano la dimensione. Da qui regole derivate, metriche e targeting."
     }
   },
   {
@@ -3070,8 +3070,8 @@
     ],
     "sourceText": "In this section we describe our optimisation procedure and summarise the results. The reasons for ourchoices are discussed in the following section.",
     "explanations": {
-      "it-intermediate": "Intestazione di sezione: '6 Ottimizzare circuiti Clifford con Quantomatic' — la sezione che descrive l'algoritmo di ottimizzazione vero e proprio, mettendo insieme tutti gli strumenti sviluppati finora.",
-      "it-expert": "Sezione 6, Optimising Clifford Circuits with Quantomatic — il cuore implementativo del paper."
+      "it-intermediate": "In questa sezione si descrive la procedura di ottimizzazione e si riassumono i risultati. Le ragioni delle scelte fatte sono discusse nella sezione successiva.",
+      "it-expert": "Struttura: §6 descrive il 'cosa' (algoritmo + risultati), §7 discute il 'perché' delle scelte progettuali."
     }
   },
   {
@@ -3089,8 +3089,8 @@
     ],
     "sourceText": "By circuit we mean a ZX-calculus term which is the image of the translation functor T : Cliff →ZXdeﬁned in Section 4. Note that since Cliff is a †-PROP and J·K is a strict monoidal functor, the circuitsform a sub-PROP of ZX: they are closed under composition and tensor product; however they are notclosed with respect to the equivalence relation ∗↔.",
     "explanations": {
-      "it-intermediate": "In questa sezione si descrive la procedura di ottimizzazione e si riassumono i risultati. Le ragioni delle scelte fatte sono discusse nella sezione successiva.",
-      "it-expert": "Struttura: §6 descrive il 'cosa' (algoritmo + risultati), §7 discute il 'perché' delle scelte progettuali."
+      "it-intermediate": "Per 'circuito' si intende un termine dello ZX-calculus che è l'immagine del funtore di traduzione T:Cliff→ZX definito nella Sezione 4. Si noti che poiché Cliff è una †-PROP e ⟦·⟧ è un funtore monoidale...",
+      "it-expert": "Definizione operativa di 'circuit': elemento nell'immagine di T — nota che 'circuito' NON è una proprietà puramente strutturale del diagramma ZX risultante, ma dipende dal fatto che provenga da T (distinzione ripresa e resa strutturale nella Def. 6.4 con 'causal flow')."
     }
   },
   {
@@ -3108,8 +3108,8 @@
     ],
     "sourceText": "Most ZX-calculus terms are not circuits: some of these don’t correspond to Clifford unitaries, andso do not concern us, however there are many non-circuits which are equivalent to circuits via rewriting.We don’t attempt to ﬁnd circuit forms for such terms. Rather, knowing that the input is a circuit, we use",
     "explanations": {
-      "it-intermediate": "Per 'circuito' si intende un termine dello ZX-calculus che è l'immagine del funtore di traduzione T:Cliff→ZX definito nella Sezione 4. Si noti che poiché Cliff è una †-PROP e ⟦·⟧ è un funtore monoidale...",
-      "it-expert": "Definizione operativa di 'circuit': elemento nell'immagine di T — nota che 'circuito' NON è una proprietà puramente strutturale del diagramma ZX risultante, ma dipende dal fatto che provenga da T (distinzione ripresa e resa strutturale nella Def. 6.4 con 'causal flow')."
+      "it-intermediate": "La maggior parte dei termini dello ZX-calculus NON sono circuiti: alcuni non corrispondono a unitarie Clifford e quindi non interessano, tuttavia ci sono molti non-circuiti che sono equivalenti a...",
+      "it-expert": "Osservazione cruciale: 'essere un circuito' non è chiuso sotto riscrittura arbitraria — un diagramma equivalente a un circuito può non essere sintatticamente un circuito. Questo è ESATTAMENTE il problema tecnico menzionato in p0014: bisogna restringersi a riscritture che restano dentro la classe dei circuiti."
     }
   },
   {
@@ -3127,8 +3127,8 @@
     ],
     "sourceText": "rewrites which replace circuits with circuits, and thus stay at all times within the class of circuits.",
     "explanations": {
-      "it-intermediate": "La maggior parte dei termini dello ZX-calculus NON sono circuiti: alcuni non corrispondono a unitarie Clifford e quindi non interessano, tuttavia ci sono molti non-circuiti che sono equivalenti a...",
-      "it-expert": "Osservazione cruciale: 'essere un circuito' non è chiuso sotto riscrittura arbitraria — un diagramma equivalente a un circuito può non essere sintatticamente un circuito. Questo è ESATTAMENTE il problema tecnico menzionato in p0014: bisogna restringersi a riscritture che restano dentro la classe dei circuiti."
+      "it-intermediate": "...riscritture che sostituiscono circuiti con circuiti, e quindi restano in ogni momento all'interno della classe dei circuiti — questo è il vincolo di design fondamentale dell'ottimizzatore: ogni singola regola usata deve mappare circuiti in circuiti.",
+      "it-expert": "Vincolo di design: l'intero rule-set dell'optimiser deve essere 'circuit-preserving' per costruzione (non solo l'assioma astratto dello ZX-calculus, ma la scelta CURATA di un sotto-insieme di derivate che restano sempre circuit-like)."
     }
   },
   {
@@ -3146,8 +3146,8 @@
     ],
     "sourceText": "The axioms of the ZX-calculus calculus are mostly equations between graphs which are evidently notcircuits. Therefore our ﬁrst step is to derive new equations between circuits which will serve as rewritesfor use in the main simproc. These rules are listed in Appendix D.",
     "explanations": {
-      "it-intermediate": "...riscritture che sostituiscono circuiti con circuiti, e quindi restano in ogni momento all'interno della classe dei circuiti — questo è il vincolo di design fondamentale dell'ottimizzatore: ogni singola regola usata deve mappare circuiti in circuiti.",
-      "it-expert": "Vincolo di design: l'intero rule-set dell'optimiser deve essere 'circuit-preserving' per costruzione (non solo l'assioma astratto dello ZX-calculus, ma la scelta CURATA di un sotto-insieme di derivate che restano sempre circuit-like)."
+      "it-intermediate": "Gli assiomi dello ZX-calculus sono per lo più equazioni tra grafi che evidentemente non sono circuiti. Perciò il primo passo è derivare nuove equazioni tra circuiti che...",
+      "it-expert": "Problema pratico: gli assiomi 'grezzi' (Fig. 2) violano quasi sempre la proprietà circuit-like negli step intermedi — necessario DERIVARE un nuovo rule-set (le 'Main Rules' dell'Appendice D) le cui LHS e RHS siano entrambe circuit-like."
     }
   },
   {
@@ -3165,8 +3165,8 @@
     ],
     "sourceText": "While the derived rules are “obviously” equations between circuits, the circuit structure of a largergraph may not be apparent by looking at a local subgraph. It’s necessary to look at the entire graph inorder to guide the rewrite engine.",
     "explanations": {
-      "it-intermediate": "Gli assiomi dello ZX-calculus sono per lo più equazioni tra grafi che evidentemente non sono circuiti. Perciò il primo passo è derivare nuove equazioni tra circuiti che...",
-      "it-expert": "Problema pratico: gli assiomi 'grezzi' (Fig. 2) violano quasi sempre la proprietà circuit-like negli step intermedi — necessario DERIVARE un nuovo rule-set (le 'Main Rules' dell'Appendice D) le cui LHS e RHS siano entrambe circuit-like."
+      "it-intermediate": "Sebbene le regole derivate siano 'ovviamente' equazioni tra circuiti, la struttura circuitale di un grafo più grande potrebbe non essere evidente guardando un sottografo locale. È necessario guardare...",
+      "it-expert": "Tensione locale/globale ripresa: anche con regole 'circuit-safe' individualmente, verificare che l'intero grafo resti circuit-like richiede un'analisi GLOBALE — motiva le definizioni formali che seguono (simple diagram, causal flow, circuit-like)."
     }
   },
   {
@@ -3190,8 +3190,8 @@
     ],
     "sourceText": "Deﬁnition 6.1. A ZX-calculus diagram is called simple if it satisﬁes the following criteria: • It is a simple graph.",
     "explanations": {
-      "it-intermediate": "Sebbene le regole derivate siano 'ovviamente' equazioni tra circuiti, la struttura circuitale di un grafo più grande potrebbe non essere evidente guardando un sottografo locale. È necessario guardare...",
-      "it-expert": "Tensione locale/globale ripresa: anche con regole 'circuit-safe' individualmente, verificare che l'intero grafo resti circuit-like richiede un'analisi GLOBALE — motiva le definizioni formali che seguono (simple diagram, causal flow, circuit-like)."
+      "it-intermediate": "Definizione 6.1: un diagramma ZX-calculus è detto 'semplice' se soddisfa i seguenti criteri: • è un grafo semplice (nessun arco multiplo).",
+      "it-expert": "Def. 6.1, criterio 1: simple graph (no multi-edge) — prerequisito tecnico minimo per una nozione ben definita di 'circuit-like'."
     }
   },
   {
@@ -3209,8 +3209,8 @@
     ],
     "sourceText": "• No vertex is adjacent to a vertex of the same colour.",
     "explanations": {
-      "it-intermediate": "Definizione 6.1: un diagramma ZX-calculus è detto 'semplice' se soddisfa i seguenti criteri: • è un grafo semplice (nessun arco multiplo).",
-      "it-expert": "Def. 6.1, criterio 1: simple graph (no multi-edge) — prerequisito tecnico minimo per una nozione ben definita di 'circuit-like'."
+      "it-intermediate": "• Nessun vertice è adiacente a un vertice dello stesso colore (altrimenti si fonderebbero per la regola spider).",
+      "it-expert": "Criterio 2: nessun edge tra vertici dello stesso colore (altrimenti sarebbero già fondibili via spider rule — forma 'ridotta')."
     }
   },
   {
@@ -3228,8 +3228,8 @@
     ],
     "sourceText": "• Every degree 2 vertex has a non-zero label.",
     "explanations": {
-      "it-intermediate": "• Nessun vertice è adiacente a un vertice dello stesso colore (altrimenti si fonderebbero per la regola spider).",
-      "it-expert": "Criterio 2: nessun edge tra vertici dello stesso colore (altrimenti sarebbero già fondibili via spider rule — forma 'ridotta')."
+      "it-intermediate": "• Ogni vertice di grado 2 ha un'etichetta non nulla (altrimenti sarebbe eliminabile con la regola identità).",
+      "it-expert": "Criterio 3: nessun vertice di grado 2 con etichetta zero (eliminabile via identity rule) — insieme, i tre criteri definiscono una forma 'ridotta' rispetto alle mosse locali banali."
     }
   },
   {
@@ -3247,8 +3247,8 @@
     ],
     "sourceText": "Lemma 6.2. Every ZX-calculus diagram is equal to a simple one.",
     "explanations": {
-      "it-intermediate": "• Ogni vertice di grado 2 ha un'etichetta non nulla (altrimenti sarebbe eliminabile con la regola identità).",
-      "it-expert": "Criterio 3: nessun vertice di grado 2 con etichetta zero (eliminabile via identity rule) — insieme, i tre criteri definiscono una forma 'ridotta' rispetto alle mosse locali banali."
+      "it-intermediate": "Lemma 6.2: ogni diagramma ZX-calculus è uguale a uno semplice — cioè si può sempre 'ripulire' un diagramma per soddisfare la Definizione 6.1 senza cambiarne il significato.",
+      "it-expert": "Lemma 6.2: ogni diagramma è ∗↔-equivalente a uno 'simple' (Def. 6.1) — normalizzazione preliminare sempre disponibile, applicata come primo passo prima di ogni analisi strutturale successiva."
     }
   },
   {
@@ -3266,8 +3266,8 @@
     ],
     "sourceText": "Proof. Starting with an arbitrary diagram d, ﬁrst replace all H boxes using the H-euler rule. Then applythe spider rule to fuse spiders, the hopf rule to remove parallel edges, the anti-loop rule to remove any selfloops, and the identity to remove trivial spiders everywhere.",
     "explanations": {
-      "it-intermediate": "Lemma 6.2: ogni diagramma ZX-calculus è uguale a uno semplice — cioè si può sempre 'ripulire' un diagramma per soddisfare la Definizione 6.1 senza cambiarne il significato.",
-      "it-expert": "Lemma 6.2: ogni diagramma è ∗↔-equivalente a uno 'simple' (Def. 6.1) — normalizzazione preliminare sempre disponibile, applicata come primo passo prima di ogni analisi strutturale successiva."
+      "it-intermediate": "Dimostrazione: partendo da un diagramma arbitrario d, si sostituiscono prima tutte le H-box usando la regola H-euler. Poi si applica la regola spider per fondere gli spider, la regola hopf per rimuovere archi paralleli...",
+      "it-expert": "Proof del Lemma 6.2: sequenza standard di riscritture di normalizzazione (H-euler → spider fusion → hopf per multi-edge → identity per vertici banali) — procedura costruttiva e terminante."
     }
   },
   {
@@ -3303,8 +3303,8 @@
     ],
     "sourceText": "Deﬁnition 6.3. [9] Given a diagram d, with vertices V, inputs I, and outputs O, a causal ﬂow (f,≺) on dconsists of a function f : I +V →V +O and a partial order ≺on the set I +V +O satisfying the followingproperties: (F1) f(v) ∼v (F2) v ≺f(v) (F3) If u ∼f(v) then v ≺u",
     "explanations": {
-      "it-intermediate": "Dimostrazione: partendo da un diagramma arbitrario d, si sostituiscono prima tutte le H-box usando la regola H-euler. Poi si applica la regola spider per fondere gli spider, la regola hopf per rimuovere archi paralleli...",
-      "it-expert": "Proof del Lemma 6.2: sequenza standard di riscritture di normalizzazione (H-euler → spider fusion → hopf per multi-edge → identity per vertici banali) — procedura costruttiva e terminante."
+      "it-intermediate": "Definizione 6.3 [Danos-Kashefi]: dato un diagramma d, con vertici V, input I, e output O, un 'flusso causale' (f,≺) su d consiste in una funzione f:I+V→V+O e un ordine parziale ≺ sull'insieme I+V+O...",
+      "it-expert": "Def. 6.3 [9, Danos-Kashefi]: causal flow — importazione diretta dal modello one-way (measurement-based QC). f mappa ogni vertice/input al 'successore' che lo misura/corregge; ≺ è l'ordine parziale di dipendenza causale che ne consegue."
     }
   },
   {
@@ -3322,8 +3322,8 @@
     ],
     "sourceText": "where v ∼u means that u and v are adjacent in the graph.",
     "explanations": {
-      "it-intermediate": "Definizione 6.3 [Danos-Kashefi]: dato un diagramma d, con vertici V, input I, e output O, un 'flusso causale' (f,≺) su d consiste in una funzione f:I+V→V+O e un ordine parziale ≺ sull'insieme I+V+O...",
-      "it-expert": "Def. 6.3 [9, Danos-Kashefi]: causal flow — importazione diretta dal modello one-way (measurement-based QC). f mappa ogni vertice/input al 'successore' che lo misura/corregge; ≺ è l'ordine parziale di dipendenza causale che ne consegue."
+      "it-intermediate": "...dove v∼u significa che u e v sono adiacenti nel grafo (relazione usata nelle condizioni formali del flusso causale, non riportate qui per esteso).",
+      "it-expert": "Notazione ausiliaria (adiacenza ∼) usata nelle condizioni formali complete della Def. 6.3 (qui parzialmente omesse dal testo estratto)."
     }
   },
   {
@@ -3347,8 +3347,8 @@
     ],
     "sourceText": "In the one-way model [24], the existence of a causal ﬂow on a graph implies that measurement-basedquantum computation on the corresponding graph state is deterministic [9]. It plays a similar role for ZX-diagrams.",
     "explanations": {
-      "it-intermediate": "...dove v∼u significa che u e v sono adiacenti nel grafo (relazione usata nelle condizioni formali del flusso causale, non riportate qui per esteso).",
-      "it-expert": "Notazione ausiliaria (adiacenza ∼) usata nelle condizioni formali complete della Def. 6.3 (qui parzialmente omesse dal testo estratto)."
+      "it-intermediate": "Nel modello 'one-way' (measurement-based quantum computing), l'esistenza di un flusso causale su un grafo implica che il calcolo quantistico basato su misure sul corrispondente stato a grafo è deterministico. Gioca un ruolo...",
+      "it-expert": "Significato fisico del causal flow: nell'MBQC one-way model [24], flow⟹determinismo del calcolo (correggibilità degli esiti di misura casuali) — qui riusato in un contesto puramente strutturale/combinatorio (nessuna misura reale coinvolta), come CRITERIO per riconoscere quando un grafo ZX ha 'la forma giusta' per essere tradotto in un circuito sequenziale."
     }
   },
   {
@@ -3366,8 +3366,8 @@
     ],
     "sourceText": "Deﬁnition 6.4. A simple ZX-diagram is called circuit-like if has the same number of inputs and outputsand its underlying graph admits a causal ﬂow.",
     "explanations": {
-      "it-intermediate": "Nel modello 'one-way' (measurement-based quantum computing), l'esistenza di un flusso causale su un grafo implica che il calcolo quantistico basato su misure sul corrispondente stato a grafo è deterministico. Gioca un ruolo...",
-      "it-expert": "Significato fisico del causal flow: nell'MBQC one-way model [24], flow⟹determinismo del calcolo (correggibilità degli esiti di misura casuali) — qui riusato in un contesto puramente strutturale/combinatorio (nessuna misura reale coinvolta), come CRITERIO per riconoscere quando un grafo ZX ha 'la forma giusta' per essere tradotto in un circuito sequenziale."
+      "it-intermediate": "Definizione 6.4: un ZX-diagramma semplice è detto 'circuit-like' se ha lo stesso numero di input e output e il suo grafo sottostante ammette un flusso causale — questa è la caratterizzazione STRUTTURALE (puramente combinatoria) di 'essere un circuito', l'obiettivo che sostituisce la definizione originale (basata sull'immagine di T) con un criterio verificabile localmente.",
+      "it-expert": "Def. 6.4: circuit-like = simple + |input|=|output| + causal flow esistente sul grafo sottostante — questa è la definizione OPERATIVA usata dall'implementazione (verificabile algoritmicamente), sostituendo la definizione semantica originaria ('immagine di T', non verificabile direttamente su un grafo dato)."
     }
   },
   {
@@ -3385,8 +3385,8 @@
     ],
     "sourceText": "Proposition 6.5. Every circuit-like diagram corresponds to a quantum circuit.",
     "explanations": {
-      "it-intermediate": "Definizione 6.4: un ZX-diagramma semplice è detto 'circuit-like' se ha lo stesso numero di input e output e il suo grafo sottostante ammette un flusso causale — questa è la caratterizzazione STRUTTURALE (puramente combinatoria) di 'essere un circuito', l'obiettivo che sostituisce la definizione originale (basata sull'immagine di T) con un criterio verificabile localmente.",
-      "it-expert": "Def. 6.4: circuit-like = simple + |input|=|output| + causal flow esistente sul grafo sottostante — questa è la definizione OPERATIVA usata dall'implementazione (verificabile algoritmicamente), sostituendo la definizione semantica originaria ('immagine di T', non verificabile direttamente su un grafo dato)."
+      "it-intermediate": "Proposizione 6.5: ogni diagramma circuit-like corrisponde a un circuito quantistico — questo chiude il cerchio: la nozione strutturale (Def. 6.4) e quella semantica originale (immagine di T) coincidono, giustificando l'uso di Def. 6.4 come test pratico nell'implementazione.",
+      "it-expert": "Prop. 6.5: equivalenza tra la definizione strutturale (Def. 6.4, causal-flow-based) e la nozione semantica di 'circuit' — risultato che LEGITTIMA l'uso di un test puramente combinatorio (verificabile in tempo polinomiale) al posto di un test semantico intrattabile."
     }
   },
   {
@@ -3404,8 +3404,8 @@
     ],
     "sourceText": "Proof. Using the given ﬂow (f,≺) we will translate a circuit-like diagram d into a circuit c such that c isobvious in the image to of T.",
     "explanations": {
-      "it-intermediate": "Proposizione 6.5: ogni diagramma circuit-like corrisponde a un circuito quantistico — questo chiude il cerchio: la nozione strutturale (Def. 6.4) e quella semantica originale (immagine di T) coincidono, giustificando l'uso di Def. 6.4 come test pratico nell'implementazione.",
-      "it-expert": "Prop. 6.5: equivalenza tra la definizione strutturale (Def. 6.4, causal-flow-based) e la nozione semantica di 'circuit' — risultato che LEGITTIMA l'uso di un test puramente combinatorio (verificabile in tempo polinomiale) al posto di un test semantico intrattabile."
+      "it-intermediate": "Dimostrazione: usando il flusso dato (f,≺) si tradurrà un diagramma circuit-like d in un circuito c tale che c sia ovviamente nell'immagine di T.",
+      "it-expert": "Strategia della prova: costruzione ESPLICITA (algoritmica) di c da d usando il flow (f,≺) — la prova è di per sé l'algoritmo di traduzione grafo→circuito usato dall'implementazione."
     }
   },
   {
@@ -3423,8 +3423,8 @@
     ],
     "sourceText": "We must ﬁrst determine which edges in the diagram correspond to qubits and which correspondto interactions between qubits. Note that for each input i, the ﬂow function f deﬁnes a path throughthe diagram i →f(i) →f(f(i)) →···. By (F2) and the fact that ≺is a partial order, such a path mustterminate at an output; and by (F3) each such input-to-output path is disjoint. Further, since the numbersof inputs and outputs are the same then every vertex of the diagram must occur on one such path.",
     "explanations": {
-      "it-intermediate": "Dimostrazione: usando il flusso dato (f,≺) si tradurrà un diagramma circuit-like d in un circuito c tale che c sia ovviamente nell'immagine di T.",
-      "it-expert": "Strategia della prova: costruzione ESPLICITA (algoritmica) di c da d usando il flow (f,≺) — la prova è di per sé l'algoritmo di traduzione grafo→circuito usato dall'implementazione."
+      "it-intermediate": "Si deve prima determinare quali archi nel diagramma corrispondono a qubit e quali corrispondono a interazioni tra qubit. Si noti che per ogni input i, la funzione di flusso f definisce un...",
+      "it-expert": "Primo passo della costruzione: identificazione dei 'fili' (qubit path) tramite iterazione di f a partire da ogni input — f definisce un cammino (path cover) attraverso il grafo."
     }
   },
   {
@@ -3490,8 +3490,8 @@
     ],
     "sourceText": "Now we translate the vertices into gates tracing along the qubit paths. If the vertex has degree 2 itimmediately yields a Zα or an Xβ gate. If vertex v has higher degree, let its neighbours, excluding itsimmediate predecessor and successor, be u1,...,un. We decompose v into v0,v1,...vn as shown below: vn··· ············vnvn−17→αv1 v2 v2v0αv α7→αv vn−1 v0v1 ···",
     "explanations": {
-      "it-intermediate": "Si deve prima determinare quali archi nel diagramma corrispondono a qubit e quali corrispondono a interazioni tra qubit. Si noti che per ogni input i, la funzione di flusso f definisce un...",
-      "it-expert": "Primo passo della costruzione: identificazione dei 'fili' (qubit path) tramite iterazione di f a partire da ogni input — f definisce un cammino (path cover) attraverso il grafo."
+      "it-intermediate": "Ora si traducono i vertici in gate seguendo i percorsi dei qubit. Se il vertice ha grado 2 produce immediatamente un gate Z_α o X_β. Se un vertice v ha grado superiore, sia il suo...",
+      "it-expert": "Secondo passo: traduzione vertice→gate lungo i path — grado 2 ⟹ gate 1-qubit diretto (Z_α o X_β); grado >2 ⟹ vertice di interazione multi-qubit, richiede l'introduzione di 'nuovi vertici' ausiliari (chiarito nel blocco successivo, tipicamente per rappresentare CNOT/CZ)."
     }
   },
   {
@@ -3509,8 +3509,8 @@
     ],
     "sourceText": "Note that the new vertices must be compatible with the original ordering, in the sense that if ui ∼v ∼ujwhere ui ≺uj then we require that vi ≺vj. By the ﬂow conditions, none of the ui belong to the same qubitas v, and by the simplicity of the diagram all the ui are the opposite colour to v. Note that the updateddiagram also admits a causal ﬂow, obtained from the original one in the obvious manner. Hence all thehigher degree vertices may be decomposed in the same way, to leave the diagram with no vertex of higherdegree than three, and non-zero phases only in the degree two vertices. Then all the links between qubitsmaybe replaced by CNOT gates; since ≺deﬁnes a partial order on the vertices, we are guaranteed this iswell-deﬁned.",
     "explanations": {
-      "it-intermediate": "Ora si traducono i vertici in gate seguendo i percorsi dei qubit. Se il vertice ha grado 2 produce immediatamente un gate Z_α o X_β. Se un vertice v ha grado superiore, sia il suo...",
-      "it-expert": "Secondo passo: traduzione vertice→gate lungo i path — grado 2 ⟹ gate 1-qubit diretto (Z_α o X_β); grado >2 ⟹ vertice di interazione multi-qubit, richiede l'introduzione di 'nuovi vertici' ausiliari (chiarito nel blocco successivo, tipicamente per rappresentare CNOT/CZ)."
+      "it-intermediate": "Si noti che i nuovi vertici devono essere compatibili con l'ordinamento originale, nel senso che se u_i∼v∼u_j dove u_i≺u_j allora si richiede che v_i≺v_j. Per le condizioni del flusso, nessuno dei...",
+      "it-expert": "Condizione di coerenza: i vertici ausiliari introdotti devono rispettare l'ordine parziale ≺ ereditato dal flow — garantisce che la traduzione produca un circuito ben ordinato causalmente (nessun ciclo di dipendenza)."
     }
   },
   {
@@ -3528,8 +3528,8 @@
     ],
     "sourceText": "Intuitively the ﬂow path cover speciﬁes which edges of the ZX-diagram are the “qubits” of the circuit;those edges not in the path cover deﬁne a CNOT acting on two qubits. Assuming that the graph is a circuit,the path cover is relatively easy to compute by starting at each input and ﬁnding a successor amongits neighbours. If there is ever a choice of successor for a given vertex this choice can be resolved bylooking at the other wires. This information is needed frequently by our optimisation procedure. If anunambiguous path cover cannot be constructed then the procedure halts with an error – in this case theinput graph was not a circuit.",
     "explanations": {
-      "it-intermediate": "Si noti che i nuovi vertici devono essere compatibili con l'ordinamento originale, nel senso che se u_i∼v∼u_j dove u_i≺u_j allora si richiede che v_i≺v_j. Per le condizioni del flusso, nessuno dei...",
-      "it-expert": "Condizione di coerenza: i vertici ausiliari introdotti devono rispettare l'ordine parziale ≺ ereditato dal flow — garantisce che la traduzione produca un circuito ben ordinato causalmente (nessun ciclo di dipendenza)."
+      "it-intermediate": "Intuitivamente, la copertura di cammini del flusso specifica quali archi del diagramma ZX sono i 'qubit' del circuito; gli archi non nella copertura di cammini definiscono un CNOT che agisce su due qubit. Assumendo...",
+      "it-expert": "Sintesi intuitiva della costruzione: path-cover(f) = fili dei qubit; edge FUORI dal path cover = interazioni CNOT a 2-qubit tra quei fili — chiude la dimostrazione di Prop. 6.5 e con essa la giustificazione teorica per usare 'causal flow' come test computabile di 'essere un circuito'."
     }
   },
   {
@@ -3547,8 +3547,8 @@
     ],
     "sourceText": "Our optimiser can be summarised as the repeated alternation of two phases:",
     "explanations": {
-      "it-intermediate": "Intuitivamente, la copertura di cammini del flusso specifica quali archi del diagramma ZX sono i 'qubit' del circuito; gli archi non nella copertura di cammini definiscono un CNOT che agisce su due qubit. Assumendo...",
-      "it-expert": "Sintesi intuitiva della costruzione: path-cover(f) = fili dei qubit; edge FUORI dal path cover = interazioni CNOT a 2-qubit tra quei fili — chiude la dimostrazione di Prop. 6.5 e con essa la giustificazione teorica per usare 'causal flow' come test computabile di 'essere un circuito'."
+      "it-intermediate": "Il loro ottimizzatore può essere riassunto come l'alternanza ripetuta di due fasi:",
+      "it-expert": "Struttura algoritmica top-level: ciclo a 2 fasi, ripetuto fino a convergenza."
     }
   },
   {
@@ -3566,8 +3566,8 @@
     ],
     "sourceText": "• Simpliﬁcation: apply everywhere possible a strictly reducing set of rules.",
     "explanations": {
-      "it-intermediate": "Il loro ottimizzatore può essere riassunto come l'alternanza ripetuta di due fasi:",
-      "it-expert": "Struttura algoritmica top-level: ciclo a 2 fasi, ripetuto fino a convergenza."
+      "it-intermediate": "• Semplificazione: applica ovunque possibile un insieme di regole strettamente riducenti (regole che, applicate, riducono sempre una qualche misura di dimensione).",
+      "it-expert": "Fase 1, Simplification: applicazione esaustiva di regole strettamente riducenti (termination garantita dalla riduzione monotona della misura ad ogni step)."
     }
   },
   {
@@ -3585,8 +3585,8 @@
     ],
     "sourceText": "• Commutation: using targeting and metric rewrites, apply reversible rules to (i) move Pauli operatorscloser to the inputs. (ii) move CNOT and TONC gates which act on the same two qubits closedtogether.",
     "explanations": {
-      "it-intermediate": "• Semplificazione: applica ovunque possibile un insieme di regole strettamente riducenti (regole che, applicate, riducono sempre una qualche misura di dimensione).",
-      "it-expert": "Fase 1, Simplification: applicazione esaustiva di regole strettamente riducenti (termination garantita dalla riduzione monotona della misura ad ogni step)."
+      "it-intermediate": "• Commutazione: usando riscritture con targeting e metrica, applica regole reversibili per (i) spostare gli operatori Pauli più vicino agli input, (ii) spostare i gate CNOT e TONC che agiscono sulla stessa coppia di qubit...",
+      "it-expert": "Fase 2, Commutation: rewrite REVERSIBILI (non strettamente riducenti) guidate da targeting/metric functions, con due obiettivi: (i) spingere i Pauli verso gli input, (ii) far incontrare CNOT/TONC sulla stessa coppia di qubit (per poi eventualmente cancellarli in fase 1)."
     }
   },
   {
@@ -3610,8 +3610,8 @@
     ],
     "sourceText": "In order to reduce the number of rules, there is an initial phase which replaces all Hadamard, Z(−π 2 ) andX(−π",
     "explanations": {
-      "it-intermediate": "• Commutazione: usando riscritture con targeting e metrica, applica regole reversibili per (i) spostare gli operatori Pauli più vicino agli input, (ii) spostare i gate CNOT e TONC che agiscono sulla stessa coppia di qubit...",
-      "it-expert": "Fase 2, Commutation: rewrite REVERSIBILI (non strettamente riducenti) guidate da targeting/metric functions, con due obiettivi: (i) spingere i Pauli verso gli input, (ii) far incontrare CNOT/TONC sulla stessa coppia di qubit (per poi eventualmente cancellarli in fase 1)."
+      "it-intermediate": "Per ridurre il numero di regole, c'è una fase iniziale che sostituisce tutti i gate Hadamard, Z(−π/2) e X(−π/2)...",
+      "it-expert": "Pre-processing: normalizzazione preliminare che sostituisce H, Z(−π/2), X(−π/2)..."
     }
   },
   {
@@ -3629,8 +3629,8 @@
     ],
     "sourceText": "2 ) gates with S, V and Paulis as appropriate. The single qubit gates are then “tidied up” by a ﬁnalpass.",
     "explanations": {
-      "it-intermediate": "Per ridurre il numero di regole, c'è una fase iniziale che sostituisce tutti i gate Hadamard, Z(−π/2) e X(−π/2)...",
-      "it-expert": "Pre-processing: normalizzazione preliminare che sostituisce H, Z(−π/2), X(−π/2)..."
+      "it-intermediate": "...con S, V e Pauli come appropriato. I gate a singolo qubit vengono poi 'riordinati' da un passaggio finale — questa normalizzazione preliminare riduce il numero di casi che le regole successive devono gestire esplicitamente.",
+      "it-expert": "...con S,V,Pauli (riduce lo spazio dei simboli da gestire); un passaggio finale 'tidy-up' riordina i gate 1-qubit residui — tutto ciò serve a mantenere il rule-set principale (Appendice D) piccolo e gestibile."
     }
   },
   {
@@ -3648,8 +3648,8 @@
     ],
     "sourceText": "The simpliﬁcation phase is straightforward, exploiting the different cases of 4.7 as the key rules. Thecommutation phase is more delicate, and makes heavy use of the path cover computation.",
     "explanations": {
-      "it-intermediate": "...con S, V e Pauli come appropriato. I gate a singolo qubit vengono poi 'riordinati' da un passaggio finale — questa normalizzazione preliminare riduce il numero di casi che le regole successive devono gestire esplicitamente.",
-      "it-expert": "...con S,V,Pauli (riduce lo spazio dei simboli da gestire); un passaggio finale 'tidy-up' riordina i gate 1-qubit residui — tutto ciò serve a mantenere il rule-set principale (Appendice D) piccolo e gestibile."
+      "it-intermediate": "La fase di semplificazione è diretta, sfruttando i vari casi della Proposizione 4.7 come regole chiave. La fase di commutazione è più delicata, e fa ampio uso del calcolo della copertura di cammini...",
+      "it-expert": "Implementazione: Simplification = direttamente i casi di Prop. 4.7 come rewrite rule; Commutation = più delicata, richiede ricalcolo ripetuto del path cover (Prop. 6.5) per determinare targeting corretto."
     }
   },
   {
@@ -3673,8 +3673,8 @@
     ],
     "sourceText": "For the single-qubit commutation rules we use targeting function which traverses each path startingfrom the input and applies the rule at the ﬁrst possible position in the graph. This works very well and,in concert with the simpliﬁcation rules, is guaranteed to reduce all single qubit Cliffords to one of theforms of C1. However this approach fails for rules where a Pauli must commute with a CNOT gate. TheREWRITE_TARGETED method allows the user to identify a single vertex in the rewrite rule with asingle vertex in the graph to be matched. However this is rarely sufﬁcient to uniquely determine theoverall match. For example, the following rule π→ππ",
     "explanations": {
-      "it-intermediate": "La fase di semplificazione è diretta, sfruttando i vari casi della Proposizione 4.7 come regole chiave. La fase di commutazione è più delicata, e fa ampio uso del calcolo della copertura di cammini...",
-      "it-expert": "Implementazione: Simplification = direttamente i casi di Prop. 4.7 come rewrite rule; Commutation = più delicata, richiede ricalcolo ripetuto del path cover (Prop. 6.5) per determinare targeting corretto."
+      "it-intermediate": "Per le regole di commutazione a singolo qubit si usa una funzione di targeting che percorre ciascun cammino a partire dall'input e applica la regola nella prima posizione possibile del grafo. Questo...",
+      "it-expert": "Dettaglio della targeting function per la commutation a 1-qubit: attraversamento path-by-path da input, applicazione alla prima posizione valida — strategia greedy locale, non necessariamente ottimale globalmente (limite discusso in §7)."
     }
   },
   {
@@ -3722,8 +3722,8 @@
     ],
     "sourceText": "can be applied in two different ways to the central diagram below: π π ←π→ π π",
     "explanations": {
-      "it-intermediate": "Per le regole di commutazione a singolo qubit si usa una funzione di targeting che percorre ciascun cammino a partire dall'input e applica la regola nella prima posizione possibile del grafo. Questo...",
-      "it-expert": "Dettaglio della targeting function per la commutation a 1-qubit: attraversamento path-by-path da input, applicazione alla prima posizione valida — strategia greedy locale, non necessariamente ottimale globalmente (limite discusso in §7)."
+      "it-intermediate": "Esempio: una certa regola può essere applicata in due modi diversi al diagramma centrale mostrato di seguito — un caso concreto di ambiguità nel matching che illustra perché serve un targeting esplicito.",
+      "it-expert": "Esempio concreto di match ambiguo (due applicazioni possibili della stessa regola sullo stesso diagramma) — illustra empiricamente il problema del non-determinismo del matcher menzionato in §5."
     }
   },
   {
@@ -3741,8 +3741,8 @@
     ],
     "sourceText": "Note that the righthand rewrite does not produce a circuit. The current implementation provides no directway for a simproc to specify that one matching should be preferred to another, even when it has the",
     "explanations": {
-      "it-intermediate": "Esempio: una certa regola può essere applicata in due modi diversi al diagramma centrale mostrato di seguito — un caso concreto di ambiguità nel matching che illustra perché serve un targeting esplicito.",
-      "it-expert": "Esempio concreto di match ambiguo (due applicazioni possibili della stessa regola sullo stesso diagramma) — illustra empiricamente il problema del non-determinismo del matcher menzionato in §5."
+      "it-intermediate": "Si noti che la riscrittura 'di destra' non produce un circuito. L'implementazione attuale non fornisce un modo diretto per un simproc di specificare che un match dovrebbe essere preferito a un altro...",
+      "it-expert": "Punto critico: una delle due riscritture possibili VIOLA la proprietà circuit-like (Def. 6.4) — ma Quantomatic non offre un modo nativo per un simproc di esprimere 'preferisci questo match' esplicitamente, limite implementativo discusso ulteriormente in §7 (workaround via targeting function ad hoc, come visto sopra)."
     }
   },
   {
@@ -3760,8 +3760,8 @@
     ],
     "sourceText": "widthdepthinput sizeoutput sizesize reductionproof stepstime ±σ12010.82.40.2619.67 ± 322030.29.00.3078.91021 ± 68032044.214.70.321483144 ± 218952078.522.60.282396679 ± 3091",
     "explanations": {
-      "it-intermediate": "Si noti che la riscrittura 'di destra' non produce un circuito. L'implementazione attuale non fornisce un modo diretto per un simproc di specificare che un match dovrebbe essere preferito a un altro...",
-      "it-expert": "Punto critico: una delle due riscritture possibili VIOLA la proprietà circuit-like (Def. 6.4) — ma Quantomatic non offre un modo nativo per un simproc di esprimere 'preferisci questo match' esplicitamente, limite implementativo discusso ulteriormente in §7 (workaround via targeting function ad hoc, come visto sopra)."
+      "it-intermediate": "Tabella 1 (dati): risultati su circuiti generati casualmente, con colonne per larghezza, profondità, dimensione input/output, fattore di riduzione della dimensione, numero di passi di dimostrazione e tempo (media ± deviazione standard) — la tabella mostra risultati per larghezza crescente (1,2,3,4,5 qubit).",
+      "it-expert": "Table 1: dati grezzi width/depth/input-size/output-size/size-reduction/proof-steps/time(±σ) per larghezza crescente — la size reduction (~0.26-0.32) resta relativamente stabile al crescere di N, mentre tempo/proof-steps crescono rapidamente (osservazione ripresa in §7)."
     }
   },
   {
@@ -3779,8 +3779,8 @@
     ],
     "sourceText": "Table 1: Summary of results on randomly generated circuits. Random circuits were generated with theprogram randomCliffs.py which is available from the project repository. Tests were performed on abasic desktop PC.",
     "explanations": {
-      "it-intermediate": "Tabella 1 (dati): risultati su circuiti generati casualmente, con colonne per larghezza, profondità, dimensione input/output, fattore di riduzione della dimensione, numero di passi di dimostrazione e tempo (media ± deviazione standard) — la tabella mostra risultati per larghezza crescente (1,2,3,4,5 qubit).",
-      "it-expert": "Table 1: dati grezzi width/depth/input-size/output-size/size-reduction/proof-steps/time(±σ) per larghezza crescente — la size reduction (~0.26-0.32) resta relativamente stabile al crescere di N, mentre tempo/proof-steps crescono rapidamente (osservazione ripresa in §7)."
+      "it-intermediate": "Didascalia Tabella 1: riassunto dei risultati su circuiti generati casualmente. I circuiti casuali sono stati generati col programma randomCliffs.py, disponibile nel repository del progetto. I test sono stati eseguiti...",
+      "it-expert": "Caption Table 1: metodologia — circuiti random via randomCliffs.py (script pubblico nel repo), dettagli dell'ambiente di test a seguire."
     }
   },
   {
@@ -3798,8 +3798,8 @@
     ],
     "sourceText": "necessary information. For this reason, we have deﬁned a metric which favours graphs where the Paulisare nearer to the inputs, and maximally penalises graphs with vertices which are not in any path.",
     "explanations": {
-      "it-intermediate": "Didascalia Tabella 1: riassunto dei risultati su circuiti generati casualmente. I circuiti casuali sono stati generati col programma randomCliffs.py, disponibile nel repository del progetto. I test sono stati eseguiti...",
-      "it-expert": "Caption Table 1: metodologia — circuiti random via randomCliffs.py (script pubblico nel repo), dettagli dell'ambiente di test a seguire."
+      "it-intermediate": "...informazione necessaria. Per questa ragione, si è definita una metrica che favorisce i grafi dove i Pauli sono più vicini agli input, e penalizza al massimo i grafi con vertici che sono...",
+      "it-expert": "Design della metric function usata in REWRITE_METRIC: favorisce Pauli-vicino-agli-input, penalizza pesantemente configurazioni indesiderate (dettaglio del criterio specifico, presumibilmente vertici 'fuori posto' rispetto alla forma standard target)."
     }
   },
   {
@@ -3817,8 +3817,8 @@
     ],
     "sourceText": "The approach sketched here is very conservative: the optimiser only performs rewrites which result indiagrams which meet the (also very conservative) deﬁnition of circuit, even in cases where that diagramcould be later rewritten to circuit.",
     "explanations": {
-      "it-intermediate": "...informazione necessaria. Per questa ragione, si è definita una metrica che favorisce i grafi dove i Pauli sono più vicini agli input, e penalizza al massimo i grafi con vertici che sono...",
-      "it-expert": "Design della metric function usata in REWRITE_METRIC: favorisce Pauli-vicino-agli-input, penalizza pesantemente configurazioni indesiderate (dettaglio del criterio specifico, presumibilmente vertici 'fuori posto' rispetto alla forma standard target)."
+      "it-intermediate": "L'approccio è volutamente prudente: l'ottimizzatore applica solo riscritture che producono diagrammi che rispettano la definizione (anch'essa prudente) di circuito, anche quando un diagramma \"non circuito\" potrebbe poi essere riportato a un circuito più piccolo. Si rinuncia quindi a qualche ottimizzazione in cambio della garanzia di avere sempre un circuito valido.",
+      "it-expert": "Scelta conservativa: solo riscritture che preservano circuit-like (Def. 6.4, a sua volta conservativa), anche dove un passaggio per diagrammi non-circuito porterebbe a un circuito migliore. Si scambia ottimalità potenziale con estraibilità garantita a ogni passo."
     }
   },
   {
@@ -3836,8 +3836,8 @@
     ],
     "sourceText": "Since we have formalised circuits in the ZX-calculus, our measure of size is the number of non-trivialvertices in the graph. This quantity is the gate count over the generating set S, Z, V, X, and CNOT, althougheach CNOT contributes 2 to the measure. A less obvious consequence of the ZX-calculus formalism is thatthe swap gate is not represented at all, and CNOT gates may act on any qubits without penalty. This mayor may not be realistic for a given quantum architecture, but it is a fundamental feature of the ZX-calculus,and removing it would require a string diagrammatic formalism that takes into account the planarity ofdiagrams. This would take us far beyond the scope of this work.",
     "explanations": {
-      "it-intermediate": "Intestazione di sezione: '7 Sintesi dei risultati e discussione'.",
-      "it-expert": "Sezione 7, Summary of results and discussion."
+      "it-intermediate": "Poiché si sono formalizzati i circuiti nello ZX-calculus, la misura di dimensione usata è il numero di vertici non banali nel grafo. Questa quantità è il conteggio dei gate rispetto all'insieme generatore...",
+      "it-expert": "Definizione della metrica di 'size' riportata in Table 1: #vertici non banali nel grafo ZX = gate-count rispetto ai generatori {S,V,H,CNOT} — misura naturale dato il formalismo scelto."
     }
   },
   {
@@ -3855,8 +3855,8 @@
     ],
     "sourceText": "Our optimiser reduces all one- and two-qubit circuits to elements of C1 and C2 respectively; however inlarger circuits it does not always ﬁnd a minimal form. Notably our ruleset does not include any reductionsfor circuits of three or more qubits, so there are relatively simple CNOT circuits which cannot be reduced.Further, due to the extreme conservativity of our metric and targeting procedures, the optimiser doesnot always ﬁnd valid rewrites among the ruleset. However, on a test set of randomly generated Cliffordcircuits it typically produces signiﬁcant reductions of circuit size; see Table 1.",
     "explanations": {
-      "it-intermediate": "Poiché si sono formalizzati i circuiti nello ZX-calculus, la misura di dimensione usata è il numero di vertici non banali nel grafo. Questa quantità è il conteggio dei gate rispetto all'insieme generatore...",
-      "it-expert": "Definizione della metrica di 'size' riportata in Table 1: #vertici non banali nel grafo ZX = gate-count rispetto ai generatori {S,V,H,CNOT} — misura naturale dato il formalismo scelto."
+      "it-intermediate": "Il loro ottimizzatore riduce tutti i circuiti a 1 e 2 qubit a elementi di C1 e C2 rispettivamente; tuttavia in circuiti più grandi non trova sempre una forma minimale. In particolare il loro rule-set non...",
+      "it-expert": "Risultato onesto sui limiti: ottimalità GARANTITA solo per N≤2 (dove C1/C2 sono forme normali complete); per N≥3 il rule-set (euristico, greedy) non garantisce di trovare il minimo globale."
     }
   },
   {
@@ -3874,8 +3874,8 @@
     ],
     "sourceText": "There is striking increase in compute time per proof step as the width of the circuit increases. This canbe attributed to the increased number of CNOT gates: as the average vertex degree increases, the numberof candidate matches including a given vertex increases geometrically. Since many of these matches willbe invalid as circuit rewrites, a lot of time is spent searching for matches which are then rejected. Further,wider circuits require two-qubit commutation rules, which are metric-driven rather than targeted, andhence impose a much greater computational load.",
     "explanations": {
-      "it-intermediate": "Il loro ottimizzatore riduce tutti i circuiti a 1 e 2 qubit a elementi di C1 e C2 rispettivamente; tuttavia in circuiti più grandi non trova sempre una forma minimale. In particolare il loro rule-set non...",
-      "it-expert": "Risultato onesto sui limiti: ottimalità GARANTITA solo per N≤2 (dove C1/C2 sono forme normali complete); per N≥3 il rule-set (euristico, greedy) non garantisce di trovare il minimo globale."
+      "it-intermediate": "C'è un notevole aumento del tempo di calcolo per passo di dimostrazione al crescere della larghezza del circuito. Questo può essere attribuito all'aumento del numero di gate CNOT: poiché il grado medio dei vertici...",
+      "it-expert": "Analisi del bottleneck di performance: crescita del tempo/step con la larghezza, attribuita all'aumento di CNOT (che aumentano il grado medio dei vertici, rendendo il pattern-matching locale più costoso su grafi più densi)."
     }
   },
   {
@@ -3893,8 +3893,8 @@
     ],
     "sourceText": "Indeed, the main difﬁculty we have faced is taking control of the matching engine. Targeted rewritingcan select good rewrite positions with high efﬁciency but does not discriminate between good and badrewrites at that position. Metric-driven rewrites can perform such discrimination but at the cost of losingcontrol over the search. Combining these features in a single combinator would greatly ease this difﬁculty.",
     "explanations": {
-      "it-intermediate": "C'è un notevole aumento del tempo di calcolo per passo di dimostrazione al crescere della larghezza del circuito. Questo può essere attribuito all'aumento del numero di gate CNOT: poiché il grado medio dei vertici...",
-      "it-expert": "Analisi del bottleneck di performance: crescita del tempo/step con la larghezza, attribuita all'aumento di CNOT (che aumentano il grado medio dei vertici, rendendo il pattern-matching locale più costoso su grafi più densi)."
+      "it-intermediate": "In effetti, la difficoltà principale incontrata è stata prendere il controllo del motore di matching. La riscrittura mirata (targeted) può selezionare buone posizioni di riscrittura con alta efficienza ma non discrimina...",
+      "it-expert": "Ammissione onesta di limite implementativo: il matching engine di Quantomatic è il vero collo di bottiglia; il targeting risolve 'dove' ma non 'quale tra match equivalenti', causando overhead evitabile."
     }
   },
   {
@@ -3912,8 +3912,8 @@
     ],
     "sourceText": "Further, the targeting and metric functors are required to be stateless; this imposes another avoidableperformance cost, as the path cover of the graph must be recomputed on every invocation, regardless ofwhether a rewrite was performed. Given the poor performance of interpreted Python compared to theScala core, signiﬁcant speed-up could be achieved by providing a range of built-in metrics for use in",
     "explanations": {
-      "it-intermediate": "In effetti, la difficoltà principale incontrata è stata prendere il controllo del motore di matching. La riscrittura mirata (targeted) può selezionare buone posizioni di riscrittura con alta efficienza ma non discrimina...",
-      "it-expert": "Ammissione onesta di limite implementativo: il matching engine di Quantomatic è il vero collo di bottiglia; il targeting risolve 'dove' ma non 'quale tra match equivalenti', causando overhead evitabile."
+      "it-intermediate": "Un altro costo evitabile: le funzioni di targeting e di metrica non possono conservare informazioni tra una chiamata e l'altra, quindi la struttura dei qubit del circuito (la copertura di cammini) va ricalcolata ogni volta, anche se non è cambiato nulla. Inoltre sono scritte in Python interpretato, molto più lento del nucleo in Scala: fornire metriche già pronte nel nucleo darebbe una forte accelerazione.",
+      "it-expert": "I functor di targeting e metrica sono stateless, quindi la path cover va ricalcolata a ogni invocazione anche senza rewrite; essendo in Python interpretato contro un core Scala, metriche built-in darebbero uno speed-up significativo."
     }
   },
   {
@@ -3931,8 +3931,8 @@
     ],
     "sourceText": "Since Quantomatic was designed for interactive use, its simproc environment is currently quite limited. Inrepurposing the system to operate as a fully automated circuit optimisation tool, we have run up againstits current limits, and our frequent resort to brute force and perversity is a reﬂection of these limitations,rather than the authors’ mental states4. These limitations are not fundamental, and could be removed byminor extensions of the simproc API. Although there is much scope for improvement in our optimiser, wehave demonstrated that the Quantomatic system can serve as the basis for an effective circuit optimisationtool.",
     "explanations": {
-      "it-intermediate": "...simproc. Intestazione di sezione: '8 Conclusioni e lavori futuri'.",
-      "it-expert": "Chiusura §7 + Sezione 8, Conclusions and Future Work."
+      "it-intermediate": "Conclusioni: Quantomatic è nato per l'uso interattivo, e il suo ambiente per le procedure automatiche (simproc) è ancora limitato; molte soluzioni \"di forza bruta\" del lavoro derivano da questo, non da limiti del metodo. Bastano piccole estensioni dell'interfaccia dei simproc per superarli. Pur con ampi margini di miglioramento, il lavoro mostra che Quantomatic può fare da base per un vero ottimizzatore di circuiti.",
+      "it-expert": "Conclusioni: i limiti incontrati (matching non controllabile, functor stateless, brute force) sono dell'API dei simproc, pensata per l'uso interattivo, non del metodo, e risolvibili con estensioni minori. Proof-of-concept: un proof assistant ZX è una base praticabile per l'ottimizzazione automatica di circuiti."
     }
   },
   {
@@ -3950,8 +3950,8 @@
     ],
     "sourceText": "All the work described in this paper is available as a downloadable quantomatic project from the followingURL.",
     "explanations": {
-      "it-intermediate": "Intestazione: 'Appendice A — Risorse elettroniche'.",
-      "it-expert": "Appendix A, Electronic Resources."
+      "it-intermediate": "Tutto il lavoro descritto in questo paper è disponibile come progetto Quantomatic scaricabile dal seguente URL.",
+      "it-expert": "Disponibilità: intero progetto Quantomatic scaricabile (proof + rule-set) — riproducibilità completa."
     }
   },
   {
@@ -3975,8 +3975,8 @@
     ],
     "sourceText": "https://gitlab.cis.strath.ac.uk/kwb13215/Clifford-Quanto/ Please download it and play around!",
     "explanations": {
-      "it-intermediate": "Tutto il lavoro descritto in questo paper è disponibile come progetto Quantomatic scaricabile dal seguente URL.",
-      "it-expert": "Disponibilità: intero progetto Quantomatic scaricabile (proof + rule-set) — riproducibilità completa."
+      "it-intermediate": "L'indirizzo del repository GitLab con il progetto Quantomatic completo (regole, dimostrazioni, procedure), con l'invito a scaricarlo e sperimentare.",
+      "it-expert": "URL del progetto Quantomatic (rule-set, prove, simproc) per la riproduzione."
     }
   },
   {
@@ -3994,8 +3994,8 @@
     ],
     "sourceText": "We have already seen the ZX-calculus representation of CNOT in Section 4. Note that the upper (z) vertex",
     "explanations": {
-      "it-intermediate": "Intestazione: 'Appendice B — Una digressione su CNOT e SWAP' — un approfondimento tecnico su come rappresentare lo scambio di due qubit usando solo CNOT.",
-      "it-expert": "Appendix B, An aside on CNOT and SWAP."
+      "it-intermediate": "Si è già vista la rappresentazione ZX-calculus del CNOT nella Sezione 4. Si noti che il vertice superiore (z)...",
+      "it-expert": "Richiamo alla rappresentazione ZX standard del CNOT (Z-spider di controllo, X-spider target) già vista in §4."
     }
   },
   {
@@ -4019,8 +4019,8 @@
     ],
     "sourceText": "corresponds to the control qubit, while the lower (x) is the target qubit. We could also consider the CNOTwith control and target reversed, which we denote TONC. TONC:==",
     "explanations": {
-      "it-intermediate": "Si è già vista la rappresentazione ZX-calculus del CNOT nella Sezione 4. Si noti che il vertice superiore (z)...",
-      "it-expert": "Richiamo alla rappresentazione ZX standard del CNOT (Z-spider di controllo, X-spider target) già vista in §4."
+      "it-intermediate": "...corrisponde al qubit di controllo, mentre quello inferiore (x) è il qubit target. Si potrebbe anche considerare il CNOT con controllo e target invertiti, che si denota TONC.",
+      "it-expert": "Def. TONC: CNOT con ruoli controllo/target invertiti (notazione ad hoc del paper, 'CNOT' al contrario)."
     }
   },
   {
@@ -4044,8 +4044,8 @@
     ],
     "sourceText": "It is a well known fact that the swap itself can be represented as CNOT ◦TONC ◦CNOT, and indeed this isprovable in the ZX-calculus. ∗↔∗↔∗↔∗↔(2)",
     "explanations": {
-      "it-intermediate": "...corrisponde al qubit di controllo, mentre quello inferiore (x) è il qubit target. Si potrebbe anche considerare il CNOT con controllo e target invertiti, che si denota TONC.",
-      "it-expert": "Def. TONC: CNOT con ruoli controllo/target invertiti (notazione ad hoc del paper, 'CNOT' al contrario)."
+      "it-intermediate": "È un fatto ben noto che lo scambio (swap) stesso può essere rappresentato come CNOT∘TONC∘CNOT, e questo è effettivamente dimostrabile nello ZX-calculus.",
+      "it-expert": "Fatto standard (teoria dei circuiti): SWAP = CNOT∘TONC∘CNOT — qui dimostrato formalmente via riscrittura ZX (Eq. 2)."
     }
   },
   {
@@ -4063,8 +4063,8 @@
     ],
     "sourceText": "Note that the bialgebra rule gives the ﬁrst equation, and the Hopf rule the second: we cannot rely purelyon the group structure.",
     "explanations": {
-      "it-intermediate": "È un fatto ben noto che lo scambio (swap) stesso può essere rappresentato come CNOT∘TONC∘CNOT, e questo è effettivamente dimostrabile nello ZX-calculus.",
-      "it-expert": "Fatto standard (teoria dei circuiti): SWAP = CNOT∘TONC∘CNOT — qui dimostrato formalmente via riscrittura ZX (Eq. 2)."
+      "it-intermediate": "Si noti che la regola bialgebra dà la prima equazione, e la regola Hopf la seconda: non ci si può basare puramente sulla struttura di gruppo per questa dimostrazione.",
+      "it-expert": "Dettaglio della prova: bialgebra rule per il primo step, Hopf rule per il secondo — nota metodologica: la dimostrazione richiede le regole diagrammatiche specifiche, non basta l'argomento algebrico astratto (gruppo)."
     }
   },
   {
@@ -4226,8 +4226,8 @@
     ],
     "sourceText": "Alternatively, by the colour duality principle we can express TONC in terms of CNOT and H: −− + + H H ∗↔ ∗↔ (3) −− + + H H Combining (3) and (2) we obtain: Lemma B.1. − + + + π ∗↔ − + + + π",
     "explanations": {
-      "it-intermediate": "Si noti che la regola bialgebra dà la prima equazione, e la regola Hopf la seconda: non ci si può basare puramente sulla struttura di gruppo per questa dimostrazione.",
-      "it-expert": "Dettaglio della prova: bialgebra rule per il primo step, Hopf rule per il secondo — nota metodologica: la dimostrazione richiede le regole diagrammatiche specifiche, non basta l'argomento algebrico astratto (gruppo)."
+      "it-intermediate": "In alternativa, per il principio di dualità di colore si può esprimere TONC in termini di CNOT e H (Eq. 3). Combinando (3) e (2) si ottiene il Lemma B.1 (un'identità esplicita tra piccoli diagrammi).",
+      "it-expert": "Via alternativa: color duality (Z↔X sotto H) esprime TONC=H⊗H∘CNOT∘H⊗H (Eq. 3); combinando con Eq. 2 si ottiene Lemma B.1 — identità chiave usata nel blocco successivo."
     }
   },
   {
@@ -4245,8 +4245,8 @@
     ],
     "sourceText": "Lemma B.1 indicates that we can dispense with the swap as well as TONC and work purely with CNOT.Since we have formalised the system as a PROP it is more convenient to treat σ as one of the generatorsof C2.",
     "explanations": {
-      "it-intermediate": "In alternativa, per il principio di dualità di colore si può esprimere TONC in termini di CNOT e H (Eq. 3). Combinando (3) e (2) si ottiene il Lemma B.1 (un'identità esplicita tra piccoli diagrammi).",
-      "it-expert": "Via alternativa: color duality (Z↔X sotto H) esprime TONC=H⊗H∘CNOT∘H⊗H (Eq. 3); combinando con Eq. 2 si ottiene Lemma B.1 — identità chiave usata nel blocco successivo."
+      "it-intermediate": "Il Lemma B.1 mostra che non servono né lo SWAP né la TONC come porte a sé: basta la CNOT. Tuttavia, poiché il sistema è formalizzato come PROP (dove lo scambio di fili è già incluso), conviene trattare lo scambio σ come uno dei generatori dei Clifford a due qubit.",
+      "it-expert": "Lemma B.1: SWAP e TONC sono eliminabili a favore della sola CNOT; nella formalizzazione come PROP è però più comodo tenere σ tra i generatori di C₂, visto che è strutturale."
     }
   },
   {
@@ -4372,8 +4372,8 @@
     ],
     "sourceText": "Lemma 3.5The following rule is admissible: −π/2 −π/2 π/2 π/2 α + nπ −π/2 −π/2 π/2 π/2 α ∗↔ 2 ...... ...... −π/2 −π/2 π/2 π/2",
     "explanations": {
-      "it-intermediate": "Intestazione: 'Appendice C — Dimostrazioni omesse dall'articolo principale' — qui vengono fornite le prove complete rimandate nel testo (in particolare del Lemma 3.5 e delle equazioni (i)-(iv) della Proposizione 4.7).",
-      "it-expert": "Appendix C, Proofs omitted from main article — dimostrazioni dettagliate rimandate (Lemma 3.5, Prop. 4.7 equazioni i-iv)."
+      "it-intermediate": "Lemma 3.5 (ripetizione): la regola di cambio colore ammissibile, con il diagramma esplicito che la illustra — vedi la spiegazione data quando il lemma è stato introdotto per la prima volta nella Sezione 3.",
+      "it-expert": "Ripetizione dell'enunciato del Lemma 3.5 (color-change rule) prima della sua dimostrazione completa."
     }
   },
   {
@@ -4391,8 +4391,8 @@
     ],
     "sourceText": "where n is the number of red vertices in the left hand side diagram.",
     "explanations": {
-      "it-intermediate": "Lemma 3.5 (ripetizione): la regola di cambio colore ammissibile, con il diagramma esplicito che la illustra — vedi la spiegazione data quando il lemma è stato introdotto per la prima volta nella Sezione 3.",
-      "it-expert": "Ripetizione dell'enunciato del Lemma 3.5 (color-change rule) prima della sua dimostrazione completa."
+      "it-intermediate": "(Chiarimento del parametro n del Lemma 3.5, come visto nella Sezione 3: il numero di vertici rossi nel diagramma di sinistra.)",
+      "it-expert": "Ripetizione del parametro n (conteggio vertici rossi)."
     }
   },
   {
@@ -4482,8 +4482,8 @@
     ],
     "sourceText": "Proof. Consider a single red spider. By the H-rules, and the spider we may reason as follows: ∗→α...... ∗→α...... α...... ++ + ++ + ∗→α +nπ/2......+ ++ + ++ ∗→α......+++ ++ + ++ ++ +++ + + +++",
     "explanations": {
-      "it-intermediate": "(Chiarimento del parametro n del Lemma 3.5, come visto nella Sezione 3: il numero di vertici rossi nel diagramma di sinistra.)",
-      "it-expert": "Ripetizione del parametro n (conteggio vertici rossi)."
+      "it-intermediate": "Dimostrazione del Lemma 3.5: si consideri un singolo spider rosso. Per le regole H, e lo spider, si può ragionare come segue (catena di riscritture esplicite che trasformano gradualmente lo spider rosso in uno verde con fase shiftata di nπ/2, passando per una rappresentazione intermedia con box gialli/H).",
+      "it-expert": "Proof completa del Lemma 3.5: catena di riscritture esplicite — single red spider → (via H-rules) forma intermedia con H-box → (via color-change locale ripetuto) spider verde con fase shiftata — dimostrazione 'per costruzione', generalizzata poi a n spider rossi applicando lo stesso argomento a ogni gamba."
     }
   },
   {
@@ -4501,8 +4501,8 @@
     ],
     "sourceText": "From which the result follows by applying z−to every leg.",
     "explanations": {
-      "it-intermediate": "Dimostrazione del Lemma 3.5: si consideri un singolo spider rosso. Per le regole H, e lo spider, si può ragionare come segue (catena di riscritture esplicite che trasformano gradualmente lo spider rosso in uno verde con fase shiftata di nπ/2, passando per una rappresentazione intermedia con box gialli/H).",
-      "it-expert": "Proof completa del Lemma 3.5: catena di riscritture esplicite — single red spider → (via H-rules) forma intermedia con H-box → (via color-change locale ripetuto) spider verde con fase shiftata — dimostrazione 'per costruzione', generalizzata poi a n spider rossi applicando lo stesso argomento a ogni gamba."
+      "it-intermediate": "Da cui il risultato segue applicando z− (il generatore Pauli-Z con fase 3π/2) a ogni gamba (chiude la dimostrazione del Lemma 3.5).",
+      "it-expert": "Chiusura della prova: applicazione di z− a ogni leg per ottenere la forma finale enunciata — fine della dimostrazione del Lemma 3.5."
     }
   },
   {
@@ -4520,8 +4520,8 @@
     ],
     "sourceText": "Proposition 4.7Let k ∈C2 and let g be a generator of C2 as a ZX-calculus term; then g ◦k ∗↔k′ forsome k′ ∈C2.",
     "explanations": {
-      "it-intermediate": "Da cui il risultato segue applicando z− (il generatore Pauli-Z con fase 3π/2) a ogni gamba (chiude la dimostrazione del Lemma 3.5).",
-      "it-expert": "Chiusura della prova: applicazione di z− a ogni leg per ottenere la forma finale enunciata — fine della dimostrazione del Lemma 3.5."
+      "it-intermediate": "Proposizione 4.7 (ripetizione dell'enunciato, vedi Sezione 4): qui si riempiono i dettagli mancanti dietro le equazioni (i)-(iv) che comparivano nella dimostrazione originale.",
+      "it-expert": "Ripetizione enunciato Prop. 4.7 + annuncio: qui seguono le 4 dimostrazioni dettagliate (i)-(iv) solo accennate nel corpo principale."
     }
   },
   {
@@ -4797,8 +4797,8 @@
     ],
     "sourceText": "Here we ﬁll in the missing details behind the equations (i) – (iv) that appeared in the proof. Equation (i): −+ + +∗↔ + + + Proof. + + − − + +∗↔ −+ ∗↔+ ∗↔ + + + − + + − + + + + + + − + + −π−− +++− ++ ∗↔ ∗↔ ∗↔ + + + + − + + + + − −+ + + +∗↔ + + −+π− ∗↔ ∗↔ ∈C2 + +",
     "explanations": {
-      "it-intermediate": "Proposizione 4.7 (ripetizione dell'enunciato, vedi Sezione 4): qui si riempiono i dettagli mancanti dietro le equazioni (i)-(iv) che comparivano nella dimostrazione originale.",
-      "it-expert": "Ripetizione enunciato Prop. 4.7 + annuncio: qui seguono le 4 dimostrazioni dettagliate (i)-(iv) solo accennate nel corpo principale."
+      "it-intermediate": "Dimostrazione dell'Equazione (i): catena esplicita di riscritture (fusione di spider, applicazione della regola bialgebra) che stabilisce l'identità usata nel case 1 della dimostrazione di Prop. 4.7.",
+      "it-expert": "Proof Eq. (i): catena di riscritture (fusione spider + bialgebra) — il dettaglio tecnico del case 1 (g=CNOT, k=(a⊗b)∘CNOT) solo accennato nel corpo principale."
     }
   },
   {
@@ -5332,8 +5332,8 @@
     ],
     "sourceText": "Equation (ii): − + + + ∗↔ − + + + Proof. + + + π π π π ∗↔ ∗↔ + + + ππ π π π − − − + + + + + π π π ∗↔ ∗↔ − − − + + + + + π π π − − + + + + ∗↔ ∗↔ − − + + + + − − + + + + ∗↔ ∗↔ ∈C2 − − + + + + Note that we have used both Equations (2) and (3) in the heart of this proof. Equation (iii): a b ∗↔ a b",
     "explanations": {
-      "it-intermediate": "Dimostrazione dell'Equazione (i): catena esplicita di riscritture (fusione di spider, applicazione della regola bialgebra) che stabilisce l'identità usata nel case 1 della dimostrazione di Prop. 4.7.",
-      "it-expert": "Proof Eq. (i): catena di riscritture (fusione spider + bialgebra) — il dettaglio tecnico del case 1 (g=CNOT, k=(a⊗b)∘CNOT) solo accennato nel corpo principale."
+      "it-intermediate": "Dimostrazione dell'Equazione (ii): un'altra catena esplicita di riscritture con vertici a fase π, che stabilisce l'identità usata in un altro dei nove sotto-casi della Proposizione 4.7.",
+      "it-expert": "Proof Eq. (ii): ulteriore catena di riscritture per un secondo sotto-caso di Prop. 4.7."
     }
   },
   {
@@ -5387,8 +5387,8 @@
     ],
     "sourceText": "Proof. This is a straightforward application of the “topology” principle; no rules are required, they areequal in the sense of Deﬁnition 3.1. Equation (iv): −− + + ∗↔ −− + +",
     "explanations": {
-      "it-intermediate": "Dimostrazione dell'Equazione (ii): un'altra catena esplicita di riscritture con vertici a fase π, che stabilisce l'identità usata in un altro dei nove sotto-casi della Proposizione 4.7.",
-      "it-expert": "Proof Eq. (ii): ulteriore catena di riscritture per un secondo sotto-caso di Prop. 4.7."
+      "it-intermediate": "Dimostrazione dell'Equazione (iii): questa è una semplice applicazione del principio di 'topologia' — nessuna regola è richiesta, i due lati sono uguali nel senso della Definizione 3.1 (cioè sono letteralmente lo stesso grafo, solo disegnato diversamente — un caso di 'uguaglianza per topologia', non per riscrittura).",
+      "it-expert": "Proof Eq. (iii): caso banale — uguaglianza per pura topologia del grafo (isomorfismo diretto, Def. 3.1), nessuna rewrite rule necessaria — illustra la distinzione tra uguaglianza sintattica '=' e derivabilità '∗↔' introdotta a p0049."
     }
   },
   {
@@ -5406,8 +5406,8 @@
     ],
     "sourceText": "Proof. This is simply Equation (3) from the preceding section.",
     "explanations": {
-      "it-intermediate": "Dimostrazione dell'Equazione (iii): questa è una semplice applicazione del principio di 'topologia' — nessuna regola è richiesta, i due lati sono uguali nel senso della Definizione 3.1 (cioè sono letteralmente lo stesso grafo, solo disegnato diversamente — un caso di 'uguaglianza per topologia', non per riscrittura).",
-      "it-expert": "Proof Eq. (iii): caso banale — uguaglianza per pura topologia del grafo (isomorfismo diretto, Def. 3.1), nessuna rewrite rule necessaria — illustra la distinzione tra uguaglianza sintattica '=' e derivabilità '∗↔' introdotta a p0049."
+      "it-intermediate": "Dimostrazione dell'Equazione (iv): è semplicemente l'Equazione (3) della sezione precedente, cioè la TONC scritta tramite CNOT e Hadamard.",
+      "it-expert": "Proof Eq. (iv): coincide con l'Eq. (3) dell'App. B (TONC = H⊗H∘CNOT∘H⊗H via colour duality)."
     }
   },
   {
@@ -5425,8 +5425,8 @@
     ],
     "sourceText": "The following derived rules are the core of the circuit transformations in the main proof development.The rules themselves are found in derived-rules/ in the Quantomatic project, and their derivations arefound in derived-rules-proofs/.",
     "explanations": {
-      "it-intermediate": "Intestazione: 'Appendice D — Regole principali' — qui viene presentato il rule-set completo effettivamente implementato in Quantomatic per l'ottimizzatore.",
-      "it-expert": "Appendix D, Main Rules — il rule-set COMPLETO effettivamente codificato nell'implementazione, culmine pratico di tutta la teoria sviluppata."
+      "it-intermediate": "Le seguenti regole derivate sono il nucleo delle trasformazioni circuitali nello sviluppo principale della dimostrazione. Le regole stesse si trovano nella cartella derived-rules/ nel progetto Quantomatic, disponibile...",
+      "it-expert": "Introduzione: le regole qui elencate = le stesse effettivamente presenti in derived-rules/ nel repository — corrispondenza diretta teoria↔codice."
     }
   },
   {
@@ -5444,8 +5444,8 @@
     ],
     "sourceText": "In all diagrams inputs are to the left, outputs to the right.",
     "explanations": {
-      "it-intermediate": "Le seguenti regole derivate sono il nucleo delle trasformazioni circuitali nello sviluppo principale della dimostrazione. Le regole stesse si trovano nella cartella derived-rules/ nel progetto Quantomatic, disponibile...",
-      "it-expert": "Introduzione: le regole qui elencate = le stesse effettivamente presenti in derived-rules/ nel repository — corrispondenza diretta teoria↔codice."
+      "it-intermediate": "Convenzione per leggere i diagrammi delle regole: ingressi a sinistra, uscite a destra.",
+      "it-expert": "Convenzione: input a sinistra, output a destra."
     }
   },
   {
@@ -5481,8 +5481,8 @@
     ],
     "sourceText": "These rules remove all minus and H nodes from the graph. −→π + −→π + H→++ +",
     "explanations": {
-      "it-intermediate": "Intestazione: 'D.1 Init' — le regole della fase di inizializzazione.",
-      "it-expert": "Appendix D.1, Init rules."
+      "it-intermediate": "Regole della fase iniziale (Init): eliminano dal grafo tutti i nodi con angolo −π/2 e tutti i nodi Hadamard, riscrivendoli con nodi π e +π/2. Così il resto dell'ottimizzatore deve gestire meno tipi di nodo e quindi meno regole.",
+      "it-expert": "D.1 Init: − ↦ π·+ e H ↦ + + + (Euler), così i diagrammi successivi contengono solo fasi +, π e i Pauli, riducendo la dimensione del rule-set."
     }
   },
   {
@@ -5548,8 +5548,8 @@
     ],
     "sourceText": "These are strictly reducing so can always be applied. π π→ ππ π→π + +→π π π→ ππ π→π +++ +→+π + + +→π →",
     "explanations": {
-      "it-intermediate": "Intestazione: 'D.2 Regole sempre applicabili' — regole che si possono applicare in ogni momento senza rischio, perché strettamente riducenti.",
-      "it-expert": "Appendix D.2, Always Rules."
+      "it-intermediate": "Regole \"Always\": ognuna rende il diagramma strettamente più piccolo, quindi si possono applicare in qualsiasi momento senza rischio di cicli infiniti. Sono il cuore della fase di semplificazione (fusione di nodi, eliminazione di coppie che si annullano).",
+      "it-expert": "D.2 Always: regole strettamente riducenti (fusioni di fasi, cancellazioni π·π, +++ → π+ ecc.), quindi terminanti e applicabili ovunque; costituiscono la fase di Simplification."
     }
   },
   {
@@ -5591,8 +5591,8 @@
     ],
     "sourceText": "Each of these is managed by a custom simproc which searches for a good place to apply them. +π→π +π π+→π +π πx→πx πx→πx",
     "explanations": {
-      "it-intermediate": "Intestazione: 'D.4 Regole di commutazione dei Pauli' — le regole della fase di 'Commutazione' descritta nella Sezione 6, che spostano gli operatori Pauli vicino agli input.",
-      "it-expert": "Appendix D.4, Pauli Commutation rules."
+      "it-intermediate": "Ciascuna di queste è gestita da un simproc su misura che cerca un buon punto in cui applicarla — implementazione concreta della fase di Commutazione descritta nella Sezione 6.",
+      "it-expert": "Pauli Commutation rules gestite da simproc dedicati (custom targeting) — implementazione diretta della Commutation phase (§6), con targeting function come descritto a p0142."
     }
   },
   {
@@ -5634,8 +5634,8 @@
     ],
     "sourceText": "These rules are used by the Pauli Commutation proc, which is based on REDUCE_METRIC. x→x π→ππ π→ππ x→x",
     "explanations": {
-      "it-intermediate": "Ciascuna di queste è gestita da un simproc su misura che cerca un buon punto in cui applicarla — implementazione concreta della fase di Commutazione descritta nella Sezione 6.",
-      "it-expert": "Pauli Commutation rules gestite da simproc dedicati (custom targeting) — implementazione diretta della Commutation phase (§6), con targeting function come descritto a p0142."
+      "it-intermediate": "Queste regole sono usate dalla procedura di commutazione dei Pauli, basata su una riscrittura \"a metrica\": una regola viene applicata solo se avvicina i Pauli all'ingresso del circuito, evitando di rimbalzare avanti e indietro.",
+      "it-expert": "Regole usate dal Pauli Commutation proc, costruito su REDUCE_METRIC: applicate solo se la metrica (Pauli verso gli input) decresce, il che garantisce terminazione nonostante siano reversibili."
     }
   },
   {
@@ -5665,8 +5665,8 @@
     ],
     "sourceText": "These two alternate in the C2Proc simproc. Both have a custom targeting routine to select where theyshould be applied. x→x x→x",
     "explanations": {
-      "it-intermediate": "Intestazione: 'D.4.1 Regole C2' — regole specifiche per il caso a due qubit.",
-      "it-expert": "Appendix D.4.1, C2 Rules."
+      "it-intermediate": "Le due regole per i Clifford a due qubit si alternano nella procedura C2Proc; per ciascuna una funzione di targeting su misura sceglie dove applicarla, invece di lasciare la scelta al motore di Quantomatic.",
+      "it-expert": "D.4.1: le due C2 rule si alternano nel simproc C2Proc, ciascuna con una targeting routine custom che fissa il match."
     }
   }
 ]
