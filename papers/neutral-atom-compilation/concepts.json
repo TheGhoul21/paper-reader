@@ -1,0 +1,643 @@
+[
+  {
+    "id": "neutral-atom-array",
+    "term": "atomi neutri",
+    "aliases": [
+      "array di atomi neutri",
+      "array ad atomi neutri",
+      "architetture ad atomi neutri",
+      "architettura ad atomi neutri",
+      "piattaforma ad atomi neutri",
+      "piattaforme ad atomi neutri"
+    ],
+    "pdfTerms": [
+      "neutral-atom arrays",
+      "neutral-atom array",
+      "neutral-atom",
+      "neutral atom"
+    ],
+    "kind": "term",
+    "definedIn": "p0008",
+    "definitions": {
+      "it-expert": "Piattaforma a qubit codificati in atomi intrappolati da tweezer ottici su una griglia 2D riconfigurabile. Il modello di controllo assunto qui è a righe/colonne: gate a singolo qubit tramite fasci laser incrociati (addressing layer), entangling tramite trasporto AOD in una entangling zone e interazione di Rydberg. I costi da minimizzare sono quindi il numero di addressing layer e di trasporti, non SWAP."
+    },
+    "related": [
+      "optical-tweezer",
+      "addressing-layer",
+      "atom-transport",
+      "rydberg-blockade"
+    ]
+  },
+  {
+    "id": "optical-tweezer",
+    "term": "tweezer ottici",
+    "aliases": [
+      "tweezer ottico",
+      "tweezer"
+    ],
+    "pdfTerms": [
+      "optical tweezer",
+      "tweezer"
+    ],
+    "kind": "term",
+    "definedIn": "p0008",
+    "definitions": {
+      "it-expert": "Trappole di dipolo generate da fasci laser focalizzati, ciascuna delle quali tiene un singolo atomo. La griglia statica (SLM) fissa il layout; i tweezer mobili dell'AOD estraggono e spostano sottoinsiemi riga×colonna di atomi."
+    },
+    "related": [
+      "neutral-atom-array",
+      "aod"
+    ]
+  },
+  {
+    "id": "addressing-layer",
+    "term": "addressing layer",
+    "aliases": [
+      "addressing layers"
+    ],
+    "pdfTerms": [
+      "addressing layers",
+      "addressing layer"
+    ],
+    "kind": "term",
+    "definedIn": "p0020",
+    "definitions": {
+      "it-expert": "Un passo di gate a singolo qubit: si accende un sottoinsieme di fasci orizzontali (u) e verticali (v), e lo stesso gate G agisce su tutte le intersezioni, cioè un termine rank-one uvᵀ·G. Compilare un pattern M significa decomporlo nel minor numero di tali termini (Eq. 1); il baseline naive usa fino a min(m,n) layer riga/colonna."
+    },
+    "related": [
+      "rank-one-decomposition",
+      "gf2-rank",
+      "naive-baseline"
+    ]
+  },
+  {
+    "id": "rank-one-decomposition",
+    "term": "decomposizione rank-one",
+    "aliases": [
+      "decomposizioni rank-one",
+      "termini rank-one",
+      "rank-one",
+      "rank-1"
+    ],
+    "pdfTerms": [
+      "rank-one decomposition",
+      "rank-one",
+      "rank-1"
+    ],
+    "kind": "term",
+    "definedIn": "p0024",
+    "definitions": {
+      "it-expert": "M = Σₜ uₜvₜᵀ·Gₜ con uₜ∈{0,1}ᵐ, vₜ∈{0,1}ⁿ, Gₜ∈G e somma nella struttura di gruppo di G. Ogni termine è un addressing layer (o, per i C-Z, un trasporto), quindi il numero minimo di termini è la metrica di costo. A seconda di G diventa rango su GF(2), rango tensoriale su GF(2) o rango su Z4/Z8."
+    },
+    "related": [
+      "addressing-layer",
+      "gf2-rank",
+      "tensor-rank",
+      "z4-rank"
+    ]
+  },
+  {
+    "id": "gf2-rank",
+    "term": "rango GF(2)",
+    "aliases": [
+      "rango su GF(2)",
+      "rango GF(2) di M",
+      "GF(2)"
+    ],
+    "pdfTerms": [
+      "GF(2)-rank",
+      "GF(2)"
+    ],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-expert": "Rango della matrice binaria M sul campo con due elementi (somma = XOR). Per G={I,X} self-inverso è esattamente il numero minimo di addressing layer, calcolabile con eliminazione gaussiana in tempo polinomiale. È il mattone di tutti gli altri casi: Pauli (due slice), fase e π/8 (stadi mod 2 successivi), C-Z allineati (per gruppo di colonne)."
+    },
+    "related": [
+      "gaussian-elimination",
+      "self-inverse-gate",
+      "rank-one-decomposition"
+    ]
+  },
+  {
+    "id": "gaussian-elimination",
+    "term": "eliminazione gaussiana",
+    "aliases": [],
+    "pdfTerms": [
+      "Gaussian elimination"
+    ],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-expert": "Riduzione a scala per righe su GF(2): TᵣM = Σ eₜvₜᵀ, da cui uₜ = Tᵣ⁻¹eₜ dà una decomposizione con k = rango termini. È ottima perché GF(2) è un campo; su Z4/Z8, che sono anelli, non basta, da cui gli algoritmi a due stadi."
+    },
+    "related": [
+      "gf2-rank",
+      "z4-rank"
+    ]
+  },
+  {
+    "id": "self-inverse-gate",
+    "term": "self-inverse",
+    "aliases": [
+      "self-inverso",
+      "self-inversa",
+      "gate self-inverse",
+      "self-inversione"
+    ],
+    "pdfTerms": [
+      "self-inverse"
+    ],
+    "kind": "term",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-expert": "Gate con X² = I (Pauli, Hadamard, e a due qubit il C-Z). G={I,X} ≅ GF(2), quindi la compilazione è ottima via rango GF(2). La self-inversione è anche ciò che rende applicabile l'eliminazione gaussiana ai gruppi di C-Z allineati."
+    },
+    "related": [
+      "gf2-rank",
+      "pauli-group",
+      "cz-gate"
+    ]
+  },
+  {
+    "id": "pauli-group",
+    "term": "gruppo di Pauli",
+    "aliases": [
+      "gate di Pauli"
+    ],
+    "pdfTerms": [
+      "Pauli group",
+      "Pauli gates"
+    ],
+    "kind": "term",
+    "definedIn": "p0035",
+    "definitions": {
+      "it-expert": "A meno di fase globale, G={I,X,Y,Z} ≅ (Z2)² (XOR componente per componente). Il pattern diventa un tensore m×n×2 su GF(2) e la compilazione un problema di rango tensoriale; l'algoritmo del paper sceglie la migliore delle tre decomposizioni a due slice, garantendo 4/3-ottimalità."
+    },
+    "related": [
+      "tensor-rank",
+      "four-thirds-optimality",
+      "self-inverse-gate"
+    ]
+  },
+  {
+    "id": "tensor-rank",
+    "term": "rango tensoriale",
+    "aliases": [
+      "rango di un tensore",
+      "tensore del terzo ordine"
+    ],
+    "pdfTerms": [
+      "tensor rank",
+      "third-order tensor"
+    ],
+    "kind": "term",
+    "definedIn": "p0039",
+    "definitions": {
+      "it-expert": "Minimo r tale che ogni slice Xᵢ sia combinazione lineare delle stesse r matrici rank-one. Su campi finiti è NP-completo in generale; per terza dimensione 2 la complessità esatta resta aperta, per cui il paper si accontenta di un'approssimazione con bound dimostrato (Lemma A.1)."
+    },
+    "related": [
+      "pauli-group",
+      "four-thirds-optimality",
+      "rank-one-decomposition"
+    ]
+  },
+  {
+    "id": "four-thirds-optimality",
+    "term": "4/3-ottimalità",
+    "aliases": [
+      "4/3-ottimale",
+      "4/3-ottimali",
+      "4/3 del numero ottimo"
+    ],
+    "pdfTerms": [
+      "4/3-optimality",
+      "4/3-optimal",
+      "4/3 times the optimal"
+    ],
+    "kind": "term",
+    "definedIn": "p0041",
+    "definitions": {
+      "it-expert": "Garanzia per i gate di Pauli: Δ = min delle tre espansioni ≤ ⅔(r₁+r₂+r₃) ≤ ⁴⁄₃·rank(T), dove l'ultimo passo usa rank(T) ≥ (r₁+r₂+r₃)/2 (Lemma 8 di [19], App. A). La Sez. IV.B la verifica esaustivamente su array fino a 5×6."
+    },
+    "related": [
+      "pauli-group",
+      "tensor-rank"
+    ]
+  },
+  {
+    "id": "phase-gate",
+    "term": "gate di fase",
+    "aliases": [
+      "gate di fase S",
+      "gruppo della fase"
+    ],
+    "pdfTerms": [
+      "phase gates",
+      "phase gate",
+      "phase-gate"
+    ],
+    "kind": "term",
+    "definedIn": "p0047",
+    "definitions": {
+      "it-expert": "S = diag(1,i), gruppo ciclico {I,S,S²,S³} ≅ Z4. Compilato in due stadi: rango GF(2) di M mod 2, poi rango GF(2) del residuo M₂/2. Con k₁ ≤ r4(M) e k₂ = ρ4(M₂) ≤ 2·r4(M) si ottiene una garanzia 3-ottimale."
+    },
+    "related": [
+      "z4-rank",
+      "rho4",
+      "t-gate"
+    ]
+  },
+  {
+    "id": "z4-rank",
+    "term": "r4(M)",
+    "aliases": [
+      "r4",
+      "r8(M)",
+      "r8"
+    ],
+    "pdfTerms": [
+      "r4(M )",
+      "r8(M )",
+      "r4(M)",
+      "r8(M)"
+    ],
+    "kind": "symbol",
+    "definedIn": "p0048",
+    "definitions": {
+      "it-expert": "Ottimo del problema (1) su Z4 (risp. Z8): il minimo numero di termini uvᵀ·G con u,v binari. Non è calcolabile via eliminazione gaussiana perché Z4 non è un campo; serve solo come riferimento per i bound (≤ 3·r4 per la fase, ≤ 7·r8 per π/8 sotto congettura)."
+    },
+    "related": [
+      "rho4",
+      "phase-gate",
+      "t-gate"
+    ]
+  },
+  {
+    "id": "rho4",
+    "term": "ρ4(M)",
+    "aliases": [
+      "ρ4"
+    ],
+    "pdfTerms": [
+      "ρ4(M)",
+      "ρ4"
+    ],
+    "kind": "symbol",
+    "definedIn": "p0055",
+    "definitions": {
+      "it-expert": "Quantità ausiliaria: come r4 ma con u,v ∈ Z4 (moltiplicazione tra elementi ammessa), quindi ρ4 ≤ r4. Il Teorema/Lemma II.1 mostra che per M ∈ {0,2}ᵐˣⁿ vale ρ4(M) = rank_GF(2)(M/2), ed è ciò che rende calcolabile e limitato il secondo stadio."
+    },
+    "related": [
+      "z4-rank",
+      "gf2-rank",
+      "phase-gate"
+    ]
+  },
+  {
+    "id": "clifford",
+    "term": "Clifford",
+    "aliases": [
+      "gruppo di Clifford",
+      "Clifford a singolo qubit",
+      "Clifford gates"
+    ],
+    "pdfTerms": [
+      "Clifford"
+    ],
+    "kind": "term",
+    "definedIn": "p0060",
+    "definitions": {
+      "it-expert": "Gruppo di Clifford a singolo qubit ⟨I,X,Y,Z,S,H⟩. Ogni elemento, a meno di fase, si scrive U = P·Hᵃ·Sᵇ, quindi la compilazione si spezza in tre sottoproblemi indipendenti (fase su Z4, Hadamard su GF(2), Pauli su (Z2)²), ognuno con la sua garanzia."
+    },
+    "related": [
+      "pauli-group",
+      "phase-gate",
+      "self-inverse-gate"
+    ]
+  },
+  {
+    "id": "t-gate",
+    "term": "gate π/8",
+    "aliases": [
+      "π/8",
+      "gate T"
+    ],
+    "pdfTerms": [
+      "π/8 gates",
+      "π/8 gate",
+      "π/8"
+    ],
+    "kind": "term",
+    "definedIn": "p0064",
+    "definitions": {
+      "it-expert": "T = diag(1, e^{iπ/4}), gruppo ciclico ≅ Z8. Stesso schema a due stadi della fase, ricorsivo: M mod 2 su GF(2), poi l'algoritmo Z4 su M₂/2. Bound 7-ottimale condizionato alla congettura r4(M₂/2) = r8(M₂); si estende a rotazioni π/2ᵖ (Z_{2^(p+1)})."
+    },
+    "related": [
+      "phase-gate",
+      "z4-rank"
+    ]
+  },
+  {
+    "id": "cz-gate",
+    "term": "C-Z",
+    "aliases": [
+      "gate C-Z",
+      "CZ",
+      "gate CZ"
+    ],
+    "pdfTerms": [
+      "C-Z",
+      "CZ"
+    ],
+    "kind": "term",
+    "definedIn": "p0075",
+    "definitions": {
+      "it-expert": "Controlled-Z, il gate entangling nativo, simmetrico e self-inverso. Su questa architettura richiede di trasportare con l'AOD le righe/colonne coinvolte nella entangling zone, dove si esegue simultaneamente su tutte le coppie corrispondenti di due righe adiacenti (vincoli 1–2). Il costo è il numero di trasporti."
+    },
+    "related": [
+      "atom-transport",
+      "entangling-zone",
+      "aligned-cz",
+      "rydberg-blockade"
+    ]
+  },
+  {
+    "id": "entangling-zone",
+    "term": "zona di entangling",
+    "aliases": [
+      "entangling zone"
+    ],
+    "pdfTerms": [
+      "entangling zone"
+    ],
+    "kind": "term",
+    "definedIn": "p0075",
+    "definitions": {
+      "it-expert": "Regione dedicata dove le righe (o colonne) trasportate vengono avvicinate entro il raggio di blocco di Rydberg per eseguire i C-Z. La separazione tra zona di memoria/addressing e zona di entangling è ciò che rende il trasporto l'operazione dominante per costo ed errore."
+    },
+    "related": [
+      "atom-transport",
+      "rydberg-blockade",
+      "cz-gate"
+    ]
+  },
+  {
+    "id": "aod",
+    "term": "AOD",
+    "aliases": [
+      "deflettore acusto-ottico"
+    ],
+    "pdfTerms": [
+      "AOD",
+      "acousto-optic deflector"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0076",
+    "definitions": {
+      "it-expert": "Acousto-optic deflector: genera una griglia di tweezer mobili come prodotto di frequenze di riga × colonna, quindi seleziona sempre un sottoinsieme rettangolare (intersezioni) di atomi e ne preserva l'ordine relativo durante il moto. Questo vincolo è ciò che trasforma lo scheduling dei C-Z in problemi su intervalli e sottosequenze crescenti."
+    },
+    "related": [
+      "atom-transport",
+      "optical-tweezer",
+      "interval-graph-coloring",
+      "increasing-subsequences"
+    ]
+  },
+  {
+    "id": "atom-transport",
+    "term": "operazioni di trasporto",
+    "aliases": [
+      "operazione di trasporto",
+      "trasporto",
+      "trasporti",
+      "costo di trasporto",
+      "trasporti atomici"
+    ],
+    "pdfTerms": [
+      "transport operations",
+      "transport operation",
+      "transport",
+      "transports"
+    ],
+    "kind": "term",
+    "definedIn": "p0084",
+    "definitions": {
+      "it-expert": "Uno spostamento AOD di un insieme di righe/colonne selezionate verso la entangling zone. È l'operazione più lenta e la principale fonte di errore della piattaforma, quindi la metrica da minimizzare per i C-Z. Il paper riduce i trasporti di ~50% su C-Z casuali e di >30% su QAOA-MaxCut."
+    },
+    "related": [
+      "aod",
+      "entangling-zone",
+      "cz-gate"
+    ]
+  },
+  {
+    "id": "rydberg-blockade",
+    "term": "blocco di Rydberg",
+    "aliases": [
+      "raggio di blocco di Rydberg",
+      "Rydberg blockade",
+      "stati di Rydberg"
+    ],
+    "pdfTerms": [
+      "Rydberg blockade",
+      "Rydberg"
+    ],
+    "kind": "term",
+    "definedIn": "p0078",
+    "definitions": {
+      "it-expert": "Meccanismo fisico dei gate entangling: due atomi entro il raggio di blocco non possono essere eccitati entrambi nello stato di Rydberg, e da qui si ottiene il C-Z. Il vincolo di compilazione che ne deriva: le coppie da entanglare vanno portate a distanza sub-blockade, tutte insieme per una coppia di righe adiacenti."
+    },
+    "related": [
+      "cz-gate",
+      "entangling-zone"
+    ]
+  },
+  {
+    "id": "aligned-cz",
+    "term": "C-Z allineati",
+    "aliases": [
+      "C-Z non allineati",
+      "C-Z non-allineati",
+      "C-Z allineati su riga",
+      "C-Z non-allineati generali"
+    ],
+    "pdfTerms": [
+      "row-aligned",
+      "column-aligned",
+      "non-aligned"
+    ],
+    "kind": "term",
+    "definedIn": "p0085",
+    "definitions": {
+      "it-expert": "Allineati: la coppia sta nella stessa riga (o colonna), e lo scheduling si riduce a colorazione di intervalli più eliminazione gaussiana per gruppo. Non allineati: righe e colonne diverse, servono due trasporti per coppia di righe, e lo scheduling si riduce alla partizione in sottosequenze strettamente crescenti. Lo scheduling generale fa prima i non allineati, poi i residui allineati."
+    },
+    "related": [
+      "interval-graph-coloring",
+      "increasing-subsequences",
+      "group-and-reduce"
+    ]
+  },
+  {
+    "id": "interval-graph-coloring",
+    "term": "colorazione di grafi a intervalli",
+    "aliases": [
+      "grafo a intervalli",
+      "grafi a intervalli",
+      "colorazione di grafi"
+    ],
+    "pdfTerms": [
+      "interval graph",
+      "interval-graph coloring",
+      "graph-coloring"
+    ],
+    "kind": "term",
+    "definedIn": "p0091",
+    "definitions": {
+      "it-expert": "Ogni C-Z allineato (a,b) è l'intervallo aperto (a,b); due gate stanno nello stesso trasporto sse gli intervalli sono disgiunti, perché l'AOD preserva l'ordine. Minimo numero di trasporti su una riga = numero cromatico del grafo a intervalli, calcolabile in tempo polinomiale (grafi perfetti, greedy per estremo sinistro)."
+    },
+    "related": [
+      "aligned-cz",
+      "group-and-reduce",
+      "aod"
+    ]
+  },
+  {
+    "id": "group-and-reduce",
+    "term": "raggruppa-ed-elimina",
+    "aliases": [
+      "group and reduce",
+      "riga-per-riga",
+      "row by row"
+    ],
+    "pdfTerms": [
+      "grouping-and-elimination",
+      "group and reduce",
+      "row-by-row",
+      "row by row"
+    ],
+    "kind": "term",
+    "definedIn": "p0092",
+    "definitions": {
+      "it-expert": "Metodo per C-Z allineati su m righe: la matrice binaria m×n(n−1)/2 viene divisa in gruppi di colonne a intervalli disgiunti (colorazione), e ogni gruppo si realizza con rango-GF(2)-molti trasporti. Riga-per-riga (mᵢ=1) e raggruppa-ed-elimina (k=1) sono i due estremi della prospettiva unificata dell'Oss. II.4; in Fig. 9 hanno prestazioni quasi identiche."
+    },
+    "related": [
+      "interval-graph-coloring",
+      "gf2-rank",
+      "aligned-cz"
+    ]
+  },
+  {
+    "id": "increasing-subsequences",
+    "term": "sottosequenze strettamente crescenti",
+    "aliases": [
+      "sottosequenza strettamente crescente",
+      "condizione di non-incrocio",
+      "non-incrocio"
+    ],
+    "pdfTerms": [
+      "strictly increasing subsequences",
+      "strictly increasing sub-sequences",
+      "strictly increasing"
+    ],
+    "kind": "term",
+    "definedIn": "p0111",
+    "definitions": {
+      "it-expert": "Per C-Z tra due righe, (a₁,a₂) e (b₁,b₂) sono compatibili sse (a₁−b₁)(a₂−b₂) > 0, cioè le connessioni non si incrociano. Ordinando per la prima coordinata, ogni trasporto è una sottosequenza strettamente crescente della seconda; il minimo numero di trasporti si ottiene con un greedy in O(m log m), duale della più lunga sottosequenza non crescente."
+    },
+    "related": [
+      "aligned-cz",
+      "aod",
+      "atom-transport"
+    ]
+  },
+  {
+    "id": "naive-baseline",
+    "term": "strategia naive",
+    "aliases": [
+      "baseline naive",
+      "implementazione naive",
+      "implementazioni naive",
+      "metodi naive",
+      "naive"
+    ],
+    "pdfTerms": [
+      "naïve",
+      "naive"
+    ],
+    "kind": "term",
+    "definedIn": "p0033",
+    "definitions": {
+      "it-expert": "Il riferimento di confronto: gate a singolo qubit applicati riga per riga o colonna per colonna (fino a min(m,n) layer per gruppo), C-Z implementati uno alla volta o per righe. I guadagni del paper (fino a 2× sugli addressing layer, ~2× sui trasporti) sono misurati contro questo baseline, non contro altri compilatori."
+    },
+    "related": [
+      "addressing-layer",
+      "atom-transport"
+    ]
+  },
+  {
+    "id": "qaoa-maxcut",
+    "term": "QAOA",
+    "aliases": [
+      "QAOA-MaxCut",
+      "MaxCut"
+    ],
+    "pdfTerms": [
+      "QAOA-MaxCut",
+      "QAOA",
+      "MaxCut"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0117",
+    "definitions": {
+      "it-expert": "Circuito variazionale a p layer: per ogni arco del grafo un controlled-Zγ (fase ZZ), poi un mixer Rx(β). È il benchmark applicativo: controlled-Zγ simmetrici e commutanti permettono di riorganizzare il circuito per star forest in strati H–C-Z–H–Rz–H–C-Z–H, ognuno compilato con gli algoritmi della Sez. II."
+    },
+    "related": [
+      "controlled-z-gamma",
+      "star-forest",
+      "cz-gate"
+    ]
+  },
+  {
+    "id": "controlled-z-gamma",
+    "term": "controlled-Zγ",
+    "aliases": [
+      "Zγ"
+    ],
+    "pdfTerms": [
+      "controlled-Zγ",
+      "Zγ"
+    ],
+    "kind": "symbol",
+    "definedIn": "p0118",
+    "definitions": {
+      "it-expert": "Il gate di interazione di QAOA, e^{-iγZ⊗Z/2} a meno di fasi locali. Simmetrico nei due qubit e commutante con gli altri Zγ; su atomi neutri si realizza come H–C-Z–H–Rz(γ)–H–C-Z–H. La commutatività è ciò che consente di raggruppare i gate per star forest e condividere gli strati."
+    },
+    "related": [
+      "qaoa-maxcut",
+      "star-forest",
+      "cz-gate"
+    ]
+  },
+  {
+    "id": "star-forest",
+    "term": "star forest",
+    "aliases": [
+      "star forests"
+    ],
+    "pdfTerms": [
+      "star forests",
+      "star forest",
+      "star-forest"
+    ],
+    "kind": "term",
+    "definedIn": "p0121",
+    "definitions": {
+      "it-expert": "Foresta di stelle, cioè un grafo i cui componenti hanno diametro ≤ 2. Per un insieme di Zγ che forma una star forest, i C-Z si impilano in soli due strati condivisi (Eq. 6). Il grafo MaxCut viene coperto da star forest con un greedy su archi in ordine lessicografico, allineato al layout riga per riga (App. B)."
+    },
+    "related": [
+      "qaoa-maxcut",
+      "controlled-z-gamma"
+    ]
+  }
+]

@@ -1,0 +1,2203 @@
+{
+  "addressing-layer": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "addressing layer",
+      "definedIn": "p0020",
+      "definition": "Un passo di gate a singolo qubit: si accende un sottoinsieme di fasci orizzontali (u) e verticali (v), e lo stesso gate G agisce su tutte le intersezioni, cioè un termine rank-one uvᵀ·G. Compilare un pattern M significa decomporlo nel minor numero di tali termini (Eq. 1); il baseline naive usa fino a min(m,n) layer riga/colonna."
+    }
+  ],
+  "aligned-cz": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "C-Z allineati",
+      "definedIn": "p0085",
+      "definition": "Allineati: la coppia sta nella stessa riga (o colonna), e lo scheduling si riduce a colorazione di intervalli più eliminazione gaussiana per gruppo. Non allineati: righe e colonne diverse, servono due trasporti per coppia di righe, e lo scheduling si riduce alla partizione in sottosequenze strettamente crescenti. Lo scheduling generale fa prima i non allineati, poi i residui allineati."
+    }
+  ],
+  "ancilla": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "ancilla",
+      "definedIn": "p0026",
+      "definition": "Atomi \"di servizio\" che non portano dati del calcolo ma servono da binario per l'eccitazione. Sono \"volanti\": intrappolati dall'AOD, si possono creare, posizionare e riciclare quando serve (idea presa dai compilatori FPQA). Quelli \"di canale\" formano il percorso attivo, quelli \"di riserva\" aspettano vicino per estendere o deviare il canale."
+    }
+  ],
+  "aod": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "AOD",
+      "definedIn": "p0076",
+      "definition": "Acousto-optic deflector: genera una griglia di tweezer mobili come prodotto di frequenze di riga × colonna, quindi seleziona sempre un sottoinsieme rettangolare (intersezioni) di atomi e ne preserva l'ordine relativo durante il moto. Questo vincolo è ciò che trasforma lo scheduling dei C-Z in problemi su intervalli e sottosequenze crescenti."
+    },
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "AOD",
+      "definedIn": "p0026",
+      "definition": "Acousto-Optic Deflector: genera una griglia di trappole mobili organizzata per righe e colonne, e sposta insieme tutti gli atomi agganciati. Le sue regole di mobilità (le righe non possono incrociarsi né sovrapporsi, l'ordine va preservato) sono i \"vincoli cinematici\" che rendono difficile il routing."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "AOD",
+      "definedIn": "p0015",
+      "definition": "Acousto-Optic Deflector: lo strumento che crea trappole laser mobili, organizzate per righe e colonne, e sposta gli atomi. Nel paper resta indispensabile per caricare i qubit, costruire i canali DT e riposizionare gli ancilla, ma viene usato il meno possibile."
+    },
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "AOD",
+      "definedIn": "p0023",
+      "definition": "Acousto-Optic Deflector. Due AOD incrociati (uno per le righe, uno per le colonne) trasformano un fascio in una griglia di fasci mobili: si possono spostare molti atomi insieme, ma solo \"a griglia\", cioè tutte le righe e colonne attive si muovono insieme. È ciò che rende possibile il parallelismo e anche ciò che lo vincola."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "AOD",
+      "definedIn": "p0034",
+      "definition": "Acousto-Optic Deflector: genera le trappole laser mobili con cui si spostano gli atomi. Gli AOD bidimensionali incrociati muovono righe e colonne di atomi insieme, e sono ciò che rende possibili la CZSWAP e le traslazioni collettive di patch."
+    }
+  ],
+  "atom-loss": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "vita nel vuoto",
+      "definedIn": "p0019",
+      "definition": "Le due cause di perdita di atomi modellate. La \"vita nel vuoto\": ogni atomo prima o poi urta una molecola di gas residuo e sparisce, quindi più dura il riordino più atomi si perdono. L'\"errore dei tweezer\": un atomo può perdersi a ogni passaggio tra trappola fissa e mobile. Quale domini decide l'algoritmo migliore: Balance and Compact (veloce) contro la prima, Hungarian (pochi spostamenti) contro la seconda."
+    }
+  ],
+  "atom-rearrangement": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "riordino",
+      "definedIn": "p0012",
+      "definition": "L'operazione con cui, dopo aver caricato gli atomi a caso nelle trappole (circa metà restano vuote), si spostano con i tweezer mobili per ottenere la disposizione desiderata, di solito una griglia piena senza buchi. È un passaggio obbligato prima di ogni calcolo sui processori ad atomi neutri, e il paper ne studia algoritmi, tempi ed errori."
+    }
+  ],
+  "atom-transport": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "operazioni di trasporto",
+      "definedIn": "p0084",
+      "definition": "Uno spostamento AOD di un insieme di righe/colonne selezionate verso la entangling zone. È l'operazione più lenta e la principale fonte di errore della piattaforma, quindi la metrica da minimizzare per i C-Z. Il paper riduce i trasporti di ~50% su C-Z casuali e di >30% su QAOA-MaxCut."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "shuttling",
+      "definedIn": "p0015",
+      "definition": "Lo spostamento fisico degli atomi con i fasci mobili dell'AOD. È lento (decine-centinaia di microsecondi), soggetto a limiti di velocità e al vincolo che righe e colonne non possono incrociarsi. È il collo di bottiglia che il DT vuole aggirare, anche se non si può eliminare del tutto."
+    }
+  ],
+  "atomique": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "Atomique",
+      "definedIn": "p0102",
+      "definition": "Un compilatore per atomi neutri della letteratura, usato come confronto sulla QFT30 (con due array AOD). La QFT basata su Twine lo supera in fedeltà grazie a meno porte a due qubit, meno spostamenti e meno stage di Rydberg."
+    }
+  ],
+  "atommovr": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "atommovr",
+      "definedIn": "p0032",
+      "definition": "Il software open-source in Python presentato dal paper: simula il riordino di atomi con modelli realistici di tempi ed errori, calcola automaticamente metriche come tempo, frazione di riempimento e tasso di successo, e permette di confrontare algoritmi diversi alle stesse condizioni."
+    }
+  ],
+  "auxiliary-qubit": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "qubit ausiliari",
+      "definedIn": "p0065",
+      "definition": "Qubit extra che non portano informazione iniziale, preparati in uno stato noto (es. |0⟩). Poiché una rotazione Z su |0⟩ non fa nulla, l'etichetta del qubit ausiliario si può trattare come \"vuota\". Aggiungendoli con CNOT si ottiene una codifica ridondante che permette di eseguire più operazioni logiche in parallelo."
+    }
+  ],
+  "backbone-legs": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "backbone",
+      "definedIn": "p0009",
+      "definition": "Le due parti di una Twine chain: il \"backbone\" è la fila principale di qubit su cui corrono le porte DCNOT; i \"legs\" (rami) sono qubit laterali collegati al backbone, che richiedono solo CNOT singole. Layout con più connettività (scala, quadrato) hanno più rami, quindi meno porte a due qubit."
+    }
+  ],
+  "balance-compact": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "Balance and Compact",
+      "definedIn": "p0030",
+      "definition": "Un algoritmo di riordino molto parallelo: prima \"bilancia\" il numero di atomi tra le righe (o colonne), poi \"compatta\" ogni riga verso il target, muovendo interi gruppi di atomi insieme. Il tempo cresce meno che linearmente (circa N^0.84), quindi vince quando la perdita dominante è il tempo che passa (vita nel vuoto)."
+    }
+  ],
+  "balanced-tree": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "albero bilanciato",
+      "definedIn": "p0064",
+      "definition": "Il modo ottimale usato da t|ket⟩ per costruire un phase gadget: le ∧X raccolgono la parità a coppie, in parallelo, come in un torneo a eliminazione. Il numero di porte resta 2(n−1), ma la profondità scende a 2⌈log n⌉. In più lascia più ∧X \"esposte\" ai bordi, pronte per essere cancellate da gadget vicini."
+    }
+  ],
+  "bam-gate": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "gate BAM",
+      "definedIn": "p0029",
+      "definition": "Buffer-Atom-Mediated gate: una porta a due qubit tra atomi dato lontani, realizzata facendo passare l'interazione attraverso uno o più atomi buffer in mezzo con una sequenza coordinata di impulsi laser. I buffer tornano allo stato iniziale alla fine. È il meccanismo che rende possibile il fabric."
+    }
+  ],
+  "benchmark-circuits": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "Effi_full",
+      "definedIn": "p0036",
+      "definition": "I circuiti di prova usati nel paper, scelti per coprire strutture diverse. BV (Bernstein–Vazirani) è \"sparso\": ogni qubit interagisce con uno solo, quindi si taglia facilmente. EfficientSU2 è un circuito a strati, con entanglement circolare (Effi_circ, ogni qubit col vicino) o completo (Effi_full, ogni qubit con tutti): quest'ultimo è il caso peggiore. QAOA è un algoritmo di ottimizzazione, anch'esso molto intrecciato."
+    }
+  ],
+  "benchmarks": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "QASMBench",
+      "definedIn": "p0088",
+      "definition": "Le suite di circuiti di test. W-state e Random gates (strutturati e non strutturati) servono anche per l'addestramento; 3-Regular (grafi con connettività a lungo raggio), Quantum Volume (circuiti casuali densi, lo standard di IBM) e QASMBench (circuiti applicativi reali) sono tenuti da parte solo per la valutazione."
+    },
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "QASMBench",
+      "definedIn": "p0098",
+      "definition": "Le due raccolte pubbliche di circuiti di test usate. QASMBench copre algoritmi piccoli, medi e grandi; VeriQBench aggiunge circuiti variazionali e combinatori. Usare suite esterne evita di scegliere benchmark favorevoli."
+    }
+  ],
+  "big-move": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "big move",
+      "definedIn": "p0054",
+      "definition": "Le due unità di spostamento del modello. Un \"big move\" è il trasporto che porta un atomo dalla sua trappola vicino al partner (e ritorno); un \"offset move\" è un piccolo spostamento extra (2 μm) usato nello scambio della CZSWAP. Il loro numero e la loro lunghezza determinano i tempi di shuttling."
+    }
+  ],
+  "blocked-configuration": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "configurazioni bloccate",
+      "definedIn": "p0057",
+      "definition": "Situazioni, tipiche dei sistemi a due specie, in cui un atomo di un tipo occupa il posto destinato all'altro tipo, o ne sbarra l'unico percorso, e l'algoritmo non riesce più a completare il target (Fig. 5a,b). Evitarle è il motivo del procedimento \"strato per strato\" di InsideOut."
+    }
+  ],
+  "break-even": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "break-even",
+      "definedIn": "p0092",
+      "definition": "La regola con cui BRIDGE-H decide se spostare un atomo: lo sposta solo se l'errore dello spostamento (E_shuttle) è minore dell'errore risparmiato accorciando i relay delle porte future. Moltiplicata per il fattore τ, permette di essere più prudenti (τ<1) o più aggressivi (τ>1)."
+    }
+  ],
+  "bridge": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "BRIDGE",
+      "definedIn": "p0016",
+      "definition": "Il compilatore proposto (Buffer-Relay Interconnect for Data-stable Gate Execution), in due varianti. BRIDGE-F (\"fixed\") tiene tutti gli atomi dato fermi e realizza ogni porta a lungo raggio con catene di atomi buffer. BRIDGE-H (\"hybrid\") parte da quella soluzione e aggiunge qualche spostamento fisico solo nei punti critici (hotspot), quando il guadagno supera il costo."
+    }
+  ],
+  "buffer-atom": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "atomi buffer",
+      "definedIn": "p0029",
+      "definition": "Atomi che non contengono dati del calcolo ma servono da \"ripetitori\": stanno tra gli atomi dato e trasmettono l'interazione da uno all'altro. Sono di una specie diversa (cesio) dagli atomi dato (rubidio), così si possono pilotare, misurare e resettare senza disturbare i qubit veri."
+    }
+  ],
+  "buffer-relay-fabric": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "fabric buffer-relay",
+      "definedIn": "p0013",
+      "definition": "L'\"infrastruttura di collegamento\" fissa del processore: una griglia regolare di atomi buffer disposta attorno agli atomi dato, attraverso cui qualunque coppia di qubit può interagire \"passandosi\" il segnale da buffer a buffer. È l'analogo delle piste di un circuito stampato: un costo fisso una volta sola, invece di muovere atomi a ogni porta."
+    }
+  ],
+  "causal-flow": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "flusso causale",
+      "definedIn": "p0125",
+      "definition": "Una proprietà di un grafo presa dal calcolo quantistico basato su misure (modello \"one-way\"): un modo coerente di ordinare i nodi e indicare, per ciascuno, \"chi viene dopo\" lungo un filo. Se un diagramma ZX ha un flusso causale, i suoi archi si possono dividere in \"fili di qubit\" e \"interazioni\", e il diagramma si può rileggere come circuito."
+    }
+  ],
+  "cbo-placement": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "CBO",
+      "definedIn": "p0066",
+      "definition": "Il metodo di ottimizzazione usato per decidere dove mettere ogni qubit sulla griglia (placement). Una \"popolazione\" di soluzioni candidate si muove verso un consenso pesato sulle migliori. L'obiettivo è mettere vicini i qubit che interagiscono molto (relay corti), rispettando le distanze minime e riservando spazio per eventuali spostamenti futuri (mobility-aware)."
+    }
+  ],
+  "circuit-cutting": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "circuit cutting",
+      "definedIn": "p0035",
+      "definition": "Una tecnica per eseguire un circuito quantistico troppo grande per un solo dispositivo: lo si \"taglia\" in pezzi più piccoli (sotto-circuiti), si eseguono i pezzi separatamente e poi si ricompongono i risultati con un calcolo classico. Funziona, ma ha un prezzo: più tagli fai, più volte devi ripetere le esecuzioni e più calcolo serve per ricomporre. DAScut serve a decidere dove tagliare e dove eseguire i pezzi per pagare il meno possibile. Il taglio può spezzare un'operazione tra due qubit (\"gate cut\") o il filo di un singolo qubit (\"wire cut\")."
+    }
+  ],
+  "circuit-like": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "circuit-like",
+      "definedIn": "p0128",
+      "definition": "Un diagramma semplice con lo stesso numero di ingressi e uscite che ammette un flusso causale. La Proposizione 6.5 dice che ogni diagramma di questo tipo corrisponde davvero a un circuito, e l'ottimizzatore applica solo riscritture che mantengono questa proprietà."
+    }
+  ],
+  "cliff-prop": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "PROP",
+      "definedIn": "p0027",
+      "definition": "Una struttura matematica (dalla teoria delle categorie) per descrivere circuiti come diagrammi componibili in serie e in parallelo, con lo scambio di fili automaticamente incluso. \"Cliff\" è la PROP dei circuiti Clifford costruiti dai generatori: descrive la sintassi dei circuiti, senza nessuna equazione tra loro."
+    }
+  ],
+  "clifford": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "Clifford",
+      "definedIn": "p0060",
+      "definition": "Gruppo di Clifford a singolo qubit ⟨I,X,Y,Z,S,H⟩. Ogni elemento, a meno di fase, si scrive U = P·Hᵃ·Sᵇ, quindi la compilazione si spezza in tre sottoproblemi indipendenti (fase su Z4, Hadamard su GF(2), Pauli su (Z2)²), ognuno con la sua garanzia."
+    },
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "Clifford",
+      "definedIn": "p0020",
+      "definition": "I circuiti costruiti solo con porte Hadamard, S (fase π/2) e CNOT. Da soli non bastano per un computer quantistico universale (si simulano efficientemente su un computer classico), ma sono una parte enorme di qualunque circuito reale e della correzione d'errore, quindi ottimizzarli conviene sempre. Aggiungendo la porta T (Clifford+T) si ottiene l'universalità."
+    },
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "Clifford",
+      "definedIn": "p0229",
+      "definition": "Le porte che mandano sempre operatori di Pauli in operatori di Pauli (CNOT, Hadamard, S e loro combinazioni). Proprio per questa proprietà si possono tracciare in modo efficiente con etichette: il loro effetto è solo una \"rinominazione\" delle X e Z logiche."
+    },
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "Clifford",
+      "definedIn": "p0027",
+      "definition": "Le porte Clifford (Hadamard, S, CNOT e loro combinazioni) formano una famiglia \"facile\": mandano operatori di Pauli in operatori di Pauli e si possono simulare ed ottimizzare in modo efficiente. Nel paper servono sia a cambiare base ai gadget, sia come sottocircuiti da semplificare dopo la sintesi."
+    }
+  ],
+  "clifford-normal-forms": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "C1",
+      "definedIn": "p0068",
+      "definition": "I cataloghi di forme \"migliori possibili\": C1 contiene i 24 diagrammi minimi che rappresentano tutti i Clifford a 1 qubit (Figura 3), C2 gli 11520 per i Clifford a 2 qubit (Figura 4, struttura a sandwich). L'ottimizzatore riduce ogni circuito a 1 o 2 qubit esattamente a uno di questi."
+    }
+  ],
+  "clifford-phase": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "fasi Clifford",
+      "definedIn": "p0060",
+      "definition": "2n piccoli numeri (0–3, cioè potenze di i) da tracciare insieme alle etichette. Con essi si può rispondere anche alla domanda opposta, \"in quale operatore fisico si trasforma un operatore logico?\", senza invertire tabelle costose. Si aggiornano solo con Hadamard (+2) ed S (+1); la CNOT non li cambia."
+    }
+  ],
+  "clifford-tableau": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "tableau di Clifford",
+      "definedIn": "p0040",
+      "definition": "La tabella usata dai simulatori stabilizer (Aaronson–Gottesman) per rappresentare un circuito Clifford: per ogni generatore logico dice in quale operatore fisico si trasforma. Descrive il tracking covariante ed è l'inversa del tableau di flusso."
+    }
+  ],
+  "cnot": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "CNOT",
+      "definedIn": "p0186",
+      "definition": "La porta controlled-NOT; in ZX è un nodo verde (controllo) collegato a un nodo rosso (target). TONC è la stessa porta con controllo e target invertiti (CNOT letto al contrario). Lo scambio di due qubit è CNOT·TONC·CNOT, e TONC si ottiene da CNOT con Hadamard, quindi basta la sola CNOT."
+    },
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "∧X",
+      "definedIn": "p0018",
+      "definition": "La notazione del paper per la porta CNOT (controlled-NOT): inverte il qubit target se il qubit di controllo vale 1. È la porta a due qubit di riferimento, e il suo numero e la sua profondità sono le metriche principali che il paper cerca di ridurre, perché le porte a due qubit sono le più rumorose."
+    }
+  ],
+  "collision": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "collisioni",
+      "definedIn": "p0152",
+      "definition": "Due tweezer AOD non possono incrociarsi o toccarsi, e un tweezer che porta un atomo non può passare sopra un sito già occupato: queste mosse sono \"illegali\" perché farebbero perdere o scambiare atomi. atommovr controlla la legalità di ogni segmento e gli algoritmi devono evitarle."
+    }
+  ],
+  "colour-change": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "cambio colore",
+      "definedIn": "p0050",
+      "definition": "Una regola derivata (Lemma 3.5): circondando un nodo con Hadamard, o equivalentemente con opportune rotazioni ±π/2, si può trasformare un nodo verde in rosso e viceversa. È ciò che permette di eliminare i nodi H e lavorare con soli nodi verdi e rossi."
+    }
+  ],
+  "common-substring": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "sottostringa comune massima",
+      "definedIn": "p0204",
+      "definition": "La parte più lunga in cui due stringhe di Pauli coincidono sugli stessi qubit (stesso simbolo, non I). Per ogni qubit che ne fa parte, sintetizzando i due Pauli gadget insieme si risparmiano 2 porte ∧X."
+    }
+  ],
+  "completeness": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "completezza",
+      "definedIn": "p0064",
+      "definition": "Il risultato di Backens (Teorema 4.3): nel frammento stabilizer, due diagrammi che rappresentano la stessa matrice sono sempre collegati da una sequenza di regole. Garantisce che, se un circuito Clifford ha una versione più corta, esiste una dimostrazione per riscrittura che la trova: il problema è trovarla."
+    }
+  ],
+  "contravariant-tracking": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "tracking controvariante",
+      "definedIn": "p0046",
+      "definition": "Il modo di tracciare del flusso di parità: si segue quale effetto logico ha un operatore fisico applicato in un certo punto, cioè \"cosa fa\" una rotazione su un qubit lì. È l'opposto del covariante: facile da fisico a logico, difficile il contrario. Il paper mostra come ottenere entrambi con poche informazioni in più (le fasi Clifford)."
+    }
+  ],
+  "controlled-z-gamma": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "controlled-Zγ",
+      "definedIn": "p0118",
+      "definition": "Il gate di interazione di QAOA, e^{-iγZ⊗Z/2} a meno di fasi locali. Simmetrico nei due qubit e commutante con gli altri Zγ; su atomi neutri si realizza come H–C-Z–H–Rz(γ)–H–C-Z–H. La commutatività è ciò che consente di raggruppare i gate per star forest e condividere gli strati."
+    }
+  ],
+  "coupling-graph": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "mappa di collegamenti",
+      "definedIn": "p0020",
+      "definition": "Il disegno di quali qubit fisici di un chip sono direttamente collegati tra loro. Solo qubit collegati possono fare un'operazione a due qubit; se il circuito chiede di far interagire due qubit lontani, bisogna \"avvicinarli\" con operazioni SWAP, che aggiungono errori. Chip diversi hanno mappe diverse, e per questo lo stesso circuito va meglio su alcuni che su altri."
+    }
+  ],
+  "covariant-tracking": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "tracking covariante",
+      "definedIn": "p0041",
+      "definition": "Il modo \"classico\" di seguire un circuito Clifford (quello del tableau di Aaronson–Gottesman): si segue come ogni operatore logico viene trasformato in operatore fisico, cioè \"dove va a finire\" un'operazione logica. È facile andare da logico a fisico, difficile tornare indietro."
+    }
+  ],
+  "crosstalk": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "crosstalk",
+      "definedIn": "p0076",
+      "definition": "Durante uno stage di Rydberg il laser illumina tutto l'array, e anche gli atomi non coinvolti nella porta subiscono un piccolo disturbo (fedeltà f_exc = 99.75% per atomo). Più stage vuol dire più errori per tutti. È il motivo per cui la versione mobile, con meno stage, batte quella statica."
+    },
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "crosstalk",
+      "definedIn": "p0067",
+      "definition": "Interferenza indesiderata tra operazioni vicine eseguite insieme. Per prudenza BRIDGE-F esegue in sequenza le porte a lungo raggio concorrenti; con hardware futuro si potrebbero parallelizzare 2–3 catene disgiunte recuperando fino a circa 1.8× di velocità (RQ5)."
+    }
+  ],
+  "cz-gate": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "C-Z",
+      "definedIn": "p0075",
+      "definition": "Controlled-Z, il gate entangling nativo, simmetrico e self-inverso. Su questa architettura richiede di trasportare con l'AOD le righe/colonne coinvolte nella entangling zone, dove si esegue simultaneamente su tutte le coppie corrispondenti di due righe adiacenti (vincoli 1–2). Il costo è il numero di trasporti."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "CZ",
+      "definedIn": "p0031",
+      "definition": "La porta a due qubit nativa degli atomi neutri (controlled-Z): cambia il segno quando entrambi i qubit valgono 1. In sé è velocissima (sotto il microsecondo), ma normalmente richiede che i due atomi siano vicini, quindi il costo vero è lo spostamento per avvicinarli."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "CZ",
+      "definedIn": "p0047",
+      "definition": "La porta a due qubit nativa degli atomi neutri, ottenuta con il blocco di Rydberg. Nell'architettura mobile considerata richiede: prendere l'atomo A con il tweezer mobile, portarlo vicino a B, eseguire la porta, riportarlo indietro. In totale due grandi spostamenti e quattro trasferimenti tra trappole."
+    }
+  ],
+  "czswap": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "CZSWAP",
+      "definedIn": "p0043",
+      "definition": "L'idea chiave del paper: una porta CZ seguita da uno scambio (SWAP) dei due qubit, ottenuta non con porte ma spostando fisicamente gli atomi. Poiché per fare una CZ bisogna comunque avvicinare gli atomi e poi riportarli indietro, basta riportarli nelle posizioni scambiate. Lo scambio \"costa\" solo qualche piccolo spostamento extra, e sostituisce una seconda CZ."
+    }
+  ],
+  "dasatom": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "DasAtom",
+      "definedIn": "p0038",
+      "definition": "Un compilatore euristico \"spatial-first\": decide il posizionamento con algoritmi esatti di isomorfismo di grafi, layer per layer. È veloce e fa pochi movimenti, ma posizionando in modo miope serializza troppo i gate e aumenta gli stage di Rydberg, perdendo fedeltà sui circuiti grandi."
+    }
+  ],
+  "data-atom": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "atomi dato",
+      "definedIn": "p0008",
+      "definition": "Gli atomi (rubidio) che portano i qubit del calcolo. In BRIDGE-F non si muovono mai: questo evita il riscaldamento e gli errori di trasferimento tipici dello spostamento fisico."
+    }
+  ],
+  "dcnot": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "DCNOT",
+      "definedIn": "p0030",
+      "definition": "Una \"doppia CNOT\": due CNOT di fila tra gli stessi due qubit, in versi opposti. È il blocco base del backbone, ma non è nativa sugli atomi neutri e va scomposta: in due CZ, in una iSWAP o, meglio per questa architettura, in una CZSWAP (CZ più scambio di posizione)."
+    }
+  ],
+  "deadlock": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "deadlock",
+      "definedIn": "p0082",
+      "definition": "Una situazione in cui gli atomi si bloccano a vicenda: A deve andare dove sta B, B dove sta C, C dove sta A. Nessuno può muoversi per primo. ARGON la risolve spostando uno di loro in una posizione di parcheggio intermedia, che spezza il ciclo."
+    }
+  ],
+  "defect-free": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "senza difetti",
+      "definedIn": "p0015",
+      "definition": "Un array in cui ogni sito della configurazione target è occupato dall'atomo giusto, senza buchi. La probabilità di ottenerlo cala esponenzialmente con il numero di atomi, perché ciascuno può perdersi durante il riordino, ed è per questo che per array di migliaia di atomi servono algoritmi veloci e attenti alle perdite."
+    }
+  ],
+  "directional-transport": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "trasporto direzionale",
+      "definedIn": "p0012",
+      "definition": "Il meccanismo al centro del paper: invece di spostare fisicamente un atomo, si fa \"viaggiare\" solo la sua informazione, sotto forma di una singola eccitazione di Rydberg che salta da un atomo al vicino lungo una fila di atomi di supporto (ancilla). Ogni salto dura una frazione di microsecondo, contro i tempi molto più lunghi del movimento fisico con gli AOD."
+    }
+  ],
+  "disjoint-relay": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "buffer disgiunti",
+      "definedIn": "p0014",
+      "definition": "Due porte possono usare il fabric nello stesso momento solo se passano da buffer diversi. Lo scheduler di BRIDGE-F prenota i buffer per ogni porta e ne evita i conflitti; il numero di catene contemporanee (\"cap\") è il parametro studiato in RQ5."
+    }
+  ],
+  "double-pushout": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "double pushout",
+      "definedIn": "p0024",
+      "definition": "Un metodo formale, dalla teoria delle categorie, per definire con precisione cosa vuol dire \"sostituire un sottografo con un altro\" in un grafo più grande, senza rompere i collegamenti col resto. t|ket⟩ lo usa per applicare le riscritture, mentre la ricerca dei pattern è fatta con un algoritmo su misura per velocità."
+    }
+  ],
+  "dqc": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "calcolo quantistico distribuito",
+      "definedIn": "p0007",
+      "definition": "L'idea di dividere un algoritmo quantistico troppo grande su più processori quantistici. Il circuit cutting è un modo per farlo: i pezzi vengono eseguiti su processori diversi (o sullo stesso, in momenti diversi) e i risultati si ricombinano con un computer classico."
+    }
+  ],
+  "dt-channel": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "canali DT",
+      "definedIn": "p0029",
+      "definition": "Il \"binario\" lungo cui viaggia l'eccitazione: una catena di atomi ancilla disposti a distanza precisa nella zona di entanglement. Va costruito prima, spostando atomi con l'AOD. Tenerne pronti per ogni coppia di qubit costerebbe troppo spazio, quindi il compilatore decide quali canali costruire e, nella versione dinamica, li allunga, accorcia o devia man mano."
+    }
+  ],
+  "dual-species": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "due specie",
+      "definedIn": "p0056",
+      "definition": "Array che contengono due tipi di atomi diversi (ad esempio rubidio e cesio), utili per far interagire atomi con ruoli diversi o misurare l'uno senza disturbare l'altro. Il riordino è molto più difficile: gli atomi non sono più intercambiabili, e un atomo del tipo sbagliato può bloccare la strada o il posto a un altro."
+    },
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "doppia specie",
+      "definedIn": "p0008",
+      "definition": "Array con due tipi di atomi: rubidio (Rb) per i dati e cesio (Cs) per i buffer. Poiché rispondono a frequenze laser diverse, si può agire sui buffer senza toccare i dati, e le distanze di interazione si possono regolare separatamente per ogni coppia di specie. È il \"substrato\" che rende possibile il fabric."
+    }
+  ],
+  "dynamic-code": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "codice dinamico",
+      "definedIn": "p0014",
+      "definition": "Il punto di vista del paper: un circuito è un codice che cambia nel tempo. Ogni gate Clifford non \"calcola\" ma cambia il modo in cui l'informazione è distribuita sui qubit fisici (la ricodifica). Invece di codificare, ruotare e decodificare ogni volta, si può restare nella codifica corrente e applicare direttamente la rotazione successiva dove le etichette dicono che ha l'effetto voluto."
+    }
+  ],
+  "dynamical-decoupling": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "disaccoppiamento dinamico",
+      "definedIn": "p0063",
+      "definition": "Una tecnica che protegge i qubit inattivi applicando periodicamente impulsi che \"annullano\" gli effetti del rumore lento. Qui una bella coincidenza: le rotazioni globali alternate della QFT fanno già da sequenza di disaccoppiamento, e il modello assume che venga applicato in tutti i periodi di inattività."
+    }
+  ],
+  "enola": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "Enola",
+      "definedIn": "p0036",
+      "definition": "Un compilatore per atomi neutri che ottimizza congiuntamente posizionamento e movimenti (con edge-coloring e ricerca stocastica). Dà ottimi layout sui circuiti piccoli, ma il tempo di compilazione esplode: già a 25 qubit raggiunge il timeout di 10⁴ secondi (Fig. 1a). È l'esempio del \"muro\" che ARGON vuole superare."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "Enola",
+      "definedIn": "p0138",
+      "definition": "Un compilatore per atomi neutri allo stato dell'arte, usato come terzo termine di confronto insieme a ZAC e ZAP."
+    },
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "Enola",
+      "definedIn": "p0019",
+      "definition": "Uno dei compilatori per atomi neutri \"a riconfigurazione\" usati come confronto. Rivalutato con lo stesso modello di errore, ha una fedeltà media geometrica circa 16 volte più bassa di BRIDGE-F sui 22 circuiti."
+    }
+  ],
+  "entanglement": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "entanglement",
+      "definedIn": "p0019",
+      "definition": "Il legame quantistico tra qubit per cui lo stato di uno non si può descrivere senza gli altri. Nel paper conta in modo molto pratico: più un circuito crea entanglement tra molti qubit (è \"intrecciato\"), più è difficile tagliarlo, perché ogni taglio spezza legami che poi vanno ricostruiti a caro prezzo."
+    }
+  ],
+  "entangling-zone": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "zona di entangling",
+      "definedIn": "p0075",
+      "definition": "Regione dedicata dove le righe (o colonne) trasportate vengono avvicinate entro il raggio di blocco di Rydberg per eseguire i C-Z. La separazione tra zona di memoria/addressing e zona di entangling è ciò che rende il trasporto l'operazione dominante per costo ed errore."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "zona di entanglement",
+      "definedIn": "p0023",
+      "definition": "L'area dove si eseguono le porte a due qubit con i laser di Rydberg. Nel paper è anche dove vengono costruiti i canali DT, con atomi a 4–8 μm di distanza."
+    }
+  ],
+  "euler-decomposition": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "decomposizione di Eulero",
+      "definedIn": "p0025",
+      "definition": "Qualsiasi operazione su un singolo qubit si può scrivere come tre rotazioni attorno a due assi alternati (es. Z-X-Z oppure X-Z-X), come gli angoli di Eulero per le rotazioni 3D. t|ket⟩ fonde sequenze di porte a singolo qubit in un'unica unitaria e la riscrive in questa forma, scegliendo gli assi più comodi per il contesto."
+    }
+  ],
+  "euler-equation": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "equazione di Eulero",
+      "definedIn": "p0085",
+      "definition": "Quando due Pauli gadget P e Q non commutano, non si possono scambiare. Però una sequenza P-Q-P (con certi angoli) si può sempre riscrivere come Q-P-Q (con altri angoli). È la stessa idea della decomposizione di Eulero delle rotazioni, applicata a gadget su più qubit."
+    }
+  ],
+  "fake-backend": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "FakePrague",
+      "definedIn": "p0030",
+      "definition": "I \"dispositivi finti\" di Qiskit: simulazioni che copiano numero di qubit, collegamenti e rumore di chip IBM reali (Prague, Auckland, Mumbai, Melbourne). Il paper li usa per confrontare dispositivi diversi senza accedere all'hardware vero."
+    }
+  ],
+  "fermion-qubit-mapping": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "mappatura dei qubit",
+      "definedIn": "p0415",
+      "definition": "Il modo di tradurre gli operatori della chimica (che parlano di elettroni, cioè fermioni) in operatori sui qubit. Jordan-Wigner, Parity e Bravyi-Kitaev sono tre ricette diverse: cambiano la lunghezza delle stringhe di Pauli risultanti, e quindi quante porte servono."
+    }
+  ],
+  "fidelity": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "fedeltà",
+      "definedIn": "p0024",
+      "definition": "Un numero tra 0 e 1 che dice quanto il risultato ottenuto su un dispositivo reale (rumoroso) somiglia a quello ideale. 1 vuol dire identico, valori bassi vogliono dire che il rumore ha rovinato il calcolo. È la misura principale con cui il paper confronta dispositivi e strategie di taglio."
+    }
+  ],
+  "fidelity-model": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "modello di fedeltà",
+      "definedIn": "p0086",
+      "definition": "La stima (Eq. 7) di quanto il circuito compilato riuscirà bene sull'hardware: il prodotto delle probabilità di successo di ogni gate a due qubit, di ogni atomo inattivo \"disturbato\" da uno stage di Rydberg, di ogni trasferimento tra trappole, e della decoerenza dovuta al tempo totale. Permette di attribuire i guadagni di ARGON ai singoli fattori (Fig. 9)."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "modello di fedeltà",
+      "definedIn": "p0074",
+      "definition": "La formula (Eq. 3) con cui si stima la probabilità di successo di un circuito compilato: il prodotto delle fedeltà delle rotazioni globali, delle CZ, del disturbo di Rydberg sugli atomi inattivi, dei trasferimenti tra trappole e della decoerenza durante i tempi di attesa (idling). Gli errori dello spostamento sono inclusi nell'idling."
+    }
+  ],
+  "flow-label": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "etichette di flusso",
+      "definedIn": "p0019",
+      "definition": "Le annotazioni del formalismo: sopra ogni filo j si scrive l'etichetta X e sotto l'etichetta Z. Ciascuna dice quale operatore logico si ottiene applicando in quel punto una X o una Z fisica su quel qubit. Ad esempio \"⟨12⟩3\" vuol dire X̄₁X̄₂Z̄₃. Si aggiornano gate per gate con regole semplici (Fig. 1b)."
+    }
+  ],
+  "flow-tableau": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "tableau di flusso",
+      "definedIn": "p0300",
+      "definition": "La versione in tabella delle etichette di flusso: ogni riga contiene, in forma vettoriale, l'etichetta di un generatore. Contiene la stessa informazione delle etichette sul circuito, ma in forma adatta al calcolo e alle dimostrazioni. Il \"tableau combinato\" aggiunge le fasi Clifford e permette di ottenere anche il tableau di Clifford senza invertire nulla."
+    }
+  ],
+  "forster-resonance": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "risonanze di Förster",
+      "definedIn": "p0045",
+      "definition": "Un effetto fisico che si può sfruttare scegliendo bene gli stati di Rydberg: rafforza l'interazione tra rubidio e cesio e indebolisce quella tra due rubidi. Così i dati parlano coi buffer ma non direttamente tra loro, come serve alla geometria del fabric."
+    }
+  ],
+  "four-thirds-optimality": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "4/3-ottimalità",
+      "definedIn": "p0041",
+      "definition": "Garanzia per i gate di Pauli: Δ = min delle tre espansioni ≤ ⅔(r₁+r₂+r₃) ≤ ⁴⁄₃·rank(T), dove l'ultimo passo usa rank(T) ≥ (r₁+r₂+r₃)/2 (Lemma 8 di [19], App. A). La Sez. IV.B la verifica esaustivamente su array fino a 5×6."
+    }
+  ],
+  "fourier-arithmetic": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "aritmetica quantistica nello spazio di Fourier",
+      "definedIn": "p0241",
+      "definition": "Applicazioni future delle PTN. Molte operazioni aritmetiche (somma, moltiplicazione) si fanno come QFT → rotazioni di fase → QFT inversa (ad esempio l'adder di Draper), quindi beneficiano direttamente di una QFT efficiente. Anche i circuiti IQP, fatti di porte che commutano, si compilano naturalmente con le PTN."
+    }
+  ],
+  "fpqa": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "FPQA",
+      "definedIn": "p0048",
+      "definition": "Field-Programmable Qubit Array: un modo di vedere gli array di atomi neutri come hardware \"riprogrammabile\", in cui la connettività si crea spostando atomi. Q-Pilot è un compilatore FPQA che usa atomi mobili come risorse temporanee di instradamento, ed è da lì che il paper prende l'idea degli ancilla volanti."
+    }
+  ],
+  "gaussian-elimination": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "eliminazione gaussiana",
+      "definedIn": "p0030",
+      "definition": "Riduzione a scala per righe su GF(2): TᵣM = Σ eₜvₜᵀ, da cui uₜ = Tᵣ⁻¹eₜ dà una decomposizione con k = rango termini. È ottima perché GF(2) è un campo; su Z4/Z8, che sono anelli, non basta, da cui gli algoritmi a due stadi."
+    }
+  ],
+  "generators": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "generatori",
+      "definedIn": "p0020",
+      "definition": "I \"mattoni\" da cui si ottiene per prodotto ogni operatore di Pauli: la fase i, e X e Z su ogni qubit (2n+1 in tutto). Si tracciano solo le etichette dei generatori, e quella di qualsiasi altro operatore si ricava moltiplicando."
+    }
+  ],
+  "gf2-rank": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "rango GF(2)",
+      "definedIn": "p0030",
+      "definition": "Rango della matrice binaria M sul campo con due elementi (somma = XOR). Per G={I,X} self-inverso è esattamente il numero minimo di addressing layer, calcolabile con eliminazione gaussiana in tempo polinomiale. È il mattone di tutti gli altri casi: Pauli (due slice), fase e π/8 (stadi mod 2 successivi), C-Z allineati (per gruppo di colonne)."
+    }
+  ],
+  "global-rotation": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "rotazioni globali",
+      "definedIn": "p0059",
+      "definition": "In molti processori ad atomi neutri le rotazioni attorno ad assi nel piano XY (come quelle che servono per le porte Hadamard) si possono fare solo su tutto l'array insieme. Rotazioni locali si ottengono combinando rotazioni Z locali con rotazioni globali. La versione CZSWAP della QFT dimezza circa il numero di queste rotazioni globali."
+    }
+  ],
+  "gnn-placement": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "GNN",
+      "definedIn": "p0062",
+      "definition": "Una Graph Neural Network: una rete neurale che lavora direttamente su grafi. In ARGON riceve la griglia di atomi, i gate del layer corrente e (attenuati da γ) quelli futuri, e stima quanto costerà in movimenti ciascun layout candidato. Il compilatore sceglie il layout col costo predetto più basso con un solo passaggio della rete, invece di una ricerca costosa."
+    }
+  ],
+  "graph-coloring": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "colorazione di grafi",
+      "definedIn": "p0083",
+      "definition": "Assegnare un \"colore\" a ogni nodo di un grafo in modo che nodi collegati abbiano colori diversi. Qui i nodi sono traiettorie AOD e gli archi i conflitti: ogni colore è un gruppo di movimenti eseguibili insieme, quindi meno colori vuol dire meno passi di trasporto. Enola usa invece l'edge-coloring sui gate."
+    }
+  ],
+  "group-and-reduce": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "raggruppa-ed-elimina",
+      "definedIn": "p0092",
+      "definition": "Metodo per C-Z allineati su m righe: la matrice binaria m×n(n−1)/2 viene divisa in gruppi di colonne a intervalli disgiunti (colorazione), e ogni gruppo si realizza con rango-GF(2)-molti trasporti. Riga-per-riga (mᵢ=1) e raggruppa-ed-elimina (k=1) sono i due estremi della prospettiva unificata dell'Oss. II.4; in Fig. 9 hanno prestazioni quasi identiche."
+    }
+  ],
+  "handover": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "handover",
+      "definedIn": "p0084",
+      "definition": "Il passaggio di un atomo dalla trappola fissa (SLM) a quella mobile (AOD) e ritorno. Ogni spostamento ne richiede due, e ognuno ha una probabilità di errore non trascurabile: è la parte più costosa di un piccolo spostamento, e il motivo per cui i compilatori che muovono atomi a ogni porta accumulano tanti errori."
+    }
+  ],
+  "heisenberg-model": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "modello di Heisenberg",
+      "definedIn": "p0066",
+      "definition": "Un modello fisico di spin con interazioni XX + YY + ZZ tra vicini. È l'esempio del paper (Fig. 2b): con un qubit ausiliario e le etichette di flusso si trova una codifica in cui tutti e tre i termini si applicano in parallelo con rotazioni su singoli qubit."
+    }
+  ],
+  "hellinger-fidelity": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "fedeltà di Hellinger",
+      "definedIn": "p0024",
+      "definition": "Il modo specifico usato nel paper per calcolare la fedeltà: si confrontano, risultato per risultato, le probabilità ottenute nell'esecuzione ideale e in quella rumorosa (Equazione 1). Se le due distribuzioni coincidono vale 1."
+    }
+  ],
+  "heuristic-routing": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "instradamento euristico",
+      "definedIn": "p0081",
+      "definition": "La fase finale di ARGON: traduce i layout scelti in movimenti AOD concreti. Rompe i cicli di dipendenza parcheggiando temporaneamente un qubit (deadlock), poi raggruppa i movimenti compatibili in \"slice\" parallele colorando un grafo dei conflitti tra traiettorie."
+    }
+  ],
+  "hop": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "hop",
+      "definedIn": "p0039",
+      "definition": "Un singolo salto dell'eccitazione da un atomo ancilla al vicino: un breve cambio di frequenza del laser seguito da due impulsi π. Dura circa 0.256 μs, quindi un percorso di L passi costa L volte tanto, sia all'andata sia al ritorno."
+    }
+  ],
+  "hotspot": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "hotspot",
+      "definedIn": "p0071",
+      "definition": "I punti critici dello schedule statico: catene di relay molto lunghe, zone di buffer congestionate, interazioni che ritardano molte porte successive. BRIDGE-F li registra durante lo scheduling e BRIDGE-H considera spostamenti fisici solo per questi."
+    }
+  ],
+  "hungarian-algorithm": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "algoritmo ungherese",
+      "definedIn": "p0064",
+      "definition": "Un algoritmo classico che assegna in modo ottimale \"chi va dove\" dato un costo per ogni combinazione. Qui assegna gli atomi ancilla alle posizioni del canale, minimizzando la distanza percorsa e preferendo riusare atomi già vicini."
+    },
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "Hungarian",
+      "definedIn": "p0029",
+      "definition": "Un algoritmo classico di assegnamento: abbina ogni posto vuoto del target a un atomo in eccesso in modo da minimizzare la distanza totale percorsa (il problema LSAP). Poi sposta gli atomi uno alla volta, quindi percorre poca strada, ma senza parallelismo il tempo cresce più che linearmente, circa N^1.45."
+    }
+  ],
+  "ilp": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "ILP",
+      "definedIn": "p0023",
+      "definition": "Instruction-Level Parallelism, preso in prestito dall'architettura dei processori classici: quanti gate a due qubit si possono eseguire nello stesso stage di Rydberg senza violare i raggi di restrizione. Massimizzarlo riduce gli stage e quindi gli errori; ARGON lo garantisce precalcolando layout ad alta densità."
+    }
+  ],
+  "increasing-subsequences": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "sottosequenze strettamente crescenti",
+      "definedIn": "p0111",
+      "definition": "Per C-Z tra due righe, (a₁,a₂) e (b₁,b₂) sono compatibili sse (a₁−b₁)(a₂−b₂) > 0, cioè le connessioni non si incrociano. Ordinando per la prima coordinata, ogni trasporto è una sottosequenza strettamente crescente della seconda; il minimo numero di trasporti si ottiene con un greedy in O(m log m), duale della più lunga sottosequenza non crescente."
+    }
+  ],
+  "inside-out": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "InsideOut",
+      "definedIn": "p0062",
+      "definition": "L'algoritmo per due specie proposto nel paper. Costruisce il target dal centro verso l'esterno, \"strato per strato\" (anelli quadrati concentrici): per ogni strato prima spinge fuori gli atomi sbagliati, poi lo riempie con quelli giusti presi dall'esterno. Gli strati completati non vengono più toccati, così non si creano blocchi, e il tasso di successo resta al 100% per ogni probabilità di caricamento."
+    }
+  ],
+  "interaction-graph": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "grafi di interazione",
+      "definedIn": "p0043",
+      "definition": "Un disegno del circuito in cui ogni qubit è un punto e due punti sono collegati se i relativi qubit fanno operazioni insieme. Circuiti \"sparsi\" come BV hanno pochi collegamenti e si tagliano facilmente; circuiti \"densi\" come Effi_full hanno quasi tutti i punti collegati. DAScut lo usa per decidere dove tagliare."
+    }
+  ],
+  "interaction-radius": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "raggio di interazione",
+      "definedIn": "p0048",
+      "definition": "La distanza massima (Rint, 6 μm nella valutazione) entro cui due atomi possono eseguire un gate a due qubit tramite interazione di Rydberg. Definisce quali coppie di posizioni sulla griglia sono \"collegabili\"."
+    }
+  ],
+  "interval-graph-coloring": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "colorazione di grafi a intervalli",
+      "definedIn": "p0091",
+      "definition": "Ogni C-Z allineato (a,b) è l'intervallo aperto (a,b); due gate stanno nello stesso trasporto sse gli intervalli sono disgiunti, perché l'AOD preserva l'ordine. Minimo numero di trasporti su una riga = numero cromatico del grafo a intervalli, calcolabile in tempo polinomiale (grafi perfetti, greedy per estremo sinistro)."
+    }
+  ],
+  "inward-outward": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "coniugazione verso l'interno",
+      "definedIn": "p0051",
+      "definition": "Due modi di aggiornare il calcolo quando si aggiunge un gate in fondo al circuito. \"Verso l'esterno\": si avvolge il risultato precedente con il nuovo gate da fuori, ed è naturale per il tracking covariante. \"Verso l'interno\": si inserisce il nuovo gate dentro, vicino all'operatore, ed è naturale per il tracking controvariante. Usare quello \"sbagliato\" costa sempre di più a ogni gate."
+    }
+  ],
+  "iswap": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "iSWAP",
+      "definedIn": "p0042",
+      "definition": "Una porta a due qubit che scambia i qubit aggiungendo una fase. La DCNOT si può scrivere come una sola iSWAP più rotazioni locali, ed è equivalente alla CZSWAP a meno di rotazioni S†: per questo il paper usa direttamente la CZSWAP."
+    }
+  ],
+  "kak": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "decomposizione KAK",
+      "definedIn": "p0026",
+      "definition": "Un teorema che permette di riscrivere qualsiasi operazione su due qubit, per quanto lunga la sequenza di porte che la compone, in una forma canonica con al massimo tre porte ∧X più rotazioni a singolo qubit."
+    }
+  ],
+  "kinematic-constraints": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "vincoli cinematici",
+      "definedIn": "p0030",
+      "definition": "Le regole fisiche che governano come l'AOD può muovere gli atomi: righe e colonne AOD non possono incrociarsi né fondersi, quindi non tutti gli spostamenti desiderati sono possibili contemporaneamente. Un layout scelto senza guardare avanti può \"intrappolare\" i qubit in posizioni che rendono i passi successivi pieni di conflitti."
+    }
+  ],
+  "ladder": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "scala di ∧X",
+      "definedIn": "p0064",
+      "definition": "Il modo \"ingenuo\" di costruire un phase gadget: una catena di ∧X in sequenza, ognuna dal qubit successivo verso l'ultimo, poi la rotazione, poi la catena al contrario. Usa 2(n−1) porte ∧X in profondità 2(n−1), cioè cresce linearmente col numero di qubit. È la forma generata, ad esempio, da Qiskit Aqua per i circuiti UCC."
+    }
+  ],
+  "lazy-move": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "lazy-move",
+      "definedIn": "p0016",
+      "definition": "Il principio guida del paper: \"muoviti solo se ne vale davvero la pena\". Invece di spostare gli atomi per ogni porta a due qubit, come fanno i compilatori attuali, si compila prima tutto il circuito con gli atomi fermi, facendo passare le interazioni attraverso atomi di supporto, e poi si aggiungono pochi spostamenti mirati solo dove migliorano la fedeltà complessiva."
+    }
+  ],
+  "lbap": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "LBAP",
+      "definedIn": "p0037",
+      "definition": "Linear Bottleneck Assignment Problem (o, nel linguaggio dei grafi, minimum bottleneck matching): come LSAP, ma minimizza la distanza più lunga che un singolo atomo deve fare invece della somma. Se tutti gli atomi si muovessero insieme, quella distanza massima fisserebbe il tempo minimo possibile, da cui il limite inferiore Z*."
+    }
+  ],
+  "line-graph": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "grafo lineare",
+      "definedIn": "p0072",
+      "definition": "Un diagramma con un solo ingresso e una sola uscita in cui i nodi formano una catena, ciascuno con due collegamenti: è la forma di ogni circuito a un qubit tradotto in ZX."
+    }
+  ],
+  "logical-physical-operator": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "operatori logici",
+      "definedIn": "p0018",
+      "definition": "La distinzione di base del paper: un operatore \"fisico\" è ciò che si applica davvero a un qubit del circuito (scritto senza barra, es. Z₂); il suo effetto \"logico\" è cosa fa all'informazione codificata (scritto con la barra, es. Z̄₁Z̄₂). Le etichette sono esattamente la traduzione dall'uno all'altro."
+    }
+  ],
+  "lower-bound": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "Z*",
+      "definedIn": "p0035",
+      "definition": "Il limite teorico sotto cui nessun algoritmo di riordino può scendere: il tempo necessario perché l'atomo più lontano raggiunga il suo posto, supponendo di poter muovere tutti gli atomi insieme. Cresce come √N, mentre gli algoritmi reali stanno tra N^0.84 (Balance and Compact) e N^1.45 (Hungarian): c'è molto margine di miglioramento."
+    }
+  ],
+  "lsap": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "LSAP",
+      "definedIn": "p0029",
+      "definition": "Linear Sum Assignment Problem: dati dei costi (qui le distanze) tra ogni posto vuoto e ogni atomo disponibile, trovare l'abbinamento uno-a-uno col costo totale minimo. È quello che risolve il metodo Hungarian."
+    }
+  ],
+  "m-patch": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "patch",
+      "definedIn": "p0126",
+      "definition": "Un blocco rettangolare di m atomi su cui si esegue una delle piccole QFT che compongono l'OQFT (con una PTN a scala). Due patch vicini si uniscono per le QFT su 2m qubit, e per far incontrare patch non vicini si trasla in blocco un'intera colonna di patch con l'AOD, un'operazione naturale per questo hardware."
+    }
+  ],
+  "makespan": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "tempo totale di esecuzione",
+      "definedIn": "p0009",
+      "definition": "Il \"Makespan\": il tempo che passa dall'inizio alla fine di tutto il lavoro, cioè finché l'ultimo pezzo di circuito è stato eseguito e ricombinato. È una delle metriche che DAScut vuole ridurre, insieme alla fedeltà e al numero di lavori completati per unità di tempo."
+    }
+  ],
+  "mis": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "Massimo Insieme Indipendente",
+      "definedIn": "p0049",
+      "definition": "Problema classico sui grafi: scegliere il maggior numero di nodi senza che due scelti siano collegati. Qui i nodi sono i possibili gate e gli archi le coppie di gate in conflitto (zone di esclusione sovrapposte), quindi un MIS è il layout con più gate paralleli possibile (Eq. 1)."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "MIS",
+      "definedIn": "p0047",
+      "definition": "Maximal Independent Set: tra tutti i movimenti da fare, si sceglie un gruppo il più grande possibile di movimenti che non entrano in conflitto tra loro (per l'AOD), e li si esegue insieme. Si ripete finché i movimenti non sono finiti."
+    }
+  ],
+  "ml-warm-start": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "warm-start",
+      "definedIn": "p0072",
+      "definition": "Un piccolo modello di machine learning che propone un buon posizionamento iniziale, da cui il CBO parte invece che da soluzioni casuali. È addestrato da solo (self-supervised) su posizionamenti casuali valutati per \"utilità geometrica\", e rende il placement più veloce e migliore sui circuiti grandi."
+    }
+  ],
+  "motional-heating": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "riscaldamento del moto",
+      "definedIn": "p0079",
+      "definition": "Quando si sposta un atomo, lo si \"scuote\" un po': aumenta la sua energia di vibrazione nella trappola. Un atomo più \"caldo\" rende meno precise le porte successive. Cresce con la distanza e con la velocità dello spostamento."
+    }
+  ],
+  "move-budget": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "budget di mobilità",
+      "definedIn": "p0059",
+      "definition": "Il numero massimo K di spostamenti fisici che BRIDGE-H può usare. Gli esperimenti mostrano rendimenti molto decrescenti: circa 30 spostamenti catturano tutto il beneficio (tempo medio da 826 a 518 μs), e oltre non serve."
+    }
+  ],
+  "move-parallelization": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "parallelizzazione delle mosse",
+      "definedIn": "p0190",
+      "definition": "Il procedimento che prende una lista di mosse di singoli atomi e prova a raggrupparle in comandi AOD eseguibili insieme. Un gruppo è accettato solo se eseguire le mosse in parallelo dà lo stesso risultato che eseguirle una dopo l'altra, cioè se nessun atomo viene trascinato o urtato per errore."
+    }
+  ],
+  "move-segment": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "segmento di mossa",
+      "definedIn": "p0028",
+      "definition": "L'unità elementare di movimento: un singolo comando agli AOD che sposta contemporaneamente tutti i tweezer attivi di al massimo un sito (in orizzontale, in verticale o in diagonale). Un riordino è una sequenza di questi segmenti, e il suo tempo totale è la somma delle loro durate."
+    }
+  ],
+  "multiprogramming": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "più algoritmi piccoli insieme",
+      "definedIn": "p0007",
+      "definition": "La \"multiprogrammazione\": far girare contemporaneamente più circuiti piccoli sullo stesso processore quantistico, usando qubit diversi, per non lasciare qubit inutilizzati. È l'altra faccia del problema rispetto al calcolo distribuito, che invece divide un circuito grande su più processori."
+    }
+  ],
+  "naive-baseline": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "strategia naive",
+      "definedIn": "p0033",
+      "definition": "Il riferimento di confronto: gate a singolo qubit applicati riga per riga o colonna per colonna (fino a min(m,n) layer per gruppo), C-Z implementati uno alla volta o per righe. I guadagni del paper (fino a 2× sugli addressing layer, ~2× sui trasporti) sono misurati contro questo baseline, non contro altri compilatori."
+    }
+  ],
+  "native-gate-set": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "operazioni native",
+      "definedIn": "p0020",
+      "definition": "L'elenco (piccolo) di operazioni che un certo processore quantistico sa fare direttamente, ad esempio {rz, sx, x, cx} per i chip superconduttori IBM. Qualsiasi altra operazione del circuito va riscritta come combinazione di queste durante la transpilazione."
+    }
+  ],
+  "neutral-atom-array": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "atomi neutri",
+      "definedIn": "p0008",
+      "definition": "Piattaforma a qubit codificati in atomi intrappolati da tweezer ottici su una griglia 2D riconfigurabile. Il modello di controllo assunto qui è a righe/colonne: gate a singolo qubit tramite fasci laser incrociati (addressing layer), entangling tramite trasporto AOD in una entangling zone e interazione di Rydberg. I costi da minimizzare sono quindi il numero di addressing layer e di trasporti, non SWAP."
+    },
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "atomi neutri",
+      "definedIn": "p0026",
+      "definition": "Computer quantistici in cui ogni qubit è un singolo atomo (tutti identici per natura), tenuto fermo nel vuoto da una \"pinzetta\" di luce laser. Gli atomi stanno su una griglia e, a differenza dei chip superconduttori con collegamenti fissi, possono essere spostati durante il calcolo. Questo dà connettività flessibile, ma obbliga il compilatore a pianificare i movimenti."
+    }
+  ],
+  "nisq": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "NISQ",
+      "definedIn": "p0015",
+      "definition": "Noisy Intermediate-Scale Quantum: la generazione attuale di computer quantistici, con un numero limitato di qubit (decine o centinaia) e tanto \"rumore\", cioè errori che si accumulano a ogni operazione. Per questo i circuiti grandi e profondi danno risultati peggiori, ed è utile spezzarli."
+    },
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "NISQ",
+      "definedIn": "p0005",
+      "definition": "Noisy Intermediate-Scale Quantum: gli attuali computer quantistici con poche decine o centinaia di qubit, rumorosi e senza correzione d'errore. Ogni porta in più accumula errori, per questo conta tanto ridurre il numero di porte e la profondità dei circuiti."
+    }
+  ],
+  "noise-model": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "modello di rumore",
+      "definedIn": "p0021",
+      "definition": "Una descrizione, ricavata dalle misure di calibrazione di un chip reale, di quanto spesso e come sbagliano le sue operazioni. Permette di simulare su un computer normale come si comporterebbe il circuito su quel chip, senza usarlo davvero."
+    }
+  ],
+  "non-planar-map": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "mappe non planari",
+      "definedIn": "p0022",
+      "definition": "La struttura dati con cui t|ket⟩ rappresenta un circuito: un grafo diretto in cui gli archi entranti in ogni nodo sono ordinati (per distinguere, ad esempio, controllo e target di una ∧X). Conserva solo chi è collegato a chi, non la posizione dei qubit né la temporizzazione."
+    }
+  ],
+  "offline-layout-library": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "libreria offline di layout",
+      "definedIn": "p0045",
+      "definition": "Un catalogo, calcolato una volta sola per un dato hardware, di disposizioni di gate a due qubit che rispettano tutti i raggi di interazione e restrizione e hanno la massima densità possibile. A tempo di compilazione ARGON non verifica più la geometria: sceglie tra questi layout certificati."
+    }
+  ],
+  "one-way-model": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "modello one-way",
+      "definedIn": "p0127",
+      "definition": "Un modo alternativo di fare calcolo quantistico: si prepara uno stato molto intrecciato su un grafo e poi si misurano i qubit uno alla volta. Il concetto di flusso causale nasce lì, e il paper lo riusa per riconoscere quando un diagramma ZX è un circuito."
+    }
+  ],
+  "open-graph": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "grafi aperti",
+      "definedIn": "p0036",
+      "definition": "La struttura dati con cui è formalizzato lo ZX-calculus: grafi che possono avere archi \"aperti\" verso l'esterno (gli ingressi e le uscite del circuito). \"Framed\" vuol dire che gli ingressi e le uscite hanno un ordine. Due diagrammi sono uguali se sono lo stesso grafo, a prescindere da come sono disegnati."
+    }
+  ],
+  "optical-tweezer": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "tweezer ottici",
+      "definedIn": "p0008",
+      "definition": "Trappole di dipolo generate da fasci laser focalizzati, ciascuna delle quali tiene un singolo atomo. La griglia statica (SLM) fissa il layout; i tweezer mobili dell'AOD estraggono e spostano sottoinsiemi riga×colonna di atomi."
+    },
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "tweezer ottici",
+      "definedIn": "p0026",
+      "definition": "Fasci laser molto focalizzati che intrappolano ciascuno un atomo, come una pinzetta di luce. Due sistemi li generano: l'SLM crea la griglia di trappole fisse, l'AOD crea trappole mobili che raccolgono e spostano gli atomi."
+    },
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "tweezer",
+      "definedIn": "p0011",
+      "definition": "Fasci laser focalizzati che intrappolano ciascuno un singolo atomo, come una pinzetta di luce. Ci sono tweezer statici (una griglia fissa, generata dall'SLM) e tweezer mobili (generati dagli AOD) che raccolgono gli atomi e li spostano."
+    }
+  ],
+  "optimiser-phases": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "semplificazione",
+      "definedIn": "p0135",
+      "definition": "L'ottimizzatore alterna due fasi. Semplificazione: applica ovunque regole che riducono sempre il diagramma. Commutazione: con regole reversibili guidate da targeting e metrica, sposta i Pauli verso gli ingressi e i CNOT in modo da far comparire nuove occasioni di semplificazione. Una fase iniziale riscrive H e rotazioni −π/2 in S, V e Pauli; una finale riordina le porte a un qubit."
+    }
+  ],
+  "oqft": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "OQFT",
+      "definedIn": "p0115",
+      "definition": "Versioni \"alleggerite\" della QFT. L'AQFT (approssimata) elimina le rotazioni con angoli piccolissimi. L'OQFT (ottimistica) va oltre: si costruisce a blocchi di QFT esatte più piccole su gruppi di m qubit, accettando errori concentrati su pochi stati. Il numero di porte passa da quadratico a quasi lineare, e per molti qubit la fedeltà complessiva migliora molto."
+    }
+  ],
+  "ormd-pulse": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "ORMD",
+      "definedIn": "p0030",
+      "definition": "Off-Resonant Modulated Driving: il tipo di impulso laser, modulato e fuori risonanza, che realizza ogni passo del relay. Ha una durata τp di 0.1–1 μs e una fedeltà F_relay per impulso."
+    }
+  ],
+  "par-hungarian": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "ParHungarian",
+      "definedIn": "p0041",
+      "definition": "Una variante dell'Hungarian proposta nel paper: dopo l'abbinamento atomi-posti, invece di muovere un atomo alla volta prova a eseguire insieme i primi passi di tutti i percorsi, rimandando quelli che collidono. Migliora lo scaling (N^1.26 invece di N^1.45), ma resta lontano dagli algoritmi nativamente paralleli."
+    }
+  ],
+  "parity-code": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "codici di parità",
+      "definedIn": "p0068",
+      "definition": "I codici che si ottengono usando solo porte CNOT e qubit ausiliari inizializzati a |0⟩: le etichette sono solo prodotti di Z (come nella Parity Architecture). Le etichette di flusso permettono di generalizzarli a codici in cui le rotazioni singole hanno effetti logici con X, Y e Z qualsiasi."
+    }
+  ],
+  "parity-flow": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "flusso di parità",
+      "definedIn": "p0009",
+      "definition": "Il metodo proposto dal paper: si annota ogni filo di un circuito quantistico con etichette che dicono quale informazione logica porta quel qubit in quel momento. I gate Clifford (CNOT, Hadamard, S) diventano \"ricodifiche\" dell'informazione, e leggendo le etichette si capisce subito che effetto logico ha una rotazione applicata a un certo punto del circuito, senza fare calcoli di matrici."
+    }
+  ],
+  "parity-label": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "etichette di parità",
+      "definedIn": "p0017",
+      "definition": "Le etichette usate in lavori precedenti sulla Parity Architecture: dicono quale parità (XOR) di qubit logici è codificata su ogni qubit fisico. Se si tracciano solo porte CNOT, le etichette Z di questo paper coincidono esattamente con le etichette di parità; il flusso di parità le generalizza a tutti i gate Clifford."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "etichetta di parità",
+      "definedIn": "p0019",
+      "definition": "Un'annotazione che dice quale combinazione (parità, cioè XOR) di qubit logici è codificata in ogni qubit fisico in un certo momento. Una CNOT cambia queste etichette in modo prevedibile. Se un qubit porta l'etichetta \"i⊕j\", una semplice rotazione Z su di lui equivale a un'interazione tra i qubit logici i e j."
+    }
+  ],
+  "parity-twine-network": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "PTN",
+      "definedIn": "p0010",
+      "definition": "Parity Twine Network: un modo sistematico di costruire circuiti in cui ogni qubit deve interagire con tutti gli altri (come nella QFT) usando solo porte tra vicini. È una cascata di \"Twine chain\" di porte CNOT: facendo scorrere le parità dei qubit lungo la catena, ogni coppia logica si ritrova prima o poi su un qubit fisico, dove basta una rotazione singola. Si adatta a layout lineari, a scala o quadrati."
+    }
+  ],
+  "path-cover": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "copertura di cammini",
+      "definedIn": "p0134",
+      "definition": "L'insieme di cammini, dall'ingresso all'uscita, indicati dal flusso causale: ognuno è un qubit del circuito. Gli archi che non fanno parte di questi cammini collegano due qubit e diventano porte CNOT."
+    }
+  ],
+  "pauli": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "Pauli",
+      "definedIn": "p0059",
+      "definition": "Le porte X e Z (e Y); nei diagrammi sono nodi con angolo π. Nel paper hanno un ruolo speciale: si possono far \"scivolare\" attraverso altri nodi cambiando qualche segno (regola π-commute). L'ottimizzatore le spinge tutte verso gli ingressi del circuito, dove si raccolgono e si semplificano."
+    }
+  ],
+  "pauli-decomposition": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "decomposizione di Pauli",
+      "definedIn": "p0026",
+      "definition": "Scrivere un operatore come prodotto (con una fase) dei generatori scelti. È il passo di calcolo con cui si ricava la nuova etichetta dopo ogni gate: si decompone l'effetto del gate su ciascun generatore."
+    }
+  ],
+  "pauli-gadget": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "Pauli gadget",
+      "definedIn": "p0080",
+      "definition": "La generalizzazione del phase gadget a una stringa di Pauli qualsiasi (X, Y, Z mescolati). Si ottiene mettendo prima e dopo il phase gadget dei cambi di base a singolo qubit: Hadamard per X, X(π/2) per Y, niente per Z. Rappresenta l'esponenziale e^(-iα·P) di un operatore di Pauli P, cioè il mattone base delle simulazioni hamiltoniane."
+    }
+  ],
+  "pauli-group": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "gruppo di Pauli",
+      "definedIn": "p0035",
+      "definition": "A meno di fase globale, G={I,X,Y,Z} ≅ (Z2)² (XOR componente per componente). Il pattern diventa un tensore m×n×2 su GF(2) e la compilazione un problema di rango tensoriale; l'algoritmo del paper sceglie la migliore delle tre decomposizioni a due slice, garantendo 4/3-ottimalità."
+    },
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "gruppo di Pauli",
+      "definedIn": "p0084",
+      "definition": "L'insieme di tutti i prodotti di X, Y, Z (e identità) sui vari qubit, con una fase ±1 o ±i. È enorme (cresce esponenzialmente), ma basta tracciare 2n+1 \"generatori\" (le X e Z singole e la fase) per descriverlo tutto: è ciò che rende efficiente il formalismo."
+    }
+  ],
+  "pauli-rotation": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "rotazioni di Pauli",
+      "definedIn": "p0030",
+      "definition": "Rotazioni del tipo e^{iθP/2} con P un operatore di Pauli. Ogni operazione quantistica si può scrivere come sequenza alternata di circuiti Clifford e rotazioni di Pauli su singoli qubit (Eq. 5). Le rotazioni non si tracciano: le etichette dicono quale rotazione logica (anche su molti qubit) realizza una rotazione fisica su un solo qubit."
+    }
+  ],
+  "pauli-standard-form": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "forma Pauli-standard",
+      "definedIn": "p0076",
+      "definition": "Una forma normalizzata per un diagramma a un qubit (una catena di nodi): i nodi si alternano verde/rosso, nessuno ha angolo 0, e ci sono al più due nodi Pauli (angolo π), messi subito dopo l'ingresso. Portare tutto in questa forma è il passo intermedio per ridurre qualsiasi Clifford a 1 qubit a uno dei 24 di C1."
+    }
+  ],
+  "pauli-string": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "stringa di Pauli",
+      "definedIn": "p0099",
+      "definition": "Una sequenza di simboli I, X, Y, Z, uno per qubit (es. \"YYXY\"), che descrive un operatore di Pauli su più qubit. Il paper definisce una piccola algebra sulle stringhe: concatenazione st, lunghezza |s|, sottostringa (coincide dove non è I), prodotto punto-a-punto t•s e intersezione (qubit dove entrambe non sono I)."
+    }
+  ],
+  "peephole": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "peephole optimization",
+      "definedIn": "p0021",
+      "definition": "Il nome, preso dai compilatori classici, della tecnica di ottimizzazione che guarda un pezzetto di codice alla volta (\"dal buco della serratura\") e lo sostituisce con uno equivalente più economico. Nei circuiti quantistici la finestra può essere qualsiasi sottocircuito connesso, anche l'intero circuito."
+    }
+  ],
+  "phase-gadget": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "phase gadget",
+      "definedIn": "p0029",
+      "definition": "Un blocco multi-qubit che applica una rotazione di fase dipendente dalla parità (XOR) di più qubit. Nel circuito appare come una \"scala\" di porte ∧X che raccoglie la parità su un qubit, una rotazione Z(α) al centro, e la scala ripetuta al contrario. È la struttura \"macroscopica\" su cui si basa tutto il paper."
+    }
+  ],
+  "phase-gate": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "gate di fase",
+      "definedIn": "p0047",
+      "definition": "S = diag(1,i), gruppo ciclico {I,S,S²,S³} ≅ Z4. Compilato in due stadi: rango GF(2) di M mod 2, poi rango GF(2) del residuo M₂/2. Con k₁ ≤ r4(M) e k₂ = ρ4(M₂) ≤ 2·r4(M) si ottiene una garanzia 3-ottimale."
+    }
+  ],
+  "phase-polynomial": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "phase-polynomial",
+      "definedIn": "p0075",
+      "definition": "La classe di circuiti costruibili solo con porte ∧X e rotazioni di fase (come T). Il loro effetto si scrive come una fase che dipende da funzioni booleane lineari degli input, più una permutazione lineare degli stessi. Esiste molta letteratura per ottimizzarli, ma non gestisce bene i Pauli gadget, che in generale non commutano."
+    }
+  ],
+  "pi-pulse": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "impulso π",
+      "definedIn": "p0039",
+      "definition": "Un impulso laser di durata calibrata che fa ruotare completamente lo stato tra due livelli: un impulso π scambia \"acceso\" e \"spento\" (es. |1⟩↔|r⟩), un impulso 2π fa un giro completo e torna allo stato iniziale, ma lasciando un segno meno. È proprio quel segno, applicato solo se l'eccitazione è vicina, a realizzare la CZ."
+    }
+  ],
+  "powermove": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "PowerMove",
+      "definedIn": "p0089",
+      "definition": "Uno scheduler euristico ottimizzato per atomi neutri, usato come terzo baseline e configurato senza zona di storage per confrontarlo ad armi pari su un'architettura monolitica."
+    }
+  ],
+  "pre-use-qubits": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "pre-uso",
+      "definedIn": "p0065",
+      "definition": "Qubit del calcolo che entreranno in gioco solo più avanti nel circuito. Invece di lasciarli nella zona di stoccaggio e spostarli dopo, vengono caricati subito nella zona di entanglement e, finché non servono, fanno da atomi di passaggio per i canali DT."
+    }
+  ],
+  "qaoa-maxcut": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "QAOA",
+      "definedIn": "p0117",
+      "definition": "Circuito variazionale a p layer: per ogni arco del grafo un controlled-Zγ (fase ZZ), poi un mixer Rx(β). È il benchmark applicativo: controlled-Zγ simmetrici e commutanti permettono di riorganizzare il circuito per star forest in strati H–C-Z–H–Rz–H–C-Z–H, ognuno compilato con gli algoritmi della Sez. II."
+    }
+  ],
+  "qft": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "QFT",
+      "definedIn": "p0054",
+      "definition": "La trasformata di Fourier quantistica, un circuito molto usato. Per questo paper conta la sua struttura: in ogni momento pochi qubit interagiscono e le coppie attive \"scivolano\" lentamente lungo il circuito. Costruire canali per tutte le coppie sarebbe uno spreco, da cui la versione dinamica del compilatore."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "QFT",
+      "definedIn": "p0017",
+      "definition": "La trasformata di Fourier quantistica, un blocco base di molti algoritmi (Shor, stima di fase, aritmetica). Richiede che ogni qubit interagisca con tutti gli altri (n(n−1)/2 rotazioni controllate), quindi è il caso ideale per le PTN. Il paper la usa come banco di prova principale (fino a QFT30)."
+    }
+  ],
+  "qpu": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "QPU",
+      "definedIn": "p0019",
+      "definition": "Quantum Processing Unit: il \"chip\" quantistico vero e proprio, l'equivalente quantistico di una CPU o GPU. Nel paper le QPU sono diverse tra loro (numero di qubit, collegamenti, rumore) e il problema è decidere quale pezzo di circuito mandare a quale QPU."
+    }
+  ],
+  "quantomatic": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "Quantomatic",
+      "definedIn": "p0012",
+      "definition": "Un assistente di dimostrazione grafico per lo ZX-calculus: l'utente disegna un diagramma e applica regole di riscrittura, a mano o con procedure automatiche. Gli autori lo usano, fuori dal suo scopo originale interattivo, come ottimizzatore di circuiti completamente automatico, con il vantaggio che ogni ottimizzazione è anche una dimostrazione verificata."
+    }
+  ],
+  "qubit-layouts": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "layout a scala",
+      "definedIn": "p0024",
+      "definition": "Le disposizioni geometriche dei qubit considerate: lineare (una fila), a scala o \"ladder\" (due file parallele collegate) e quadrata (griglia 2D). Più connessioni permettono più rami nelle Twine chain e quindi meno porte a due qubit costose; la scala è il compromesso migliore ed è usata anche per la QFT ottimistica."
+    }
+  ],
+  "qubit-mapping": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "layout",
+      "definedIn": "p0022",
+      "definition": "La scelta di quale qubit fisico del chip ospita ciascun qubit \"logico\" del circuito. Una buona scelta mette vicini i qubit che interagiscono spesso e usa i qubit fisici più affidabili, riducendo SWAP ed errori."
+    }
+  ],
+  "rank-one-decomposition": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "decomposizione rank-one",
+      "definedIn": "p0024",
+      "definition": "M = Σₜ uₜvₜᵀ·Gₜ con uₜ∈{0,1}ᵐ, vₜ∈{0,1}ⁿ, Gₜ∈G e somma nella struttura di gruppo di G. Ogni termine è un addressing layer (o, per i C-Z, un trasporto), quindi il numero minimo di termini è la metrica di costo. A seconda di G diventa rango su GF(2), rango tensoriale su GF(2) o rango su Z4/Z8."
+    }
+  ],
+  "reconfiguration": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "riconfigurazione",
+      "definedIn": "p0007",
+      "definition": "L'approccio dominante dei compilatori attuali (come Enola e ZAP): spostare fisicamente gli atomi ogni volta che due qubit devono interagire. Funziona, ma ogni spostamento costa tempo e fedeltà (riscaldamento, handover), e questi costi si accumulano con la profondità del circuito. BRIDGE propone l'alternativa opposta."
+    }
+  ],
+  "reconstruction-overhead": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "ricostruzione",
+      "definedIn": "p0009",
+      "definition": "Il lavoro fatto da un computer normale, dopo l'esecuzione dei pezzi di un circuito tagliato, per rimettere insieme i risultati e ottenere quello del circuito intero. Richiede tempo e memoria, e cresce col numero di tagli e di sotto-circuiti. DAScut lo riduce evitando di rieseguire (e ricombinare) pezzi identici."
+    }
+  ],
+  "reinforcement-learning": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "reinforcement learning",
+      "definedIn": "p0078",
+      "definition": "Una tecnica di machine learning in cui un programma impara giocando molte partite e ricevendo un premio quando fa bene (così AlphaGo ha battuto i campioni di Go). Gli autori notano che un array a due specie somiglia a una scacchiera di Go e suggeriscono questa strada per trovare algoritmi di riordino non euristici."
+    }
+  ],
+  "relay-chain": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "lunghezza del relay",
+      "definedIn": "p0030",
+      "definition": "Quanti buffer intermedi deve attraversare un'interazione (L). Ogni passo richiede impulsi laser, ciascuno con una piccola probabilità di errore (fedeltà F_relay ≈ 0.997), quindi la fedeltà della porta decade esponenzialmente con L e il tempo cresce linearmente. Accorciare i relay è la leva principale di tutto il compilatore."
+    }
+  ],
+  "remote-cz": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "CZ remota",
+      "definedIn": "p0037",
+      "definition": "Una porta CZ tra due qubit lontani eseguita senza avvicinarli: il controllo \"lancia\" un'eccitazione di Rydberg lungo il canale DT, questa arriva accanto al target e ne condiziona la fase, poi torna indietro. Tempo totale ≈ 0.667 μs + 0.512 μs per ogni passo di distanza (Eq. 1)."
+    }
+  ],
+  "restriction-radius": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "raggio di restrizione",
+      "definedIn": "p0023",
+      "definition": "Il raggio (Rr, 12 μm nella valutazione) della \"zona di esclusione\" attorno a ogni gate a due qubit in esecuzione: nessun altro gate può avvenire lì dentro nello stesso momento, altrimenti i laser di Rydberg interferiscono (crosstalk). È il vincolo che limita quanti gate si possono fare in parallelo."
+    }
+  ],
+  "rewrite-rule": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "regola di riscrittura",
+      "definedIn": "p0105",
+      "definition": "Un'uguaglianza tra due diagrammi usata in una direzione: dove si trova il pattern di sinistra, lo si sostituisce con quello di destra. Il paper deriva regole nuove, dette \"circuit-to-circuit\", che trasformano sempre circuiti in circuiti, perché gli assiomi ZX di solito producono grafi che non sono più circuiti."
+    }
+  ],
+  "rf-tone": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "tono RF",
+      "definedIn": "p0145",
+      "definition": "Ogni riga o colonna di tweezer AOD corrisponde a una frequenza radio (tono) inviata al cristallo dell'AOD. Accendere, spegnere o \"rampare\" un tono verso la frequenza della riga vicina significa creare, togliere o spostare quella riga di tweezer."
+    }
+  ],
+  "rho4": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "ρ4(M)",
+      "definedIn": "p0055",
+      "definition": "Quantità ausiliaria: come r4 ma con u,v ∈ Z4 (moltiplicazione tra elementi ammessa), quindi ρ4 ≤ r4. Il Teorema/Lemma II.1 mostra che per M ∈ {0,2}ᵐˣⁿ vale ρ4(M) = rank_GF(2)(M/2), ed è ciò che rende calcolabile e limitato il secondo stadio."
+    }
+  ],
+  "rollout": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "rollout",
+      "definedIn": "p0075",
+      "definition": "Il modo in cui si creano i dati di addestramento: per un layer e un layout candidato si simula davvero, in modo lento e approfondito, il routing dei passi successivi e se ne misura il costo. Queste coppie (situazione, costo reale) insegnano alla GNN a stimare il costo senza simulare."
+    }
+  ],
+  "rydberg-antiblockade": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "antiblockade",
+      "definedIn": "p0028",
+      "definition": "Il fenomeno fisico che rende possibile il DT. Un atomo eccitato nello stato di Rydberg sposta i livelli energetici dei vicini: con un impulso laser tarato su quello spostamento, un vicino si eccita solo se c'è già un atomo eccitato accanto. È l'opposto del più noto \"blockade\", dove l'eccitazione del vicino è invece impedita."
+    }
+  ],
+  "rydberg-blockade": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "blocco di Rydberg",
+      "definedIn": "p0078",
+      "definition": "Meccanismo fisico dei gate entangling: due atomi entro il raggio di blocco non possono essere eccitati entrambi nello stato di Rydberg, e da qui si ottiene il C-Z. Il vincolo di compilazione che ne deriva: le coppie da entanglare vanno portate a distanza sub-blockade, tutte insieme per una coppia di righe adiacenti."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "raggio di blocco",
+      "definedIn": "p0049",
+      "definition": "La distanza entro cui due atomi devono trovarsi per eseguire una porta CZ con l'interazione di Rydberg. Nell'architettura mobile è il motivo per cui un atomo va portato vicino al partner: qui si usa d_int = 3 μm."
+    },
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "blocco di Rydberg",
+      "definedIn": "p0023",
+      "definition": "Il meccanismo fisico delle porte a due qubit negli atomi neutri: se un atomo è eccitato nello stato di Rydberg, un altro atomo abbastanza vicino (entro il \"raggio di blocco\" R_b) non può eccitarsi. Da qui nasce la porta CZ. L'interazione cala come 1/R⁶, quindi oltre R_b due atomi praticamente non interagiscono: è il limite di connettività che il fabric aggira."
+    }
+  ],
+  "rydberg-excitation": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "eccitazione di Rydberg",
+      "definedIn": "p0025",
+      "definition": "Uno stato in cui un elettrone dell'atomo è portato molto lontano dal nucleo, e l'atomo diventa \"grande\" e interagisce forte con i vicini. Nel DT è l'eccitazione stessa, non l'atomo, a trasportare l'informazione: c'è se il qubit di controllo vale 1, non c'è se vale 0."
+    }
+  ],
+  "rydberg-stage": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "stage di Rydberg",
+      "definedIn": "p0085",
+      "definition": "Un \"turno\" in cui il laser di Rydberg viene acceso su tutto l'array per eseguire i gate a due qubit programmati in parallelo. Ogni stage costa fedeltà anche agli atomi inattivi, che subiscono comunque l'eccitazione. Il loro numero L è la metrica di costo fisico di ARGON: più gate per stage vuol dire meno stage e fedeltà più alta."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "stage di Rydberg",
+      "definedIn": "p0076",
+      "definition": "Un'accensione globale del laser di Rydberg, durante la quale si eseguono in parallelo tutte le CZ programmate. Ogni stage \"disturba\" anche i qubit non coinvolti (crosstalk). La QFT basata su Twine ne richiede meno delle alternative."
+    }
+  ],
+  "sabre": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "SABRE",
+      "definedIn": "p0030",
+      "definition": "L'algoritmo standard di Qiskit per scegliere il layout dei qubit e decidere dove inserire gli SWAP. Nel paper è usato così com'è in tutte le simulazioni, per confrontare i dispositivi a parità di compilazione."
+    }
+  ],
+  "sampling-overhead": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "costo di campionamento",
+      "definedIn": "p0035",
+      "definition": "Quante esecuzioni in più (\"shots\") servono per ottenere lo stesso risultato affidabile dopo aver tagliato un circuito. Cresce in modo esponenziale col numero di tagli: nella Tabella 1, per il circuito più intrecciato (Effi_full) arriva a numeri come 10^93, cioè impossibile in pratica. È il motivo per cui conviene tagliare poco e nei punti giusti."
+    }
+  ],
+  "scalar-free": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "scalar-free",
+      "definedIn": "p0044",
+      "definition": "Si ignorano i fattori numerici globali (le costanti moltiplicative) dei diagrammi, perché non cambiano il risultato fisico di un circuito. Semplifica molto le regole."
+    }
+  ],
+  "scaling-coefficient": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "coefficienti di scaling",
+      "definedIn": "p0039",
+      "definition": "L'esponente con cui il tempo di riordino cresce col numero di atomi N: un coefficiente 1 vuol dire tempo proporzionale a N, 0.5 vuol dire proporzionale a √N. Più è basso, meglio l'algoritmo regge array grandi. La Tabella 1 li confronta tutti."
+    }
+  ],
+  "self-inverse-gate": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "self-inverse",
+      "definedIn": "p0026",
+      "definition": "Gate con X² = I (Pauli, Hadamard, e a due qubit il C-Z). G={I,X} ≅ GF(2), quindi la compilazione è ottima via rango GF(2). La self-inversione è anche ciò che rende applicabile l'eliminazione gaussiana ai gruppi di C-Z allineati."
+    }
+  ],
+  "shuttle-infidelity": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "Eshuttle",
+      "definedIn": "p0081",
+      "definition": "L'errore causato dallo spostare fisicamente un atomo dato (Eq. 11): il riscaldamento del moto, il decadimento durante il tempo di viaggio e soprattutto i due passaggi tra trappola fissa e mobile (handover), che da soli valgono circa 1.4%. Un salto breve costa circa 33 μs e 1.5% di infedeltà."
+    }
+  ],
+  "simple-diagram": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "diagramma semplice",
+      "definedIn": "p0120",
+      "definition": "Un diagramma \"ripulito\" (Def. 6.1): nessun arco doppio, nessun nodo collegato a uno dello stesso colore (si fonderebbero) e nessun nodo inutile con angolo 0 in mezzo a un filo. Ogni diagramma si può portare in questa forma (Lemma 6.2), ed è il punto di partenza per riconoscere se è un circuito."
+    }
+  ],
+  "simproc": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "simproc",
+      "definedIn": "p0106",
+      "definition": "\"Simplification procedure\": un piccolo programma in Quantomatic che applica automaticamente regole di riscrittura secondo una strategia. Si combinano in sequenza o in ciclo; l'ottimizzatore del paper è una combinazione di simproc."
+    }
+  ],
+  "slm": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "SLM",
+      "definedIn": "p0026",
+      "definition": "Spatial Light Modulator: il dispositivo ottico che crea la griglia statica di trappole in cui gli atomi \"parcheggiano\". Le posizioni SLM sono le coordinate fisse del processore; spostare un atomo significa portarlo con l'AOD da una posizione SLM a un'altra."
+    },
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "SLM",
+      "definedIn": "p0016",
+      "definition": "Spatial Light Modulator: genera la griglia di tweezer statici dove gli atomi \"abitano\". Volendo può anche spostare atomi, senza il vincolo a griglia degli AOD, ma è lento: circa 1 ms per aggiornare l'immagine."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "SLM",
+      "definedIn": "p0034",
+      "definition": "Spatial Light Modulator: crea la griglia di trappole statiche dove gli atomi risiedono quando non si muovono."
+    }
+  ],
+  "smt": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "SMT",
+      "definedIn": "p0022",
+      "definition": "Satisfiability Modulo Theories: una famiglia di solver che trovano soluzioni esatte a problemi di vincoli logici e aritmetici. È lento, ma qui viene usato solo offline per costruire la libreria di layout, quindi il suo costo non pesa sulla compilazione."
+    }
+  ],
+  "spatiotemporal-decoupling": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "disaccoppiamento spaziotemporale",
+      "definedIn": "p0014",
+      "definition": "L'idea centrale di ARGON: invece di risolvere insieme \"dove mettere i gate\" (vincoli spaziali, fissi per un dato hardware) e \"come muovere gli atomi nel tempo\" (vincoli dinamici, dipendenti dal circuito), li separa. La parte spaziale si precalcola una volta sola offline, la parte temporale si affida a una rete neurale veloce. Così la compilazione passa da esponenziale a quasi istantanea."
+    }
+  ],
+  "species-selective": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "indirizzamento selettivo per specie",
+      "definedIn": "p0035",
+      "definition": "La possibilità di colpire con il laser solo gli atomi di una specie: un impulso tarato sul cesio non disturba il rubidio. Così i buffer si possono pilotare, misurare e resettare proprio accanto ai dati senza rovinarli."
+    }
+  ],
+  "spider": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "spider",
+      "definedIn": "p0038",
+      "definition": "I nodi dei diagrammi ZX: verdi (Z, con angolo α) e rossi (X, con angolo β), più i nodi H (Hadamard) che devono avere esattamente due collegamenti. La regola fondamentale, \"spider\", fonde due nodi dello stesso colore collegati sommando i loro angoli."
+    },
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "spider",
+      "definedIn": "p0498",
+      "definition": "I nodi dei diagrammi del calcolo ZX: gli spider verdi (Z) e rossi (X), ognuno con una fase. La regola principale (\"fusione degli spider\") dice che due spider dello stesso colore collegati si fondono in uno solo sommando le fasi, ed è quella che fa \"passare\" le porte attraverso i gadget."
+    }
+  ],
+  "stabilizer-code": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "codici stabilizer",
+      "definedIn": "p0064",
+      "definition": "Codici di correzione d'errore definiti da un insieme di operatori di Pauli (gli stabilizzatori) che lasciano invariati gli stati validi. Il flusso di parità può tracciare insieme gli effetti logici e gli stabilizzatori, mostrando modi diversi, e a volte paralleli, di eseguire la stessa operazione logica in un codice."
+    }
+  ],
+  "staggered-arrangement": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "arrangiamento staggered",
+      "definedIn": "p0044",
+      "definition": "La disposizione geometrica del fabric: i buffer di cesio formano una griglia quadrata con passo 8 μm, e ogni atomo dato sta al centro di un quadratino di 4 buffer (a 5.66 μm da ciascuno). Ogni dato ha così esattamente quattro buffer vicini e la struttura è uniforme ovunque, cosa che rende il routing prevedibile."
+    }
+  ],
+  "standard-form": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "forma standard",
+      "definedIn": "p0090",
+      "definition": "Il modo unico e fisso di scrivere un operatore di Pauli: una fase, poi tutte le X, poi tutte le Z (una Y si scrive come i·X·Z). Senza una forma standard la stessa etichetta potrebbe avere significati diversi; con essa ogni operatore corrisponde a esattamente un'etichetta."
+    }
+  ],
+  "star-forest": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "star forest",
+      "definedIn": "p0121",
+      "definition": "Foresta di stelle, cioè un grafo i cui componenti hanno diametro ≤ 2. Per un insieme di Zγ che forma una star forest, i C-Z si impilano in soli due strati condivisi (Eq. 6). Il grafo MaxCut viene coperto da star forest con un greedy su archi in ordine lessicografico, allineato al layout riga per riga (App. B)."
+    }
+  ],
+  "static-dynamic-compiler": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "compilatore statico",
+      "definedIn": "p0046",
+      "definition": "Le due versioni del compilatore. Quella statica costruisce i canali DT una volta sola e poi esegue tutto il circuito su quella topologia fissa: ideale per circuiti tipo Ising/QAOA, con molte coppie attive insieme. Quella dinamica ricostruisce e adatta i canali stage per stage: serve per la QFT, dove poche coppie sono attive alla volta e cambiano lentamente."
+    }
+  ],
+  "static-mobile-architecture": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "architetture statiche",
+      "definedIn": "p0032",
+      "definition": "Le due famiglie di processori ad atomi neutri. Nelle statiche gli atomi restano fermi e interagiscono solo con i vicini fissi (qui: PTN lineare \"priva di SWAP\", nessun trasporto). Nelle mobili gli atomi si spostano con i tweezer AOD per interagire, e lo spostamento diventa una risorsa di calcolo (CZSWAP). Con crosstalk di Rydberg, la versione mobile vince sempre."
+    }
+  ],
+  "static-naive": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "Static-Naive",
+      "definedIn": "p0171",
+      "definition": "Una versione volutamente semplice di compilatore ad atomi fermi, sullo stesso hardware di BRIDGE, ma con posizionamento ingenuo (qubit messi in fila, \"row-major\") e routing base. Serve a mostrare quanto del guadagno dipende dalle scelte furbe di BRIDGE-F e non solo dall'hardware."
+    }
+  ],
+  "stochastic-loading": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "caricamento",
+      "definedIn": "p0016",
+      "definition": "Il riempimento iniziale delle trappole: ogni trappola cattura un atomo solo con una certa probabilità, tipicamente circa il 50%, in posizioni casuali. Da qui nasce la necessità del riordino; la probabilità di caricamento influenza quanti atomi in eccesso ci sono e quindi quanto è facile completare il target."
+    }
+  ],
+  "storage-zone": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "zona di stoccaggio",
+      "definedIn": "p0023",
+      "definition": "L'area dove i qubit restano in attesa tra un'operazione e l'altra, lontani dai laser di Rydberg e quindi più protetti dagli errori. Gli atomi stanno in trappole fisse (SLM) a circa 6 μm l'uno dall'altro."
+    }
+  ],
+  "sub-circuit-isomorphism": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "isomorfismo",
+      "definedIn": "p0016",
+      "definition": "Due sotto-circuiti sono \"isomorfi\" quando hanno esattamente la stessa struttura (stesse operazioni, stessi collegamenti), anche se agiscono su qubit con nomi diversi. DAScut li riconosce dopo il taglio ed esegue la struttura una volta sola, riusando il risultato: meno esecuzioni e meno ricostruzione."
+    }
+  ],
+  "sum-pooling": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "sum-pooling",
+      "definedIn": "p0068",
+      "definition": "L'ultimo passo della GNN: somma gli stati di tutti i nodi (qubit) per ottenere un unico numero, il costo predetto. È scelto apposta perché i costi di movimento, come le distanze percorse dagli atomi, si sommano davvero su tutto il processore."
+    }
+  ],
+  "swap-gate": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "SWAP",
+      "definedIn": "p0022",
+      "definition": "Un'operazione che scambia lo stato di due qubit collegati. Serve a \"spostare\" l'informazione verso un qubit vicino quando due qubit che devono interagire non sono collegati sul chip. Ogni SWAP costa tre operazioni a due qubit, quindi allunga il circuito e aggiunge rumore."
+    }
+  ],
+  "symplectic": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "prodotto interno simplettico",
+      "definedIn": "p0200",
+      "definition": "Una formula sulla forma vettoriale che conta quante volte due operatori di Pauli \"si scontrano\" qubit per qubit (X contro Z): se il conteggio è pari commutano, se è dispari anticommutano. I gate Clifford conservano questa proprietà, ed è ciò che vincola la struttura dei tableau."
+    }
+  ],
+  "t-count": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "T-count",
+      "definedIn": "p0007",
+      "definition": "Il numero di porte T in un circuito. Nei computer fault-tolerant le porte T sono le più costose da realizzare, quindi molta letteratura cerca di ridurle. Il paper invece guarda al regime NISQ, dove conta di più il numero di porte a due qubit."
+    }
+  ],
+  "t-gate": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "gate π/8",
+      "definedIn": "p0064",
+      "definition": "T = diag(1, e^{iπ/4}), gruppo ciclico ≅ Z8. Stesso schema a due stadi della fase, ricorsivo: M mod 2 su GF(2), poi l'algoritmo Z4 su M₂/2. Bound 7-ottimale condizionato alla congettura r4(M₂/2) = r8(M₂); si estende a rotazioni π/2ᵖ (Z_{2^(p+1)})."
+    }
+  ],
+  "targeted-rewrite": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "REWRITE_TARGETED",
+      "definedIn": "p0108",
+      "definition": "I tre modi di applicare una regola in Quantomatic: REWRITE (al primo punto trovato), REWRITE_METRIC (solo se una misura del grafo diminuisce) e REWRITE_TARGETED (nel punto scelto da una funzione di \"targeting\"). Servono a guidare il motore, che altrimenti sceglie a caso dove applicare le regole reversibili."
+    }
+  ],
+  "tau-aggressiveness": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "aggressività",
+      "definedIn": "p0093",
+      "definition": "Il parametro τ che regola quanto facilmente BRIDGE-H approva uno spostamento. τ = 1 è il pareggio esatto; valori minori sono prudenti (meno spostamenti), maggiori sono aggressivi. Negli esperimenti la fedeltà media resta quasi invariata per i circuiti standard: la mobilità aiuta solo quelli con \"cambi di fase\" marcati come la QFT."
+    }
+  ],
+  "temporal-locality": [
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "località temporale",
+      "definedIn": "p0075",
+      "definition": "Il fatto che in molti circuiti un qubit interagisce prima intensamente con un gruppo di vicini, poi (in una \"fase\" successiva) con un gruppo completamente diverso. Un posizionamento fisso può essere ottimo per una fase e pessimo per l'altra; spostare quel qubit una volta tra le due fasi è proprio il caso in cui la mobilità conviene (Fig. 6, es. QPE)."
+    }
+  ],
+  "tensor-rank": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "rango tensoriale",
+      "definedIn": "p0039",
+      "definition": "Minimo r tale che ogni slice Xᵢ sia combinazione lineare delle stesse r matrici rank-one. Su campi finiti è NP-completo in generale; per terza dimensione 2 la complessità esatta resta aperta, per cui il paper si accontenta di un'approssimazione con bound dimostrato (Lemma A.1)."
+    }
+  ],
+  "tetris": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "Tetris",
+      "definedIn": "p0040",
+      "definition": "Un algoritmo di riordino parallelo della letteratura (rif. [34]), tra i più usati: scala di poco sopra N (coefficiente 1.03). Il paper lo usa come termine di confronto e ne riprende i dati."
+    }
+  ],
+  "timing-model": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "modello di tempistica",
+      "definedIn": "p0155",
+      "definition": "Come atommovr calcola la durata di ogni mossa. Il modello \"naive\" usa solo distanza / velocità; quello \"dettagliato\" aggiunge i tempi di accelerazione e frenata (profilo \"adiabatic sine\", che muove l'atomo dolcemente per non scaldarlo) e i tempi dei trasferimenti tra trappole."
+    }
+  ],
+  "tket": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "t|ket⟩",
+      "definedIn": "p0003",
+      "definition": "Il compilatore quantistico di Cambridge Quantum Computing (oggi Quantinuum), di cui il paper descrive le ottimizzazioni. È \"retargetable\": prende un circuito e lo adatta a hardware diversi, rispettando la connettività e il set di porte nativo e riducendo porte e profondità. pytket è la sua interfaccia Python."
+    }
+  ],
+  "translation-functor": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "funtore di traduzione",
+      "definedIn": "p0060",
+      "definition": "La traduzione T da circuito Clifford a diagramma ZX: ogni porta diventa il suo piccolo diagramma (S → nodo verde +, V → nodo rosso +, H → H, CNOT → nodo verde collegato a uno rosso). La Proposizione 4.2 garantisce che la traduzione conservi il significato. \"Circuito\", nel paper, vuol dire \"diagramma nell'immagine di T\"."
+    }
+  ],
+  "transpilation": [
+    {
+      "slug": "dascut",
+      "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+      "term": "transpilazione",
+      "definedIn": "p0022",
+      "definition": "La \"traduzione\" di un circuito scritto in modo astratto in uno che un dispositivo specifico sa eseguire. Tre passi: riscrivere le operazioni con quelle native del dispositivo, scegliere quali qubit fisici usare (layout) e aggiungere operazioni SWAP dove due qubit che devono interagire non sono collegati. Ogni passo può allungare il circuito e aggiungere errori."
+    }
+  ],
+  "trap-transfer": [
+    {
+      "slug": "atommovr-rearrangement",
+      "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+      "term": "trasferimenti",
+      "definedIn": "p0154",
+      "definition": "Il passaggio di un atomo da una trappola statica (SLM) a una mobile (AOD), detto \"pickup\", e il ritorno (\"putdown\"). Ogni trasferimento costa tempo ed è un'occasione in cui l'atomo può perdersi, quindi un buon algoritmo ne fa il meno possibile."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "trasferimenti",
+      "definedIn": "p0054",
+      "definition": "Il passaggio di un atomo tra la trappola fissa (SLM) e quella mobile (AOD). Ogni CZ ne richiede quattro, ognuno con una piccola probabilità di errore: ridurli è uno dei motivi per cui la CZSWAP conviene."
+    }
+  ],
+  "trotterisation": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "trotterizzazione",
+      "definedIn": "p0019",
+      "definition": "Una tecnica per simulare l'evoluzione nel tempo e^(-iHt) di un sistema, quando l'Hamiltoniano H è una somma di termini di Pauli: invece di esponenziare tutto insieme, si applicano in sequenza gli esponenziali dei singoli termini, a piccoli passi. Ogni esponenziale è un Pauli gadget, ed è per questo che i circuiti di chimica quantistica ne sono pieni."
+    }
+  ],
+  "twine-chain": [
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "Twine chain",
+      "definedIn": "p0019",
+      "definition": "Il mattone delle PTN: una sequenza di porte CNOT lungo una \"spina dorsale\" (backbone) di qubit, con eventuali \"rami\" (legs) laterali. Mentre le porte si susseguono, le informazioni di parità dei qubit si mescolano e si spostano, così che coppie diverse compaiono su qubit diversi. Più catene in cascata coprono tutte le coppie."
+    }
+  ],
+  "ucc": [
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "Unitary Coupled Cluster",
+      "definedIn": "p0415",
+      "definition": "Un metodo di chimica quantistica per stimare l'energia dello stato fondamentale di una molecola: si prepara uno stato con un circuito parametrizzato (ansatz) e un ottimizzatore classico regola i parametri. Il circuito nasce dalla trotterizzazione di un operatore esponenziato, quindi è pieno di Pauli gadget: è il banco di prova ideale per il paper."
+    }
+  ],
+  "vector-form": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "forma vettoriale",
+      "definedIn": "p0091",
+      "definition": "La traduzione di un'etichetta in numeri: (κ | ξ | ζ), dove κ è l'esponente della fase i e ξ, ζ sono vettori di 0 e 1 che dicono su quali qubit c'è una X o una Z. Permette di fare i calcoli con l'algebra lineare binaria."
+    }
+  ],
+  "xyz-mapping": [
+    {
+      "slug": "prresearch-6xlb-l92j",
+      "title": "Parity flow formalism: Tracking quantum information throughout computation",
+      "term": "XYZ",
+      "definedIn": "p0167",
+      "definition": "La conversione tra la notazione del paper (X e Z separate, Y come prodotto) e quella classica di Aaronson–Gottesman, che usa per ogni qubit una coppia di bit (x, z) più un segno, con Y rappresentata direttamente. Serve per confrontare il formalismo con i simulatori stabilizer esistenti."
+    }
+  ],
+  "z4-rank": [
+    {
+      "slug": "neutral-atom-compilation",
+      "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+      "term": "r4(M)",
+      "definedIn": "p0048",
+      "definition": "Ottimo del problema (1) su Z4 (risp. Z8): il minimo numero di termini uvᵀ·G con u,v binari. Non è calcolabile via eliminazione gaussiana perché Z4 non è un campo; serve solo come riferimento per i bound (≤ 3·r4 per la fase, ≤ 7·r8 per π/8 sotto congettura)."
+    }
+  ],
+  "zac-zap": [
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "ZAC",
+      "definedIn": "p0047",
+      "definition": "Due compilatori recenti per architetture zonate, usati come confronto. Ottimizzano lo spostamento avanti e indietro tra stoccaggio ed entanglement; ZAP ricalcola piazzamenti intermedi con simulated annealing. Il paper ne riusa alcune idee (vettori di movimento, scheduling parallelo) ma evita lo shuttling ripetuto grazie al DT."
+    },
+    {
+      "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+      "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+      "term": "ZAP",
+      "definedIn": "p0019",
+      "definition": "Compilatori per architetture a zone (ZAC, ZAP) che spostano gli atomi tra zona di memoria e zona di entanglement. ZAP è il secondo baseline principale: BRIDGE-F lo supera di circa 10 volte in fedeltà media, senza nessuno spostamento di atomi."
+    }
+  ],
+  "zero-shot": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "zero-shot",
+      "definedIn": "p0115",
+      "definition": "Usare il modello su casi mai visti in addestramento, senza riaddestrarlo. La GNN di ARGON, addestrata solo su array 16×16 e su circuiti Random/W-state, viene applicata a griglie 20×20 e 28×28 e a benchmark nuovi (QV, 3-Regular, QASMBench) mantenendo le prestazioni."
+    }
+  ],
+  "zoned-architecture": [
+    {
+      "slug": "argon-neutral-atom-compilation",
+      "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+      "term": "architetture a zone",
+      "definedIn": "p0125",
+      "definition": "Architetture in cui l'array è diviso in zone con funzioni diverse (memoria/storage, zona di entangling, lettura) e gli atomi viaggiano tra una zona e l'altra. ARGON è pensato per un array denso \"monolitico\" senza zone, e la Sez. 4.7 lo confronta comunque con un'euristica per architetture a zone (Stade et al.)."
+    },
+    {
+      "slug": "directional-transport-remote-cz",
+      "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+      "term": "architetture zonate",
+      "definedIn": "p0023",
+      "definition": "Un modo di organizzare il processore ad atomi neutri in aree specializzate: zona di stoccaggio (i qubit aspettano al riparo dagli errori), zona di entanglement (si eseguono le porte a due qubit) e zona di lettura (misura). Per far interagire due qubit bisogna di solito portarli dalla zona di stoccaggio a quella di entanglement e poi riportarli indietro."
+    },
+    {
+      "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+      "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+      "term": "architetture a zone",
+      "definedIn": "p0036",
+      "definition": "Processori divisi in zone (calcolo, memoria, lettura). Il paper si concentra su dispositivi monolitici, ma nota che le PTN con CZSWAP sono ancora più naturali qui: gli atomi devono comunque tornare in memoria dopo ogni porta, quindi farli tornare in posizioni scambiate non costa quasi nulla."
+    }
+  ],
+  "zx-calculus": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "ZX-calculus",
+      "definedIn": "p0032",
+      "definition": "Un linguaggio grafico per i processi quantistici: i circuiti diventano grafi con nodi verdi (Z) e rossi (X) con un angolo, e nodi H gialli, e un insieme di regole di riscrittura trasforma un grafo in uno equivalente. Qui è usato come motore per ottimizzare circuiti: ogni passo di semplificazione è una dimostrazione di equivalenza."
+    },
+    {
+      "slug": "phase-gadget-synthesis",
+      "title": "Phase Gadget Synthesis for Shallow Circuits",
+      "term": "calcolo ZX",
+      "definedIn": "p0019",
+      "definition": "Un linguaggio grafico per i circuiti quantistici: le operazioni diventano nodi verdi (Z) e rossi (X), detti spider, collegati da fili. Ha regole di riscrittura che trasformano un diagramma in uno equivalente. Rende evidenti simmetrie che nella notazione a porte restano nascoste, come l'invarianza dei phase gadget per permutazione dei qubit."
+    }
+  ],
+  "zx-rules": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "regola bialgebra",
+      "definedIn": "p0046",
+      "definition": "Le regole di base dello ZX-calculus (Figura 2), ognuna un'uguaglianza tra piccoli diagrammi: spider (fonde nodi dello stesso colore), identità (elimina nodi con angolo 0), π-commute (fa passare un nodo π attraverso un nodo dell'altro colore), copying, bialgebra e Hopf (come interagiscono nodi di colore diverso), H-euler (scrive H con tre rotazioni). Tutte le ottimizzazioni sono combinazioni di queste."
+    }
+  ],
+  "zx-stabilizer": [
+    {
+      "slug": "optimising-clifford-circuits-with-quantomatic",
+      "title": "Optimising Clifford Circuits with Quantomatic",
+      "term": "ZX_s",
+      "definedIn": "p0054",
+      "definition": "La parte dello ZX-calculus in cui gli angoli dei nodi possono essere solo 0, π/2, π o 3π/2. Descrive esattamente i circuiti Clifford (quantistica \"stabilizer\"). Per questa parte le regole sono complete: due diagrammi equivalenti si possono sempre trasformare l'uno nell'altro."
+    }
+  ]
+}

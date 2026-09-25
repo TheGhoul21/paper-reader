@@ -1,0 +1,636 @@
+[
+  {
+    "id": "parity-twine-network",
+    "term": "PTN",
+    "aliases": [
+      "Parity Twine Network",
+      "Parity Twine Networks",
+      "Parity Twine networks",
+      "Parity Twine network",
+      "Parity Twine",
+      "reti Parity Twine",
+      "rete Parity Twine"
+    ],
+    "pdfTerms": [
+      "Parity Twine Networks",
+      "Parity Twine networks",
+      "Parity Twine Network",
+      "Parity Twine",
+      "PTNs",
+      "PTN"
+    ],
+    "kind": "term",
+    "definedIn": "p0010",
+    "definitions": {
+      "it-intermediate": "Parity Twine Network: un modo sistematico di costruire circuiti in cui ogni qubit deve interagire con tutti gli altri (come nella QFT) usando solo porte tra vicini. È una cascata di \"Twine chain\" di porte CNOT: facendo scorrere le parità dei qubit lungo la catena, ogni coppia logica si ritrova prima o poi su un qubit fisico, dove basta una rotazione singola. Si adatta a layout lineari, a scala o quadrati.",
+      "it-expert": "Cascata di Twine chain di CNOT/DCNOT che fa percorrere alle etichette di parità tutte le coppie ℓᵢℓⱼ, così R_Z(θ) su un qubit con ℓᵢℓⱼ realizza R̄_{ZᵢZⱼ}(θ). All-to-all con N₂Q = ½n² + O(n) su linear, ladder e square, con profondità lineare; la connettività extra riduce le CNOT (legs) a costo di depth."
+    },
+    "related": [
+      "twine-chain",
+      "parity-label",
+      "dcnot",
+      "qft"
+    ]
+  },
+  {
+    "id": "twine-chain",
+    "term": "Twine chain",
+    "aliases": [
+      "Twine chains",
+      "Parity Twine chain"
+    ],
+    "pdfTerms": [
+      "Twine chains",
+      "Twine chain",
+      "Parity Twine chain"
+    ],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Il mattone delle PTN: una sequenza di porte CNOT lungo una \"spina dorsale\" (backbone) di qubit, con eventuali \"rami\" (legs) laterali. Mentre le porte si susseguono, le informazioni di parità dei qubit si mescolano e si spostano, così che coppie diverse compaiono su qubit diversi. Più catene in cascata coprono tutte le coppie.",
+      "it-expert": "Rete di DCNOT sul backbone più CNOT sui legs; ogni catena genera un insieme di label ℓᵢℓⱼ e le catene consecutive si sfalsano nel tempo (su ladder serve più ritardo, da cui la depth maggiore)."
+    },
+    "related": [
+      "parity-twine-network",
+      "backbone-legs",
+      "parity-label"
+    ]
+  },
+  {
+    "id": "backbone-legs",
+    "term": "backbone",
+    "aliases": [
+      "spina dorsale",
+      "legs",
+      "rami"
+    ],
+    "pdfTerms": [
+      "backbone",
+      "backbones",
+      "legs"
+    ],
+    "kind": "term",
+    "definedIn": "p0009",
+    "definitions": {
+      "it-intermediate": "Le due parti di una Twine chain: il \"backbone\" è la fila principale di qubit su cui corrono le porte DCNOT; i \"legs\" (rami) sono qubit laterali collegati al backbone, che richiedono solo CNOT singole. Layout con più connettività (scala, quadrato) hanno più rami, quindi meno porte a due qubit.",
+      "it-expert": "Backbone con DCNOT e legs con CNOT singole (salvo il ripristino delle label nel layout square, che può richiedere DCNOT). Nel ladder due backbone paralleli sono uniti da legs trasversali: meno CNOT, un po' più di depth."
+    },
+    "related": [
+      "twine-chain",
+      "dcnot",
+      "qubit-layouts"
+    ]
+  },
+  {
+    "id": "parity-label",
+    "term": "etichetta di parità",
+    "aliases": [
+      "etichette di parità",
+      "etichetta di parità logica",
+      "ℓj",
+      "ℓiℓj"
+    ],
+    "pdfTerms": [
+      "parity label",
+      "parity labels",
+      "parity la- bel"
+    ],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Un'annotazione che dice quale combinazione (parità, cioè XOR) di qubit logici è codificata in ogni qubit fisico in un certo momento. Una CNOT cambia queste etichette in modo prevedibile. Se un qubit porta l'etichetta \"i⊕j\", una semplice rotazione Z su di lui equivale a un'interazione tra i qubit logici i e j.",
+      "it-expert": "ℓ_k = parità Z logica codificata sul qubit fisico k; la CNOT aggiorna ℓ_target ← ℓ_target·ℓ_control. R_Z(θ) su un qubit con ℓᵢℓⱼ implementa e^{−iθZᵢZⱼ/2}: è il principio della Parity Architecture, qui in forma di circuito."
+    },
+    "related": [
+      "parity-twine-network",
+      "twine-chain"
+    ]
+  },
+  {
+    "id": "dcnot",
+    "term": "DCNOT",
+    "aliases": [
+      "doppia CNOT",
+      "DCNOTs"
+    ],
+    "pdfTerms": [
+      "DCNOT",
+      "DCNOTs",
+      "DC-NOT"
+    ],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-intermediate": "Una \"doppia CNOT\": due CNOT di fila tra gli stessi due qubit, in versi opposti. È il blocco base del backbone, ma non è nativa sugli atomi neutri e va scomposta: in due CZ, in una iSWAP o, meglio per questa architettura, in una CZSWAP (CZ più scambio di posizione).",
+      "it-expert": "CNOT₁₂·CNOT₂₁. Tre decomposizioni native: (i) (I⊗H)CZ(H⊗H)CZ(H⊗I); (ii) (H⊗I)·iSWAP con S†; (iii) (H⊗I)·CZSWAP·(I⊗H). La (iii) sfrutta il moto per dimezzare le CZ."
+    },
+    "related": [
+      "czswap",
+      "iswap",
+      "cz-gate",
+      "backbone-legs"
+    ]
+  },
+  {
+    "id": "czswap",
+    "term": "CZSWAP",
+    "aliases": [
+      "CZ-SWAP",
+      "porta CZSWAP",
+      "porte CZSWAP",
+      "operazione CZSWAP",
+      "operazioni CZSWAP"
+    ],
+    "pdfTerms": [
+      "CZSWAP",
+      "CZ–SWAP",
+      "CZ-SWAP"
+    ],
+    "kind": "term",
+    "definedIn": "p0043",
+    "definitions": {
+      "it-intermediate": "L'idea chiave del paper: una porta CZ seguita da uno scambio (SWAP) dei due qubit, ottenuta non con porte ma spostando fisicamente gli atomi. Poiché per fare una CZ bisogna comunque avvicinare gli atomi e poi riportarli indietro, basta riportarli nelle posizioni scambiate. Lo scambio \"costa\" solo qualche piccolo spostamento extra, e sostituisce una seconda CZ.",
+      "it-expert": "CZ seguita da uno scambio fisico delle posizioni: dopo l'interazione, A viene depositato in un sito libero e B riportato al posto di A (due big move più quattro offset move da 2 μm). Rimpiazza una CZ e il suo trasporto, quindi meno CZ, meno transfer e meno Rydberg stage; S†⊗S†·CZSWAP = iSWAP."
+    },
+    "related": [
+      "dcnot",
+      "big-move",
+      "cz-gate",
+      "iswap"
+    ]
+  },
+  {
+    "id": "iswap",
+    "term": "iSWAP",
+    "aliases": [],
+    "pdfTerms": [
+      "iSWAP"
+    ],
+    "kind": "term",
+    "definedIn": "p0042",
+    "definitions": {
+      "it-intermediate": "Una porta a due qubit che scambia i qubit aggiungendo una fase. La DCNOT si può scrivere come una sola iSWAP più rotazioni locali, ed è equivalente alla CZSWAP a meno di rotazioni S†: per questo il paper usa direttamente la CZSWAP.",
+      "it-expert": "S†⊗S†·CZSWAP = iSWAP (Eq. 2). I circuiti QFT iSWAP-based coincidono con quelli CZSWAP a meno di S†, con stessa struttura e stesso conteggio S_Y, quindi il paper considera solo (i) e (iii)."
+    },
+    "related": [
+      "czswap",
+      "dcnot"
+    ]
+  },
+  {
+    "id": "cz-gate",
+    "term": "CZ",
+    "aliases": [
+      "porta CZ",
+      "porte CZ",
+      "CZ mediata da Rydberg",
+      "CZ-only"
+    ],
+    "pdfTerms": [
+      "CZ"
+    ],
+    "kind": "term",
+    "definedIn": "p0047",
+    "definitions": {
+      "it-intermediate": "La porta a due qubit nativa degli atomi neutri, ottenuta con il blocco di Rydberg. Nell'architettura mobile considerata richiede: prendere l'atomo A con il tweezer mobile, portarlo vicino a B, eseguire la porta, riportarlo indietro. In totale due grandi spostamenti e quattro trasferimenti tra trappole.",
+      "it-expert": "CZ via blockade, in architettura mobile: SLM→AOD, trasporto entro R_b, rilascio, CZ, ricattura e ritorno, cioè 2 big move e 4 transfer. d_int = 3 μm; f_CZ = 99.5% in Tab. I."
+    },
+    "related": [
+      "czswap",
+      "big-move",
+      "trap-transfer",
+      "rydberg-blockade"
+    ]
+  },
+  {
+    "id": "big-move",
+    "term": "big move",
+    "aliases": [
+      "big-move",
+      "offset move",
+      "offset"
+    ],
+    "pdfTerms": [
+      "big move",
+      "big-move",
+      "offset move",
+      "offset moves"
+    ],
+    "kind": "term",
+    "definedIn": "p0054",
+    "definitions": {
+      "it-intermediate": "Le due unità di spostamento del modello. Un \"big move\" è il trasporto che porta un atomo dalla sua trappola vicino al partner (e ritorno); un \"offset move\" è un piccolo spostamento extra (2 μm) usato nello scambio della CZSWAP. Il loro numero e la loro lunghezza determinano i tempi di shuttling.",
+      "it-expert": "d_big = d_tw − d_int; d_CZ = 2d_big, d_CZSWAP = 2d_big + 4d_offset con d_offset = 2 μm. Tempo di trasporto ∝ √(d/a), con a calibrata sui dati sperimentali; gli errori di shuttling sono assorbiti nell'idling."
+    },
+    "related": [
+      "czswap",
+      "cz-gate",
+      "trap-transfer"
+    ]
+  },
+  {
+    "id": "trap-transfer",
+    "term": "trasferimenti",
+    "aliases": [
+      "trasferimento",
+      "transfer",
+      "trasferimenti tra pinzette statiche e mobili"
+    ],
+    "pdfTerms": [
+      "transfer operations",
+      "transfer",
+      "transfers"
+    ],
+    "kind": "term",
+    "definedIn": "p0054",
+    "definitions": {
+      "it-intermediate": "Il passaggio di un atomo tra la trappola fissa (SLM) e quella mobile (AOD). Ogni CZ ne richiede quattro, ognuno con una piccola probabilità di errore: ridurli è uno dei motivi per cui la CZSWAP conviene.",
+      "it-expert": "Transfer SLM↔AOD con fedeltà f_trans, quarto fattore dell'Eq. 3; N_trans conta 4 per CZ. La CZSWAP ne evita una parte, e sono uno dei driver del vantaggio mobile."
+    },
+    "related": [
+      "cz-gate",
+      "big-move",
+      "fidelity-model"
+    ]
+  },
+  {
+    "id": "static-mobile-architecture",
+    "term": "architetture statiche",
+    "aliases": [
+      "architettura statica",
+      "architetture mobili",
+      "architettura mobile",
+      "implementazione mobile",
+      "implementazione statica",
+      "statica/mobile"
+    ],
+    "pdfTerms": [
+      "static and mobile",
+      "static architecture",
+      "mobile architecture",
+      "mobile architectures",
+      "static architectures"
+    ],
+    "kind": "term",
+    "definedIn": "p0032",
+    "definitions": {
+      "it-intermediate": "Le due famiglie di processori ad atomi neutri. Nelle statiche gli atomi restano fermi e interagiscono solo con i vicini fissi (qui: PTN lineare \"priva di SWAP\", nessun trasporto). Nelle mobili gli atomi si spostano con i tweezer AOD per interagire, e lo spostamento diventa una risorsa di calcolo (CZSWAP). Con crosstalk di Rydberg, la versione mobile vince sempre.",
+      "it-expert": "Statiche: posizioni fisse, compilazione dettata dalla connettività nativa; la PTN lineare SWAP-free ha solo CZ nearest-neighbor. Mobili (monolitiche, SLM+AOD): CZSWAP. Con f_exc < 1 la mobile supera la statica fino a f_CZ = 0.999 (Fig. 6, App. C)."
+    },
+    "related": [
+      "czswap",
+      "crosstalk",
+      "zoned-architecture"
+    ]
+  },
+  {
+    "id": "qubit-layouts",
+    "term": "layout a scala",
+    "aliases": [
+      "ladder",
+      "layout lineare",
+      "layout quadrato",
+      "layout a scala (ladder)"
+    ],
+    "pdfTerms": [
+      "ladder",
+      "linear layout",
+      "square layout",
+      "square lattices"
+    ],
+    "kind": "term",
+    "definedIn": "p0024",
+    "definitions": {
+      "it-intermediate": "Le disposizioni geometriche dei qubit considerate: lineare (una fila), a scala o \"ladder\" (due file parallele collegate) e quadrata (griglia 2D). Più connessioni permettono più rami nelle Twine chain e quindi meno porte a due qubit costose; la scala è il compromesso migliore ed è usata anche per la QFT ottimistica.",
+      "it-expert": "Linear, ladder (due backbone con legs trasversali) e square: stesso N₂Q asintotico, ma ripartizione CZ/CZSWAP e N₁Q diversi (Tab. III). La square richiede più rotazioni singole; il ladder minimizza le CZSWAP ed è la base delle m-patch dell'OQFT."
+    },
+    "related": [
+      "backbone-legs",
+      "parity-twine-network",
+      "m-patch"
+    ]
+  },
+  {
+    "id": "global-rotation",
+    "term": "rotazioni globali",
+    "aliases": [
+      "rotazione globale",
+      "GR",
+      "rotazioni globali XY",
+      "S_Y"
+    ],
+    "pdfTerms": [
+      "global rotations",
+      "global rotation",
+      "global XY rotation"
+    ],
+    "kind": "term",
+    "definedIn": "p0059",
+    "definitions": {
+      "it-intermediate": "In molti processori ad atomi neutri le rotazioni attorno ad assi nel piano XY (come quelle che servono per le porte Hadamard) si possono fare solo su tutto l'array insieme. Rotazioni locali si ottengono combinando rotazioni Z locali con rotazioni globali. La versione CZSWAP della QFT dimezza circa il numero di queste rotazioni globali.",
+      "it-expert": "GR_α(θ) sull'intero array (f_GR = 100% assunta); le rotazioni locali in XY vanno sintetizzate come S†_Y·R_Z(θ)·S_Y (Eq. 1). La struttura CZSWAP richiede un solo GR per layer di Hadamard più due; alternati e sincronizzati, agiscono anche da dynamical decoupling."
+    },
+    "related": [
+      "dynamical-decoupling",
+      "czswap"
+    ]
+  },
+  {
+    "id": "dynamical-decoupling",
+    "term": "disaccoppiamento dinamico",
+    "aliases": [
+      "dynamical decoupling"
+    ],
+    "pdfTerms": [
+      "dynamical decoupling"
+    ],
+    "kind": "term",
+    "definedIn": "p0063",
+    "definitions": {
+      "it-intermediate": "Una tecnica che protegge i qubit inattivi applicando periodicamente impulsi che \"annullano\" gli effetti del rumore lento. Qui una bella coincidenza: le rotazioni globali alternate della QFT fanno già da sequenza di disaccoppiamento, e il modello assume che venga applicato in tutti i periodi di inattività.",
+      "it-expert": "Le GR_X(±π/2) alternate, sincronizzate, formano una sequenza DD. Nel modello di fedeltà si assume DD durante tutti gli idle, e l'idling è pesato con T₂ efficace."
+    },
+    "related": [
+      "global-rotation",
+      "fidelity-model"
+    ]
+  },
+  {
+    "id": "crosstalk",
+    "term": "crosstalk",
+    "aliases": [
+      "crosstalk di Rydberg",
+      "fexc",
+      "f_exc"
+    ],
+    "pdfTerms": [
+      "crosstalk",
+      "Rydberg crosstalk"
+    ],
+    "kind": "term",
+    "definedIn": "p0076",
+    "definitions": {
+      "it-intermediate": "Durante uno stage di Rydberg il laser illumina tutto l'array, e anche gli atomi non coinvolti nella porta subiscono un piccolo disturbo (fedeltà f_exc = 99.75% per atomo). Più stage vuol dire più errori per tutti. È il motivo per cui la versione mobile, con meno stage, batte quella statica.",
+      "it-expert": "Eccitazione di Rydberg indesiderata sugli spettatori: fattore f_exc^{N_q·S − 2N_CZ} nell'Eq. 3 (f_exc = 0.9975). Governa il confronto statico-mobile, perché la CZSWAP riduce il numero di Rydberg stage S."
+    },
+    "related": [
+      "rydberg-stage",
+      "fidelity-model",
+      "static-mobile-architecture"
+    ]
+  },
+  {
+    "id": "rydberg-stage",
+    "term": "stage di Rydberg",
+    "aliases": [
+      "Rydberg stage",
+      "stage di eccitazione Rydberg"
+    ],
+    "pdfTerms": [
+      "Rydberg stages",
+      "Rydberg stage"
+    ],
+    "kind": "term",
+    "definedIn": "p0076",
+    "definitions": {
+      "it-intermediate": "Un'accensione globale del laser di Rydberg, durante la quale si eseguono in parallelo tutte le CZ programmate. Ogni stage \"disturba\" anche i qubit non coinvolti (crosstalk). La QFT basata su Twine ne richiede meno delle alternative.",
+      "it-expert": "Impulso Rydberg globale (S stage nel modello); il costo per gli spettatori scala con N_q·S. La riduzione congiunta di N₂Q, shuttling e S spiega la fedeltà della QFT30 Twine rispetto ad Atomique."
+    },
+    "related": [
+      "crosstalk",
+      "fidelity-model"
+    ]
+  },
+  {
+    "id": "fidelity-model",
+    "term": "modello di fedeltà",
+    "aliases": [
+      "idling"
+    ],
+    "pdfTerms": [
+      "fidelity estimates",
+      "fidelity estimation",
+      "idling"
+    ],
+    "kind": "term",
+    "definedIn": "p0074",
+    "definitions": {
+      "it-intermediate": "La formula (Eq. 3) con cui si stima la probabilità di successo di un circuito compilato: il prodotto delle fedeltà delle rotazioni globali, delle CZ, del disturbo di Rydberg sugli atomi inattivi, dei trasferimenti tra trappole e della decoerenza durante i tempi di attesa (idling). Gli errori dello spostamento sono inclusi nell'idling.",
+      "it-expert": "f = f_GR^{N_GR} · f_CZ^{N_CZ} · f_exc^{N_q S − 2N_CZ} · f_trans^{N_trans} · Π_q(1 − T_idle^q/T₂). Parametri in Tab. I; lo shuttling pesa solo tramite il tempo."
+    },
+    "related": [
+      "crosstalk",
+      "trap-transfer",
+      "rydberg-stage"
+    ]
+  },
+  {
+    "id": "qft",
+    "term": "QFT",
+    "aliases": [
+      "QFT esatta",
+      "trasformata di Fourier quantistica"
+    ],
+    "pdfTerms": [
+      "QFT",
+      "quantum Fourier transform",
+      "Quantum Fourier Transform"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0017",
+    "definitions": {
+      "it-intermediate": "La trasformata di Fourier quantistica, un blocco base di molti algoritmi (Shor, stima di fase, aritmetica). Richiede che ogni qubit interagisca con tutti gli altri (n(n−1)/2 rotazioni controllate), quindi è il caso ideale per le PTN. Il paper la usa come banco di prova principale (fino a QFT30).",
+      "it-expert": "All-to-all con n(n−1)/2 controlled-phase, che nella forma PTN diventano rotazioni singole sui qubit con label ℓᵢℓⱼ. È il benchmark principale (QFT30 su linear, ladder e square, contro Atomique e altri compilatori NA)."
+    },
+    "related": [
+      "oqft",
+      "parity-twine-network",
+      "fourier-arithmetic"
+    ]
+  },
+  {
+    "id": "oqft",
+    "term": "OQFT",
+    "aliases": [
+      "QFT ottimistica",
+      "AQFT",
+      "QFT approssimata",
+      "optimistic QFT"
+    ],
+    "pdfTerms": [
+      "OQFT",
+      "AQFT",
+      "optimistic QFT"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0115",
+    "definitions": {
+      "it-intermediate": "Versioni \"alleggerite\" della QFT. L'AQFT (approssimata) elimina le rotazioni con angoli piccolissimi. L'OQFT (ottimistica) va oltre: si costruisce a blocchi di QFT esatte più piccole su gruppi di m qubit, accettando errori concentrati su pochi stati. Il numero di porte passa da quadratico a quasi lineare, e per molti qubit la fedeltà complessiva migliora molto.",
+      "it-expert": "AQFT tronca le controlled-phase sotto soglia; l'OQFT di [44] sfrutta la commutatività approssimata dei blocchi AQFT: layer di QFT_2m sfalsati di m più QFT†_m intermedie (Eq. 4), con N₂Q = O(n log(n/ε)). Implementata con ladder PTN su m-patch e scambi di patch via traslazioni AOD collettive."
+    },
+    "related": [
+      "qft",
+      "m-patch",
+      "qubit-layouts"
+    ]
+  },
+  {
+    "id": "m-patch",
+    "term": "patch",
+    "aliases": [
+      "m-patch",
+      "patch da m atomi",
+      "scambi di patch"
+    ],
+    "pdfTerms": [
+      "m-patches",
+      "m-patch",
+      "patches",
+      "patch"
+    ],
+    "kind": "term",
+    "definedIn": "p0126",
+    "definitions": {
+      "it-intermediate": "Un blocco rettangolare di m atomi su cui si esegue una delle piccole QFT che compongono l'OQFT (con una PTN a scala). Due patch vicini si uniscono per le QFT su 2m qubit, e per far incontrare patch non vicini si trasla in blocco un'intera colonna di patch con l'AOD, un'operazione naturale per questo hardware.",
+      "it-expert": "Sotto-array che ospita un ladder PTN QFT_m; due patch adiacenti formano un QFT_2m. L'inversione di ordine dei ladder PTN rende superflui gli SWAP interni, e gli scambi tra patch si fanno traslando collettivamente una colonna di patch (t₃ in Fig. 7a)."
+    },
+    "related": [
+      "oqft",
+      "qubit-layouts"
+    ]
+  },
+  {
+    "id": "atomique",
+    "term": "Atomique",
+    "aliases": [],
+    "pdfTerms": [
+      "Atomique"
+    ],
+    "kind": "term",
+    "definedIn": "p0102",
+    "definitions": {
+      "it-intermediate": "Un compilatore per atomi neutri della letteratura, usato come confronto sulla QFT30 (con due array AOD). La QFT basata su Twine lo supera in fedeltà grazie a meno porte a due qubit, meno spostamenti e meno stage di Rydberg.",
+      "it-expert": "Compilatore NA con due array AOD fissi; baseline della Tab. II e della Fig. 5 per la QFT30."
+    },
+    "related": [
+      "qft",
+      "czswap"
+    ]
+  },
+  {
+    "id": "rydberg-blockade",
+    "term": "raggio di blocco",
+    "aliases": [
+      "raggio di blocco di Rydberg",
+      "blockade",
+      "blocco di Rydberg"
+    ],
+    "pdfTerms": [
+      "Rydberg blockade",
+      "blockade radius",
+      "blockade"
+    ],
+    "kind": "term",
+    "definedIn": "p0049",
+    "definitions": {
+      "it-intermediate": "La distanza entro cui due atomi devono trovarsi per eseguire una porta CZ con l'interazione di Rydberg. Nell'architettura mobile è il motivo per cui un atomo va portato vicino al partner: qui si usa d_int = 3 μm.",
+      "it-expert": "Distanza d'interazione per la CZ via blockade; d_int = 3 μm bilancia velocità e fedeltà della CZ con la soppressione del crosstalk (App. A)."
+    },
+    "related": [
+      "cz-gate",
+      "crosstalk"
+    ]
+  },
+  {
+    "id": "aod",
+    "term": "AOD",
+    "aliases": [
+      "deflettori acusto-ottici"
+    ],
+    "pdfTerms": [
+      "AOD",
+      "AODs",
+      "acousto-optic deflectors"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0034",
+    "definitions": {
+      "it-intermediate": "Acousto-Optic Deflector: genera le trappole laser mobili con cui si spostano gli atomi. Gli AOD bidimensionali incrociati muovono righe e colonne di atomi insieme, e sono ciò che rende possibili la CZSWAP e le traslazioni collettive di patch.",
+      "it-expert": "AOD 2D incrociati per i tweezer mobili; transfer SLM↔AOD con fedeltà f_trans; traslazioni collettive di colonne di patch nell'OQFT."
+    },
+    "related": [
+      "slm",
+      "trap-transfer",
+      "big-move"
+    ]
+  },
+  {
+    "id": "slm",
+    "term": "SLM",
+    "aliases": [
+      "modulatori spaziali di luce"
+    ],
+    "pdfTerms": [
+      "SLM",
+      "SLMs",
+      "spatial light modulators"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0034",
+    "definitions": {
+      "it-intermediate": "Spatial Light Modulator: crea la griglia di trappole statiche dove gli atomi risiedono quando non si muovono.",
+      "it-expert": "Trap statiche; posizioni di partenza e arrivo per big move e CZSWAP."
+    },
+    "related": [
+      "aod",
+      "trap-transfer"
+    ]
+  },
+  {
+    "id": "zoned-architecture",
+    "term": "architetture a zone",
+    "aliases": [
+      "a zone",
+      "zone-based"
+    ],
+    "pdfTerms": [
+      "zone-based architectures",
+      "zone-based"
+    ],
+    "kind": "term",
+    "definedIn": "p0036",
+    "definitions": {
+      "it-intermediate": "Processori divisi in zone (calcolo, memoria, lettura). Il paper si concentra su dispositivi monolitici, ma nota che le PTN con CZSWAP sono ancora più naturali qui: gli atomi devono comunque tornare in memoria dopo ogni porta, quindi farli tornare in posizioni scambiate non costa quasi nulla.",
+      "it-expert": "Estensione naturale: il ritorno allo storage dopo ogni gate è obbligato, quindi lo scambio CZSWAP ha overhead di shuttling minimo; i grafi densi diventano efficienti anche in architetture zonate."
+    },
+    "related": [
+      "czswap",
+      "static-mobile-architecture"
+    ]
+  },
+  {
+    "id": "fourier-arithmetic",
+    "term": "aritmetica quantistica nello spazio di Fourier",
+    "aliases": [
+      "adder di Draper",
+      "Draper",
+      "aritmetica quantistica",
+      "IQP"
+    ],
+    "pdfTerms": [
+      "Draper adder",
+      "Fourier-space",
+      "IQP"
+    ],
+    "kind": "term",
+    "definedIn": "p0241",
+    "definitions": {
+      "it-intermediate": "Applicazioni future delle PTN. Molte operazioni aritmetiche (somma, moltiplicazione) si fanno come QFT → rotazioni di fase → QFT inversa (ad esempio l'adder di Draper), quindi beneficiano direttamente di una QFT efficiente. Anche i circuiti IQP, fatti di porte che commutano, si compilano naturalmente con le PTN.",
+      "it-expert": "A = QFT†·D·QFT con D diagonale. Il Draper adder classico-quantistico ha D_a di sole R_Z; quello quantistico-quantistico ha D_ab con O(n²) gate a due qubit, che sono proprio un pattern PTN. Estendibile a moltiplicatori ottimistici e circuiti IQP."
+    },
+    "related": [
+      "qft",
+      "oqft"
+    ]
+  }
+]

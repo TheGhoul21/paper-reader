@@ -1,0 +1,601 @@
+[
+  {
+    "id": "neutral-atom-array",
+    "term": "atomi neutri",
+    "aliases": [
+      "sistemi quantistici ad atomi neutri",
+      "sistemi ad atomi neutri",
+      "processori ad atomi neutri",
+      "array ad atomi neutri",
+      "griglia ad atomi neutri"
+    ],
+    "pdfTerms": [
+      "neutral atom",
+      "Neutral atom",
+      "neutral-atom"
+    ],
+    "kind": "term",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Computer quantistici in cui ogni qubit è un singolo atomo (tutti identici per natura), tenuto fermo nel vuoto da una \"pinzetta\" di luce laser. Gli atomi stanno su una griglia e, a differenza dei chip superconduttori con collegamenti fissi, possono essere spostati durante il calcolo. Questo dà connettività flessibile, ma obbliga il compilatore a pianificare i movimenti."
+    },
+    "related": [
+      "optical-tweezer",
+      "slm",
+      "aod",
+      "rydberg-stage"
+    ]
+  },
+  {
+    "id": "optical-tweezer",
+    "term": "tweezer ottici",
+    "aliases": [
+      "tweezer ottico",
+      "trappole ottiche",
+      "tweezer"
+    ],
+    "pdfTerms": [
+      "optical tweezers",
+      "optical tweezer",
+      "optical traps",
+      "tweezer"
+    ],
+    "kind": "term",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Fasci laser molto focalizzati che intrappolano ciascuno un atomo, come una pinzetta di luce. Due sistemi li generano: l'SLM crea la griglia di trappole fisse, l'AOD crea trappole mobili che raccolgono e spostano gli atomi."
+    },
+    "related": [
+      "slm",
+      "aod",
+      "neutral-atom-array"
+    ]
+  },
+  {
+    "id": "slm",
+    "term": "SLM",
+    "aliases": [
+      "coordinate SLM",
+      "trappole SLM"
+    ],
+    "pdfTerms": [
+      "SLM"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Spatial Light Modulator: il dispositivo ottico che crea la griglia statica di trappole in cui gli atomi \"parcheggiano\". Le posizioni SLM sono le coordinate fisse del processore; spostare un atomo significa portarlo con l'AOD da una posizione SLM a un'altra."
+    },
+    "related": [
+      "aod",
+      "optical-tweezer"
+    ]
+  },
+  {
+    "id": "aod",
+    "term": "AOD",
+    "aliases": [
+      "Acousto-Optic Deflector",
+      "deflettore acusto-ottico",
+      "righe AOD",
+      "trappole AOD"
+    ],
+    "pdfTerms": [
+      "AOD",
+      "Acousto-Optic Deflector",
+      "acousto-optic deflector"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Acousto-Optic Deflector: genera una griglia di trappole mobili organizzata per righe e colonne, e sposta insieme tutti gli atomi agganciati. Le sue regole di mobilità (le righe non possono incrociarsi né sovrapporsi, l'ordine va preservato) sono i \"vincoli cinematici\" che rendono difficile il routing."
+    },
+    "related": [
+      "kinematic-constraints",
+      "slm",
+      "heuristic-routing"
+    ]
+  },
+  {
+    "id": "interaction-radius",
+    "term": "raggio di interazione",
+    "aliases": [
+      "raggi di interazione",
+      "Rint"
+    ],
+    "pdfTerms": [
+      "interaction radius",
+      "interaction radii",
+      "𝑅𝑖𝑛𝑡",
+      "𝑅int"
+    ],
+    "kind": "term",
+    "definedIn": "p0048",
+    "definitions": {
+      "it-intermediate": "La distanza massima (Rint, 6 μm nella valutazione) entro cui due atomi possono eseguire un gate a due qubit tramite interazione di Rydberg. Definisce quali coppie di posizioni sulla griglia sono \"collegabili\"."
+    },
+    "related": [
+      "restriction-radius",
+      "rydberg-stage",
+      "offline-layout-library"
+    ]
+  },
+  {
+    "id": "restriction-radius",
+    "term": "raggio di restrizione",
+    "aliases": [
+      "raggi di restrizione",
+      "Rr",
+      "regioni di conflitto",
+      "regione di conflitto",
+      "zone di conflitto"
+    ],
+    "pdfTerms": [
+      "restriction radius",
+      "restriction radii",
+      "conflict regions",
+      "exclusion zone"
+    ],
+    "kind": "term",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "Il raggio (Rr, 12 μm nella valutazione) della \"zona di esclusione\" attorno a ogni gate a due qubit in esecuzione: nessun altro gate può avvenire lì dentro nello stesso momento, altrimenti i laser di Rydberg interferiscono (crosstalk). È il vincolo che limita quanti gate si possono fare in parallelo."
+    },
+    "related": [
+      "interaction-radius",
+      "ilp",
+      "mis"
+    ]
+  },
+  {
+    "id": "rydberg-stage",
+    "term": "stage di Rydberg",
+    "aliases": [
+      "stage di eccitazione Rydberg",
+      "stage di eccitazione di Rydberg",
+      "Stage di Rydberg",
+      "eccitazioni Rydberg"
+    ],
+    "pdfTerms": [
+      "Rydberg stages",
+      "Rydberg stage",
+      "Rydberg excitation stages"
+    ],
+    "kind": "term",
+    "definedIn": "p0085",
+    "definitions": {
+      "it-intermediate": "Un \"turno\" in cui il laser di Rydberg viene acceso su tutto l'array per eseguire i gate a due qubit programmati in parallelo. Ogni stage costa fedeltà anche agli atomi inattivi, che subiscono comunque l'eccitazione. Il loro numero L è la metrica di costo fisico di ARGON: più gate per stage vuol dire meno stage e fedeltà più alta."
+    },
+    "related": [
+      "ilp",
+      "fidelity-model",
+      "restriction-radius"
+    ]
+  },
+  {
+    "id": "ilp",
+    "term": "ILP",
+    "aliases": [
+      "parallelismo a livello di istruzione",
+      "parallelismo dei gate",
+      "parallelismo statico"
+    ],
+    "pdfTerms": [
+      "ILP",
+      "instruction-level parallelism"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "Instruction-Level Parallelism, preso in prestito dall'architettura dei processori classici: quanti gate a due qubit si possono eseguire nello stesso stage di Rydberg senza violare i raggi di restrizione. Massimizzarlo riduce gli stage e quindi gli errori; ARGON lo garantisce precalcolando layout ad alta densità."
+    },
+    "related": [
+      "rydberg-stage",
+      "restriction-radius",
+      "offline-layout-library"
+    ]
+  },
+  {
+    "id": "kinematic-constraints",
+    "term": "vincoli cinematici",
+    "aliases": [
+      "vincoli cinematici dinamici",
+      "conflitti di incrocio",
+      "collisioni di traiettoria",
+      "regole di mobilità"
+    ],
+    "pdfTerms": [
+      "kinematic constraints",
+      "kinematic conflicts",
+      "crossing conflicts",
+      "kinematic"
+    ],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-intermediate": "Le regole fisiche che governano come l'AOD può muovere gli atomi: righe e colonne AOD non possono incrociarsi né fondersi, quindi non tutti gli spostamenti desiderati sono possibili contemporaneamente. Un layout scelto senza guardare avanti può \"intrappolare\" i qubit in posizioni che rendono i passi successivi pieni di conflitti."
+    },
+    "related": [
+      "aod",
+      "gnn-placement",
+      "heuristic-routing"
+    ]
+  },
+  {
+    "id": "spatiotemporal-decoupling",
+    "term": "disaccoppiamento spaziotemporale",
+    "aliases": [
+      "disaccoppiamento",
+      "architettura disaccoppiata",
+      "pipeline di compilazione disaccoppiata",
+      "accoppiamento spaziotemporale"
+    ],
+    "pdfTerms": [
+      "spatiotemporal decoupling",
+      "decoupling",
+      "spatiotemporal coupling"
+    ],
+    "kind": "term",
+    "definedIn": "p0014",
+    "definitions": {
+      "it-intermediate": "L'idea centrale di ARGON: invece di risolvere insieme \"dove mettere i gate\" (vincoli spaziali, fissi per un dato hardware) e \"come muovere gli atomi nel tempo\" (vincoli dinamici, dipendenti dal circuito), li separa. La parte spaziale si precalcola una volta sola offline, la parte temporale si affida a una rete neurale veloce. Così la compilazione passa da esponenziale a quasi istantanea."
+    },
+    "related": [
+      "offline-layout-library",
+      "gnn-placement",
+      "heuristic-routing"
+    ]
+  },
+  {
+    "id": "offline-layout-library",
+    "term": "libreria offline di layout",
+    "aliases": [
+      "libreria offline di layout spaziali",
+      "Libreria Offline di Layout Spaziali",
+      "libreria di layout",
+      "libreria di layout precalcolata",
+      "layout precalcolati"
+    ],
+    "pdfTerms": [
+      "Offline Spatial Layout Library",
+      "layout library",
+      "offline library"
+    ],
+    "kind": "term",
+    "definedIn": "p0045",
+    "definitions": {
+      "it-intermediate": "Un catalogo, calcolato una volta sola per un dato hardware, di disposizioni di gate a due qubit che rispettano tutti i raggi di interazione e restrizione e hanno la massima densità possibile. A tempo di compilazione ARGON non verifica più la geometria: sceglie tra questi layout certificati."
+    },
+    "related": [
+      "mis",
+      "smt",
+      "spatiotemporal-decoupling",
+      "ilp"
+    ]
+  },
+  {
+    "id": "mis",
+    "term": "Massimo Insieme Indipendente",
+    "aliases": [
+      "MIS",
+      "massimo insieme indipendente"
+    ],
+    "pdfTerms": [
+      "Maximum Independent Set",
+      "MIS"
+    ],
+    "kind": "term",
+    "definedIn": "p0049",
+    "definitions": {
+      "it-intermediate": "Problema classico sui grafi: scegliere il maggior numero di nodi senza che due scelti siano collegati. Qui i nodi sono i possibili gate e gli archi le coppie di gate in conflitto (zone di esclusione sovrapposte), quindi un MIS è il layout con più gate paralleli possibile (Eq. 1)."
+    },
+    "related": [
+      "offline-layout-library",
+      "smt",
+      "restriction-radius"
+    ]
+  },
+  {
+    "id": "smt",
+    "term": "SMT",
+    "aliases": [
+      "solver SMT"
+    ],
+    "pdfTerms": [
+      "SMT"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0022",
+    "definitions": {
+      "it-intermediate": "Satisfiability Modulo Theories: una famiglia di solver che trovano soluzioni esatte a problemi di vincoli logici e aritmetici. È lento, ma qui viene usato solo offline per costruire la libreria di layout, quindi il suo costo non pesa sulla compilazione."
+    },
+    "related": [
+      "mis",
+      "offline-layout-library"
+    ]
+  },
+  {
+    "id": "gnn-placement",
+    "term": "GNN",
+    "aliases": [
+      "graph neural network",
+      "posizionamento predittivo",
+      "politica predittiva",
+      "predittore basato su GNN"
+    ],
+    "pdfTerms": [
+      "GNN",
+      "GNN-guided",
+      "predictive placement",
+      "predictive policy"
+    ],
+    "kind": "term",
+    "definedIn": "p0062",
+    "definitions": {
+      "it-intermediate": "Una Graph Neural Network: una rete neurale che lavora direttamente su grafi. In ARGON riceve la griglia di atomi, i gate del layer corrente e (attenuati da γ) quelli futuri, e stima quanto costerà in movimenti ciascun layout candidato. Il compilatore sceglie il layout col costo predetto più basso con un solo passaggio della rete, invece di una ricerca costosa."
+    },
+    "related": [
+      "rollout",
+      "sum-pooling",
+      "kinematic-constraints",
+      "zero-shot"
+    ]
+  },
+  {
+    "id": "sum-pooling",
+    "term": "sum-pooling",
+    "aliases": [],
+    "pdfTerms": [
+      "sum-pooling"
+    ],
+    "kind": "term",
+    "definedIn": "p0068",
+    "definitions": {
+      "it-intermediate": "L'ultimo passo della GNN: somma gli stati di tutti i nodi (qubit) per ottenere un unico numero, il costo predetto. È scelto apposta perché i costi di movimento, come le distanze percorse dagli atomi, si sommano davvero su tutto il processore."
+    },
+    "related": [
+      "gnn-placement"
+    ]
+  },
+  {
+    "id": "rollout",
+    "term": "rollout",
+    "aliases": [
+      "rollout spaziotemporale"
+    ],
+    "pdfTerms": [
+      "rollout"
+    ],
+    "kind": "term",
+    "definedIn": "p0075",
+    "definitions": {
+      "it-intermediate": "Il modo in cui si creano i dati di addestramento: per un layer e un layout candidato si simula davvero, in modo lento e approfondito, il routing dei passi successivi e se ne misura il costo. Queste coppie (situazione, costo reale) insegnano alla GNN a stimare il costo senza simulare."
+    },
+    "related": [
+      "gnn-placement",
+      "zero-shot"
+    ]
+  },
+  {
+    "id": "heuristic-routing",
+    "term": "instradamento euristico",
+    "aliases": [
+      "instradamento euristico",
+      "routing euristico",
+      "Heuristic Parallel Routing",
+      "slice di esecuzione parallela"
+    ],
+    "pdfTerms": [
+      "Heuristic Parallel Routing",
+      "heuristic routing",
+      "Deadlock mitigation"
+    ],
+    "kind": "term",
+    "definedIn": "p0081",
+    "definitions": {
+      "it-intermediate": "La fase finale di ARGON: traduce i layout scelti in movimenti AOD concreti. Rompe i cicli di dipendenza parcheggiando temporaneamente un qubit (deadlock), poi raggruppa i movimenti compatibili in \"slice\" parallele colorando un grafo dei conflitti tra traiettorie."
+    },
+    "related": [
+      "deadlock",
+      "graph-coloring",
+      "aod"
+    ]
+  },
+  {
+    "id": "deadlock",
+    "term": "deadlock",
+    "aliases": [
+      "deadlock cinematici",
+      "deadlock cinematico",
+      "posizione di parcheggio"
+    ],
+    "pdfTerms": [
+      "deadlocks",
+      "deadlock",
+      "parking"
+    ],
+    "kind": "term",
+    "definedIn": "p0082",
+    "definitions": {
+      "it-intermediate": "Una situazione in cui gli atomi si bloccano a vicenda: A deve andare dove sta B, B dove sta C, C dove sta A. Nessuno può muoversi per primo. ARGON la risolve spostando uno di loro in una posizione di parcheggio intermedia, che spezza il ciclo."
+    },
+    "related": [
+      "heuristic-routing",
+      "kinematic-constraints"
+    ]
+  },
+  {
+    "id": "graph-coloring",
+    "term": "colorazione di grafi",
+    "aliases": [
+      "colorazione del grafo",
+      "edge-coloring"
+    ],
+    "pdfTerms": [
+      "graph coloring",
+      "edge-coloring"
+    ],
+    "kind": "term",
+    "definedIn": "p0083",
+    "definitions": {
+      "it-intermediate": "Assegnare un \"colore\" a ogni nodo di un grafo in modo che nodi collegati abbiano colori diversi. Qui i nodi sono traiettorie AOD e gli archi i conflitti: ogni colore è un gruppo di movimenti eseguibili insieme, quindi meno colori vuol dire meno passi di trasporto. Enola usa invece l'edge-coloring sui gate."
+    },
+    "related": [
+      "heuristic-routing",
+      "enola"
+    ]
+  },
+  {
+    "id": "fidelity-model",
+    "term": "modello di fedeltà",
+    "aliases": [
+      "fedeltà di decoerenza",
+      "fedeltà qubit idle",
+      "eccitazione idle"
+    ],
+    "pdfTerms": [
+      "Decoherence Limit",
+      "idle excitations",
+      "idle-excitation",
+      "idle decoherence",
+      "Transfer Penalty"
+    ],
+    "kind": "term",
+    "definedIn": "p0086",
+    "definitions": {
+      "it-intermediate": "La stima (Eq. 7) di quanto il circuito compilato riuscirà bene sull'hardware: il prodotto delle probabilità di successo di ogni gate a due qubit, di ogni atomo inattivo \"disturbato\" da uno stage di Rydberg, di ogni trasferimento tra trappole, e della decoerenza dovuta al tempo totale. Permette di attribuire i guadagni di ARGON ai singoli fattori (Fig. 9)."
+    },
+    "related": [
+      "rydberg-stage",
+      "ilp"
+    ]
+  },
+  {
+    "id": "enola",
+    "term": "Enola",
+    "aliases": [],
+    "pdfTerms": [
+      "Enola"
+    ],
+    "kind": "term",
+    "definedIn": "p0036",
+    "definitions": {
+      "it-intermediate": "Un compilatore per atomi neutri che ottimizza congiuntamente posizionamento e movimenti (con edge-coloring e ricerca stocastica). Dà ottimi layout sui circuiti piccoli, ma il tempo di compilazione esplode: già a 25 qubit raggiunge il timeout di 10⁴ secondi (Fig. 1a). È l'esempio del \"muro\" che ARGON vuole superare."
+    },
+    "related": [
+      "dasatom",
+      "powermove",
+      "spatiotemporal-decoupling"
+    ]
+  },
+  {
+    "id": "dasatom",
+    "term": "DasAtom",
+    "aliases": [],
+    "pdfTerms": [
+      "DasAtom"
+    ],
+    "kind": "term",
+    "definedIn": "p0038",
+    "definitions": {
+      "it-intermediate": "Un compilatore euristico \"spatial-first\": decide il posizionamento con algoritmi esatti di isomorfismo di grafi, layer per layer. È veloce e fa pochi movimenti, ma posizionando in modo miope serializza troppo i gate e aumenta gli stage di Rydberg, perdendo fedeltà sui circuiti grandi."
+    },
+    "related": [
+      "enola",
+      "powermove",
+      "rydberg-stage"
+    ]
+  },
+  {
+    "id": "powermove",
+    "term": "PowerMove",
+    "aliases": [],
+    "pdfTerms": [
+      "PowerMove"
+    ],
+    "kind": "term",
+    "definedIn": "p0089",
+    "definitions": {
+      "it-intermediate": "Uno scheduler euristico ottimizzato per atomi neutri, usato come terzo baseline e configurato senza zona di storage per confrontarlo ad armi pari su un'architettura monolitica."
+    },
+    "related": [
+      "enola",
+      "dasatom"
+    ]
+  },
+  {
+    "id": "zoned-architecture",
+    "term": "architetture a zone",
+    "aliases": [
+      "architettura a zone",
+      "zoned architecture",
+      "zoned-architecture",
+      "sistemi a zone"
+    ],
+    "pdfTerms": [
+      "zoned architectures",
+      "zoned architecture",
+      "zoned-architecture",
+      "zoned systems"
+    ],
+    "kind": "term",
+    "definedIn": "p0125",
+    "definitions": {
+      "it-intermediate": "Architetture in cui l'array è diviso in zone con funzioni diverse (memoria/storage, zona di entangling, lettura) e gli atomi viaggiano tra una zona e l'altra. ARGON è pensato per un array denso \"monolitico\" senza zone, e la Sez. 4.7 lo confronta comunque con un'euristica per architetture a zone (Stade et al.)."
+    },
+    "related": [
+      "neutral-atom-array",
+      "aod"
+    ]
+  },
+  {
+    "id": "zero-shot",
+    "term": "zero-shot",
+    "aliases": [
+      "generalizzazione zero-shot",
+      "held-out"
+    ],
+    "pdfTerms": [
+      "zero-shot",
+      "held-out"
+    ],
+    "kind": "term",
+    "definedIn": "p0115",
+    "definitions": {
+      "it-intermediate": "Usare il modello su casi mai visti in addestramento, senza riaddestrarlo. La GNN di ARGON, addestrata solo su array 16×16 e su circuiti Random/W-state, viene applicata a griglie 20×20 e 28×28 e a benchmark nuovi (QV, 3-Regular, QASMBench) mantenendo le prestazioni."
+    },
+    "related": [
+      "gnn-placement",
+      "rollout",
+      "benchmarks"
+    ]
+  },
+  {
+    "id": "benchmarks",
+    "term": "QASMBench",
+    "aliases": [
+      "Quantum Volume",
+      "QV",
+      "W-state",
+      "Random gates",
+      "3-Regular",
+      "MQT Bench"
+    ],
+    "pdfTerms": [
+      "QASMBench",
+      "Quantum Volume",
+      "W-state",
+      "Random gates",
+      "3-Regular",
+      "MQT Bench"
+    ],
+    "kind": "term",
+    "definedIn": "p0088",
+    "definitions": {
+      "it-intermediate": "Le suite di circuiti di test. W-state e Random gates (strutturati e non strutturati) servono anche per l'addestramento; 3-Regular (grafi con connettività a lungo raggio), Quantum Volume (circuiti casuali densi, lo standard di IBM) e QASMBench (circuiti applicativi reali) sono tenuti da parte solo per la valutazione."
+    },
+    "related": [
+      "zero-shot"
+    ]
+  }
+]

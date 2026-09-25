@@ -1,0 +1,549 @@
+[
+  {
+    "id": "phase-gadget",
+    "term": "phase gadget",
+    "aliases": [
+      "phase gadgets",
+      "Z-phase gadget",
+      "Z-phase gadgets",
+      "Φn"
+    ],
+    "pdfTerms": [
+      "phase gadget",
+      "phase gadgets",
+      "phase-gadget",
+      "phase-gadgets",
+      "Z-phase gadget",
+      "Z-phase gadgets"
+    ],
+    "kind": "term",
+    "definedIn": "p0029",
+    "definitions": {
+      "it-intermediate": "Un blocco multi-qubit che applica una rotazione di fase dipendente dalla parità (XOR) di più qubit. Nel circuito appare come una \"scala\" di porte ∧X che raccoglie la parità su un qubit, una rotazione Z(α) al centro, e la scala ripetuta al contrario. È la struttura \"macroscopica\" su cui si basa tutto il paper.",
+      "it-expert": "Φn(α): unitaria diagonale e^(-iα/2·Z⊗n), definita ricorsivamente come coniugazione di Z(α) con ∧X. Nel calcolo ZX è un singolo spider Z con fase α collegato a uno spider X sulle n linee, quindi è invariante per permutazione dei qubit. Da qui la libertà di sintesi (ladder vs albero) sfruttata da t|ket⟩."
+    },
+    "related": [
+      "pauli-gadget",
+      "cnot",
+      "zx-calculus",
+      "balanced-tree"
+    ]
+  },
+  {
+    "id": "pauli-gadget",
+    "term": "Pauli gadget",
+    "aliases": [
+      "Pauli gadgets",
+      "P(α,s)"
+    ],
+    "pdfTerms": [
+      "Pauli gadget",
+      "Pauli gadgets"
+    ],
+    "kind": "term",
+    "definedIn": "p0080",
+    "definitions": {
+      "it-intermediate": "La generalizzazione del phase gadget a una stringa di Pauli qualsiasi (X, Y, Z mescolati). Si ottiene mettendo prima e dopo il phase gadget dei cambi di base a singolo qubit: Hadamard per X, X(π/2) per Y, niente per Z. Rappresenta l'esponenziale e^(-iα·P) di un operatore di Pauli P, cioè il mattone base delle simulazioni hamiltoniane.",
+      "it-expert": "P(α,s) := U(s);Φ|s|(α);U(s)†, con U(s) prodotto tensoriale di I/X(π/2)/H per Z/Y/X. Coincide con e^(-iα/2·σ_s). Il contributo del paper è la sintesi a coppie: Teorema 4.10 (commutano oppure soddisfano l'equazione di Eulero) e costo 2(|s|+|t|−|r|−⌊|u|/2⌋−2) ∧X."
+    },
+    "related": [
+      "phase-gadget",
+      "pauli-string",
+      "euler-equation",
+      "trotterisation"
+    ]
+  },
+  {
+    "id": "zx-calculus",
+    "term": "calcolo ZX",
+    "aliases": [
+      "zx-calculus",
+      "ZX-calculus",
+      "calcolo ZX scalar-free"
+    ],
+    "pdfTerms": [
+      "zx-calculus",
+      "ZX-calculus"
+    ],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Un linguaggio grafico per i circuiti quantistici: le operazioni diventano nodi verdi (Z) e rossi (X), detti spider, collegati da fili. Ha regole di riscrittura che trasformano un diagramma in uno equivalente. Rende evidenti simmetrie che nella notazione a porte restano nascoste, come l'invarianza dei phase gadget per permutazione dei qubit.",
+      "it-expert": "Calcolo grafico completo per la meccanica quantistica pura qubit (qui nella versione scalar-free, con le regole complete di Vilmart). Le dimostrazioni del paper usano fusione degli spider (S), cambio colore (H), π-copy (K1), inversione di fase (K2), bialgebra (B), Hopf ed Eulero (EU)."
+    },
+    "related": [
+      "spider",
+      "phase-gadget",
+      "euler-equation"
+    ]
+  },
+  {
+    "id": "cnot",
+    "term": "∧X",
+    "aliases": [
+      "porta ∧X",
+      "porte ∧X",
+      "CNOT"
+    ],
+    "pdfTerms": [
+      "∧X",
+      "∧Xs"
+    ],
+    "kind": "symbol",
+    "definedIn": "p0018",
+    "definitions": {
+      "it-intermediate": "La notazione del paper per la porta CNOT (controlled-NOT): inverte il qubit target se il qubit di controllo vale 1. È la porta a due qubit di riferimento, e il suo numero e la sua profondità sono le metriche principali che il paper cerca di ridurre, perché le porte a due qubit sono le più rumorose.",
+      "it-expert": "CNOT. In ZX è uno spider Z (controllo) collegato a uno spider X (target). Metriche target del paper: ∧X-count e ∧X-depth, usate come proxy dell'errore totale sui dispositivi NISQ."
+    },
+    "related": [
+      "phase-gadget",
+      "ladder",
+      "clifford"
+    ]
+  },
+  {
+    "id": "tket",
+    "term": "t|ket⟩",
+    "aliases": [
+      "pytket",
+      "tket"
+    ],
+    "pdfTerms": [
+      "t|ket〉",
+      "t|ket⟩",
+      "pytket"
+    ],
+    "kind": "term",
+    "definedIn": "p0003",
+    "definitions": {
+      "it-intermediate": "Il compilatore quantistico di Cambridge Quantum Computing (oggi Quantinuum), di cui il paper descrive le ottimizzazioni. È \"retargetable\": prende un circuito e lo adatta a hardware diversi, rispettando la connettività e il set di porte nativo e riducendo porte e profondità. pytket è la sua interfaccia Python.",
+      "it-expert": "Compilatore retargetable di CQC. Rappresentazione interna a non-planar maps, ottimizzazione a pass componibili con riscrittura DPO e matching custom. Il paper ne documenta la sintesi di phase/Pauli gadget, non ancora nella release pubblica di pytket al momento della scrittura."
+    },
+    "related": [
+      "non-planar-map",
+      "double-pushout",
+      "peephole"
+    ]
+  },
+  {
+    "id": "nisq",
+    "term": "NISQ",
+    "aliases": [
+      "Noisy Intermediate-Scale Quantum"
+    ],
+    "pdfTerms": [
+      "NISQ",
+      "Noisy Intermediate-Scale Quantum"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0005",
+    "definitions": {
+      "it-intermediate": "Noisy Intermediate-Scale Quantum: gli attuali computer quantistici con poche decine o centinaia di qubit, rumorosi e senza correzione d'errore. Ogni porta in più accumula errori, per questo conta tanto ridurre il numero di porte e la profondità dei circuiti.",
+      "it-expert": "Regime pre-fault-tolerant, in cui coerenza e fedeltà delle porte a due qubit limitano la profondità eseguibile. Giustifica le metriche ∧X-count e ∧X-depth al posto del T-count."
+    },
+    "related": [
+      "t-count",
+      "cnot"
+    ]
+  },
+  {
+    "id": "t-count",
+    "term": "T-count",
+    "aliases": [],
+    "pdfTerms": [
+      "T-count"
+    ],
+    "kind": "term",
+    "definedIn": "p0007",
+    "definitions": {
+      "it-intermediate": "Il numero di porte T in un circuito. Nei computer fault-tolerant le porte T sono le più costose da realizzare, quindi molta letteratura cerca di ridurle. Il paper invece guarda al regime NISQ, dove conta di più il numero di porte a due qubit.",
+      "it-expert": "Metrica dominante nel regime fault-tolerant (costo della magic-state distillation). Qui è esplicitamente non l'obiettivo, anche se nelle conclusioni i phase gadget vengono collegati a lavori di T-count reduction e lattice surgery."
+    },
+    "related": [
+      "nisq",
+      "clifford"
+    ]
+  },
+  {
+    "id": "clifford",
+    "term": "Clifford",
+    "aliases": [
+      "porte Clifford",
+      "sottocircuito Clifford",
+      "sottocircuiti Clifford",
+      "circuiti Clifford"
+    ],
+    "pdfTerms": [
+      "Clifford"
+    ],
+    "kind": "term",
+    "definedIn": "p0027",
+    "definitions": {
+      "it-intermediate": "Le porte Clifford (Hadamard, S, CNOT e loro combinazioni) formano una famiglia \"facile\": mandano operatori di Pauli in operatori di Pauli e si possono simulare ed ottimizzare in modo efficiente. Nel paper servono sia a cambiare base ai gadget, sia come sottocircuiti da semplificare dopo la sintesi.",
+      "it-expert": "Normalizzatore del gruppo di Pauli. Due ruoli nel paper: i coniugatori U(s) e U del Lemma 4.5 sono Clifford (quindi fanno passare i gadget, Lemmi 4.3–4.4), e dopo la sintesi a coppie t|ket⟩ applica un'ottimizzazione Clifford dedicata, con riduzione delle coppie di ∧X separate da Clifford a singolo qubit."
+    },
+    "related": [
+      "pauli-gadget",
+      "cnot",
+      "t-count"
+    ]
+  },
+  {
+    "id": "pauli-string",
+    "term": "stringa di Pauli",
+    "aliases": [
+      "stringhe di Pauli",
+      "Pauli string",
+      "Pauli strings",
+      "tensore di Pauli",
+      "tensori di Pauli"
+    ],
+    "pdfTerms": [
+      "Pauli string",
+      "Pauli strings",
+      "Pauli tensor",
+      "Pauli tensors",
+      "strings of Paulis"
+    ],
+    "kind": "term",
+    "definedIn": "p0099",
+    "definitions": {
+      "it-intermediate": "Una sequenza di simboli I, X, Y, Z, uno per qubit (es. \"YYXY\"), che descrive un operatore di Pauli su più qubit. Il paper definisce una piccola algebra sulle stringhe: concatenazione st, lunghezza |s|, sottostringa (coincide dove non è I), prodotto punto-a-punto t•s e intersezione (qubit dove entrambe non sono I).",
+      "it-expert": "Parola su {I,X,Y,Z}. Notazione del paper: st concatenazione, |s| lunghezza, t sottostringa di s se tᵢ≠sᵢ ⇒ tᵢ=I, t•s prodotto punto-a-punto (a meno di fase), intersezione = supporto comune. Il costo della sintesi a coppie dipende da |r| (massima sottostringa comune) e |u|."
+    },
+    "related": [
+      "pauli-gadget",
+      "common-substring"
+    ]
+  },
+  {
+    "id": "common-substring",
+    "term": "sottostringa comune massima",
+    "aliases": [
+      "maximum common substring"
+    ],
+    "pdfTerms": [
+      "maximum common substring"
+    ],
+    "kind": "term",
+    "definedIn": "p0204",
+    "definitions": {
+      "it-intermediate": "La parte più lunga in cui due stringhe di Pauli coincidono sugli stessi qubit (stesso simbolo, non I). Per ogni qubit che ne fa parte, sintetizzando i due Pauli gadget insieme si risparmiano 2 porte ∧X.",
+      "it-expert": "r = massima sottostringa comune di s e t. Per il Corollario 4.7 si fattorizza con una coniugazione U_r condivisa (Eq. 5), con risparmio di 2|r| ∧X. Il resto dell'intersezione (u) si riduce a coppie tramite l'Eq. 7."
+    },
+    "related": [
+      "pauli-string",
+      "pauli-gadget"
+    ]
+  },
+  {
+    "id": "trotterisation",
+    "term": "trotterizzazione",
+    "aliases": [
+      "trotterizzato",
+      "trotterizzati",
+      "trotterizzata",
+      "trotterizzando",
+      "Trotterizzata",
+      "Trotterised"
+    ],
+    "pdfTerms": [
+      "Trotterised",
+      "Trotterising",
+      "Trotterisation"
+    ],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Una tecnica per simulare l'evoluzione nel tempo e^(-iHt) di un sistema, quando l'Hamiltoniano H è una somma di termini di Pauli: invece di esponenziare tutto insieme, si applicano in sequenza gli esponenziali dei singoli termini, a piccoli passi. Ogni esponenziale è un Pauli gadget, ed è per questo che i circuiti di chimica quantistica ne sono pieni.",
+      "it-expert": "Decomposizione di Lie–Trotter–Suzuki di e^(-iΣ_j α_j P_j) in un prodotto di e^(-iα_j P_j), cioè in una sequenza di Pauli gadget separati da strati Clifford. È la struttura che rende la sintesi a coppie applicabile su larga scala ai circuiti UCC."
+    },
+    "related": [
+      "pauli-gadget",
+      "ucc"
+    ]
+  },
+  {
+    "id": "phase-polynomial",
+    "term": "phase-polynomial",
+    "aliases": [
+      "circuiti phase-polynomial",
+      "polinomio di fase",
+      "circuito polinomio di fase"
+    ],
+    "pdfTerms": [
+      "phase-polynomial",
+      "phase-polynomials",
+      "phase polynomial"
+    ],
+    "kind": "term",
+    "definedIn": "p0075",
+    "definitions": {
+      "it-intermediate": "La classe di circuiti costruibili solo con porte ∧X e rotazioni di fase (come T). Il loro effetto si scrive come una fase che dipende da funzioni booleane lineari degli input, più una permutazione lineare degli stessi. Esiste molta letteratura per ottimizzarli, ma non gestisce bene i Pauli gadget, che in generale non commutano.",
+      "it-expert": "Circuiti {∧X, Rz}: C|x⟩ = e^(iΣ α_j f_j(x)) |g(x)⟩ con f_j lineari e g lineare reversibile (Eq. 2). Un circuito di soli Z-phase gadget è il caso g = id (Eq. 1). Le tecniche di questa classe si fermano davanti a Pauli gadget in basi miste."
+    },
+    "related": [
+      "phase-gadget",
+      "pauli-gadget"
+    ]
+  },
+  {
+    "id": "euler-decomposition",
+    "term": "decomposizione di Eulero",
+    "aliases": [
+      "forma di Eulero",
+      "Euler decomposition"
+    ],
+    "pdfTerms": [
+      "Euler decomposition",
+      "Euler form",
+      "Euler-angle decompositions"
+    ],
+    "kind": "term",
+    "definedIn": "p0025",
+    "definitions": {
+      "it-intermediate": "Qualsiasi operazione su un singolo qubit si può scrivere come tre rotazioni attorno a due assi alternati (es. Z-X-Z oppure X-Z-X), come gli angoli di Eulero per le rotazioni 3D. t|ket⟩ fonde sequenze di porte a singolo qubit in un'unica unitaria e la riscrive in questa forma, scegliendo gli assi più comodi per il contesto.",
+      "it-expert": "Qualsiasi U ∈ SU(2) si scrive come R_a(θ₁)R_b(θ₂)R_a(θ₃) con a ⊥ b. t|ket⟩ sceglie la base (ZXZ, XZX, ZYZ…) in base al contesto, per massimizzare le commutazioni o per il gate set nativo. È la stessa identità che, promossa ai Pauli gadget, diventa l'equazione di Eulero."
+    },
+    "related": [
+      "euler-equation",
+      "kak"
+    ]
+  },
+  {
+    "id": "euler-equation",
+    "term": "equazione di Eulero",
+    "aliases": [
+      "relazione di Eulero",
+      "(EU)"
+    ],
+    "pdfTerms": [
+      "Euler equation",
+      "(EU)"
+    ],
+    "kind": "term",
+    "definedIn": "p0085",
+    "definitions": {
+      "it-intermediate": "Quando due Pauli gadget P e Q non commutano, non si possono scambiare. Però una sequenza P-Q-P (con certi angoli) si può sempre riscrivere come Q-P-Q (con altri angoli). È la stessa idea della decomposizione di Eulero delle rotazioni, applicata a gadget su più qubit.",
+      "it-expert": "e^(-iα₁P)e^(-iα₂Q)e^(-iα₃P) = e^(-iβ₁Q)e^(-iβ₂P)e^(-iβ₃Q) per P, Q anticommutanti (Eq. 4). Con P=Z, Q=X è l'assioma (EU) dello ZX-calculus. Il Teorema 4.10 la estende a Pauli gadget arbitrari: o commutano, o vale questa."
+    },
+    "related": [
+      "euler-decomposition",
+      "pauli-gadget",
+      "zx-calculus"
+    ]
+  },
+  {
+    "id": "kak",
+    "term": "decomposizione KAK",
+    "aliases": [
+      "KAK",
+      "decomposizione di Cartan",
+      "KAK/Cartan"
+    ],
+    "pdfTerms": [
+      "KAK"
+    ],
+    "kind": "term",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Un teorema che permette di riscrivere qualsiasi operazione su due qubit, per quanto lunga la sequenza di porte che la compone, in una forma canonica con al massimo tre porte ∧X più rotazioni a singolo qubit.",
+      "it-expert": "Decomposizione di Cartan di SU(4): (A⊗B)·exp(i(aXX+bYY+cZZ))·(C⊗D). Dà al più 3 ∧X per qualsiasi blocco a due qubit. È un'ottimizzazione locale, che i phase/Pauli gadget superano lavorando su strutture multi-qubit."
+    },
+    "related": [
+      "euler-decomposition",
+      "cnot"
+    ]
+  },
+  {
+    "id": "peephole",
+    "term": "peephole optimization",
+    "aliases": [
+      "peephole optimisation",
+      "peephole"
+    ],
+    "pdfTerms": [
+      "peephole optimisation",
+      "peephole"
+    ],
+    "kind": "term",
+    "definedIn": "p0021",
+    "definitions": {
+      "it-intermediate": "Il nome, preso dai compilatori classici, della tecnica di ottimizzazione che guarda un pezzetto di codice alla volta (\"dal buco della serratura\") e lo sostituisce con uno equivalente più economico. Nei circuiti quantistici la finestra può essere qualsiasi sottocircuito connesso, anche l'intero circuito.",
+      "it-expert": "Pattern replacement locale. In t|ket⟩ la \"finestra\" è un qualunque sottografo connesso della non-planar map, e le riscritture possono essere non migliorative, fatte per abilitare pass successivi o per il retargeting sul gate set."
+    },
+    "related": [
+      "tket",
+      "double-pushout"
+    ]
+  },
+  {
+    "id": "non-planar-map",
+    "term": "mappe non planari",
+    "aliases": [
+      "mappa non planare",
+      "non-planar map",
+      "non-planar maps"
+    ],
+    "pdfTerms": [
+      "non-planar maps",
+      "non-planar map"
+    ],
+    "kind": "term",
+    "definedIn": "p0022",
+    "definitions": {
+      "it-intermediate": "La struttura dati con cui t|ket⟩ rappresenta un circuito: un grafo diretto in cui gli archi entranti in ogni nodo sono ordinati (per distinguere, ad esempio, controllo e target di una ∧X). Conserva solo chi è collegato a chi, non la posizione dei qubit né la temporizzazione.",
+      "it-expert": "Digrafo con ordinamento degli archi incidenti a ogni vertice, per supportare operazioni non commutative. Astrae le permutazioni dei qubit e il timing, così il matching è puramente strutturale e indipendente dal layout, come serve per la riscrittura DPO."
+    },
+    "related": [
+      "tket",
+      "double-pushout"
+    ]
+  },
+  {
+    "id": "double-pushout",
+    "term": "double pushout",
+    "aliases": [
+      "DPO",
+      "pushout"
+    ],
+    "pdfTerms": [
+      "double pushout"
+    ],
+    "kind": "term",
+    "definedIn": "p0024",
+    "definitions": {
+      "it-intermediate": "Un metodo formale, dalla teoria delle categorie, per definire con precisione cosa vuol dire \"sostituire un sottografo con un altro\" in un grafo più grande, senza rompere i collegamenti col resto. t|ket⟩ lo usa per applicare le riscritture, mentre la ricerca dei pattern è fatta con un algoritmo su misura per velocità.",
+      "it-expert": "Riscrittura di grafi DPO (L ← K → R) sulle non-planar maps. Garantisce la correttezza dell'incollaggio al contesto. Il matching di L è delegato a una ricerca custom per efficienza."
+    },
+    "related": [
+      "non-planar-map",
+      "peephole"
+    ]
+  },
+  {
+    "id": "ladder",
+    "term": "scala di ∧X",
+    "aliases": [
+      "scale di ∧X",
+      "∧X ladder",
+      "∧X-ladder",
+      "ladder"
+    ],
+    "pdfTerms": [
+      "∧X ladder",
+      "∧X ladders",
+      "∧X-ladders",
+      "ladder"
+    ],
+    "kind": "term",
+    "definedIn": "p0064",
+    "definitions": {
+      "it-intermediate": "Il modo \"ingenuo\" di costruire un phase gadget: una catena di ∧X in sequenza, ognuna dal qubit successivo verso l'ultimo, poi la rotazione, poi la catena al contrario. Usa 2(n−1) porte ∧X in profondità 2(n−1), cioè cresce linearmente col numero di qubit. È la forma generata, ad esempio, da Qiskit Aqua per i circuiti UCC.",
+      "it-expert": "Sintesi canonica della legge di decomposizione: 2(n−1) ∧X con depth 2(n−1). È il caso peggiore per la profondità, il punto di partenza che t|ket⟩ riconosce nei circuiti UCC generati da Qiskit e ri-sintetizza come albero."
+    },
+    "related": [
+      "balanced-tree",
+      "phase-gadget",
+      "cnot"
+    ]
+  },
+  {
+    "id": "balanced-tree",
+    "term": "albero bilanciato",
+    "aliases": [
+      "alberi bilanciati",
+      "forma ad albero bilanciato",
+      "balanced tree",
+      "balanced-tree"
+    ],
+    "pdfTerms": [
+      "balanced tree",
+      "balanced-tree"
+    ],
+    "kind": "term",
+    "definedIn": "p0064",
+    "definitions": {
+      "it-intermediate": "Il modo ottimale usato da t|ket⟩ per costruire un phase gadget: le ∧X raccolgono la parità a coppie, in parallelo, come in un torneo a eliminazione. Il numero di porte resta 2(n−1), ma la profondità scende a 2⌈log n⌉. In più lascia più ∧X \"esposte\" ai bordi, pronte per essere cancellate da gadget vicini.",
+      "it-expert": "Sintesi con ∧X-depth 2⌈log₂ n⌉ e count invariato 2(n−1), possibile grazie all'invarianza per permutazione del gadget in ZX. Non è unica: t|ket⟩ ne sceglie la forma in base al contesto, allineando le ∧X tra gadget consecutivi per cancellarle. In prospettiva, gli alberi di Steiner la renderebbero consapevole dell'architettura."
+    },
+    "related": [
+      "ladder",
+      "phase-gadget"
+    ]
+  },
+  {
+    "id": "ucc",
+    "term": "Unitary Coupled Cluster",
+    "aliases": [
+      "UCC",
+      "ansatz Unitary Coupled Cluster",
+      "ansatz UCC"
+    ],
+    "pdfTerms": [
+      "Unitary Coupled Cluster",
+      "UCC"
+    ],
+    "kind": "term",
+    "definedIn": "p0415",
+    "definitions": {
+      "it-intermediate": "Un metodo di chimica quantistica per stimare l'energia dello stato fondamentale di una molecola: si prepara uno stato con un circuito parametrizzato (ansatz) e un ottimizzatore classico regola i parametri. Il circuito nasce dalla trotterizzazione di un operatore esponenziato, quindi è pieno di Pauli gadget: è il banco di prova ideale per il paper.",
+      "it-expert": "Ansatz variazionale e^(T−T†), trotterizzato in Pauli gadget dopo il mapping fermioni→qubit (JW/BK/Parity). Il benchmark del paper usa circuiti UCC di H2, LiH, CH2 e C2H4 generati da Qiskit Chemistry, con riduzione media ∧X-count del 54.5% per t|ket⟩."
+    },
+    "related": [
+      "trotterisation",
+      "pauli-gadget",
+      "fermion-qubit-mapping"
+    ]
+  },
+  {
+    "id": "fermion-qubit-mapping",
+    "term": "mappatura dei qubit",
+    "aliases": [
+      "mappature dei qubit",
+      "Jordan-Wigner",
+      "Bravyi-Kitaev",
+      "Parity mapping"
+    ],
+    "pdfTerms": [
+      "qubit mapping",
+      "Jordan-Wigner",
+      "Bravyi-Kitaev",
+      "Parity mapping"
+    ],
+    "kind": "term",
+    "definedIn": "p0415",
+    "definitions": {
+      "it-intermediate": "Il modo di tradurre gli operatori della chimica (che parlano di elettroni, cioè fermioni) in operatori sui qubit. Jordan-Wigner, Parity e Bravyi-Kitaev sono tre ricette diverse: cambiano la lunghezza delle stringhe di Pauli risultanti, e quindi quante porte servono.",
+      "it-expert": "Codifica fermioni→qubit: Jordan-Wigner (stringhe Z di lunghezza O(n)), Parity, Bravyi-Kitaev (O(log n)). Determina il peso delle stringhe di Pauli, e quindi il costo della sintesi e il potenziale di risparmio a coppie. Nei benchmark compare nel nome del circuito (_JW_, _BK_, _P_)."
+    },
+    "related": [
+      "ucc",
+      "pauli-string"
+    ]
+  },
+  {
+    "id": "spider",
+    "term": "spider",
+    "aliases": [
+      "spiders",
+      "vertici verdi",
+      "vertici rossi"
+    ],
+    "pdfTerms": [
+      "spider",
+      "green vertices",
+      "red vertices",
+      "green phase vertices"
+    ],
+    "kind": "term",
+    "definedIn": "p0498",
+    "definitions": {
+      "it-intermediate": "I nodi dei diagrammi del calcolo ZX: gli spider verdi (Z) e rossi (X), ognuno con una fase. La regola principale (\"fusione degli spider\") dice che due spider dello stesso colore collegati si fondono in uno solo sommando le fasi, ed è quella che fa \"passare\" le porte attraverso i gadget.",
+      "it-expert": "Generatori Z/X dello ZX-calculus con fase. La spider fusion (S) più il cambio colore (H) bastano per gran parte delle regole di commutazione Clifford/∧X attraverso i Pauli gadget (Appendici A–B). K1/K2 servono per le fasi π."
+    },
+    "related": [
+      "zx-calculus"
+    ]
+  }
+]

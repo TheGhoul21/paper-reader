@@ -1,0 +1,546 @@
+[
+  {
+    "id": "directional-transport",
+    "term": "trasporto direzionale",
+    "aliases": [
+      "DT",
+      "directional transport"
+    ],
+    "pdfTerms": [
+      "directional transport",
+      "Directional transport",
+      "directional-transport",
+      "DT"
+    ],
+    "kind": "term",
+    "definedIn": "p0012",
+    "definitions": {
+      "it-intermediate": "Il meccanismo al centro del paper: invece di spostare fisicamente un atomo, si fa \"viaggiare\" solo la sua informazione, sotto forma di una singola eccitazione di Rydberg che salta da un atomo al vicino lungo una fila di atomi di supporto (ancilla). Ogni salto dura una frazione di microsecondo, contro i tempi molto più lunghi del movimento fisico con gli AOD.",
+      "it-expert": "Propagazione coerente di una singola eccitazione di Rydberg lungo una catena di ancilla tramite hop facilitati (antiblockade), senza moto atomico. Costo lineare nella lunghezza della catena, T_hop ≈ 0.256 μs per hop, contro tempi di shuttling AOD di decine-centinaia di μs. Richiede però un corridoio statico preconfigurato."
+    },
+    "related": [
+      "dt-channel",
+      "rydberg-antiblockade",
+      "hop",
+      "remote-cz"
+    ]
+  },
+  {
+    "id": "dt-channel",
+    "term": "canali DT",
+    "aliases": [
+      "canale DT",
+      "canali",
+      "canale",
+      "corridoio",
+      "corridoi",
+      "dorsale DT"
+    ],
+    "pdfTerms": [
+      "DT channels",
+      "DT channel",
+      "channel",
+      "channels",
+      "corridor"
+    ],
+    "kind": "term",
+    "definedIn": "p0029",
+    "definitions": {
+      "it-intermediate": "Il \"binario\" lungo cui viaggia l'eccitazione: una catena di atomi ancilla disposti a distanza precisa nella zona di entanglement. Va costruito prima, spostando atomi con l'AOD. Tenerne pronti per ogni coppia di qubit costerebbe troppo spazio, quindi il compilatore decide quali canali costruire e, nella versione dinamica, li allunga, accorcia o devia man mano.",
+      "it-expert": "Catena 1D di flying ancilla a distanza di facilitazione, posizionata una volta con AOD nella fase di configurazione. Nel compilatore statico la topologia è fissa; in quello dinamico (Alg. 1, DTChannelPlan) viene estesa, accorciata o reinstradata per stage, con riuso tra stage e fallback a coppie AOD quando il DT non conviene."
+    },
+    "related": [
+      "directional-transport",
+      "ancilla",
+      "static-dynamic-compiler"
+    ]
+  },
+  {
+    "id": "remote-cz",
+    "term": "CZ remota",
+    "aliases": [
+      "CZ remote",
+      "CZ remoto",
+      "remote CZ",
+      "porta CZ remota"
+    ],
+    "pdfTerms": [
+      "remote CZ",
+      "Remote CZ",
+      "remote-CZ"
+    ],
+    "kind": "term",
+    "definedIn": "p0037",
+    "definitions": {
+      "it-intermediate": "Una porta CZ tra due qubit lontani eseguita senza avvicinarli: il controllo \"lancia\" un'eccitazione di Rydberg lungo il canale DT, questa arriva accanto al target e ne condiziona la fase, poi torna indietro. Tempo totale ≈ 0.667 μs + 0.512 μs per ogni passo di distanza (Eq. 1).",
+      "it-expert": "Protocollo: π locale |1⟩c→|r⟩c, L hop fino al relay adiacente al target, 2π condizionato su |1⟩t↔|r⟩t (risonante solo col relay eccitato, via antiblockade), L hop di ritorno, π di ritorno; fasi residue in Z virtuali. T_CZ ≃ 2t_π + 2L·T_hop + t_2π ≈ 0.667 + 0.512·L μs."
+    },
+    "related": [
+      "directional-transport",
+      "cz-gate",
+      "pi-pulse",
+      "hop"
+    ]
+  },
+  {
+    "id": "cz-gate",
+    "term": "CZ",
+    "aliases": [
+      "porta CZ",
+      "porte CZ",
+      "coppie CZ",
+      "CZ di Rydberg"
+    ],
+    "pdfTerms": [
+      "CZ"
+    ],
+    "kind": "term",
+    "definedIn": "p0031",
+    "definitions": {
+      "it-intermediate": "La porta a due qubit nativa degli atomi neutri (controlled-Z): cambia il segno quando entrambi i qubit valgono 1. In sé è velocissima (sotto il microsecondo), ma normalmente richiede che i due atomi siano vicini, quindi il costo vero è lo spostamento per avvicinarli.",
+      "it-expert": "Controlled-Z nativa via blockade/antiblockade di Rydberg, sub-μs localmente. Nelle architetture zonate la sua latenza effettiva è dominata dallo shuttling storage→entanglement→storage, ed è questo il costo che il remote CZ via DT elimina."
+    },
+    "related": [
+      "remote-cz",
+      "atom-transport",
+      "entangling-zone"
+    ]
+  },
+  {
+    "id": "rydberg-antiblockade",
+    "term": "antiblockade",
+    "aliases": [
+      "antiblockade di Rydberg",
+      "facilitation",
+      "facilitazione",
+      "antiblockade/facilitation"
+    ],
+    "pdfTerms": [
+      "antiblockade",
+      "facilitation",
+      "facilitated"
+    ],
+    "kind": "term",
+    "definedIn": "p0028",
+    "definitions": {
+      "it-intermediate": "Il fenomeno fisico che rende possibile il DT. Un atomo eccitato nello stato di Rydberg sposta i livelli energetici dei vicini: con un impulso laser tarato su quello spostamento, un vicino si eccita solo se c'è già un atomo eccitato accanto. È l'opposto del più noto \"blockade\", dove l'eccitazione del vicino è invece impedita.",
+      "it-expert": "Facilitazione: la shift di interazione Rydberg–Rydberg alla distanza di facilitazione compensa un detuning scelto, rendendo risonante la transizione del vicino solo in presenza di un'eccitazione adiacente. Abilita sia gli hop direzionali |r,0⟩↔|0,r⟩ sia il 2π condizionato sul target."
+    },
+    "related": [
+      "rydberg-excitation",
+      "hop",
+      "directional-transport"
+    ]
+  },
+  {
+    "id": "rydberg-excitation",
+    "term": "eccitazione di Rydberg",
+    "aliases": [
+      "eccitazione",
+      "stato di Rydberg",
+      "stati di Rydberg",
+      "singola eccitazione di Rydberg"
+    ],
+    "pdfTerms": [
+      "Rydberg excitation",
+      "Rydberg state",
+      "Rydberg"
+    ],
+    "kind": "term",
+    "definedIn": "p0025",
+    "definitions": {
+      "it-intermediate": "Uno stato in cui un elettrone dell'atomo è portato molto lontano dal nucleo, e l'atomo diventa \"grande\" e interagisce forte con i vicini. Nel DT è l'eccitazione stessa, non l'atomo, a trasportare l'informazione: c'è se il qubit di controllo vale 1, non c'è se vale 0.",
+      "it-expert": "|r⟩: stato altamente eccitato con forte interazione dipolare. Il controllo mappa |1⟩c→|r⟩c, quindi presenza o assenza dell'eccitazione codifica il ramo logico, mentre le ampiezze α, β restano sul controllo. È l'unica cosa che viaggia lungo il canale."
+    },
+    "related": [
+      "rydberg-antiblockade",
+      "directional-transport",
+      "remote-cz"
+    ]
+  },
+  {
+    "id": "hop",
+    "term": "hop",
+    "aliases": [
+      "T_hop",
+      "Thop"
+    ],
+    "pdfTerms": [
+      "hop",
+      "hops",
+      "𝑇hop"
+    ],
+    "kind": "term",
+    "definedIn": "p0039",
+    "definitions": {
+      "it-intermediate": "Un singolo salto dell'eccitazione da un atomo ancilla al vicino: un breve cambio di frequenza del laser seguito da due impulsi π. Dura circa 0.256 μs, quindi un percorso di L passi costa L volte tanto, sia all'andata sia al ritorno.",
+      "it-expert": "Detuning switch + coppia di π-pulse facilitati che scambiano |r,0⟩↔|0,r⟩ tra ancilla adiacenti; T_hop ≈ 0.256 μs nel regime di [31]. Il costo del remote CZ è 2L·T_hop più una costante, quindi scala con la distanza nel canale e non col moto meccanico."
+    },
+    "related": [
+      "directional-transport",
+      "pi-pulse",
+      "remote-cz"
+    ]
+  },
+  {
+    "id": "pi-pulse",
+    "term": "impulso π",
+    "aliases": [
+      "impulsi π",
+      "impulso 2π",
+      "π-pulse",
+      "2π-pulse",
+      "impulsi"
+    ],
+    "pdfTerms": [
+      "𝜋-pulse",
+      "𝜋-pulses",
+      "2𝜋-pulse",
+      "2𝜋"
+    ],
+    "kind": "term",
+    "definedIn": "p0039",
+    "definitions": {
+      "it-intermediate": "Un impulso laser di durata calibrata che fa ruotare completamente lo stato tra due livelli: un impulso π scambia \"acceso\" e \"spento\" (es. |1⟩↔|r⟩), un impulso 2π fa un giro completo e torna allo stato iniziale, ma lasciando un segno meno. È proprio quel segno, applicato solo se l'eccitazione è vicina, a realizzare la CZ.",
+      "it-expert": "π: inversione di popolazione su una transizione. 2π: ciclo completo che imprime una fase −1. Sul target il 2π è risonante solo col relay eccitato (antiblockade), quindi la fase è condizionata e si ottiene la CZ."
+    },
+    "related": [
+      "remote-cz",
+      "hop",
+      "rydberg-antiblockade"
+    ]
+  },
+  {
+    "id": "ancilla",
+    "term": "ancilla",
+    "aliases": [
+      "atomi ancilla",
+      "ancilla volanti",
+      "ancilla di canale",
+      "ancilla di riserva",
+      "flying ancilla"
+    ],
+    "pdfTerms": [
+      "ancilla",
+      "flying ancilla",
+      "channel ancilla",
+      "reserve ancilla"
+    ],
+    "kind": "term",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Atomi \"di servizio\" che non portano dati del calcolo ma servono da binario per l'eccitazione. Sono \"volanti\": intrappolati dall'AOD, si possono creare, posizionare e riciclare quando serve (idea presa dai compilatori FPQA). Quelli \"di canale\" formano il percorso attivo, quelli \"di riserva\" aspettano vicino per estendere o deviare il canale.",
+      "it-expert": "Flying ancilla AOD-trapped, come in Q-Pilot. Due ruoli per stage: channel ancilla sulla dorsale DT attiva, reserve ancilla idle ma posizionate per estensioni e reinstradamenti a basso costo. Il compilatore li assegna col metodo ungherese su distanza più penalità di riuso."
+    },
+    "related": [
+      "dt-channel",
+      "fpqa",
+      "pre-use-qubits"
+    ]
+  },
+  {
+    "id": "zoned-architecture",
+    "term": "architetture zonate",
+    "aliases": [
+      "architettura zonata",
+      "zonate",
+      "zonati",
+      "zonata",
+      "zonato",
+      "processori zonati",
+      "sistemi zonati"
+    ],
+    "pdfTerms": [
+      "zoned neutral-atom",
+      "zoned neutral atom",
+      "zoned architecture",
+      "zoned architectures",
+      "zoned"
+    ],
+    "kind": "term",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "Un modo di organizzare il processore ad atomi neutri in aree specializzate: zona di stoccaggio (i qubit aspettano al riparo dagli errori), zona di entanglement (si eseguono le porte a due qubit) e zona di lettura (misura). Per far interagire due qubit bisogna di solito portarli dalla zona di stoccaggio a quella di entanglement e poi riportarli indietro.",
+      "it-expert": "QPU partizionata in storage (lunga coerenza), entanglement zone (Rydberg) e readout. Il costo dominante è lo shuttling inter-zona, che ZAC e ZAP ottimizzano. Qui il DT sposta il costo in una configurazione iniziale e lascia l'esecuzione quasi statica dentro l'entanglement zone."
+    },
+    "related": [
+      "storage-zone",
+      "entangling-zone",
+      "atom-transport"
+    ]
+  },
+  {
+    "id": "storage-zone",
+    "term": "zona di stoccaggio",
+    "aliases": [
+      "zone di stoccaggio",
+      "stoccaggio",
+      "storage"
+    ],
+    "pdfTerms": [
+      "storage zone",
+      "storage zones",
+      "storage"
+    ],
+    "kind": "term",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "L'area dove i qubit restano in attesa tra un'operazione e l'altra, lontani dai laser di Rydberg e quindi più protetti dagli errori. Gli atomi stanno in trappole fisse (SLM) a circa 6 μm l'uno dall'altro.",
+      "it-expert": "Regione a lunga coerenza, SLM, spaziatura ~6 μm, gap ~10 μm verso l'entanglement zone. Nel framework DT i qubit ne escono una volta, nella configurazione iniziale (o come pre-use), invece che a ogni finestra d'interazione."
+    },
+    "related": [
+      "zoned-architecture",
+      "entangling-zone"
+    ]
+  },
+  {
+    "id": "entangling-zone",
+    "term": "zona di entanglement",
+    "aliases": [
+      "zone di entanglement",
+      "entanglement zone"
+    ],
+    "pdfTerms": [
+      "entanglement zone",
+      "entanglement zones",
+      "entangling zone"
+    ],
+    "kind": "term",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "L'area dove si eseguono le porte a due qubit con i laser di Rydberg. Nel paper è anche dove vengono costruiti i canali DT, con atomi a 4–8 μm di distanza.",
+      "it-expert": "Regione Rydberg dove avvengono tutte le operazioni entangling, CZ remoti inclusi, con separazioni tipiche di 4–8 μm. I canali DT vivono qui, e l'AOD serve a caricarvi i qubit e a comprimerli in una sezione adatta al routing DT."
+    },
+    "related": [
+      "zoned-architecture",
+      "storage-zone",
+      "dt-channel"
+    ]
+  },
+  {
+    "id": "atom-transport",
+    "term": "shuttling",
+    "aliases": [
+      "trasporto AOD",
+      "trasporto atomico",
+      "movimento fisico",
+      "spostamento fisico"
+    ],
+    "pdfTerms": [
+      "shuttling",
+      "atomic transport",
+      "AOD transport",
+      "AOD motion"
+    ],
+    "kind": "term",
+    "definedIn": "p0015",
+    "definitions": {
+      "it-intermediate": "Lo spostamento fisico degli atomi con i fasci mobili dell'AOD. È lento (decine-centinaia di microsecondi), soggetto a limiti di velocità e al vincolo che righe e colonne non possono incrociarsi. È il collo di bottiglia che il DT vuole aggirare, anche se non si può eliminare del tutto.",
+      "it-expert": "Moto AOD con vincoli di non-crossing su righe e colonne, limiti di velocità e accelerazione, e perdita di fedeltà per trasferimento. Nel framework è concentrato nella configurazione iniziale ed eseguito con vettori di movimento schedulati via MIS."
+    },
+    "related": [
+      "aod",
+      "directional-transport",
+      "mis"
+    ]
+  },
+  {
+    "id": "aod",
+    "term": "AOD",
+    "aliases": [
+      "deflettori acusto-ottici",
+      "deflettore acusto-ottico"
+    ],
+    "pdfTerms": [
+      "AOD",
+      "AODs",
+      "acousto-optic deflectors"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0015",
+    "definitions": {
+      "it-intermediate": "Acousto-Optic Deflector: lo strumento che crea trappole laser mobili, organizzate per righe e colonne, e sposta gli atomi. Nel paper resta indispensabile per caricare i qubit, costruire i canali DT e riposizionare gli ancilla, ma viene usato il meno possibile.",
+      "it-expert": "Griglia riga×colonna di tweezer mobili, con vincolo di non-crossing e ordine preservato. Qui è usato per la configurazione assistita (rearrangement one-shot) e per mantenere i canali, non per lo shuttling per-gate."
+    },
+    "related": [
+      "atom-transport",
+      "ancilla"
+    ]
+  },
+  {
+    "id": "static-dynamic-compiler",
+    "term": "compilatore statico",
+    "aliases": [
+      "compilatore dinamico",
+      "compilatore statico DT-aware",
+      "compilatori statico e dinamico",
+      "compilatore statico proposto",
+      "compilatore dinamico personalizzato"
+    ],
+    "pdfTerms": [
+      "static compiler",
+      "dynamic compiler"
+    ],
+    "kind": "term",
+    "definedIn": "p0046",
+    "definitions": {
+      "it-intermediate": "Le due versioni del compilatore. Quella statica costruisce i canali DT una volta sola e poi esegue tutto il circuito su quella topologia fissa: ideale per circuiti tipo Ising/QAOA, con molte coppie attive insieme. Quella dinamica ricostruisce e adatta i canali stage per stage: serve per la QFT, dove poche coppie sono attive alla volta e cambiano lentamente.",
+      "it-expert": "Statico: configurazione one-shot, mappatura quasi fissa, tutti i CZ via DT; vince su Ising (+17.6% di fedeltà media sul miglior baseline). Dinamico: DTChannelPlan per stage con classificazione DT/AOD, riuso cross-stage, endpoint rebalancing e fallback. Pensato per la QFT (31 stage e 24 pattern sparsi a n=10)."
+    },
+    "related": [
+      "dt-channel",
+      "qft",
+      "pre-use-qubits"
+    ]
+  },
+  {
+    "id": "qft",
+    "term": "QFT",
+    "aliases": [
+      "Quantum Fourier Transform"
+    ],
+    "pdfTerms": [
+      "QFT",
+      "qft",
+      "Quantum Fourier Transform"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0054",
+    "definitions": {
+      "it-intermediate": "La trasformata di Fourier quantistica, un circuito molto usato. Per questo paper conta la sua struttura: in ogni momento pochi qubit interagiscono e le coppie attive \"scivolano\" lentamente lungo il circuito. Costruire canali per tutte le coppie sarebbe uno spreco, da cui la versione dinamica del compilatore.",
+      "it-expert": "Bassa parallelizzabilità e pattern d'interazione che trasla nel tempo: lo scheduler ASAP produce molti stage sparsi. È il caso d'uso del compilatore dinamico, in opposizione a Ising/QAOA dove il compilatore statico è sufficiente."
+    },
+    "related": [
+      "static-dynamic-compiler",
+      "dt-channel"
+    ]
+  },
+  {
+    "id": "pre-use-qubits",
+    "term": "pre-uso",
+    "aliases": [
+      "qubit pre-uso",
+      "pre-use"
+    ],
+    "pdfTerms": [
+      "pre-use"
+    ],
+    "kind": "term",
+    "definedIn": "p0065",
+    "definitions": {
+      "it-intermediate": "Qubit del calcolo che entreranno in gioco solo più avanti nel circuito. Invece di lasciarli nella zona di stoccaggio e spostarli dopo, vengono caricati subito nella zona di entanglement e, finché non servono, fanno da atomi di passaggio per i canali DT.",
+      "it-expert": "Qubit logici il cui primo gate è tardivo: caricati collettivamente nell'entanglement zone e usati come relay DT fino al primo uso. Riducono il numero di flying ancilla necessari e i movimenti successivi."
+    },
+    "related": [
+      "ancilla",
+      "dt-channel"
+    ]
+  },
+  {
+    "id": "fpqa",
+    "term": "FPQA",
+    "aliases": [
+      "Q-Pilot"
+    ],
+    "pdfTerms": [
+      "FPQA",
+      "Q-Pilot"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0048",
+    "definitions": {
+      "it-intermediate": "Field-Programmable Qubit Array: un modo di vedere gli array di atomi neutri come hardware \"riprogrammabile\", in cui la connettività si crea spostando atomi. Q-Pilot è un compilatore FPQA che usa atomi mobili come risorse temporanee di instradamento, ed è da lì che il paper prende l'idea degli ancilla volanti.",
+      "it-expert": "Field-Programmable Qubit Array. Da Q-Pilot il paper eredita il modello di ancilla AOD mobili come risorse di routing temporanee, qui riusate come siti di canale DT invece che come mediatori di SWAP."
+    },
+    "related": [
+      "ancilla",
+      "zac-zap"
+    ]
+  },
+  {
+    "id": "zac-zap",
+    "term": "ZAC",
+    "aliases": [
+      "ZAP",
+      "ZAC/ZAP"
+    ],
+    "pdfTerms": [
+      "ZAC",
+      "ZAP"
+    ],
+    "kind": "term",
+    "definedIn": "p0047",
+    "definitions": {
+      "it-intermediate": "Due compilatori recenti per architetture zonate, usati come confronto. Ottimizzano lo spostamento avanti e indietro tra stoccaggio ed entanglement; ZAP ricalcola piazzamenti intermedi con simulated annealing. Il paper ne riusa alcune idee (vettori di movimento, scheduling parallelo) ma evita lo shuttling ripetuto grazie al DT.",
+      "it-expert": "Compilatori zoned-aware per NA: modellazione esplicita del moto AOD, vettori di movimento, scheduling MIS dei rearrangement; ZAP con placement intermedi via simulated annealing per segmento. Sono i baseline principali insieme a Enola."
+    },
+    "related": [
+      "enola",
+      "mis",
+      "zoned-architecture"
+    ]
+  },
+  {
+    "id": "enola",
+    "term": "Enola",
+    "aliases": [],
+    "pdfTerms": [
+      "Enola"
+    ],
+    "kind": "term",
+    "definedIn": "p0138",
+    "definitions": {
+      "it-intermediate": "Un compilatore per atomi neutri allo stato dell'arte, usato come terzo termine di confronto insieme a ZAC e ZAP.",
+      "it-expert": "Compilatore NA a ottimizzazione congiunta di placement e movimento; qui è un baseline, superato su durata dei canali DT e fedeltà."
+    },
+    "related": [
+      "zac-zap"
+    ]
+  },
+  {
+    "id": "mis",
+    "term": "MIS",
+    "aliases": [
+      "insiemi indipendenti massimali",
+      "insieme indipendente massimale"
+    ],
+    "pdfTerms": [
+      "MIS",
+      "MIS-based"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0047",
+    "definitions": {
+      "it-intermediate": "Maximal Independent Set: tra tutti i movimenti da fare, si sceglie un gruppo il più grande possibile di movimenti che non entrano in conflitto tra loro (per l'AOD), e li si esegue insieme. Si ripete finché i movimenti non sono finiti.",
+      "it-expert": "Scheduling parallelo dei vettori di movimento: grafo dei conflitti AOD (incroci, sovrapposizioni), estrazione iterativa di insiemi indipendenti massimali come passi di trasporto simultanei. È ereditato da ZAC/ZAP."
+    },
+    "related": [
+      "atom-transport",
+      "zac-zap",
+      "hungarian-algorithm"
+    ]
+  },
+  {
+    "id": "hungarian-algorithm",
+    "term": "algoritmo ungherese",
+    "aliases": [
+      "metodo ungherese",
+      "ungherese",
+      "Hungarian"
+    ],
+    "pdfTerms": [
+      "Hungarian algorithm",
+      "Hungarian"
+    ],
+    "kind": "term",
+    "definedIn": "p0064",
+    "definitions": {
+      "it-intermediate": "Un algoritmo classico che assegna in modo ottimale \"chi va dove\" dato un costo per ogni combinazione. Qui assegna gli atomi ancilla alle posizioni del canale, minimizzando la distanza percorsa e preferendo riusare atomi già vicini.",
+      "it-expert": "Assegnazione a costo minimo ancilla→siti di canale, con costo = distanza più penalità che favoriscono il riuso cross-stage; i move vector risultanti sono poi schedulati con MIS."
+    },
+    "related": [
+      "ancilla",
+      "mis"
+    ]
+  }
+]

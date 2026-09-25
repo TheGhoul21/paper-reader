@@ -1,0 +1,603 @@
+[
+  {
+    "id": "parity-flow",
+    "term": "flusso di parità",
+    "aliases": [
+      "formalismo del flusso di parità",
+      "parity flow",
+      "parity flow formalism",
+      "tracking del flusso",
+      "flow tracking"
+    ],
+    "pdfTerms": [
+      "parity flow formalism",
+      "parity flow",
+      "flow tracking"
+    ],
+    "kind": "term",
+    "definedIn": "p0009",
+    "definitions": {
+      "it-intermediate": "Il metodo proposto dal paper: si annota ogni filo di un circuito quantistico con etichette che dicono quale informazione logica porta quel qubit in quel momento. I gate Clifford (CNOT, Hadamard, S) diventano \"ricodifiche\" dell'informazione, e leggendo le etichette si capisce subito che effetto logico ha una rotazione applicata a un certo punto del circuito, senza fare calcoli di matrici.",
+      "it-expert": "Tracking contravariante di coppie di label (ℓ_Xj, ℓ_Zj) per qubit, aggiornate in O(n) per gate Clifford elementare con regole che dipendono solo dal gate aggiunto. Generalizza le parity label della Parity Architecture da soli prodotti di Z a Pauli arbitrari; con le fasi Clifford dà anche il tracking covariante nello stesso tableau."
+    },
+    "related": [
+      "flow-label",
+      "dynamic-code",
+      "contravariant-tracking",
+      "parity-label"
+    ]
+  },
+  {
+    "id": "flow-label",
+    "term": "etichette di flusso",
+    "aliases": [
+      "etichetta di flusso",
+      "flow label",
+      "flow labels",
+      "etichette X",
+      "etichette Z",
+      "etichetta X",
+      "etichetta Z",
+      "etichette X e Z",
+      "ℓ_Xj",
+      "ℓ_Zj"
+    ],
+    "pdfTerms": [
+      "flow labels",
+      "flow label",
+      "labels",
+      "label"
+    ],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Le annotazioni del formalismo: sopra ogni filo j si scrive l'etichetta X e sotto l'etichetta Z. Ciascuna dice quale operatore logico si ottiene applicando in quel punto una X o una Z fisica su quel qubit. Ad esempio \"⟨12⟩3\" vuol dire X̄₁X̄₂Z̄₃. Si aggiornano gate per gate con regole semplici (Fig. 1b).",
+      "it-expert": "ℓ_P assegna a un Pauli fisico P il logico P̄ = C†PC. Notazione densa i^κ⟨ξ⟩ζ (supporti X tra ⟨⟩, Z nudi). Tracciando ℓ_Xj e ℓ_Zj per i 2n generatori (più la fase), ogni P si legge per prodotto; aggiornamento via decomposizione di C₂†g_jC₂ nei generatori (Eq. 3–4)."
+    },
+    "related": [
+      "parity-flow",
+      "parity-label",
+      "standard-form",
+      "flow-tableau"
+    ]
+  },
+  {
+    "id": "parity-label",
+    "term": "etichette di parità",
+    "aliases": [
+      "etichetta di parità",
+      "etichette di parità generalizzate",
+      "parity label",
+      "parity labels"
+    ],
+    "pdfTerms": [
+      "parity labels",
+      "parity label"
+    ],
+    "kind": "term",
+    "definedIn": "p0017",
+    "definitions": {
+      "it-intermediate": "Le etichette usate in lavori precedenti sulla Parity Architecture: dicono quale parità (XOR) di qubit logici è codificata su ogni qubit fisico. Se si tracciano solo porte CNOT, le etichette Z di questo paper coincidono esattamente con le etichette di parità; il flusso di parità le generalizza a tutti i gate Clifford.",
+      "it-expert": "Con soli CNOT, ℓ_Z coincide con la parity label di [33] e ℓ_X è determinata da ℓ_Z (Cor. B14). I codici ottenuti da CNOT più ancille |0⟩ sono parity code con label Z-only; le flow label estendono gli effetti logici a prodotti di Pauli arbitrari."
+    },
+    "related": [
+      "flow-label",
+      "parity-code",
+      "parity-flow"
+    ]
+  },
+  {
+    "id": "dynamic-code",
+    "term": "codice dinamico",
+    "aliases": [
+      "dynamic code",
+      "ricodifica",
+      "recoding",
+      "codifica"
+    ],
+    "pdfTerms": [
+      "dynamic code",
+      "recoding"
+    ],
+    "kind": "term",
+    "definedIn": "p0014",
+    "definitions": {
+      "it-intermediate": "Il punto di vista del paper: un circuito è un codice che cambia nel tempo. Ogni gate Clifford non \"calcola\" ma cambia il modo in cui l'informazione è distribuita sui qubit fisici (la ricodifica). Invece di codificare, ruotare e decodificare ogni volta, si può restare nella codifica corrente e applicare direttamente la rotazione successiva dove le etichette dicono che ha l'effetto voluto.",
+      "it-expert": "Ogni Clifford tracciato cambia l'encoding; una rotazione R_P su un qubit ha effetto logico R̄_{P̄(ℓ)}. Con U = C_{d+1}R_d…C₂R₁C₁ (Eq. 5–6) si evita la deviazione encoding–rotating–decoding di ogni termine e si passa da una codifica all'altra (recoding)."
+    },
+    "related": [
+      "parity-flow",
+      "pauli-rotation",
+      "flow-label"
+    ]
+  },
+  {
+    "id": "clifford",
+    "term": "Clifford",
+    "aliases": [
+      "gate Clifford",
+      "circuito Clifford",
+      "circuiti Clifford",
+      "gruppo di Clifford",
+      "unitaria Clifford"
+    ],
+    "pdfTerms": [
+      "Clifford"
+    ],
+    "kind": "term",
+    "definedIn": "p0229",
+    "definitions": {
+      "it-intermediate": "Le porte che mandano sempre operatori di Pauli in operatori di Pauli (CNOT, Hadamard, S e loro combinazioni). Proprio per questa proprietà si possono tracciare in modo efficiente con etichette: il loro effetto è solo una \"rinominazione\" delle X e Z logiche.",
+      "it-expert": "Cl = normalizzatore di P_n in U(2ⁿ); agisce su P per coniugazione destra (C†PC, contravariante) o sinistra (CPC†, covariante). Rappresentato da tableau (2n+1)×(2n+1) in G = Z₄ × F₂²ⁿ (App. B)."
+    },
+    "related": [
+      "pauli-group",
+      "clifford-tableau",
+      "flow-tableau"
+    ]
+  },
+  {
+    "id": "pauli-group",
+    "term": "gruppo di Pauli",
+    "aliases": [
+      "operatori di Pauli",
+      "operatore di Pauli"
+    ],
+    "pdfTerms": [
+      "Pauli group",
+      "Pauli operators",
+      "Pauli operator"
+    ],
+    "kind": "term",
+    "definedIn": "p0084",
+    "definitions": {
+      "it-intermediate": "L'insieme di tutti i prodotti di X, Y, Z (e identità) sui vari qubit, con una fase ±1 o ±i. È enorme (cresce esponenzialmente), ma basta tracciare 2n+1 \"generatori\" (le X e Z singole e la fase) per descriverlo tutto: è ciò che rende efficiente il formalismo.",
+      "it-expert": "P_n = ⟨iI, X̄_j, Z̄_j⟩, presentato come i^κ X̄^ξ Z̄^ζ con (κ|ξ|ζ) ∈ Z₄ × F₂ⁿ × F₂ⁿ (A2–A3). La mappa senza fase in F₂²ⁿ è un omomorfismo e la commutazione è data dal prodotto simplettico."
+    },
+    "related": [
+      "standard-form",
+      "generators",
+      "symplectic"
+    ]
+  },
+  {
+    "id": "generators",
+    "term": "generatori",
+    "aliases": [
+      "insieme indipendente di generatori",
+      "generatore",
+      "2n+1 generatori"
+    ],
+    "pdfTerms": [
+      "generators",
+      "generator"
+    ],
+    "kind": "term",
+    "definedIn": "p0020",
+    "definitions": {
+      "it-intermediate": "I \"mattoni\" da cui si ottiene per prodotto ogni operatore di Pauli: la fase i, e X e Z su ogni qubit (2n+1 in tutto). Si tracciano solo le etichette dei generatori, e quella di qualsiasi altro operatore si ricava moltiplicando.",
+      "it-expert": "g₀ = iI, g_⟨j⟩ = X̄_j, g_j = Z̄_j: insieme indipendente di 2n+1 generatori per cui ogni Pauli ha forma standard unica. Usare la coniugazione non preferita richiede invece un insieme generatore simplettico minimale."
+    },
+    "related": [
+      "pauli-group",
+      "standard-form",
+      "flow-label"
+    ]
+  },
+  {
+    "id": "standard-form",
+    "term": "forma standard",
+    "aliases": [
+      "ordine standard"
+    ],
+    "pdfTerms": [
+      "standard form",
+      "standard order"
+    ],
+    "kind": "term",
+    "definedIn": "p0090",
+    "definitions": {
+      "it-intermediate": "Il modo unico e fisso di scrivere un operatore di Pauli: una fase, poi tutte le X, poi tutte le Z (una Y si scrive come i·X·Z). Senza una forma standard la stessa etichetta potrebbe avere significati diversi; con essa ogni operatore corrisponde a esattamente un'etichetta.",
+      "it-expert": "P̄ = i^κ ∏X̄_j^{ξ_j} ∏Z̄_j^{ζ_j} (A2), con X a sinistra. Differisce dalla forma (x,z,δ) di Aaronson–Gottesman (A23), che rappresenta Y direttamente; la conversione è la mappatura XYZ."
+    },
+    "related": [
+      "vector-form",
+      "xyz-mapping",
+      "flow-label"
+    ]
+  },
+  {
+    "id": "vector-form",
+    "term": "forma vettoriale",
+    "aliases": [
+      "vector form"
+    ],
+    "pdfTerms": [
+      "vector form",
+      "vectorlike"
+    ],
+    "kind": "term",
+    "definedIn": "p0091",
+    "definitions": {
+      "it-intermediate": "La traduzione di un'etichetta in numeri: (κ | ξ | ζ), dove κ è l'esponente della fase i e ξ, ζ sono vettori di 0 e 1 che dicono su quali qubit c'è una X o una Z. Permette di fare i calcoli con l'algebra lineare binaria.",
+      "it-expert": "ρ(P̄) = (κ|ξ|ζ) ∈ Z₄ × F₂ⁿ × F₂ⁿ; non è un vettore in senso stretto, perché il prodotto introduce la fase (Rem. A5). La versione senza fase ρ̃ ∈ F₂²ⁿ è lineare, ed è qui che vive il prodotto simplettico."
+    },
+    "related": [
+      "standard-form",
+      "symplectic",
+      "flow-tableau"
+    ]
+  },
+  {
+    "id": "symplectic",
+    "term": "prodotto interno simplettico",
+    "aliases": [
+      "simplettico",
+      "simplettica",
+      "forma simplettica",
+      "insieme generatore simplettico",
+      "symplectic"
+    ],
+    "pdfTerms": [
+      "symplectic inner product",
+      "symplectic"
+    ],
+    "kind": "term",
+    "definedIn": "p0200",
+    "definitions": {
+      "it-intermediate": "Una formula sulla forma vettoriale che conta quante volte due operatori di Pauli \"si scontrano\" qubit per qubit (X contro Z): se il conteggio è pari commutano, se è dispari anticommutano. I gate Clifford conservano questa proprietà, ed è ciò che vincola la struttura dei tableau.",
+      "it-expert": "ω((ξ₁|ζ₁),(ξ₂|ζ₂)) = ξ₁ζ₂ᵀ ⊕ ζ₁ξ₂ᵀ, con Ω = (0 I; I 0) (A29). P̄Q̄ = (−1)^ν Q̄P̄ ⟺ ω = ν. I tableau senza fase sono matrici simplettiche."
+    },
+    "related": [
+      "vector-form",
+      "pauli-group",
+      "flow-tableau"
+    ]
+  },
+  {
+    "id": "xyz-mapping",
+    "term": "XYZ",
+    "aliases": [
+      "mappatura XYZ",
+      "XYZ-mapping",
+      "notazione XYZ"
+    ],
+    "pdfTerms": [
+      "XY Z-mapping",
+      "XYZ-mapping",
+      "XYZ mapping"
+    ],
+    "kind": "term",
+    "definedIn": "p0167",
+    "definitions": {
+      "it-intermediate": "La conversione tra la notazione del paper (X e Z separate, Y come prodotto) e quella classica di Aaronson–Gottesman, che usa per ogni qubit una coppia di bit (x, z) più un segno, con Y rappresentata direttamente. Serve per confrontare il formalismo con i simulatori stabilizer esistenti.",
+      "it-expert": "Mappa tra (κ|ξ|ζ) e ((x),(z),δ) di [26] (A23–): (x_j, z_j) = (0,0),(1,0),(1,1),(0,1) per I, X, Y, Z, con segno δ. Quest'ultima considera solo Pauli con autospazio +1 non banale, da cui la corrispondenza non perfettamente lineare delle fasi."
+    },
+    "related": [
+      "standard-form",
+      "clifford-tableau"
+    ]
+  },
+  {
+    "id": "covariant-tracking",
+    "term": "tracking covariante",
+    "aliases": [
+      "covariante",
+      "covarianti",
+      "trasformazione covariante",
+      "Clifford tracking covariante"
+    ],
+    "pdfTerms": [
+      "covariant"
+    ],
+    "kind": "term",
+    "definedIn": "p0041",
+    "definitions": {
+      "it-intermediate": "Il modo \"classico\" di seguire un circuito Clifford (quello del tableau di Aaronson–Gottesman): si segue come ogni operatore logico viene trasformato in operatore fisico, cioè \"dove va a finire\" un'operazione logica. È facile andare da logico a fisico, difficile tornare indietro.",
+      "it-expert": "Trasformazione dei vettori di base C P̄ C† (coniugazione sinistra); mappa logico→fisico. Efficiente per circuiti accodati con coniugazione outward; l'inversa (fisico→logico) richiede inversione del tableau."
+    },
+    "related": [
+      "contravariant-tracking",
+      "inward-outward",
+      "clifford-tableau"
+    ]
+  },
+  {
+    "id": "contravariant-tracking",
+    "term": "tracking controvariante",
+    "aliases": [
+      "controvariante",
+      "controvarianti",
+      "contravariante",
+      "contravarianti",
+      "tracking Clifford controvariante"
+    ],
+    "pdfTerms": [
+      "contravariant"
+    ],
+    "kind": "term",
+    "definedIn": "p0046",
+    "definitions": {
+      "it-intermediate": "Il modo di tracciare del flusso di parità: si segue quale effetto logico ha un operatore fisico applicato in un certo punto, cioè \"cosa fa\" una rotazione su un qubit lì. È l'opposto del covariante: facile da fisico a logico, difficile il contrario. Il paper mostra come ottenere entrambi con poche informazioni in più (le fasi Clifford).",
+      "it-expert": "Trasformazione dei coefficienti a_{C†PC} = a_P (coniugazione destra C†PC); mappa fisico→logico. Efficiente per circuiti accodati con coniugazione inward, ed è ciò che calcolano le flow label; l'inverso covariante si recupera dalle label più 2n fasi Clifford (Eq. 12–17)."
+    },
+    "related": [
+      "covariant-tracking",
+      "inward-outward",
+      "clifford-phase",
+      "flow-tableau"
+    ]
+  },
+  {
+    "id": "inward-outward",
+    "term": "coniugazione verso l'interno",
+    "aliases": [
+      "coniugazione verso l'esterno",
+      "verso l'interno",
+      "verso l'esterno",
+      "inward",
+      "outward"
+    ],
+    "pdfTerms": [
+      "inward conjugation",
+      "outward conjugation",
+      "inward",
+      "outward"
+    ],
+    "kind": "term",
+    "definedIn": "p0051",
+    "definitions": {
+      "it-intermediate": "Due modi di aggiornare il calcolo quando si aggiunge un gate in fondo al circuito. \"Verso l'esterno\": si avvolge il risultato precedente con il nuovo gate da fuori, ed è naturale per il tracking covariante. \"Verso l'interno\": si inserisce il nuovo gate dentro, vicino all'operatore, ed è naturale per il tracking controvariante. Usare quello \"sbagliato\" costa sempre di più a ogni gate.",
+      "it-expert": "Outward: C₂(C₁P̄C₁†)C₂†, riusa il risultato intermedio covariante. Inward: C₁†(C₂†PC₂)C₁, riusa quello contravariante sui generatori (Eq. 3–4). La coniugazione non preferita richiede un insieme generatore simplettico minimale, e anteporre invece di accodare scambia i ruoli."
+    },
+    "related": [
+      "covariant-tracking",
+      "contravariant-tracking"
+    ]
+  },
+  {
+    "id": "clifford-tableau",
+    "term": "tableau di Clifford",
+    "aliases": [
+      "Clifford tableau",
+      "tableau Clifford"
+    ],
+    "pdfTerms": [
+      "Clifford tableau",
+      "Clifford tableaus"
+    ],
+    "kind": "term",
+    "definedIn": "p0040",
+    "definitions": {
+      "it-intermediate": "La tabella usata dai simulatori stabilizer (Aaronson–Gottesman) per rappresentare un circuito Clifford: per ogni generatore logico dice in quale operatore fisico si trasforma. Descrive il tracking covariante ed è l'inversa del tableau di flusso.",
+      "it-expert": "T(C) = (ρ(C(g_j)))_j ∈ G^{2n+1} (coniugazione sinistra, B23); covariante. Il Clifford tableau di un circuito è l'inverso del suo flow tableau (App. B.3)."
+    },
+    "related": [
+      "flow-tableau",
+      "covariant-tracking",
+      "xyz-mapping"
+    ]
+  },
+  {
+    "id": "flow-tableau",
+    "term": "tableau di flusso",
+    "aliases": [
+      "flow tableau",
+      "tableau combinato",
+      "combined flow tableau",
+      "tableau di flusso combinato"
+    ],
+    "pdfTerms": [
+      "combined flow tableau",
+      "flow tableau",
+      "flow tableaus"
+    ],
+    "kind": "term",
+    "definedIn": "p0300",
+    "definitions": {
+      "it-intermediate": "La versione in tabella delle etichette di flusso: ogni riga contiene, in forma vettoriale, l'etichetta di un generatore. Contiene la stessa informazione delle etichette sul circuito, ma in forma adatta al calcolo e alle dimostrazioni. Il \"tableau combinato\" aggiunge le fasi Clifford e permette di ottenere anche il tableau di Clifford senza invertire nulla.",
+      "it-expert": "F(C) = (ρ(C*(P_j)))_j ∈ G^{2n+1} (coniugazione destra, contravariante); versione senza fase F̃ simplettica. È l'inverso di T(C). Il combined flow tableau (App. C.1) include il vettore di fasi Clifford η e dà entrambe le direzioni con costo O(n) per gate."
+    },
+    "related": [
+      "clifford-tableau",
+      "flow-label",
+      "clifford-phase",
+      "symplectic"
+    ]
+  },
+  {
+    "id": "clifford-phase",
+    "term": "fasi Clifford",
+    "aliases": [
+      "fase Clifford",
+      "Clifford phase",
+      "Clifford phases",
+      "vettore di fasi Clifford",
+      "η"
+    ],
+    "pdfTerms": [
+      "Clifford phases",
+      "Clifford phase"
+    ],
+    "kind": "term",
+    "definedIn": "p0060",
+    "definitions": {
+      "it-intermediate": "2n piccoli numeri (0–3, cioè potenze di i) da tracciare insieme alle etichette. Con essi si può rispondere anche alla domanda opposta, \"in quale operatore fisico si trasforma un operatore logico?\", senza invertire tabelle costose. Si aggiornano solo con Hadamard (+2) ed S (+1); la CNOT non li cambia.",
+      "it-expert": "η_j, η_⟨j⟩ ∈ Z₄ tali che la trasformazione covariante dei generatori si legge dalle label (Eq. 12–13, Cor. C1). Aggiornamento: H_t → +2 se j ∈ ℓ_Xt ∩ ℓ_Zt; S_t → +1 se j ∈ ℓ_Zt; CNOT banale. Costo aggiuntivo O(n) per gate."
+    },
+    "related": [
+      "contravariant-tracking",
+      "flow-tableau",
+      "covariant-tracking"
+    ]
+  },
+  {
+    "id": "pauli-rotation",
+    "term": "rotazioni di Pauli",
+    "aliases": [
+      "rotazione di Pauli",
+      "rotazioni di Pauli a singolo qubit",
+      "rotazioni di Pauli non tracciate"
+    ],
+    "pdfTerms": [
+      "Pauli rotations",
+      "Pauli rotation"
+    ],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-intermediate": "Rotazioni del tipo e^{iθP/2} con P un operatore di Pauli. Ogni operazione quantistica si può scrivere come sequenza alternata di circuiti Clifford e rotazioni di Pauli su singoli qubit (Eq. 5). Le rotazioni non si tracciano: le etichette dicono quale rotazione logica (anche su molti qubit) realizza una rotazione fisica su un solo qubit.",
+      "it-expert": "R̄_j(θ) = e^{iθP̄_j/2}; U = C_{d+1}R_d…C₂R₁C₁ (Eq. 5) con R_j a singolo qubit. Una R_P sul qubit k realizza R̄_{P̄(ℓ_P,k)}, e i prodotti di Pauli fisici hanno come effetto il prodotto dei logici: parallelizzazione e scelta tra decomposizioni equivalenti."
+    },
+    "related": [
+      "dynamic-code",
+      "flow-label",
+      "clifford"
+    ]
+  },
+  {
+    "id": "logical-physical-operator",
+    "term": "operatori logici",
+    "aliases": [
+      "operatore logico",
+      "operatori fisici",
+      "operatore fisico",
+      "effetto logico"
+    ],
+    "pdfTerms": [
+      "logical operators",
+      "logical operator",
+      "logical effect",
+      "physical operators"
+    ],
+    "kind": "term",
+    "definedIn": "p0018",
+    "definitions": {
+      "it-intermediate": "La distinzione di base del paper: un operatore \"fisico\" è ciò che si applica davvero a un qubit del circuito (scritto senza barra, es. Z₂); il suo effetto \"logico\" è cosa fa all'informazione codificata (scritto con la barra, es. Z̄₁Z̄₂). Le etichette sono esattamente la traduzione dall'uno all'altro.",
+      "it-expert": "Convenzione: P fisico senza barra, P̄ logico con barra; ℓ_P codifica P̄ = C†PC per il circuito Clifford precedente. Nel caso con ancille, gli effetti logici includono stabilizzatori (label marcate •/×)."
+    },
+    "related": [
+      "flow-label",
+      "contravariant-tracking"
+    ]
+  },
+  {
+    "id": "stabilizer-code",
+    "term": "codici stabilizer",
+    "aliases": [
+      "codice stabilizer",
+      "stabilizzatori",
+      "stabilizzatore",
+      "stabilizer",
+      "stabilizzato"
+    ],
+    "pdfTerms": [
+      "stabilizer codes",
+      "stabilizer code",
+      "stabilizers",
+      "stabilizer"
+    ],
+    "kind": "term",
+    "definedIn": "p0064",
+    "definitions": {
+      "it-intermediate": "Codici di correzione d'errore definiti da un insieme di operatori di Pauli (gli stabilizzatori) che lasciano invariati gli stati validi. Il flusso di parità può tracciare insieme gli effetti logici e gli stabilizzatori, mostrando modi diversi, e a volte paralleli, di eseguire la stessa operazione logica in un codice.",
+      "it-expert": "Codice definito da P̄⁺ con P̄⁺|ψ⟩ = |ψ⟩. Con la trasformazione covariante (Eq. 12–13) si ottiene il fisico P⁺ = CP̄⁺C†, e moltiplicando gli operatori per stabilizzatori si trovano implementazioni equivalenti (Fig. 2c) e operazioni parallele."
+    },
+    "related": [
+      "auxiliary-qubit",
+      "parity-code",
+      "covariant-tracking"
+    ]
+  },
+  {
+    "id": "parity-code",
+    "term": "codici di parità",
+    "aliases": [
+      "codice di parità",
+      "parity code",
+      "parity codes"
+    ],
+    "pdfTerms": [
+      "parity codes",
+      "parity code"
+    ],
+    "kind": "term",
+    "definedIn": "p0068",
+    "definitions": {
+      "it-intermediate": "I codici che si ottengono usando solo porte CNOT e qubit ausiliari inizializzati a |0⟩: le etichette sono solo prodotti di Z (come nella Parity Architecture). Le etichette di flusso permettono di generalizzarli a codici in cui le rotazioni singole hanno effetti logici con X, Y e Z qualsiasi.",
+      "it-expert": "Codici da circuiti di encoding CNOT-only più ancille |0⟩: stabilizzatori, label e operatori logici sono tutti prodotti di Z. Le flow label estendono gli effetti logici a prodotti di Pauli arbitrari (es. XX, YY, ZZ del modello di Heisenberg in Fig. 2b)."
+    },
+    "related": [
+      "parity-label",
+      "stabilizer-code",
+      "heisenberg-model"
+    ]
+  },
+  {
+    "id": "auxiliary-qubit",
+    "term": "qubit ausiliari",
+    "aliases": [
+      "qubit ausiliario",
+      "ausiliari",
+      "ausiliario",
+      "ancille",
+      "ancilla"
+    ],
+    "pdfTerms": [
+      "auxiliary qubits",
+      "auxiliary qubit",
+      "auxiliary"
+    ],
+    "kind": "term",
+    "definedIn": "p0065",
+    "definitions": {
+      "it-intermediate": "Qubit extra che non portano informazione iniziale, preparati in uno stato noto (es. |0⟩). Poiché una rotazione Z su |0⟩ non fa nulla, l'etichetta del qubit ausiliario si può trattare come \"vuota\". Aggiungendoli con CNOT si ottiene una codifica ridondante che permette di eseguire più operazioni logiche in parallelo.",
+      "it-expert": "Ancille in autostati di Z o X a inizio circuito, con label a lettere (a, b, …) e marcature • o × per gli stabilizzatori che generano (App. C.2). Una Z-label vuota su |0⟩ è banale; le fasi Clifford sono indispensabili per leggere gli stabilizzatori risultanti."
+    },
+    "related": [
+      "stabilizer-code",
+      "clifford-phase",
+      "parity-code"
+    ]
+  },
+  {
+    "id": "heisenberg-model",
+    "term": "modello di Heisenberg",
+    "aliases": [
+      "Heisenberg"
+    ],
+    "pdfTerms": [
+      "Heisenberg model",
+      "Heisenberg"
+    ],
+    "kind": "term",
+    "definedIn": "p0066",
+    "definitions": {
+      "it-intermediate": "Un modello fisico di spin con interazioni XX + YY + ZZ tra vicini. È l'esempio del paper (Fig. 2b): con un qubit ausiliario e le etichette di flusso si trova una codifica in cui tutti e tre i termini si applicano in parallelo con rotazioni su singoli qubit.",
+      "it-expert": "e^{iα(X̄₁X̄₂ + Ȳ₁Ȳ₂ + Z̄₁Z̄₂)}: con un'ancilla ridondante i tre termini commutanti diventano rotazioni singole parallele, e lo stabilizzatore (es. X₁Z₂Y_a) rivela implementazioni equivalenti."
+    },
+    "related": [
+      "auxiliary-qubit",
+      "pauli-rotation",
+      "parity-code"
+    ]
+  },
+  {
+    "id": "pauli-decomposition",
+    "term": "decomposizione di Pauli",
+    "aliases": [],
+    "pdfTerms": [
+      "Pauli decomposition"
+    ],
+    "kind": "term",
+    "definedIn": "p0026",
+    "definitions": {
+      "it-intermediate": "Scrivere un operatore come prodotto (con una fase) dei generatori scelti. È il passo di calcolo con cui si ricava la nuova etichetta dopo ogni gate: si decompone l'effetto del gate su ciascun generatore.",
+      "it-expert": "C₂†g_jC₂ = i^{κ′} ∏_{g_m ∈ G} g_m (Eq. 3), che dipende solo da C₂; poi P̄(ℓ′_{g_j}) = i^{κ′} ∏ P̄(ℓ^{C₁}_{g_m}) riordinato in forma standard (Eq. 4)."
+    },
+    "related": [
+      "generators",
+      "flow-label"
+    ]
+  }
+]

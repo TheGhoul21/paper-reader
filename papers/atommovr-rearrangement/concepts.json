@@ -1,0 +1,340 @@
+[
+  {
+    "id": "atom-rearrangement",
+    "term": "riordino",
+    "aliases": ["rearrangement", "riordino di atomi", "riordino degli atomi", "algoritmi di riordino"],
+    "pdfTerms": ["rearrangement", "Rearrangement"],
+    "kind": "term",
+    "definedIn": "p0012",
+    "definitions": {
+      "it-intermediate": "L'operazione con cui, dopo aver caricato gli atomi a caso nelle trappole (circa metà restano vuote), si spostano con i tweezer mobili per ottenere la disposizione desiderata, di solito una griglia piena senza buchi. È un passaggio obbligato prima di ogni calcolo sui processori ad atomi neutri, e il paper ne studia algoritmi, tempi ed errori.",
+      "it-expert": "Mappare una configurazione X₀ ∈ {0,1}^{m×n} ottenuta per loading stocastico su un target g tramite una sequenza di AOD move segment. Il problema time-optimal chiede la sequenza di durata minima e se esiste; in pratica si confrontano euristiche per scaling del tempo e per success rate sotto error model."
+    },
+    "related": ["defect-free", "move-segment", "stochastic-loading", "atommovr"]
+  },
+  {
+    "id": "atommovr",
+    "term": "atommovr",
+    "aliases": [],
+    "pdfTerms": ["atommovr"],
+    "kind": "term",
+    "definedIn": "p0032",
+    "definitions": {
+      "it-intermediate": "Il software open-source in Python presentato dal paper: simula il riordino di atomi con modelli realistici di tempi ed errori, calcola automaticamente metriche come tempo, frazione di riempimento e tasso di successo, e permette di confrontare algoritmi diversi alle stesse condizioni.",
+      "it-expert": "Framework Python per il benchmarking di algoritmi di rearrangement: rappresentazione esplicita degli AOD move segment con check di legalità, timing model naive o dettagliato (adiabatic sine, transfer), error model (vacuum lifetime, tweezer error) e supporto dual-species."
+    },
+    "related": ["atom-rearrangement", "timing-model", "atom-loss"]
+  },
+  {
+    "id": "optical-tweezer",
+    "term": "tweezer",
+    "aliases": ["tweezer ottici", "tweezer ottico", "pinzette ottiche", "tweezer mobili", "tweezer statici"],
+    "pdfTerms": ["optical tweezers", "tweezers", "tweezer"],
+    "kind": "term",
+    "definedIn": "p0011",
+    "definitions": {
+      "it-intermediate": "Fasci laser focalizzati che intrappolano ciascuno un singolo atomo, come una pinzetta di luce. Ci sono tweezer statici (una griglia fissa, generata dall'SLM) e tweezer mobili (generati dagli AOD) che raccolgono gli atomi e li spostano.",
+      "it-expert": "Trappole di dipolo a singolo atomo: griglia statica SLM e tweezer mobili da AOD incrociati. Il trasferimento SLM↔AOD (pickup/putdown) è sia un costo temporale sia una fonte di perdita modellata esplicitamente."
+    },
+    "related": ["aod", "slm", "trap-transfer"]
+  },
+  {
+    "id": "aod",
+    "term": "AOD",
+    "aliases": ["crossed-AOD", "AOD incrociati", "deflettori acusto-ottici", "deflettore acusto-ottico"],
+    "pdfTerms": ["AOD", "AODs", "crossed-AOD", "acousto-optic deflectors"],
+    "kind": "acronym",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "Acousto-Optic Deflector. Due AOD incrociati (uno per le righe, uno per le colonne) trasformano un fascio in una griglia di fasci mobili: si possono spostare molti atomi insieme, ma solo \"a griglia\", cioè tutte le righe e colonne attive si muovono insieme. È ciò che rende possibile il parallelismo e anche ciò che lo vincola.",
+      "it-expert": "Due AOD incrociati producono una griglia rettilinea di tweezer, prodotto dei toni RF di riga e colonna. Ogni tono è inattivo, attivo statico o rampato di ±1 sito (App. A.1), da cui mosse parallele vincolate a righe e colonne e il vincolo di legalità (niente collisioni tra tweezer)."
+    },
+    "related": ["move-segment", "rf-tone", "optical-tweezer"]
+  },
+  {
+    "id": "slm",
+    "term": "SLM",
+    "aliases": [],
+    "pdfTerms": ["SLM", "SLMs"],
+    "kind": "acronym",
+    "definedIn": "p0016",
+    "definitions": {
+      "it-intermediate": "Spatial Light Modulator: genera la griglia di tweezer statici dove gli atomi \"abitano\". Volendo può anche spostare atomi, senza il vincolo a griglia degli AOD, ma è lento: circa 1 ms per aggiornare l'immagine.",
+      "it-expert": "Genera la griglia statica di trap. Usato anche come mover olografico, supera il vincolo rettilineo degli AOD ma è limitato dal frame rate (~1 kHz), come discusso nella Sez. 7."
+    },
+    "related": ["aod", "trap-transfer"]
+  },
+  {
+    "id": "defect-free",
+    "term": "senza difetti",
+    "aliases": ["defect-free", "array senza difetti"],
+    "pdfTerms": ["defect-free"],
+    "kind": "term",
+    "definedIn": "p0015",
+    "definitions": {
+      "it-intermediate": "Un array in cui ogni sito della configurazione target è occupato dall'atomo giusto, senza buchi. La probabilità di ottenerlo cala esponenzialmente con il numero di atomi, perché ciascuno può perdersi durante il riordino, ed è per questo che per array di migliaia di atomi servono algoritmi veloci e attenti alle perdite.",
+      "it-expert": "Target completamente riempito. Il success rate decade esponenzialmente in N per perdite indipendenti, quindi la massima taglia defect-free cresce solo linearmente col numero di atomi caricati (Fig. 2a); multi-round e continuous reloading mitigano."
+    },
+    "related": ["atom-loss", "stochastic-loading", "atom-rearrangement"]
+  },
+  {
+    "id": "stochastic-loading",
+    "term": "caricamento",
+    "aliases": ["probabilità di caricamento", "caricamento iniziale", "caricamento casuale", "loading", "reloading"],
+    "pdfTerms": ["loading probability", "random loading", "loading", "reloading"],
+    "kind": "term",
+    "definedIn": "p0016",
+    "definitions": {
+      "it-intermediate": "Il riempimento iniziale delle trappole: ogni trappola cattura un atomo solo con una certa probabilità, tipicamente circa il 50%, in posizioni casuali. Da qui nasce la necessità del riordino; la probabilità di caricamento influenza quanti atomi in eccesso ci sono e quindi quanto è facile completare il target.",
+      "it-expert": "Loading stocastico con p_load ≈ 0.5 (collisional blockade). Tutti i coefficienti di scaling in Tab. 1 sono a p=0.5; nel dual-species p_load governa il rischio di configurazioni bloccate, e ParHungarian degrada ad alto loading (Fig. 5d)."
+    },
+    "related": ["atom-rearrangement", "defect-free", "blocked-configuration"]
+  },
+  {
+    "id": "move-segment",
+    "term": "segmento di mossa",
+    "aliases": ["segmenti di mossa", "move segment", "AOD move segment", "segmento di mossa AOD", "mosse AOD", "mossa AOD"],
+    "pdfTerms": ["AOD move segment", "AOD move segments", "move segment", "move segments"],
+    "kind": "term",
+    "definedIn": "p0028",
+    "definitions": {
+      "it-intermediate": "L'unità elementare di movimento: un singolo comando agli AOD che sposta contemporaneamente tutti i tweezer attivi di al massimo un sito (in orizzontale, in verticale o in diagonale). Un riordino è una sequenza di questi segmenti, e il suo tempo totale è la somma delle loro durate.",
+      "it-expert": "ε ∈ S: operatore su Ω parametrizzato da (c_row, c_col) ∈ {0,1,2,3}^{n_rows+n_cols}. È legale sse nessun tweezer interseca un altro lungo la traiettoria e nessun tweezer carico attraversa un sito occupato (App. A.1). Il problema time-optimal cerca la sequenza minima di ε da X₀ a g."
+    },
+    "related": ["aod", "rf-tone", "timing-model"]
+  },
+  {
+    "id": "rf-tone",
+    "term": "tono RF",
+    "aliases": ["toni RF", "tono in radiofrequenza", "RF"],
+    "pdfTerms": ["RF tone", "RF tones"],
+    "kind": "term",
+    "definedIn": "p0145",
+    "definitions": {
+      "it-intermediate": "Ogni riga o colonna di tweezer AOD corrisponde a una frequenza radio (tono) inviata al cristallo dell'AOD. Accendere, spegnere o \"rampare\" un tono verso la frequenza della riga vicina significa creare, togliere o spostare quella riga di tweezer.",
+      "it-expert": "Stato per tono: 0 inattivo, 1 attivo statico, 2/3 rampato verso il sito i±1. Un tweezer esiste in (i,j) sse entrambi i toni sono ≠0. La parametrizzazione include segmenti illegali, che vanno filtrati."
+    },
+    "related": ["move-segment", "aod"]
+  },
+  {
+    "id": "hungarian-algorithm",
+    "term": "Hungarian",
+    "aliases": ["algoritmo Hungarian", "metodo Hungarian", "ungherese", "Hungarian ingenuo", "Hungarian a singolo tweezer"],
+    "pdfTerms": ["Hungarian"],
+    "kind": "term",
+    "definedIn": "p0029",
+    "definitions": {
+      "it-intermediate": "Un algoritmo classico di assegnamento: abbina ogni posto vuoto del target a un atomo in eccesso in modo da minimizzare la distanza totale percorsa (il problema LSAP). Poi sposta gli atomi uno alla volta, quindi percorre poca strada, ma senza parallelismo il tempo cresce più che linearmente, circa N^1.45.",
+      "it-expert": "Risolve LSAP sulla matrice C_kl = ‖target_k − excess_l‖ e muove un atomo per volta. È distance-optimal, quindi il migliore quando dominano le perdite per tweezer error, ma scala come O(N√N) (coefficiente estratto 1.45) e perde quando domina la vacuum lifetime."
+    },
+    "related": ["lsap", "par-hungarian", "balance-compact", "atom-loss"]
+  },
+  {
+    "id": "lsap",
+    "term": "LSAP",
+    "aliases": ["problema di assegnamento lineare", "Hungarian/LSAP"],
+    "pdfTerms": ["LSAP", "linear sum assignment"],
+    "kind": "acronym",
+    "definedIn": "p0029",
+    "definitions": {
+      "it-intermediate": "Linear Sum Assignment Problem: dati dei costi (qui le distanze) tra ogni posto vuoto e ogni atomo disponibile, trovare l'abbinamento uno-a-uno col costo totale minimo. È quello che risolve il metodo Hungarian.",
+      "it-expert": "min Σ C_{k,σ(k)} su abbinamenti σ vacanze→atomi in eccesso, cioè minimizza la distanza totale. La variante bottleneck (LBAP/MBMP) minimizza invece la distanza massima ed è la base del lower bound temporale."
+    },
+    "related": ["hungarian-algorithm", "lbap"]
+  },
+  {
+    "id": "lbap",
+    "term": "LBAP",
+    "aliases": ["MBMP", "LBAP/MBMP"],
+    "pdfTerms": ["LBAP", "MBMP", "bottleneck"],
+    "kind": "acronym",
+    "definedIn": "p0037",
+    "definitions": {
+      "it-intermediate": "Linear Bottleneck Assignment Problem (o, nel linguaggio dei grafi, minimum bottleneck matching): come LSAP, ma minimizza la distanza più lunga che un singolo atomo deve fare invece della somma. Se tutti gli atomi si muovessero insieme, quella distanza massima fisserebbe il tempo minimo possibile, da cui il limite inferiore Z*.",
+      "it-expert": "Minimizza max_k C_{k,σ(k)}. d_minmax · s / |v_tweezer| dà un lower bound al tempo di qualunque protocollo pienamente parallelo, che è l'origine di Z* ∝ √N (coefficiente 0.45(6))."
+    },
+    "related": ["lower-bound", "lsap"]
+  },
+  {
+    "id": "lower-bound",
+    "term": "Z*",
+    "aliases": ["limite inferiore", "limiti inferiori", "lower bound", "lower bounds", "Z*(grid)"],
+    "pdfTerms": ["Z⋆", "lower bound", "lower bounds"],
+    "kind": "symbol",
+    "definedIn": "p0035",
+    "definitions": {
+      "it-intermediate": "Il limite teorico sotto cui nessun algoritmo di riordino può scendere: il tempo necessario perché l'atomo più lontano raggiunga il suo posto, supponendo di poter muovere tutti gli atomi insieme. Cresce come √N, mentre gli algoritmi reali stanno tra N^0.84 (Balance and Compact) e N^1.45 (Hungarian): c'è molto margine di miglioramento.",
+      "it-expert": "Z* ≥ s·d_minmax/|v| dal LBAP; Z*(grid) aggiunge il vincolo di moto sulla griglia. Entrambi scalano con coefficiente 0.45(6), cioè ~√N, contro 0.84 di BalanceCompact, 1.03 di Tetris, 1.26 di ParHungarian e 1.45 di Hungarian (Tab. 1)."
+    },
+    "related": ["lbap", "scaling-coefficient", "balance-compact"]
+  },
+  {
+    "id": "scaling-coefficient",
+    "term": "coefficienti di scaling",
+    "aliases": ["coefficiente di scaling", "scaling"],
+    "pdfTerms": ["scaling coefficients", "scaling coefficient", "scaling"],
+    "kind": "term",
+    "definedIn": "p0039",
+    "definitions": {
+      "it-intermediate": "L'esponente con cui il tempo di riordino cresce col numero di atomi N: un coefficiente 1 vuol dire tempo proporzionale a N, 0.5 vuol dire proporzionale a √N. Più è basso, meglio l'algoritmo regge array grandi. La Tabella 1 li confronta tutti.",
+      "it-expert": "Esponente α di t ∝ N^α, fittato a p_load=0.5 senza rumore (Tab. 1): Z* 0.45, BalanceCompact 0.84, Tetris 1.03 (da [34]), ParHungarian 1.26, Hungarian 1.45."
+    },
+    "related": ["lower-bound", "balance-compact", "tetris"]
+  },
+  {
+    "id": "balance-compact",
+    "term": "Balance and Compact",
+    "aliases": ["Balance", "Balance&Compact", "BalanceCompact", "BC"],
+    "pdfTerms": ["Balance and Compact", "BalanceCompact", "BC"],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-intermediate": "Un algoritmo di riordino molto parallelo: prima \"bilancia\" il numero di atomi tra le righe (o colonne), poi \"compatta\" ogni riga verso il target, muovendo interi gruppi di atomi insieme. Il tempo cresce meno che linearmente (circa N^0.84), quindi vince quando la perdita dominante è il tempo che passa (vita nel vuoto).",
+      "it-expert": "Euristica fully-parallel a due fasi, balance tra righe e compact lungo le righe, sfruttando mosse AOD multi-atomo. È la migliore in scaling (0.84) e vantaggiosa nel regime vacuum-limited; paga più trasferimenti e distanza, quindi perde col tweezer error alto."
+    },
+    "related": ["hungarian-algorithm", "tetris", "atom-loss"]
+  },
+  {
+    "id": "tetris",
+    "term": "Tetris",
+    "aliases": [],
+    "pdfTerms": ["Tetris"],
+    "kind": "term",
+    "definedIn": "p0040",
+    "definitions": {
+      "it-intermediate": "Un algoritmo di riordino parallelo della letteratura (rif. [34]), tra i più usati: scala di poco sopra N (coefficiente 1.03). Il paper lo usa come termine di confronto e ne riprende i dati.",
+      "it-expert": "Algoritmo parallelo di [34], coefficiente 1.03(7) riportato dalla fonte; è il riferimento stato dell'arte per lo scaling, insieme a Balance and Compact."
+    },
+    "related": ["balance-compact", "scaling-coefficient"]
+  },
+  {
+    "id": "par-hungarian",
+    "term": "ParHungarian",
+    "aliases": ["Parallel Hungarian"],
+    "pdfTerms": ["ParHungarian", "Parallel Hungarian"],
+    "kind": "term",
+    "definedIn": "p0041",
+    "definitions": {
+      "it-intermediate": "Una variante dell'Hungarian proposta nel paper: dopo l'abbinamento atomi-posti, invece di muovere un atomo alla volta prova a eseguire insieme i primi passi di tutti i percorsi, rimandando quelli che collidono. Migliora lo scaling (N^1.26 invece di N^1.45), ma resta lontano dagli algoritmi nativamente paralleli.",
+      "it-expert": "LSAP più cammini minimi più parallelizzazione greedy: a ogni step si prende la t-esima mossa di ogni cammino, si risolvono le collisioni tenendone una e si verifica X′_Par = X′_No-Par. Non è ottimo (il brute force costa O(2^M)); c'è un'estensione naive dual-species usata come baseline di InsideOut."
+    },
+    "related": ["hungarian-algorithm", "move-parallelization", "inside-out"]
+  },
+  {
+    "id": "move-parallelization",
+    "term": "parallelizzazione delle mosse",
+    "aliases": ["subroutine di parallelizzazione", "parallelizzazione"],
+    "pdfTerms": ["Move parallelization", "move parallelization", "parallelization"],
+    "kind": "term",
+    "definedIn": "p0190",
+    "definitions": {
+      "it-intermediate": "Il procedimento che prende una lista di mosse di singoli atomi e prova a raggrupparle in comandi AOD eseguibili insieme. Un gruppo è accettato solo se eseguire le mosse in parallelo dà lo stesso risultato che eseguirle una dopo l'altra, cioè se nessun atomo viene trascinato o urtato per errore.",
+      "it-expert": "Partiziona M = {m₁…m_M} in AOD move {ε₁…ε_M′}: estende ε̃ con m_j finché ε_k∘…∘ε₁(X) = ε̃(X). È greedy e sub-ottima; la griglia AOD può raccogliere atomi indesiderati alle intersezioni, ed è questo che il test di equivalenza intercetta."
+    },
+    "related": ["par-hungarian", "move-segment", "collision"]
+  },
+  {
+    "id": "collision",
+    "term": "collisioni",
+    "aliases": ["collisione", "legale", "illegali", "legalità", "no-collision"],
+    "pdfTerms": ["collision", "collisions", "collide", "legal", "illegal"],
+    "kind": "term",
+    "definedIn": "p0152",
+    "definitions": {
+      "it-intermediate": "Due tweezer AOD non possono incrociarsi o toccarsi, e un tweezer che porta un atomo non può passare sopra un sito già occupato: queste mosse sono \"illegali\" perché farebbero perdere o scambiare atomi. atommovr controlla la legalità di ogni segmento e gli algoritmi devono evitarle.",
+      "it-expert": "Legale sse (1) nessuna intersezione tra tweezer AOD lungo la traiettoria e (2) nessun tweezer carico attraversa un sito occupato (App. A.1). La parametrizzazione a toni genera anche segmenti illegali, che il simulatore deve rifiutare."
+    },
+    "related": ["move-segment", "move-parallelization"]
+  },
+  {
+    "id": "atom-loss",
+    "term": "vita nel vuoto",
+    "aliases": ["perdita per vita limitata nel vuoto", "vita utile nel vuoto", "vacuum-limited", "lifetime", "errori dei tweezer", "errore dei tweezer", "tweezer error"],
+    "pdfTerms": ["vacuum-limited", "vacuum lifetime", "lifetime", "tweezer error", "atom loss"],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Le due cause di perdita di atomi modellate. La \"vita nel vuoto\": ogni atomo prima o poi urta una molecola di gas residuo e sparisce, quindi più dura il riordino più atomi si perdono. L'\"errore dei tweezer\": un atomo può perdersi a ogni passaggio tra trappola fissa e mobile. Quale domini decide l'algoritmo migliore: Balance and Compact (veloce) contro la prima, Hungarian (pochi spostamenti) contro la seconda.",
+      "it-expert": "Error model: P_survive = e^{−t/τ_vac} per atomo (vacuum-limited) e P_loss = a per trasferimento o movimento (tweezer error). Fig. 4 mappa il crossover: Hungarian (distance-optimal) vince con tweezer error dominante, BalanceCompact (time-optimal) con lifetime dominante."
+    },
+    "related": ["trap-transfer", "hungarian-algorithm", "balance-compact", "defect-free"]
+  },
+  {
+    "id": "trap-transfer",
+    "term": "trasferimenti",
+    "aliases": ["trasferimento", "trasferimenti di trappola", "pickup", "putdown", "pickup/putdown"],
+    "pdfTerms": ["trap transfers", "trap transfer", "pickup", "putdown", "transfer"],
+    "kind": "term",
+    "definedIn": "p0154",
+    "definitions": {
+      "it-intermediate": "Il passaggio di un atomo da una trappola statica (SLM) a una mobile (AOD), detto \"pickup\", e il ritorno (\"putdown\"). Ogni trasferimento costa tempo ed è un'occasione in cui l'atomo può perdersi, quindi un buon algoritmo ne fa il meno possibile.",
+      "it-expert": "Eventi pickup/putdown con costo t_transfer (δ_pickup + δ_putdown in Eq. S.6) e probabilità di perdita per tweezer error. Algoritmi molto paralleli ne fanno di più per atomo."
+    },
+    "related": ["atom-loss", "timing-model", "slm"]
+  },
+  {
+    "id": "timing-model",
+    "term": "modello di tempistica",
+    "aliases": ["modelli di tempistica", "modello dettagliato", "modello naive", "adiabatic sine", "timing"],
+    "pdfTerms": ["timing model", "timing models", "adiabatic sine", "detailed model", "naive model"],
+    "kind": "term",
+    "definedIn": "p0155",
+    "definitions": {
+      "it-intermediate": "Come atommovr calcola la durata di ogni mossa. Il modello \"naive\" usa solo distanza / velocità; quello \"dettagliato\" aggiunge i tempi di accelerazione e frenata (profilo \"adiabatic sine\", che muove l'atomo dolcemente per non scaldarlo) e i tempi dei trasferimenti tra trappole.",
+      "it-expert": "Naive: t = d_max/v_avg. Dettagliato: profilo adiabatic sine a tratti per mosse multi-sito o diagonali, con t = d_max/(2v_avg) + (s/4v_avg)(δ_accel+δ_decel) + t_transfer(δ_pickup+δ_putdown) (Eq. S.7). Con s=5 μm e v_avg=0.1 m/s, t_accel = t_decel = 12.5 μs."
+    },
+    "related": ["move-segment", "trap-transfer", "atommovr"]
+  },
+  {
+    "id": "dual-species",
+    "term": "due specie",
+    "aliases": ["a due specie", "dual-species", "specie atomiche", "più specie", "specie"],
+    "pdfTerms": ["dual-species", "dual species", "species"],
+    "kind": "term",
+    "definedIn": "p0056",
+    "definitions": {
+      "it-intermediate": "Array che contengono due tipi di atomi diversi (ad esempio rubidio e cesio), utili per far interagire atomi con ruoli diversi o misurare l'uno senza disturbare l'altro. Il riordino è molto più difficile: gli atomi non sono più intercambiabili, e un atomo del tipo sbagliato può bloccare la strada o il posto a un altro.",
+      "it-expert": "M ∈ {0,1}^{m×n×2} con al più un atomo per sito; l'abbinamento è species-selective e scambiare due atomi cambia lo stato. Nascono configurazioni bloccate e la dipendenza non banale da p_load; InsideOut è la risposta del paper."
+    },
+    "related": ["blocked-configuration", "inside-out", "par-hungarian"]
+  },
+  {
+    "id": "blocked-configuration",
+    "term": "configurazioni bloccate",
+    "aliases": ["configurazione bloccata", "bloccate", "bloccata", "blocked"],
+    "pdfTerms": ["blocked configurations", "blocked configuration", "blocked"],
+    "kind": "term",
+    "definedIn": "p0057",
+    "definitions": {
+      "it-intermediate": "Situazioni, tipiche dei sistemi a due specie, in cui un atomo di un tipo occupa il posto destinato all'altro tipo, o ne sbarra l'unico percorso, e l'algoritmo non riesce più a completare il target (Fig. 5a,b). Evitarle è il motivo del procedimento \"strato per strato\" di InsideOut.",
+      "it-expert": "Stati in cui un atomo della specie sbagliata occupa un target o ostruisce ogni cammino legale, e un'euristica greedy si pianta. La loro frequenza cresce con la densità e con p_load, da cui il decadimento del success rate di ParHungarian dual-species."
+    },
+    "related": ["dual-species", "inside-out"]
+  },
+  {
+    "id": "inside-out",
+    "term": "InsideOut",
+    "aliases": [],
+    "pdfTerms": ["InsideOut"],
+    "kind": "term",
+    "definedIn": "p0062",
+    "definitions": {
+      "it-intermediate": "L'algoritmo per due specie proposto nel paper. Costruisce il target dal centro verso l'esterno, \"strato per strato\" (anelli quadrati concentrici): per ogni strato prima spinge fuori gli atomi sbagliati, poi lo riempie con quelli giusti presi dall'esterno. Gli strati completati non vengono più toccati, così non si creano blocchi, e il tasso di successo resta al 100% per ogni probabilità di caricamento.",
+      "it-expert": "Layer-by-layer dal centro (Eq. S.10–S.11): push-out dei misplaced sul layer k, poi LSAP species-selective con atomi presi da layer ≥ k e parallelizzazione come in ParHungarian. È monotono sui layer interni, quindi evita i blocked state: success rate unitario, al costo di un tempo maggiore in array sparsi."
+    },
+    "related": ["dual-species", "blocked-configuration", "par-hungarian"]
+  },
+  {
+    "id": "reinforcement-learning",
+    "term": "reinforcement learning",
+    "aliases": ["Go", "AlphaGo/AlphaZero"],
+    "pdfTerms": ["reinforcement learning", "Go"],
+    "kind": "term",
+    "definedIn": "p0078",
+    "definitions": {
+      "it-intermediate": "Una tecnica di machine learning in cui un programma impara giocando molte partite e ricevendo un premio quando fa bene (così AlphaGo ha battuto i campioni di Go). Gli autori notano che un array a due specie somiglia a una scacchiera di Go e suggeriscono questa strada per trovare algoritmi di riordino non euristici.",
+      "it-expert": "Direzione futura: l'isomorfismo strutturale tra board di Go e array dual-species suggerisce policy apprese (AlphaZero-like) come alternativa alle euristiche, con atommovr come environment."
+    },
+    "related": ["dual-species", "atommovr"]
+  }
+]

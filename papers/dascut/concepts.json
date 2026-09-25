@@ -1,0 +1,513 @@
+[
+  {
+    "id": "circuit-cutting",
+    "term": "circuit cutting",
+    "aliases": [
+      "taglio di circuiti",
+      "taglio dei circuiti",
+      "taglio del circuito",
+      "tagliare i circuiti",
+      "tagliare il circuito"
+    ],
+    "pdfTerms": [
+      "circuit cutting",
+      "Circuit cutting",
+      "circuit-cutting",
+      "gate cutting",
+      "wire cutting",
+      "gate cuts",
+      "wire cuts"
+    ],
+    "kind": "term",
+    "definedIn": "p0035",
+    "definitions": {
+      "it-beginner": "Una tecnica per eseguire un circuito quantistico troppo grande per un solo dispositivo: lo si \"taglia\" in pezzi più piccoli (sotto-circuiti), si eseguono i pezzi separatamente e poi si ricompongono i risultati con un calcolo classico. Funziona, ma ha un prezzo: più tagli fai, più volte devi ripetere le esecuzioni e più calcolo serve per ricomporre. DAScut serve a decidere dove tagliare e dove eseguire i pezzi per pagare il meno possibile. Il taglio può spezzare un'operazione tra due qubit (\"gate cut\") o il filo di un singolo qubit (\"wire cut\")."
+    },
+    "related": [
+      "sampling-overhead",
+      "reconstruction-overhead",
+      "sub-circuit-isomorphism"
+    ]
+  },
+  {
+    "id": "sampling-overhead",
+    "term": "costo di campionamento",
+    "aliases": [
+      "sampling overhead",
+      "overhead di campionamento"
+    ],
+    "pdfTerms": [
+      "sampling overhead",
+      "Sampling Overhead"
+    ],
+    "kind": "term",
+    "definedIn": "p0035",
+    "definitions": {
+      "it-beginner": "Quante esecuzioni in più (\"shots\") servono per ottenere lo stesso risultato affidabile dopo aver tagliato un circuito. Cresce in modo esponenziale col numero di tagli: nella Tabella 1, per il circuito più intrecciato (Effi_full) arriva a numeri come 10^93, cioè impossibile in pratica. È il motivo per cui conviene tagliare poco e nei punti giusti."
+    },
+    "related": [
+      "circuit-cutting",
+      "reconstruction-overhead",
+      "entanglement"
+    ]
+  },
+  {
+    "id": "reconstruction-overhead",
+    "term": "ricostruzione",
+    "aliases": [
+      "ricostruire",
+      "tempo di ricostruzione",
+      "costi di ricostruzione",
+      "costo di ricostruzione"
+    ],
+    "pdfTerms": [
+      "reconstruction",
+      "classical post-processing",
+      "post-processing"
+    ],
+    "kind": "term",
+    "definedIn": "p0009",
+    "definitions": {
+      "it-beginner": "Il lavoro fatto da un computer normale, dopo l'esecuzione dei pezzi di un circuito tagliato, per rimettere insieme i risultati e ottenere quello del circuito intero. Richiede tempo e memoria, e cresce col numero di tagli e di sotto-circuiti. DAScut lo riduce evitando di rieseguire (e ricombinare) pezzi identici."
+    },
+    "related": [
+      "circuit-cutting",
+      "sampling-overhead",
+      "sub-circuit-isomorphism"
+    ]
+  },
+  {
+    "id": "qpu",
+    "term": "QPU",
+    "aliases": [
+      "QPUs",
+      "processore quantistico",
+      "processori quantistici"
+    ],
+    "pdfTerms": [
+      "QPU",
+      "QPUs",
+      "Quantum Processing Units"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-beginner": "Quantum Processing Unit: il \"chip\" quantistico vero e proprio, l'equivalente quantistico di una CPU o GPU. Nel paper le QPU sono diverse tra loro (numero di qubit, collegamenti, rumore) e il problema è decidere quale pezzo di circuito mandare a quale QPU."
+    },
+    "related": [
+      "nisq",
+      "coupling-graph",
+      "native-gate-set"
+    ]
+  },
+  {
+    "id": "nisq",
+    "term": "NISQ",
+    "aliases": [
+      "Noisy Intermediate-Scale Quantum"
+    ],
+    "pdfTerms": [
+      "NISQ"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0015",
+    "definitions": {
+      "it-beginner": "Noisy Intermediate-Scale Quantum: la generazione attuale di computer quantistici, con un numero limitato di qubit (decine o centinaia) e tanto \"rumore\", cioè errori che si accumulano a ogni operazione. Per questo i circuiti grandi e profondi danno risultati peggiori, ed è utile spezzarli."
+    },
+    "related": [
+      "qpu",
+      "noise-model",
+      "fidelity"
+    ]
+  },
+  {
+    "id": "transpilation",
+    "term": "transpilazione",
+    "aliases": [
+      "transpilato",
+      "transpilati",
+      "transpile",
+      "transpilare"
+    ],
+    "pdfTerms": [
+      "transpilation",
+      "Transpilation",
+      "transpiled"
+    ],
+    "kind": "term",
+    "definedIn": "p0022",
+    "definitions": {
+      "it-beginner": "La \"traduzione\" di un circuito scritto in modo astratto in uno che un dispositivo specifico sa eseguire. Tre passi: riscrivere le operazioni con quelle native del dispositivo, scegliere quali qubit fisici usare (layout) e aggiungere operazioni SWAP dove due qubit che devono interagire non sono collegati. Ogni passo può allungare il circuito e aggiungere errori."
+    },
+    "related": [
+      "native-gate-set",
+      "qubit-mapping",
+      "swap-gate",
+      "sabre"
+    ]
+  },
+  {
+    "id": "native-gate-set",
+    "term": "operazioni native",
+    "aliases": [
+      "set base di operazioni",
+      "istruzioni native",
+      "operazioni non native"
+    ],
+    "pdfTerms": [
+      "basis gate set",
+      "basis gate",
+      "native gate sets",
+      "device-native instructions"
+    ],
+    "kind": "term",
+    "definedIn": "p0020",
+    "definitions": {
+      "it-beginner": "L'elenco (piccolo) di operazioni che un certo processore quantistico sa fare direttamente, ad esempio {rz, sx, x, cx} per i chip superconduttori IBM. Qualsiasi altra operazione del circuito va riscritta come combinazione di queste durante la transpilazione."
+    },
+    "related": [
+      "transpilation",
+      "qpu"
+    ]
+  },
+  {
+    "id": "coupling-graph",
+    "term": "mappa di collegamenti",
+    "aliases": [
+      "mappe di collegamento",
+      "mappa di collegamento",
+      "connettività"
+    ],
+    "pdfTerms": [
+      "coupling graph",
+      "coupling graphs",
+      "connectivity"
+    ],
+    "kind": "term",
+    "definedIn": "p0020",
+    "definitions": {
+      "it-beginner": "Il disegno di quali qubit fisici di un chip sono direttamente collegati tra loro. Solo qubit collegati possono fare un'operazione a due qubit; se il circuito chiede di far interagire due qubit lontani, bisogna \"avvicinarli\" con operazioni SWAP, che aggiungono errori. Chip diversi hanno mappe diverse, e per questo lo stesso circuito va meglio su alcuni che su altri."
+    },
+    "related": [
+      "swap-gate",
+      "qubit-mapping",
+      "qpu"
+    ]
+  },
+  {
+    "id": "qubit-mapping",
+    "term": "layout",
+    "aliases": [
+      "qubit logici",
+      "assegnare i qubit"
+    ],
+    "pdfTerms": [
+      "layout",
+      "mapped onto",
+      "qubit mapping"
+    ],
+    "kind": "term",
+    "definedIn": "p0022",
+    "definitions": {
+      "it-beginner": "La scelta di quale qubit fisico del chip ospita ciascun qubit \"logico\" del circuito. Una buona scelta mette vicini i qubit che interagiscono spesso e usa i qubit fisici più affidabili, riducendo SWAP ed errori."
+    },
+    "related": [
+      "transpilation",
+      "coupling-graph",
+      "swap-gate",
+      "sabre"
+    ]
+  },
+  {
+    "id": "swap-gate",
+    "term": "SWAP",
+    "aliases": [
+      "operazioni SWAP",
+      "operazione SWAP"
+    ],
+    "pdfTerms": [
+      "SWAP",
+      "SWAPs"
+    ],
+    "kind": "term",
+    "definedIn": "p0022",
+    "definitions": {
+      "it-beginner": "Un'operazione che scambia lo stato di due qubit collegati. Serve a \"spostare\" l'informazione verso un qubit vicino quando due qubit che devono interagire non sono collegati sul chip. Ogni SWAP costa tre operazioni a due qubit, quindi allunga il circuito e aggiunge rumore."
+    },
+    "related": [
+      "coupling-graph",
+      "qubit-mapping",
+      "transpilation"
+    ]
+  },
+  {
+    "id": "sabre",
+    "term": "SABRE",
+    "aliases": [],
+    "pdfTerms": [
+      "SABRE"
+    ],
+    "kind": "acronym",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-beginner": "L'algoritmo standard di Qiskit per scegliere il layout dei qubit e decidere dove inserire gli SWAP. Nel paper è usato così com'è in tutte le simulazioni, per confrontare i dispositivi a parità di compilazione."
+    },
+    "related": [
+      "qubit-mapping",
+      "swap-gate",
+      "transpilation"
+    ]
+  },
+  {
+    "id": "fidelity",
+    "term": "fedeltà",
+    "aliases": [
+      "fedeltà quantistica"
+    ],
+    "pdfTerms": [
+      "fidelity",
+      "Fidelity"
+    ],
+    "kind": "term",
+    "definedIn": "p0024",
+    "definitions": {
+      "it-beginner": "Un numero tra 0 e 1 che dice quanto il risultato ottenuto su un dispositivo reale (rumoroso) somiglia a quello ideale. 1 vuol dire identico, valori bassi vogliono dire che il rumore ha rovinato il calcolo. È la misura principale con cui il paper confronta dispositivi e strategie di taglio."
+    },
+    "related": [
+      "hellinger-fidelity",
+      "noise-model",
+      "nisq"
+    ]
+  },
+  {
+    "id": "hellinger-fidelity",
+    "term": "fedeltà di Hellinger",
+    "aliases": [
+      "Hellinger"
+    ],
+    "pdfTerms": [
+      "Hellinger fidelity",
+      "Hellinger"
+    ],
+    "kind": "term",
+    "definedIn": "p0024",
+    "definitions": {
+      "it-beginner": "Il modo specifico usato nel paper per calcolare la fedeltà: si confrontano, risultato per risultato, le probabilità ottenute nell'esecuzione ideale e in quella rumorosa (Equazione 1). Se le due distribuzioni coincidono vale 1."
+    },
+    "related": [
+      "fidelity"
+    ]
+  },
+  {
+    "id": "noise-model",
+    "term": "modello di rumore",
+    "aliases": [
+      "modelli di rumore"
+    ],
+    "pdfTerms": [
+      "noise model",
+      "noise models",
+      "noise-aware"
+    ],
+    "kind": "term",
+    "definedIn": "p0021",
+    "definitions": {
+      "it-beginner": "Una descrizione, ricavata dalle misure di calibrazione di un chip reale, di quanto spesso e come sbagliano le sue operazioni. Permette di simulare su un computer normale come si comporterebbe il circuito su quel chip, senza usarlo davvero."
+    },
+    "related": [
+      "fake-backend",
+      "fidelity",
+      "nisq"
+    ]
+  },
+  {
+    "id": "fake-backend",
+    "term": "FakePrague",
+    "aliases": [
+      "FakeAuckland",
+      "FakeMumbai",
+      "FakeMelbourne"
+    ],
+    "pdfTerms": [
+      "FakePrague",
+      "FakeAuckland",
+      "FakeMumbai",
+      "FakeMelbourne"
+    ],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-beginner": "I \"dispositivi finti\" di Qiskit: simulazioni che copiano numero di qubit, collegamenti e rumore di chip IBM reali (Prague, Auckland, Mumbai, Melbourne). Il paper li usa per confrontare dispositivi diversi senza accedere all'hardware vero."
+    },
+    "related": [
+      "noise-model",
+      "coupling-graph"
+    ]
+  },
+  {
+    "id": "entanglement",
+    "term": "entanglement",
+    "aliases": [
+      "intrecciato",
+      "intrecciati",
+      "intrecciata"
+    ],
+    "pdfTerms": [
+      "entanglement",
+      "entangled"
+    ],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-beginner": "Il legame quantistico tra qubit per cui lo stato di uno non si può descrivere senza gli altri. Nel paper conta in modo molto pratico: più un circuito crea entanglement tra molti qubit (è \"intrecciato\"), più è difficile tagliarlo, perché ogni taglio spezza legami che poi vanno ricostruiti a caro prezzo."
+    },
+    "related": [
+      "interaction-graph",
+      "sampling-overhead",
+      "benchmark-circuits"
+    ]
+  },
+  {
+    "id": "interaction-graph",
+    "term": "grafi di interazione",
+    "aliases": [
+      "grafo di interazione",
+      "interazioni a coppie"
+    ],
+    "pdfTerms": [
+      "interaction graphs",
+      "interaction graph",
+      "pair-wise qubit interactions",
+      "pair-wise interactions"
+    ],
+    "kind": "term",
+    "definedIn": "p0043",
+    "definitions": {
+      "it-beginner": "Un disegno del circuito in cui ogni qubit è un punto e due punti sono collegati se i relativi qubit fanno operazioni insieme. Circuiti \"sparsi\" come BV hanno pochi collegamenti e si tagliano facilmente; circuiti \"densi\" come Effi_full hanno quasi tutti i punti collegati. DAScut lo usa per decidere dove tagliare."
+    },
+    "related": [
+      "entanglement",
+      "circuit-cutting",
+      "sub-circuit-isomorphism"
+    ]
+  },
+  {
+    "id": "sub-circuit-isomorphism",
+    "term": "isomorfismo",
+    "aliases": [
+      "isomorfi",
+      "isomorfo",
+      "strutturalmente identici"
+    ],
+    "pdfTerms": [
+      "isomorphism",
+      "isomorphic"
+    ],
+    "kind": "term",
+    "definedIn": "p0016",
+    "definitions": {
+      "it-beginner": "Due sotto-circuiti sono \"isomorfi\" quando hanno esattamente la stessa struttura (stesse operazioni, stessi collegamenti), anche se agiscono su qubit con nomi diversi. DAScut li riconosce dopo il taglio ed esegue la struttura una volta sola, riusando il risultato: meno esecuzioni e meno ricostruzione."
+    },
+    "related": [
+      "circuit-cutting",
+      "reconstruction-overhead",
+      "interaction-graph"
+    ]
+  },
+  {
+    "id": "makespan",
+    "term": "tempo totale di esecuzione",
+    "aliases": [
+      "tempo totale",
+      "Makespan"
+    ],
+    "pdfTerms": [
+      "Makespan",
+      "makespan"
+    ],
+    "kind": "term",
+    "definedIn": "p0009",
+    "definitions": {
+      "it-beginner": "Il \"Makespan\": il tempo che passa dall'inizio alla fine di tutto il lavoro, cioè finché l'ultimo pezzo di circuito è stato eseguito e ricombinato. È una delle metriche che DAScut vuole ridurre, insieme alla fedeltà e al numero di lavori completati per unità di tempo."
+    },
+    "related": [
+      "reconstruction-overhead",
+      "multiprogramming"
+    ]
+  },
+  {
+    "id": "multiprogramming",
+    "term": "più algoritmi piccoli insieme",
+    "aliases": [
+      "più algoritmi piccoli",
+      "multiprogrammazione",
+      "multiprogramming"
+    ],
+    "pdfTerms": [
+      "multiprogramming",
+      "mul- tiprogramming",
+      "multi-programming"
+    ],
+    "kind": "term",
+    "definedIn": "p0007",
+    "definitions": {
+      "it-beginner": "La \"multiprogrammazione\": far girare contemporaneamente più circuiti piccoli sullo stesso processore quantistico, usando qubit diversi, per non lasciare qubit inutilizzati. È l'altra faccia del problema rispetto al calcolo distribuito, che invece divide un circuito grande su più processori."
+    },
+    "related": [
+      "dqc",
+      "makespan",
+      "qpu"
+    ]
+  },
+  {
+    "id": "dqc",
+    "term": "calcolo quantistico distribuito",
+    "aliases": [
+      "distribuito",
+      "DQC"
+    ],
+    "pdfTerms": [
+      "Distributed Quantum Computing",
+      "DQC"
+    ],
+    "kind": "term",
+    "definedIn": "p0007",
+    "definitions": {
+      "it-beginner": "L'idea di dividere un algoritmo quantistico troppo grande su più processori quantistici. Il circuit cutting è un modo per farlo: i pezzi vengono eseguiti su processori diversi (o sullo stesso, in momenti diversi) e i risultati si ricombinano con un computer classico."
+    },
+    "related": [
+      "circuit-cutting",
+      "multiprogramming",
+      "qpu"
+    ]
+  },
+  {
+    "id": "benchmark-circuits",
+    "term": "Effi_full",
+    "aliases": [
+      "EfficientSU2",
+      "Effi_circ",
+      "Bernstein–Vazirani",
+      "BV",
+      "QAOA"
+    ],
+    "pdfTerms": [
+      "Effi_full",
+      "Effi_circ",
+      "EfficientSU2",
+      "Bernstein–Vazirani",
+      "BV",
+      "QAOA"
+    ],
+    "kind": "term",
+    "definedIn": "p0036",
+    "definitions": {
+      "it-beginner": "I circuiti di prova usati nel paper, scelti per coprire strutture diverse. BV (Bernstein–Vazirani) è \"sparso\": ogni qubit interagisce con uno solo, quindi si taglia facilmente. EfficientSU2 è un circuito a strati, con entanglement circolare (Effi_circ, ogni qubit col vicino) o completo (Effi_full, ogni qubit con tutti): quest'ultimo è il caso peggiore. QAOA è un algoritmo di ottimizzazione, anch'esso molto intrecciato."
+    },
+    "related": [
+      "entanglement",
+      "interaction-graph",
+      "sampling-overhead"
+    ]
+  }
+]

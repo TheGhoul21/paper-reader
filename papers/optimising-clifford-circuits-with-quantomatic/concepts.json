@@ -1,0 +1,340 @@
+[
+  {
+    "id": "clifford",
+    "term": "Clifford",
+    "aliases": ["circuiti Clifford", "circuito Clifford", "gruppo di Clifford", "Clifford a 1 qubit", "Clifford a due qubit", "Clifford+T"],
+    "pdfTerms": ["Clifford", "Cliﬀord"],
+    "kind": "term",
+    "definedIn": "p0020",
+    "definitions": {
+      "it-intermediate": "I circuiti costruiti solo con porte Hadamard, S (fase π/2) e CNOT. Da soli non bastano per un computer quantistico universale (si simulano efficientemente su un computer classico), ma sono una parte enorme di qualunque circuito reale e della correzione d'errore, quindi ottimizzarli conviene sempre. Aggiungendo la porta T (Clifford+T) si ottiene l'universalità.",
+      "it-expert": "C_n = ⟨S, V⟩ sotto ⊗ e composizione, quozientato per scalari (reduced Clifford group); equivalentemente il normalizzatore di P_n nelle unitarie. |C₁| = 24, |C₂| = 11520, |C₃| ≈ 9·10⁷. Per ZX_s il frammento è completo (Backens), per cui ogni riduzione Clifford è derivabile per riscrittura."
+    },
+    "related": ["zx-stabilizer", "clifford-normal-forms", "pauli", "cliff-prop"]
+  },
+  {
+    "id": "zx-calculus",
+    "term": "ZX-calculus",
+    "aliases": ["zx-calculus", "calcolo ZX", "ZX-diagramma", "diagramma ZX", "diagrammi ZX", "diagramma ZX-calculus"],
+    "pdfTerms": ["ZX-calculus", "zx-calculus", "ZX-diagram", "zx-term"],
+    "kind": "term",
+    "definedIn": "p0032",
+    "definitions": {
+      "it-intermediate": "Un linguaggio grafico per i processi quantistici: i circuiti diventano grafi con nodi verdi (Z) e rossi (X) con un angolo, e nodi H gialli, e un insieme di regole di riscrittura trasforma un grafo in uno equivalente. Qui è usato come motore per ottimizzare circuiti: ogni passo di semplificazione è una dimostrazione di equivalenza.",
+      "it-expert": "Termini = framed open graph non diretti con vertici Z(α), X(β), H (grado 2), uguaglianza per isomorfismo; interpretazione ⟦·⟧: ZX → fdHilb come funtore †-simmetrico monoidale. Teoria equazionale di Frobenius-Hopf, qui nel frammento scalar-free."
+    },
+    "related": ["spider", "zx-rules", "zx-stabilizer", "open-graph"]
+  },
+  {
+    "id": "spider",
+    "term": "spider",
+    "aliases": ["spiders", "Z-spider", "X-spider", "vertici Z(α)", "vertici X(β)", "vertici H", "vertice H", "regola spider", "regola dello spider"],
+    "pdfTerms": ["spider"],
+    "kind": "term",
+    "definedIn": "p0038",
+    "definitions": {
+      "it-intermediate": "I nodi dei diagrammi ZX: verdi (Z, con angolo α) e rossi (X, con angolo β), più i nodi H (Hadamard) che devono avere esattamente due collegamenti. La regola fondamentale, \"spider\", fonde due nodi dello stesso colore collegati sommando i loro angoli.",
+      "it-expert": "Z(α)/X(β) di arità arbitraria, H di grado 2; la regola (spider) fonde vertici adiacenti dello stesso colore con α+β. Nel frammento ZX_s gli angoli sono in {0, π/2, π, 3π/2}, scritti con la notazione compatta +, π, −."
+    },
+    "related": ["zx-rules", "zx-calculus", "colour-change"]
+  },
+  {
+    "id": "zx-rules",
+    "term": "regola bialgebra",
+    "aliases": ["bialgebra", "regola Hopf", "Hopf", "π-commute", "H-euler", "regola H-euler", "regola π-commute", "regola identità", "copying"],
+    "pdfTerms": ["bialgebra", "hopf", "Hopf", "π-commute", "H-euler", "copying", "anti-loop"],
+    "kind": "term",
+    "definedIn": "p0046",
+    "definitions": {
+      "it-intermediate": "Le regole di base dello ZX-calculus (Figura 2), ognuna un'uguaglianza tra piccoli diagrammi: spider (fonde nodi dello stesso colore), identità (elimina nodi con angolo 0), π-commute (fa passare un nodo π attraverso un nodo dell'altro colore), copying, bialgebra e Hopf (come interagiscono nodi di colore diverso), H-euler (scrive H con tre rotazioni). Tutte le ottimizzazioni sono combinazioni di queste.",
+      "it-expert": "Assiomi: spider, anti-loop, identity, copying, π-commute, hopf, bialgebra, H-euler (le H sono ridondanti). Come sistema di riscrittura non sono né terminanti né confluenti: π-commute è reversibile e crea cicli, da cui la necessità di regole derivate strettamente riducenti e di strategie mirate."
+    },
+    "related": ["spider", "colour-change", "rewrite-rule"]
+  },
+  {
+    "id": "colour-change",
+    "term": "cambio colore",
+    "aliases": ["regola di cambio colore", "dualità di colore", "colour change"],
+    "pdfTerms": ["colour changing", "colour duality", "colour dual"],
+    "kind": "term",
+    "definedIn": "p0050",
+    "definitions": {
+      "it-intermediate": "Una regola derivata (Lemma 3.5): circondando un nodo con Hadamard, o equivalentemente con opportune rotazioni ±π/2, si può trasformare un nodo verde in rosso e viceversa. È ciò che permette di eliminare i nodi H e lavorare con soli nodi verdi e rossi.",
+      "it-expert": "Lemma 3.5: coniugando con ±π/2 su ogni gamba si scambia il colore di uno spider, con fase α + nπ/2 (n = numero di vertici rossi nel LHS). È la forma operativa della colour duality, usata per esprimere TONC via CNOT e H (App. B)."
+    },
+    "related": ["zx-rules", "spider"]
+  },
+  {
+    "id": "zx-stabilizer",
+    "term": "ZX_s",
+    "aliases": ["frammento stabilizer", "stabilizer", "sotto-linguaggio stabilizer", "stabilizer/Clifford"],
+    "pdfTerms": ["stabilizer", "ZXs"],
+    "kind": "symbol",
+    "definedIn": "p0054",
+    "definitions": {
+      "it-intermediate": "La parte dello ZX-calculus in cui gli angoli dei nodi possono essere solo 0, π/2, π o 3π/2. Descrive esattamente i circuiti Clifford (quantistica \"stabilizer\"). Per questa parte le regole sono complete: due diagrammi equivalenti si possono sempre trasformare l'uno nell'altro.",
+      "it-expert": "Sotto-PROP ZX_s con fasi in {0, π/2, π, 3π/2}, notazione +/π/−. Completezza di Backens (Teor. 4.3): a ∗↔ b ⟺ ⟦a⟧ = ⟦b⟧, per cui ogni circuito Clifford più piccolo equivalente è raggiungibile per riscrittura."
+    },
+    "related": ["completeness", "clifford", "zx-calculus"]
+  },
+  {
+    "id": "completeness",
+    "term": "completezza",
+    "aliases": ["teorema di completezza", "completo", "complete"],
+    "pdfTerms": ["complete", "completeness"],
+    "kind": "term",
+    "definedIn": "p0064",
+    "definitions": {
+      "it-intermediate": "Il risultato di Backens (Teorema 4.3): nel frammento stabilizer, due diagrammi che rappresentano la stessa matrice sono sempre collegati da una sequenza di regole. Garantisce che, se un circuito Clifford ha una versione più corta, esiste una dimostrazione per riscrittura che la trova: il problema è trovarla.",
+      "it-expert": "Teor. 4.3 (Backens): completezza di ZX_s rispetto a ⟦·⟧. Esistono estensioni complete per Clifford+T e per l'intera teoria qubit, ma molto più complesse; limitarsi ai Clifford è ciò che rende praticabile un ottimizzatore basato su regole."
+    },
+    "related": ["zx-stabilizer", "clifford"]
+  },
+  {
+    "id": "quantomatic",
+    "term": "Quantomatic",
+    "aliases": [],
+    "pdfTerms": ["Quantomatic"],
+    "kind": "term",
+    "definedIn": "p0012",
+    "definitions": {
+      "it-intermediate": "Un assistente di dimostrazione grafico per lo ZX-calculus: l'utente disegna un diagramma e applica regole di riscrittura, a mano o con procedure automatiche. Gli autori lo usano, fuori dal suo scopo originale interattivo, come ottimizzatore di circuiti completamente automatico, con il vantaggio che ogni ottimizzazione è anche una dimostrazione verificata.",
+      "it-expert": "Motore di riscrittura di grafi aperti, interattivo, con tattiche (simproc) come REWRITE, REWRITE_METRIC e REWRITE_TARGETED. Il matching è locale e non controllabile (sceglie un match senza intervento), e i functor di targeting/metric sono stateless: sono i limiti principali emersi."
+    },
+    "related": ["simproc", "rewrite-rule", "targeted-rewrite"]
+  },
+  {
+    "id": "simproc",
+    "term": "simproc",
+    "aliases": ["simprocs", "procedure di semplificazione", "procedura di semplificazione", "tattiche", "tattica"],
+    "pdfTerms": ["simprocs", "simproc", "simpliﬁcation procedures", "tactic"],
+    "kind": "term",
+    "definedIn": "p0106",
+    "definitions": {
+      "it-intermediate": "\"Simplification procedure\": un piccolo programma in Quantomatic che applica automaticamente regole di riscrittura secondo una strategia. Si combinano in sequenza o in ciclo; l'ottimizzatore del paper è una combinazione di simproc.",
+      "it-expert": "Tattiche combinabili (sequenza, REPEAT, liste di regole in ordine di priorità) costruite sui combinatori REWRITE, REWRITE_METRIC e REWRITE_TARGETED. Il nome inganna: non sono necessariamente semplificanti."
+    },
+    "related": ["quantomatic", "targeted-rewrite", "rewrite-rule"]
+  },
+  {
+    "id": "rewrite-rule",
+    "term": "regola di riscrittura",
+    "aliases": ["regole di riscrittura", "riscrittura", "riscritture", "rewrite", "regole derivate"],
+    "pdfTerms": ["rewrite rules", "rewrite rule", "rewrite", "derived rules"],
+    "kind": "term",
+    "definedIn": "p0105",
+    "definitions": {
+      "it-intermediate": "Un'uguaglianza tra due diagrammi usata in una direzione: dove si trova il pattern di sinistra, lo si sostituisce con quello di destra. Il paper deriva regole nuove, dette \"circuit-to-circuit\", che trasformano sempre circuiti in circuiti, perché gli assiomi ZX di solito producono grafi che non sono più circuiti.",
+      "it-expert": "Coppia di grafi con lo stesso bordo, applicata come match + sostituzione (double pushout). Le regole derivate dell'App. D sono tra termini circuit-like: Init (rimuove − e H), Always (strettamente riducenti), commutazione dei Pauli e C2."
+    },
+    "related": ["zx-rules", "circuit-like", "optimiser-phases"]
+  },
+  {
+    "id": "targeted-rewrite",
+    "term": "REWRITE_TARGETED",
+    "aliases": ["REWRITE_METRIC", "REWRITE", "targeting", "riscrittura mirata", "metrica"],
+    "pdfTerms": ["REWRITE_TARGETED", "REWRITE_METRIC", "REWRITE", "targeting"],
+    "kind": "term",
+    "definedIn": "p0108",
+    "definitions": {
+      "it-intermediate": "I tre modi di applicare una regola in Quantomatic: REWRITE (al primo punto trovato), REWRITE_METRIC (solo se una misura del grafo diminuisce) e REWRITE_TARGETED (nel punto scelto da una funzione di \"targeting\"). Servono a guidare il motore, che altrimenti sceglie a caso dove applicare le regole reversibili.",
+      "it-expert": "REWRITE_METRIC(r, m) accetta solo match che riducono m: ZX → ℕ; REWRITE_TARGETED(r, v, t) forza il match di v sul vertice scelto da t: ZX → Vert. Una metrica che favorisce Pauli vicini agli input e penalizza i non-circuiti rende gestibile la commutazione."
+    },
+    "related": ["simproc", "optimiser-phases", "quantomatic"]
+  },
+  {
+    "id": "cliff-prop",
+    "term": "PROP",
+    "aliases": ["Cliff", "†-PROP", "PROP libera"],
+    "pdfTerms": ["PROP", "Cliff"],
+    "kind": "term",
+    "definedIn": "p0027",
+    "definitions": {
+      "it-intermediate": "Una struttura matematica (dalla teoria delle categorie) per descrivere circuiti come diagrammi componibili in serie e in parallelo, con lo scambio di fili automaticamente incluso. \"Cliff\" è la PROP dei circuiti Clifford costruiti dai generatori: descrive la sintassi dei circuiti, senza nessuna equazione tra loro.",
+      "it-expert": "Categoria monoidale simmetrica stretta con oggetti ℕ; Cliff è la †-PROP libera sui generatori S, V, H, CNOT (con σ gratuito). Essendo libera non presenta il gruppo di Clifford: le equazioni vengono dallo ZX tramite il funtore T."
+    },
+    "related": ["translation-functor", "clifford"]
+  },
+  {
+    "id": "translation-functor",
+    "term": "funtore di traduzione",
+    "aliases": ["funtore", "funtore T"],
+    "pdfTerms": ["translation functor"],
+    "kind": "term",
+    "definedIn": "p0060",
+    "definitions": {
+      "it-intermediate": "La traduzione T da circuito Clifford a diagramma ZX: ogni porta diventa il suo piccolo diagramma (S → nodo verde +, V → nodo rosso +, H → H, CNOT → nodo verde collegato a uno rosso). La Proposizione 4.2 garantisce che la traduzione conservi il significato. \"Circuito\", nel paper, vuol dire \"diagramma nell'immagine di T\".",
+      "it-expert": "T: Cliff → ZX_s, con ⟦c⟧_C = ⟦T(c)⟧ (Prop. 4.2). I termini nell'immagine di T definiscono la classe dei circuiti su cui l'ottimizzatore deve restare; la Prop. 6.5 estende la classe ai diagrammi circuit-like."
+    },
+    "related": ["cliff-prop", "circuit-like", "zx-stabilizer"]
+  },
+  {
+    "id": "clifford-normal-forms",
+    "term": "C1",
+    "aliases": ["C2", "forme minimali standard", "forma minimale standard"],
+    "pdfTerms": ["C1", "C2", "standard minimal forms"],
+    "kind": "symbol",
+    "definedIn": "p0068",
+    "definitions": {
+      "it-intermediate": "I cataloghi di forme \"migliori possibili\": C1 contiene i 24 diagrammi minimi che rappresentano tutti i Clifford a 1 qubit (Figura 3), C2 gli 11520 per i Clifford a 2 qubit (Figura 4, struttura a sandwich). L'ottimizzatore riduce ogni circuito a 1 o 2 qubit esattamente a uno di questi.",
+      "it-expert": "C1: 24 line graph minimi (nessuno equivalente a un diagramma più piccolo, verificato per enumerazione). C2: 24²·(1+1+9+9) = 11520 forme (C1⊗C1)·A/B·CNOT… chiuse per composizione con i generatori (Prop. 4.7), e i casi della Prop. 4.7 diventano le regole C2."
+    },
+    "related": ["pauli-standard-form", "clifford", "optimiser-phases"]
+  },
+  {
+    "id": "pauli-standard-form",
+    "term": "forma Pauli-standard",
+    "aliases": ["Pauli-standard"],
+    "pdfTerms": ["Pauli-standard form", "Pauli standard form", "Pauli-standard"],
+    "kind": "term",
+    "definedIn": "p0076",
+    "definitions": {
+      "it-intermediate": "Una forma normalizzata per un diagramma a un qubit (una catena di nodi): i nodi si alternano verde/rosso, nessuno ha angolo 0, e ci sono al più due nodi Pauli (angolo π), messi subito dopo l'ingresso. Portare tutto in questa forma è il passo intermedio per ridurre qualsiasi Clifford a 1 qubit a uno dei 24 di C1.",
+      "it-expert": "Lemma 4.5: ogni line graph in ZX_s(1,1) è riscrivibile in forma alternata Z/X con label ≠ 0 e ≤ 2 Pauli in testa. È la base della prova costruttiva della Prop. 4.4 e della strategia \"sposta i Pauli verso gli input\" nell'ottimizzatore."
+    },
+    "related": ["clifford-normal-forms", "pauli", "line-graph"]
+  },
+  {
+    "id": "pauli",
+    "term": "Pauli",
+    "aliases": ["operatori Pauli", "vertici Pauli", "vertice Pauli", "nodi Pauli", "gruppo di Pauli"],
+    "pdfTerms": ["Pauli", "Paulis"],
+    "kind": "term",
+    "definedIn": "p0059",
+    "definitions": {
+      "it-intermediate": "Le porte X e Z (e Y); nei diagrammi sono nodi con angolo π. Nel paper hanno un ruolo speciale: si possono far \"scivolare\" attraverso altri nodi cambiando qualche segno (regola π-commute). L'ottimizzatore le spinge tutte verso gli ingressi del circuito, dove si raccolgono e si semplificano.",
+      "it-expert": "x = X(π), z = Z(π) (con x±, z± le fasi ±π/2). Il gruppo di Clifford è il normalizzatore di P_n; la fase di commutazione sposta i Pauli verso gli input via π-commute con REWRITE_METRIC."
+    },
+    "related": ["pauli-standard-form", "optimiser-phases", "clifford"]
+  },
+  {
+    "id": "line-graph",
+    "term": "grafo lineare",
+    "aliases": ["grafi lineari", "line graph"],
+    "pdfTerms": ["line graph", "line graphs"],
+    "kind": "term",
+    "definedIn": "p0072",
+    "definitions": {
+      "it-intermediate": "Un diagramma con un solo ingresso e una sola uscita in cui i nodi formano una catena, ciascuno con due collegamenti: è la forma di ogni circuito a un qubit tradotto in ZX.",
+      "it-expert": "Framed open graph 1→1 connesso con vertici tutti di grado 2. T(t) per t ∈ Cliff(1,1) è sempre un line graph (dopo H-euler), su cui opera il Lemma 4.5."
+    },
+    "related": ["pauli-standard-form", "open-graph"]
+  },
+  {
+    "id": "open-graph",
+    "term": "grafi aperti",
+    "aliases": ["grafo aperto", "open graph", "open graphs", "framed"],
+    "pdfTerms": ["open graphs", "open graph", "framed"],
+    "kind": "term",
+    "definedIn": "p0036",
+    "definitions": {
+      "it-intermediate": "La struttura dati con cui è formalizzato lo ZX-calculus: grafi che possono avere archi \"aperti\" verso l'esterno (gli ingressi e le uscite del circuito). \"Framed\" vuol dire che gli ingressi e le uscite hanno un ordine. Due diagrammi sono uguali se sono lo stesso grafo, a prescindere da come sono disegnati.",
+      "it-expert": "Grafi con archi chiusi, half-edge di input/output e archi circolari; framed = ordinamento dei bordi. Uguaglianza per isomorfismo di grafi etichettati framed (\"only topology matters\"), distinta da ∗↔ (derivabilità)."
+    },
+    "related": ["zx-calculus", "line-graph", "simple-diagram"]
+  },
+  {
+    "id": "simple-diagram",
+    "term": "diagramma semplice",
+    "aliases": ["diagrammi semplici", "simple"],
+    "pdfTerms": ["simple"],
+    "kind": "term",
+    "definedIn": "p0120",
+    "definitions": {
+      "it-intermediate": "Un diagramma \"ripulito\" (Def. 6.1): nessun arco doppio, nessun nodo collegato a uno dello stesso colore (si fonderebbero) e nessun nodo inutile con angolo 0 in mezzo a un filo. Ogni diagramma si può portare in questa forma (Lemma 6.2), ed è il punto di partenza per riconoscere se è un circuito.",
+      "it-expert": "Simple graph, niente vertici adiacenti dello stesso colore, label ≠ 0 sui vertici di grado 2. Si ottiene con H-euler, spider, hopf e identity (Lemma 6.2); prerequisito della definizione di circuit-like."
+    },
+    "related": ["circuit-like", "open-graph"]
+  },
+  {
+    "id": "causal-flow",
+    "term": "flusso causale",
+    "aliases": ["causal flow", "flow"],
+    "pdfTerms": ["causal ﬂow", "causal flow", "ﬂow"],
+    "kind": "term",
+    "definedIn": "p0125",
+    "definitions": {
+      "it-intermediate": "Una proprietà di un grafo presa dal calcolo quantistico basato su misure (modello \"one-way\"): un modo coerente di ordinare i nodi e indicare, per ciascuno, \"chi viene dopo\" lungo un filo. Se un diagramma ZX ha un flusso causale, i suoi archi si possono dividere in \"fili di qubit\" e \"interazioni\", e il diagramma si può rileggere come circuito.",
+      "it-expert": "(f, ≺) di Danos–Kashefi: f: I+V → V+O con v ∼ f(v), v ≺ f(v), e w ≺ v per ogni w ∼ f(v). Nel modello one-way garantisce il determinismo; qui la path cover indotta identifica i qubit, e gli archi fuori dalla cover diventano CNOT."
+    },
+    "related": ["circuit-like", "path-cover", "one-way-model"]
+  },
+  {
+    "id": "circuit-like",
+    "term": "circuit-like",
+    "aliases": [],
+    "pdfTerms": ["circuit-like"],
+    "kind": "term",
+    "definedIn": "p0128",
+    "definitions": {
+      "it-intermediate": "Un diagramma semplice con lo stesso numero di ingressi e uscite che ammette un flusso causale. La Proposizione 6.5 dice che ogni diagramma di questo tipo corrisponde davvero a un circuito, e l'ottimizzatore applica solo riscritture che mantengono questa proprietà.",
+      "it-expert": "Def. 6.4: simple, |I| = |O|, con causal flow. Prop. 6.5: ogni circuit-like è l'immagine di un circuito, estraibile via path cover. È il criterio (conservativo) che ogni regola applicata deve preservare."
+    },
+    "related": ["causal-flow", "simple-diagram", "translation-functor"]
+  },
+  {
+    "id": "path-cover",
+    "term": "copertura di cammini",
+    "aliases": ["path cover"],
+    "pdfTerms": ["path cover"],
+    "kind": "term",
+    "definedIn": "p0134",
+    "definitions": {
+      "it-intermediate": "L'insieme di cammini, dall'ingresso all'uscita, indicati dal flusso causale: ognuno è un qubit del circuito. Gli archi che non fanno parte di questi cammini collegano due qubit e diventano porte CNOT.",
+      "it-expert": "Path cover indotta da f: i cammini sono i fili dei qubit, gli archi fuori dalla cover sono CNOT o TONC. Va ricalcolata perché i functor sono stateless, con costo evitabile."
+    },
+    "related": ["causal-flow", "cnot"]
+  },
+  {
+    "id": "one-way-model",
+    "term": "modello one-way",
+    "aliases": ["one-way", "measurement-based"],
+    "pdfTerms": ["one-way model", "one-way", "measurement-based"],
+    "kind": "term",
+    "definedIn": "p0127",
+    "definitions": {
+      "it-intermediate": "Un modo alternativo di fare calcolo quantistico: si prepara uno stato molto intrecciato su un grafo e poi si misurano i qubit uno alla volta. Il concetto di flusso causale nasce lì, e il paper lo riusa per riconoscere quando un diagramma ZX è un circuito.",
+      "it-expert": "Measurement-based QC di Raussendorf–Briegel, dove il flow garantisce il determinismo delle correzioni. Qui è preso in prestito come criterio sintattico di estraibilità di un circuito."
+    },
+    "related": ["causal-flow"]
+  },
+  {
+    "id": "optimiser-phases",
+    "term": "semplificazione",
+    "aliases": ["fase di semplificazione", "commutazione", "fase di commutazione", "Init", "C2Proc"],
+    "pdfTerms": ["Simpliﬁcation", "Commutation", "Init", "Always Rules"],
+    "kind": "term",
+    "definedIn": "p0135",
+    "definitions": {
+      "it-intermediate": "L'ottimizzatore alterna due fasi. Semplificazione: applica ovunque regole che riducono sempre il diagramma. Commutazione: con regole reversibili guidate da targeting e metrica, sposta i Pauli verso gli ingressi e i CNOT in modo da far comparire nuove occasioni di semplificazione. Una fase iniziale riscrive H e rotazioni −π/2 in S, V e Pauli; una finale riordina le porte a un qubit.",
+      "it-expert": "Init (rimuove −, H), poi un ciclo di Always (strettamente riducenti, casi della Prop. 4.7) e Commutation (Pauli verso gli input via REWRITE_METRIC, CNOT/TONC via C2Proc con targeting), poi tidy-up. Riduce 1–2 qubit a C1/C2; su circuiti larghi non trova sempre il minimo e il tempo per passo cresce con la larghezza."
+    },
+    "related": ["targeted-rewrite", "clifford-normal-forms", "pauli"]
+  },
+  {
+    "id": "cnot",
+    "term": "CNOT",
+    "aliases": ["TONC", "CNOT/TONC"],
+    "pdfTerms": ["CNOT", "TONC"],
+    "kind": "term",
+    "definedIn": "p0186",
+    "definitions": {
+      "it-intermediate": "La porta controlled-NOT; in ZX è un nodo verde (controllo) collegato a un nodo rosso (target). TONC è la stessa porta con controllo e target invertiti (CNOT letto al contrario). Lo scambio di due qubit è CNOT·TONC·CNOT, e TONC si ottiene da CNOT con Hadamard, quindi basta la sola CNOT.",
+      "it-expert": "CNOT = Z-spider (controllo) – X-spider (target); SWAP = CNOT∘TONC∘CNOT via bialgebra e Hopf (non basta la struttura di gruppo); TONC = (H⊗H)∘CNOT∘(H⊗H) per colour duality. Lemma B.1: si può lavorare con la sola CNOT."
+    },
+    "related": ["path-cover", "zx-rules", "colour-change"]
+  },
+  {
+    "id": "scalar-free",
+    "term": "scalar-free",
+    "aliases": [],
+    "pdfTerms": ["scalar-free"],
+    "kind": "term",
+    "definedIn": "p0044",
+    "definitions": {
+      "it-intermediate": "Si ignorano i fattori numerici globali (le costanti moltiplicative) dei diagrammi, perché non cambiano il risultato fisico di un circuito. Semplifica molto le regole.",
+      "it-expert": "Quoziente per scalari non nulli, coerente con il reduced Clifford group (scalari ωᵏ, quindi il gruppo usuale è 8 volte più grande)."
+    },
+    "related": ["zx-calculus", "clifford"]
+  }
+]

@@ -1,0 +1,392 @@
+[
+  {
+    "id": "lazy-move",
+    "term": "lazy-move",
+    "aliases": ["principio lazy-move", "compilatore lazy-move"],
+    "pdfTerms": ["lazy-move", "Lazy-Move"],
+    "kind": "term",
+    "definedIn": "p0016",
+    "definitions": {
+      "it-intermediate": "Il principio guida del paper: \"muoviti solo se ne vale davvero la pena\". Invece di spostare gli atomi per ogni porta a due qubit, come fanno i compilatori attuali, si compila prima tutto il circuito con gli atomi fermi, facendo passare le interazioni attraverso atomi di supporto, e poi si aggiungono pochi spostamenti mirati solo dove migliorano la fedeltà complessiva.",
+      "it-expert": "Prima si compila uno schedule completamente statico sul fabric buffer-relay (BRIDGE-F), poi si introduce moto solo dove la condizione di break-even (Eq. 14) lo giustifica (BRIDGE-H). La mobilità diventa una risorsa limitata (budget K, soglia τ), non la primitiva di connettività."
+    },
+    "related": ["bridge", "buffer-relay-fabric", "break-even", "reconfiguration"]
+  },
+  {
+    "id": "bridge",
+    "term": "BRIDGE",
+    "aliases": ["BRIDGE-F", "BRIDGE-H"],
+    "pdfTerms": ["BRIDGE-F", "BRIDGE-H", "BRIDGE"],
+    "kind": "term",
+    "definedIn": "p0016",
+    "definitions": {
+      "it-intermediate": "Il compilatore proposto (Buffer-Relay Interconnect for Data-stable Gate Execution), in due varianti. BRIDGE-F (\"fixed\") tiene tutti gli atomi dato fermi e realizza ogni porta a lungo raggio con catene di atomi buffer. BRIDGE-H (\"hybrid\") parte da quella soluzione e aggiunge qualche spostamento fisico solo nei punti critici (hotspot), quando il guadagno supera il costo.",
+      "it-expert": "Front-end nativo → placement CBO mobility-aware con ML warm-start → BRIDGE-F (routing shortest-path su grafo dei buffer, prenotazione disgiunta dei buffer, serializzazione anti-crosstalk) → BRIDGE-H (profiling degli hotspot, lookahead, shuttle se Eq. 14 con budget K e soglia τ). Geomean ~16× di fedeltà su Enola e ~10× su ZAP."
+    },
+    "related": ["lazy-move", "buffer-relay-fabric", "cbo-placement", "hotspot"]
+  },
+  {
+    "id": "buffer-relay-fabric",
+    "term": "fabric buffer-relay",
+    "aliases": ["buffer-relay", "fabric", "fabric statico", "fabric buffer-relay statico"],
+    "pdfTerms": ["buffer-relay fabric", "buffer-relay", "fabric"],
+    "kind": "term",
+    "definedIn": "p0013",
+    "definitions": {
+      "it-intermediate": "L'\"infrastruttura di collegamento\" fissa del processore: una griglia regolare di atomi buffer disposta attorno agli atomi dato, attraverso cui qualunque coppia di qubit può interagire \"passandosi\" il segnale da buffer a buffer. È l'analogo delle piste di un circuito stampato: un costo fisso una volta sola, invece di muovere atomi a ogni porta.",
+      "it-expert": "Reticolo statico di buffer Cs a passo 8 μm con data Rb ai centroidi (staggered), che soddisfa le tre disuguaglianze di canale (Eq. 6). Presenta al compilatore un grafo di relay regolare e prevedibile; il suo costo è statico e one-time (Tab. IV), contro il costo di trasporto per-gate della riconfigurazione."
+    },
+    "related": ["buffer-atom", "bam-gate", "staggered-arrangement", "relay-chain"]
+  },
+  {
+    "id": "buffer-atom",
+    "term": "atomi buffer",
+    "aliases": ["atomo buffer", "buffer", "buffer Cs", "atomi buffer Cs"],
+    "pdfTerms": ["buffer atoms", "buffer atom", "buffers", "buffer"],
+    "kind": "term",
+    "definedIn": "p0029",
+    "definitions": {
+      "it-intermediate": "Atomi che non contengono dati del calcolo ma servono da \"ripetitori\": stanno tra gli atomi dato e trasmettono l'interazione da uno all'altro. Sono di una specie diversa (cesio) dagli atomi dato (rubidio), così si possono pilotare, misurare e resettare senza disturbare i qubit veri.",
+      "it-expert": "Mediatori non codificanti (133Cs) indirizzabili in modo specie-selettivo. Restano in |B0⟩ a fine gate grazie all'uncomputation ORMD coerente; leakage e reset residui sono già assorbiti in F_relay (nessun double counting)."
+    },
+    "related": ["data-atom", "bam-gate", "dual-species"]
+  },
+  {
+    "id": "data-atom",
+    "term": "atomi dato",
+    "aliases": ["atomo dato", "qubit dato", "atomi dato Rb"],
+    "pdfTerms": ["data atoms", "data atom", "data qubit", "data qubits"],
+    "kind": "term",
+    "definedIn": "p0008",
+    "definitions": {
+      "it-intermediate": "Gli atomi (rubidio) che portano i qubit del calcolo. In BRIDGE-F non si muovono mai: questo evita il riscaldamento e gli errori di trasferimento tipici dello spostamento fisico.",
+      "it-expert": "87Rb in livelli iperfini a lunga vita, stazionari in BRIDGE-F. Spaziatura data–data 8 μm, con blockade Rb–Rb soppresso (≲5 μm), quindi nessuna interazione diretta tra dati: ogni CZ passa per il fabric."
+    },
+    "related": ["buffer-atom", "dual-species"]
+  },
+  {
+    "id": "bam-gate",
+    "term": "gate BAM",
+    "aliases": ["BAM", "gate BAM remoti", "buffer-atom-mediated"],
+    "pdfTerms": ["BAM", "buffer-atom-mediated", "Buffer-atom-mediated"],
+    "kind": "term",
+    "definedIn": "p0029",
+    "definitions": {
+      "it-intermediate": "Buffer-Atom-Mediated gate: una porta a due qubit tra atomi dato lontani, realizzata facendo passare l'interazione attraverso uno o più atomi buffer in mezzo con una sequenza coordinata di impulsi laser. I buffer tornano allo stato iniziale alla fine. È il meccanismo che rende possibile il fabric.",
+      "it-expert": "Da [6]: sequenza coordinata di impulsi ORMD sui buffer che realizza una CZ tra endpoint oltre R_b. Generalizzata qui a relay multi-hop di lunghezza L: F_BAM = F_relay^{2L−1}, T_BAM ≈ (2L−1)τ_p (Eq. 3–4); condizione di fase ϕ₁₁−ϕ₁₀−ϕ₀₁+ϕ₀₀ = π (Eq. 5)."
+    },
+    "related": ["relay-chain", "ormd-pulse", "rydberg-blockade", "buffer-atom"]
+  },
+  {
+    "id": "relay-chain",
+    "term": "lunghezza del relay",
+    "aliases": ["lunghezza di relay", "lunghezza media di relay", "catena di relay", "catene di relay", "relay multi-hop", "impulsi di relay", "Frelay", "F_relay"],
+    "pdfTerms": ["relay length", "relay chain", "relay chains", "relay pulses", "multi-hop"],
+    "kind": "term",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-intermediate": "Quanti buffer intermedi deve attraversare un'interazione (L). Ogni passo richiede impulsi laser, ciascuno con una piccola probabilità di errore (fedeltà F_relay ≈ 0.997), quindi la fedeltà della porta decade esponenzialmente con L e il tempo cresce linearmente. Accorciare i relay è la leva principale di tutto il compilatore.",
+      "it-expert": "L = numero di buffer intermedi; 2L−1 impulsi ORMD. F = F_relay^{2L−1}: il termine di lunghezza domina il modello moltiplicativo, per cui placement CBO e routing mirano al relay medio minimo. Esempio: qft_n29 con ~7 hop medi va in underflow di fedeltà."
+    },
+    "related": ["bam-gate", "ormd-pulse", "cbo-placement", "break-even"]
+  },
+  {
+    "id": "ormd-pulse",
+    "term": "ORMD",
+    "aliases": ["impulsi ORMD", "impulso ORMD"],
+    "pdfTerms": ["ORMD"],
+    "kind": "acronym",
+    "definedIn": "p0030",
+    "definitions": {
+      "it-intermediate": "Off-Resonant Modulated Driving: il tipo di impulso laser, modulato e fuori risonanza, che realizza ogni passo del relay. Ha una durata τp di 0.1–1 μs e una fedeltà F_relay per impulso.",
+      "it-expert": "Off-resonant modulated driving: impulso di relay con durata τ_p ~ 0.1–1 μs per n≈70 e fedeltà F_relay. L'uncomputation ORMD coerente riporta i mediatori in |B0⟩ e sopprime la memoria cross-stage dei buffer."
+    },
+    "related": ["relay-chain", "bam-gate"]
+  },
+  {
+    "id": "rydberg-blockade",
+    "term": "blocco di Rydberg",
+    "aliases": ["blocco Rydberg", "raggio di blocco", "raggi di blocco", "blocco", "blockade", "Rydberg blockade"],
+    "pdfTerms": ["Rydberg blockade", "blockade radius", "blockade radii", "blockade"],
+    "kind": "term",
+    "definedIn": "p0023",
+    "definitions": {
+      "it-intermediate": "Il meccanismo fisico delle porte a due qubit negli atomi neutri: se un atomo è eccitato nello stato di Rydberg, un altro atomo abbastanza vicino (entro il \"raggio di blocco\" R_b) non può eccitarsi. Da qui nasce la porta CZ. L'interazione cala come 1/R⁶, quindi oltre R_b due atomi praticamente non interagiscono: è il limite di connettività che il fabric aggira.",
+      "it-expert": "V(R) = C₆/R⁶ sposta |rr⟩ fuori risonanza per R < R_b, e da qui la CZ nativa. La caduta ripida limita la connettività a vicini stretti. Con tre canali a raggi distinti (Rb–Cs ≈ 9–10 μm > d_DB, Cs–Cs > d_BB, Rb–Rb ≲ 5 μm < d_DD) si ottiene data–buffer e buffer–buffer ma non data–data."
+    },
+    "related": ["bam-gate", "forster-resonance", "dual-species"]
+  },
+  {
+    "id": "dual-species",
+    "term": "doppia specie",
+    "aliases": ["a doppia specie", "dual-species", "substrato a doppia specie", "array a doppia specie"],
+    "pdfTerms": ["dual-species", "Dual-Species", "dual species"],
+    "kind": "term",
+    "definedIn": "p0008",
+    "definitions": {
+      "it-intermediate": "Array con due tipi di atomi: rubidio (Rb) per i dati e cesio (Cs) per i buffer. Poiché rispondono a frequenze laser diverse, si può agire sui buffer senza toccare i dati, e le distanze di interazione si possono regolare separatamente per ogni coppia di specie. È il \"substrato\" che rende possibile il fabric.",
+      "it-expert": "87Rb (data) + 133Cs (buffer): indirizzamento specie-selettivo (un drive Cs perturba trascurabilmente Rb) e raggi di blockade specie-dipendenti via risonanze di Förster eteronucleari. Fornisce la struttura di controllo che permette al relay di operare su un fabric stazionario."
+    },
+    "related": ["species-selective", "forster-resonance", "buffer-atom", "data-atom"]
+  },
+  {
+    "id": "species-selective",
+    "term": "indirizzamento selettivo per specie",
+    "aliases": ["selettivo per specie", "specie-selettivo", "specie-selettiva", "indirizzamento specie-selettivo"],
+    "pdfTerms": ["species-selective", "Species-selective"],
+    "kind": "term",
+    "definedIn": "p0035",
+    "definitions": {
+      "it-intermediate": "La possibilità di colpire con il laser solo gli atomi di una specie: un impulso tarato sul cesio non disturba il rubidio. Così i buffer si possono pilotare, misurare e resettare proprio accanto ai dati senza rovinarli.",
+      "it-expert": "Drive sulla transizione di Rydberg del Cs con perturbazione trascurabile sul 87Rb. Abilita drive, misura e reset dei buffer in situ e rende sicuro il relay su un fabric stazionario."
+    },
+    "related": ["dual-species", "buffer-atom"]
+  },
+  {
+    "id": "forster-resonance",
+    "term": "risonanze di Förster",
+    "aliases": ["risonanza di Förster", "Förster"],
+    "pdfTerms": ["Förster", "F¨orster"],
+    "kind": "term",
+    "definedIn": "p0045",
+    "definitions": {
+      "it-intermediate": "Un effetto fisico che si può sfruttare scegliendo bene gli stati di Rydberg: rafforza l'interazione tra rubidio e cesio e indebolisce quella tra due rubidi. Così i dati parlano coi buffer ma non direttamente tra loro, come serve alla geometria del fabric.",
+      "it-expert": "Risonanze eteronucleari Rb–Cs che amplificano l'accoppiamento interspecie e sopprimono quello intraspecie Rb–Rb, da cui i tre canali a raggi distinti richiesti dall'Eq. 6."
+    },
+    "related": ["rydberg-blockade", "dual-species", "staggered-arrangement"]
+  },
+  {
+    "id": "staggered-arrangement",
+    "term": "arrangiamento staggered",
+    "aliases": ["staggered", "a scacchiera", "arrangiamento a scacchiera", "arrangiamento geometrico staggered"],
+    "pdfTerms": ["staggered", "Staggered"],
+    "kind": "term",
+    "definedIn": "p0044",
+    "definitions": {
+      "it-intermediate": "La disposizione geometrica del fabric: i buffer di cesio formano una griglia quadrata con passo 8 μm, e ogni atomo dato sta al centro di un quadratino di 4 buffer (a 5.66 μm da ciascuno). Ogni dato ha così esattamente quattro buffer vicini e la struttura è uniforme ovunque, cosa che rende il routing prevedibile.",
+      "it-expert": "Cs su reticolo quadrato con d_BB = 8.0 μm, Rb ai centroidi 2×2, d_DB = √2·4 = 5.66 μm e d_DD = 8.0 μm (Eq. 7). Soddisfa tutte le disuguaglianze di canale; uniforme (4 buffer per dato) e regolare, quindi il grafo di relay è efficientemente instradabile."
+    },
+    "related": ["buffer-relay-fabric", "rydberg-blockade"]
+  },
+  {
+    "id": "cbo-placement",
+    "term": "CBO",
+    "aliases": ["Consensus-Based Optimization", "placement CBO", "placement mobility-aware", "mobility-aware"],
+    "pdfTerms": ["CBO", "Consensus-Based Optimization", "mobility-aware"],
+    "kind": "term",
+    "definedIn": "p0066",
+    "definitions": {
+      "it-intermediate": "Il metodo di ottimizzazione usato per decidere dove mettere ogni qubit sulla griglia (placement). Una \"popolazione\" di soluzioni candidate si muove verso un consenso pesato sulle migliori. L'obiettivo è mettere vicini i qubit che interagiscono molto (relay corti), rispettando le distanze minime e riservando spazio per eventuali spostamenti futuri (mobility-aware).",
+      "it-expert": "Consensus-Based Optimization su Eq. 9: costo di relay pesato per interazione più penalità soft di spaziatura λ_xt·Φ_xt, con siti riservati per il budget K (Alg. 1). Le ablation (Fig. 17) mostrano che sostituirlo con row-major raddoppia circa il relay medio: è la decisione a maggior leva per un array fisso."
+    },
+    "related": ["ml-warm-start", "relay-chain", "move-budget"]
+  },
+  {
+    "id": "ml-warm-start",
+    "term": "warm-start",
+    "aliases": ["ML warm-start", "warm-start ML"],
+    "pdfTerms": ["warm-start", "Warm-start"],
+    "kind": "term",
+    "definedIn": "p0072",
+    "definitions": {
+      "it-intermediate": "Un piccolo modello di machine learning che propone un buon posizionamento iniziale, da cui il CBO parte invece che da soluzioni casuali. È addestrato da solo (self-supervised) su posizionamenti casuali valutati per \"utilità geometrica\", e rende il placement più veloce e migliore sui circuiti grandi.",
+      "it-expert": "Modello self-supervised addestrato su placement legali casuali etichettati con utilità geometrica pesata per interazione, usato come seed della popolazione CBO. In Fig. 16 migliora fedeltà e tempo (es. qaoa_n6: 0.984/195 μs → 0.996/108 μs) a costo di tempo di mapping."
+    },
+    "related": ["cbo-placement"]
+  },
+  {
+    "id": "hotspot",
+    "term": "hotspot",
+    "aliases": ["hotspot strutturali"],
+    "pdfTerms": ["hotspots", "hotspot"],
+    "kind": "term",
+    "definedIn": "p0071",
+    "definitions": {
+      "it-intermediate": "I punti critici dello schedule statico: catene di relay molto lunghe, zone di buffer congestionate, interazioni che ritardano molte porte successive. BRIDGE-F li registra durante lo scheduling e BRIDGE-H considera spostamenti fisici solo per questi.",
+      "it-expert": "Profilo estratto in scheduling BRIDGE-F (relay lunghi, congestione di buffer, blocchi ripetuti). BRIDGE-H valuta candidati di shuttle solo sugli hotspot, con finestra di lookahead e somma di ΔL sui gate futuri."
+    },
+    "related": ["bridge", "break-even", "temporal-locality"]
+  },
+  {
+    "id": "break-even",
+    "term": "break-even",
+    "aliases": ["condizione di break-even", "punto di break-even"],
+    "pdfTerms": ["break-even"],
+    "kind": "term",
+    "definedIn": "p0092",
+    "definitions": {
+      "it-intermediate": "La regola con cui BRIDGE-H decide se spostare un atomo: lo sposta solo se l'errore dello spostamento (E_shuttle) è minore dell'errore risparmiato accorciando i relay delle porte future. Moltiplicata per il fattore τ, permette di essere più prudenti (τ<1) o più aggressivi (τ>1).",
+      "it-expert": "Eq. 14: E_shuttle < τ·(1 − F_relay^{2Σᵢ(L_static⁽ⁱ⁾ − L_move⁽ⁱ⁾)}) sui gate futuri nella finestra. Con τ=1 è il break-even fisico esatto del modello moltiplicativo. Trasforma il moto da primitiva di routing a meccanismo mirato di risoluzione dei phase shift."
+    },
+    "related": ["tau-aggressiveness", "shuttle-infidelity", "move-budget", "relay-chain"]
+  },
+  {
+    "id": "tau-aggressiveness",
+    "term": "aggressività",
+    "aliases": ["manopola di aggressività", "soglia/aggressività"],
+    "pdfTerms": ["aggressiveness", "Aggressiveness"],
+    "kind": "term",
+    "definedIn": "p0093",
+    "definitions": {
+      "it-intermediate": "Il parametro τ che regola quanto facilmente BRIDGE-H approva uno spostamento. τ = 1 è il pareggio esatto; valori minori sono prudenti (meno spostamenti), maggiori sono aggressivi. Negli esperimenti la fedeltà media resta quasi invariata per i circuiti standard: la mobilità aiuta solo quelli con \"cambi di fase\" marcati come la QFT.",
+      "it-expert": "τ scala il lato destro dell'Eq. 14. Lo sweep τ ∈ {0 … 5} (RQ2) mostra la mobilità fedeltà-neutra sulla mediana della suite; solo qft_n18 è robustamente responsivo (+23% a τ=1, +38% a τ=0.75). Meccanismo self-disabling e no-regret."
+    },
+    "related": ["break-even", "move-budget"]
+  },
+  {
+    "id": "move-budget",
+    "term": "budget di mobilità",
+    "aliases": ["budget di movimento", "budget K", "budget"],
+    "pdfTerms": ["mobility budget", "move budget"],
+    "kind": "term",
+    "definedIn": "p0059",
+    "definitions": {
+      "it-intermediate": "Il numero massimo K di spostamenti fisici che BRIDGE-H può usare. Gli esperimenti mostrano rendimenti molto decrescenti: circa 30 spostamenti catturano tutto il beneficio (tempo medio da 826 a 518 μs), e oltre non serve.",
+      "it-expert": "K limita gli shuttle approvati (mosse realizzate = min(K, #qualificanti)) ed entra già nel placement come siti riservati. RQ3: saturazione a ≈30 mosse per K ≥ 256, −37% di tempo con fedeltà 0.991–0.993."
+    },
+    "related": ["tau-aggressiveness", "break-even", "cbo-placement"]
+  },
+  {
+    "id": "shuttle-infidelity",
+    "term": "Eshuttle",
+    "aliases": ["infedeltà di shuttle", "shuttle", "shuttling", "shuttling AOD"],
+    "pdfTerms": ["Eshuttle", "shuttle", "shuttling", "shuttles"],
+    "kind": "term",
+    "definedIn": "p0081",
+    "definitions": {
+      "it-intermediate": "L'errore causato dallo spostare fisicamente un atomo dato (Eq. 11): il riscaldamento del moto, il decadimento durante il tempo di viaggio e soprattutto i due passaggi tra trappola fissa e mobile (handover), che da soli valgono circa 1.4%. Un salto breve costa circa 33 μs e 1.5% di infedeltà.",
+      "it-expert": "E_shuttle(d,T) ≈ κ·n̄(d,T)·(1 − e^{−T/T₂}) + E₀, con E₀ = 1 − F_ho² ≈ 0.014 come pavimento di handover e T_move = 2t_ho + 2√(d/a). Un hop di 8 μm richiede ≈33 μs ed ≈0.015 di infedeltà; il pavimento domina, per cui conta muovere poche volte."
+    },
+    "related": ["handover", "motional-heating", "break-even"]
+  },
+  {
+    "id": "handover",
+    "term": "handover",
+    "aliases": ["trasferimento SLM-AOD", "trasferimenti di trappola"],
+    "pdfTerms": ["handover", "handoff", "trap-handover"],
+    "kind": "term",
+    "definedIn": "p0084",
+    "definitions": {
+      "it-intermediate": "Il passaggio di un atomo dalla trappola fissa (SLM) a quella mobile (AOD) e ritorno. Ogni spostamento ne richiede due, e ognuno ha una probabilità di errore non trascurabile: è la parte più costosa di un piccolo spostamento, e il motivo per cui i compilatori che muovono atomi a ogni porta accumulano tanti errori.",
+      "it-expert": "F_ho per singolo handover; due per shuttle, da cui il floor E₀ = 1 − F_ho². I compilatori reconfiguration-centric ne pagano migliaia sulla suite RQ4 (Fig. 11), BRIDGE-F zero."
+    },
+    "related": ["shuttle-infidelity", "reconfiguration"]
+  },
+  {
+    "id": "motional-heating",
+    "term": "riscaldamento del moto",
+    "aliases": ["riscaldamento", "heating", "eccitazione vibrazionale"],
+    "pdfTerms": ["motional heating", "heating", "vibrational excitation"],
+    "kind": "term",
+    "definedIn": "p0079",
+    "definitions": {
+      "it-intermediate": "Quando si sposta un atomo, lo si \"scuote\" un po': aumenta la sua energia di vibrazione nella trappola. Un atomo più \"caldo\" rende meno precise le porte successive. Cresce con la distanza e con la velocità dello spostamento.",
+      "it-expert": "n̄(d,T_move) ∝ (m/2ℏω_t)·S̃(ω_t T_move)·d²/T_move² (Eq. 10), dove S̃ è il peso di Fourier del profilo di traiettoria; convertito in infedeltà dal fattore κ nell'Eq. 11."
+    },
+    "related": ["shuttle-infidelity"]
+  },
+  {
+    "id": "temporal-locality",
+    "term": "località temporale",
+    "aliases": ["temporal locality", "cambi di fase", "phase shift"],
+    "pdfTerms": ["temporal locality", "phase shifts", "phase shift"],
+    "kind": "term",
+    "definedIn": "p0075",
+    "definitions": {
+      "it-intermediate": "Il fatto che in molti circuiti un qubit interagisce prima intensamente con un gruppo di vicini, poi (in una \"fase\" successiva) con un gruppo completamente diverso. Un posizionamento fisso può essere ottimo per una fase e pessimo per l'altra; spostare quel qubit una volta tra le due fasi è proprio il caso in cui la mobilità conviene (Fig. 6, es. QPE).",
+      "it-expert": "Disparità tra località spaziale (ottimizzata dal placement statico, aggregata sull'intero circuito) e temporale (cambi del vicinato d'interazione tra fasi). BRIDGE-H mira ai phase shift; circuiti con interazioni uniformemente sparse non guadagnano nulla."
+    },
+    "related": ["hotspot", "break-even", "bridge"]
+  },
+  {
+    "id": "crosstalk",
+    "term": "crosstalk",
+    "aliases": ["crosstalk tra catene"],
+    "pdfTerms": ["crosstalk"],
+    "kind": "term",
+    "definedIn": "p0067",
+    "definitions": {
+      "it-intermediate": "Interferenza indesiderata tra operazioni vicine eseguite insieme. Per prudenza BRIDGE-F esegue in sequenza le porte a lungo raggio concorrenti; con hardware futuro si potrebbero parallelizzare 2–3 catene disgiunte recuperando fino a circa 1.8× di velocità (RQ5).",
+      "it-expert": "Interferenza inter-catena tra relay co-schedulati, cresce con il numero di coppie concorrenti. BRIDGE-F serializza i BAM long-range; RQ5 mostra che un cap di 2–3 catene disgiunte cattura ~1.5–1.8× di speedup senza la perdita di fedeltà del parallelismo illimitato."
+    },
+    "related": ["disjoint-relay", "bridge"]
+  },
+  {
+    "id": "disjoint-relay",
+    "term": "buffer disgiunti",
+    "aliases": ["catene di relay disgiunte", "relay disgiunti", "parallelismo di relay disgiunti", "disjoint-buffer"],
+    "pdfTerms": ["disjoint-buffer", "disjoint relay", "disjoint"],
+    "kind": "term",
+    "definedIn": "p0014",
+    "definitions": {
+      "it-intermediate": "Due porte possono usare il fabric nello stesso momento solo se passano da buffer diversi. Lo scheduler di BRIDGE-F prenota i buffer per ogni porta e ne evita i conflitti; il numero di catene contemporanee (\"cap\") è il parametro studiato in RQ5.",
+      "it-expert": "Prenotazione di percorsi buffer-disgiunti con scheduling non-crossing; complementare all'accorciamento del relay (ablation). Il cap di concorrenza bilancia speedup e crosstalk (Fig. 12)."
+    },
+    "related": ["crosstalk", "relay-chain"]
+  },
+  {
+    "id": "reconfiguration",
+    "term": "riconfigurazione",
+    "aliases": ["reconfiguration-centric", "compilatori reconfiguration-centric", "array riconfigurabili"],
+    "pdfTerms": ["reconfiguration-centric", "Reconfiguration", "reconfiguration", "reconfigurable"],
+    "kind": "term",
+    "definedIn": "p0007",
+    "definitions": {
+      "it-intermediate": "L'approccio dominante dei compilatori attuali (come Enola e ZAP): spostare fisicamente gli atomi ogni volta che due qubit devono interagire. Funziona, ma ogni spostamento costa tempo e fedeltà (riscaldamento, handover), e questi costi si accumulano con la profondità del circuito. BRIDGE propone l'alternativa opposta.",
+      "it-expert": "Connettività via moto AOD per-gate: registro solo-dato ma costo di trasporto dinamico che cresce col circuito (migliaia di handover sulla suite RQ4). BRIDGE sposta il costo su un substrato statico (Tab. IV); il confronto è tra punti di co-design, non tra euristiche."
+    },
+    "related": ["lazy-move", "handover", "enola", "zac-zap"]
+  },
+  {
+    "id": "enola",
+    "term": "Enola",
+    "aliases": [],
+    "pdfTerms": ["Enola"],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Uno dei compilatori per atomi neutri \"a riconfigurazione\" usati come confronto. Rivalutato con lo stesso modello di errore, ha una fedeltà media geometrica circa 16 volte più bassa di BRIDGE-F sui 22 circuiti.",
+      "it-expert": "Baseline reconfiguration-centric; sulla suite RQ4 BRIDGE-F ha geomean 0.627 di fedeltà contro 0.060 (ZAP) e un valore ancora inferiore per Enola, ~16× di distacco."
+    },
+    "related": ["zac-zap", "reconfiguration"]
+  },
+  {
+    "id": "zac-zap",
+    "term": "ZAP",
+    "aliases": ["ZAC"],
+    "pdfTerms": ["ZAP", "ZAC"],
+    "kind": "term",
+    "definedIn": "p0019",
+    "definitions": {
+      "it-intermediate": "Compilatori per architetture a zone (ZAC, ZAP) che spostano gli atomi tra zona di memoria e zona di entanglement. ZAP è il secondo baseline principale: BRIDGE-F lo supera di circa 10 volte in fedeltà media, senza nessuno spostamento di atomi.",
+      "it-expert": "Compilatori zoned reconfiguration-centric; ZAP è il baseline RQ4 insieme a Enola (BRIDGE-F geomean 0.627 contro 0.060, ~10×)."
+    },
+    "related": ["enola", "reconfiguration"]
+  },
+  {
+    "id": "static-naive",
+    "term": "Static-Naive",
+    "aliases": ["row-major"],
+    "pdfTerms": ["Static-Naive", "row-major"],
+    "kind": "term",
+    "definedIn": "p0171",
+    "definitions": {
+      "it-intermediate": "Una versione volutamente semplice di compilatore ad atomi fermi, sullo stesso hardware di BRIDGE, ma con posizionamento ingenuo (qubit messi in fila, \"row-major\") e routing base. Serve a mostrare quanto del guadagno dipende dalle scelte furbe di BRIDGE-F e non solo dall'hardware.",
+      "it-expert": "Ablation a pari substrato ed error model BAM, con placement row-major e passaggi naive. Il relay medio raddoppia circa, e quasi tutto il divario con BRIDGE-F è spiegato dal placement (Fig. 15–17)."
+    },
+    "related": ["cbo-placement", "relay-chain"]
+  },
+  {
+    "id": "benchmarks",
+    "term": "QASMBench",
+    "aliases": ["VeriQBench", "QASMBench+VeriQBench"],
+    "pdfTerms": ["QASMBench", "VeriQBench"],
+    "kind": "term",
+    "definedIn": "p0098",
+    "definitions": {
+      "it-intermediate": "Le due raccolte pubbliche di circuiti di test usate. QASMBench copre algoritmi piccoli, medi e grandi; VeriQBench aggiunge circuiti variazionali e combinatori. Usare suite esterne evita di scegliere benchmark favorevoli.",
+      "it-expert": "Suite OpenQASM esterne con categorie predefinite (Tab. I): QASMBench small/med/large, VeriQBench variational/comb. Più una suite sintetica per scaling e ablation."
+    },
+    "related": ["bridge"]
+  }
+]
