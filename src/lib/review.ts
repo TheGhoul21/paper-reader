@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 // reading (a glossary concept, or a paragraph marked as unclear) and live only in this browser's
 // localStorage, like annotations — per device, not part of papers/.
 
-export type CardKind = "concept" | "paragraph";
+export type CardKind = "concept" | "paragraph" | "question";
 
 export interface ReviewCard {
   id: string; // `${slug}:${kind}:${refId}`
   kind: CardKind;
   slug: string;
-  /** Concept id or paragraph id. */
+  /** Concept id, paragraph id, or `<paragraphId>#<questionId>` for a recall question. */
   refId: string;
   /** The explanation variant being read when the card was added — the answer is shown in it. */
   variant: string;
@@ -26,8 +26,11 @@ export interface ReviewCard {
 
 export type Grade = "again" | "hard" | "good" | "easy";
 
-const STORAGE_KEY = "paper-reader:review";
-const CHANGE_EVENT = "paper-reader:review-changed";
+export const REVIEW_STORAGE_KEY = "paper-reader:review";
+/** Fired on window whenever the deck changes in this tab (the storage event only reaches other tabs). */
+export const REVIEW_CHANGED_EVENT = "paper-reader:review-changed";
+const STORAGE_KEY = REVIEW_STORAGE_KEY;
+const CHANGE_EVENT = REVIEW_CHANGED_EVENT;
 const DAY = 24 * 60 * 60 * 1000;
 const RELEARN_DELAY = 10 * 60 * 1000; // a forgotten card comes back in the same session
 const HARD_FIRST_DELAY = 6 * 60 * 60 * 1000; // "hard" on a card not yet learned: later today, not tomorrow
@@ -134,27 +137,39 @@ export function useReview() {
     setCards(next);
   }, []);
 
-  const addCard = useCallback(
-    (slug: string, kind: CardKind, refId: string, variant: string) => {
-      const id = cardId(slug, kind, refId);
+  /** Adds cards (skipping ones already in the deck, which keep their schedule). */
+  const addCards = useCallback(
+    (items: { slug: string; kind: CardKind; refId: string; variant: string }[]) => {
       update((prev) => {
-        if (prev[id]) return prev;
+        const next = { ...prev };
         const now = new Date().toISOString();
-        // Due immediately: the first review is the first recall attempt.
-        return { ...prev, [id]: { id, kind, slug, refId, variant, addedAt: now, due: now, interval: 0, ease: 2.5, reps: 0, lapses: 0 } };
+        for (const { slug, kind, refId, variant } of items) {
+          const id = cardId(slug, kind, refId);
+          // Due immediately: the first review is the first recall attempt.
+          if (!next[id]) next[id] = { id, kind, slug, refId, variant, addedAt: now, due: now, interval: 0, ease: 2.5, reps: 0, lapses: 0 };
+        }
+        return next;
       });
     },
     [update],
   );
 
-  const removeCard = useCallback(
-    (id: string) =>
+  const addCard = useCallback(
+    (slug: string, kind: CardKind, refId: string, variant: string) => addCards([{ slug, kind, refId, variant }]),
+    [addCards],
+  );
+
+  const removeCards = useCallback(
+    (ids: string[]) =>
       update((prev) => {
-        const { [id]: _removed, ...rest } = prev;
-        return rest;
+        const next = { ...prev };
+        for (const id of ids) delete next[id];
+        return next;
       }),
     [update],
   );
+
+  const removeCard = useCallback((id: string) => removeCards([id]), [removeCards]);
 
   const gradeCard = useCallback(
     (id: string, grade: Grade) =>
@@ -162,5 +177,5 @@ export function useReview() {
     [update],
   );
 
-  return { cards, addCard, removeCard, gradeCard };
+  return { cards, addCard, addCards, removeCard, removeCards, gradeCard };
 }

@@ -1480,3 +1480,61 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Recall questions: summary bar at the top of the notes pane, hint on the active note. */
+.recall-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  font-size: 0.8rem;
+}
+
+.recall-summary a.explanation-ask-btn {
+  text-decoration: none;
+}
+
+.explanation-note p.recall-hint {
+  color: var(--accent);
+  font-size: 0.74rem;
+}
+
+.review-filter {
+  margin-left: 12px;
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.review-filter:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.review-backup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.review-backup-message {
+  flex-basis: 100%;
+  color: var(--fg);
+}

@@ -132,6 +132,25 @@ Finally regenerate the library-wide index (the build also does this, but dev rea
 npm run concepts-index
 ```
 
+## 4c. Write recall questions (`recall`)
+
+Add a `recall` array to the paragraphs that carry the paper's argument — its claims, key definitions, mechanisms, headline results and their conditions; roughly one paragraph in six to eight, 15–25 questions for a typical paper. The reader reviews them with spaced repetition (`/review`): a reader who marks such a paragraph "Da ripassare" gets these questions instead of a generic "explain paragraph N".
+
+```json
+"recall": [
+  { "id": "r1",
+    "q": { "it-intermediate": "Perché …?", "it-expert": "Quale trade-off …?" },
+    "a": { "it-intermediate": "…", "it-expert": "…" } }
+]
+```
+
+- One question per idea, answerable from *this* paragraph (the answer view links back to it). Ask for the why/how and the numbers that matter, not for recall of wording; avoid yes/no.
+- Same level discipline as explanations: intermediate asks for the mechanism in plain terms, expert for the precise statement, conditions, trade-offs and figures. Answers are 1–3 sentences.
+- `id` is unique within the paragraph (`r1`, `r2`, …) — card ids depend on it, so don't renumber existing questions.
+- `check_alignment.py` validates them (unique ids, question and answer for every variant).
+
+For an already-imported paper, the same can be added on its own: read `paragraphs.json`, add `recall` to the chosen paragraphs, run the checker. Nothing else changes.
+
 ## 5. Write meta.json and update the library index
 
 `papers/<slug>/meta.json`:

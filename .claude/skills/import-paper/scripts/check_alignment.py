@@ -7,6 +7,9 @@
 # sourceText — numbers, equation/figure references, symbols, capitalised names — and reports where
 # a neighbour (offset -2..+2) matches clearly better than the paragraph itself. Isolated hits are
 # noise; a run of 3+ consecutive paragraphs with the same offset is a real drift. Exit code 1 if any.
+#
+# Also validates `recall` questions: ids unique within a paragraph, question and answer present
+# for every variant.
 import json, re, sys, unicodedata
 from collections import Counter
 
@@ -41,5 +44,19 @@ for v in variants:
             start = None
         if start is None and o != 0:
             start = i
-print("drift found — inspect those ranges side by side" if found else "OK")
+questions = 0
+for p in paragraphs:
+    ids = [r.get("id") for r in p.get("recall", [])]
+    if len(ids) != len(set(ids)) or None in ids:
+        found = True
+        print(f"{p['id']}: recall ids missing or duplicated: {ids}")
+    for r in p.get("recall", []):
+        questions += 1
+        for v in variants:
+            if not r.get("q", {}).get(v) or not r.get("a", {}).get(v):
+                found = True
+                print(f"{p['id']}#{r.get('id')}: missing question or answer for {v}")
+if questions:
+    print(f"{questions} recall questions checked")
+print("problems found — see above" if found else "OK")
 sys.exit(1 if found else 0)

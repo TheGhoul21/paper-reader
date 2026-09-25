@@ -115,6 +115,11 @@ export default function ExplanationNote({
             )}
           </p>
           {paragraph.notebookSuggestion && <p className="explanation-notebook-hint">💡 {paragraph.notebookSuggestion}</p>}
+          {active && paragraph.recall && paragraph.recall.length > 0 && (
+            <p className="recall-hint">
+              {paragraph.recall.length === 1 ? "1 domanda di ripasso" : `${paragraph.recall.length} domande di ripasso`} su questo paragrafo
+            </p>
+          )}
         </div>
       </div>
       {active && (

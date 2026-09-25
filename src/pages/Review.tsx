@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { downloadBackup, importBackup } from "../lib/backup";
+import { Link, useSearchParams } from "react-router-dom";
 import { papersUrl } from "../lib/paths";
 import { conceptDefinition } from "../lib/concepts";
 import { isDue, previewInterval, useReview, type Grade, type ReviewCard } from "../lib/review";
@@ -40,6 +41,43 @@ async function loadPaper(slug: string): Promise<PaperData> {
   };
 }
 
+/** Export/import of everything kept only in this browser (review deck + annotations). */
+function BackupControls() {
+  const input = useRef<HTMLInputElement>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  async function onFile(file: File) {
+    try {
+      const { cards, annotations } = importBackup(JSON.parse(await file.text()));
+      setMessage(`Importate ${cards} card e ${annotations} annotazioni.`);
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "File non valido.");
+    }
+  }
+  return (
+    <div className="review-backup">
+      <span>Ripasso e annotazioni restano in questo browser.</span>
+      <button className="explanation-ask-btn" onClick={downloadBackup}>
+        Esporta backup
+      </button>
+      <button className="explanation-ask-btn" onClick={() => input.current?.click()}>
+        Importa backup
+      </button>
+      <input
+        ref={input}
+        type="file"
+        accept="application/json,.json"
+        hidden
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) onFile(file);
+          e.target.value = "";
+        }}
+      />
+      {message && <span className="review-backup-message">{message}</span>}
+    </div>
+  );
+}
+
 function formatWhen(iso: string): string {
   const d = new Date(iso);
   const days = Math.round((d.getTime() - Date.now()) / 86400000);
@@ -50,6 +88,9 @@ function formatWhen(iso: string): string {
 
 export default function Review() {
   const { cards, gradeCard, removeCard } = useReview();
+  // ?paper=<slug>: review only that paper's cards (the reader's "Ripassa questo paper").
+  const [searchParams] = useSearchParams();
+  const paperFilter = searchParams.get("paper");
   const [papers, setPapers] = useState<Record<string, PaperData | "error">>({});
   const [revealed, setRevealed] = useState(false);
   const [now, setNow] = useState(() => new Date());
@@ -60,7 +101,7 @@ export default function Review() {
     return () => clearInterval(timer);
   }, []);
 
-  const all = useMemo(() => Object.values(cards), [cards]);
+  const all = useMemo(() => Object.values(cards).filter((c) => !paperFilter || c.slug === paperFilter), [cards, paperFilter]);
   const due = useMemo(() => all.filter((c) => isDue(c, now)).sort((a, b) => a.due.localeCompare(b.due)), [all, now]);
   const current: ReviewCard | undefined = due[0];
 
@@ -91,6 +132,20 @@ export default function Review() {
         context: null as string | null,
         answer: conceptDefinition(concept, current.variant).text,
         openAt: definedIn?.id ?? null,
+      };
+    }
+    if (current.kind === "question") {
+      const [paragraphId, questionId] = current.refId.split("#");
+      const paragraph = paper.paragraphs.find((p) => p.id === paragraphId);
+      const question = paragraph?.recall?.find((r) => r.id === questionId);
+      if (!paragraph || !question) return null;
+      const pick = (texts: Record<string, string>) => texts[current.variant] ?? Object.values(texts)[0] ?? "";
+      return {
+        chip: "Domanda",
+        prompt: <>{pick(question.q)}</>,
+        context: null as string | null,
+        answer: pick(question.a),
+        openAt: paragraph.id,
       };
     }
     const paragraph = paper.paragraphs.find((p) => p.id === current.refId);
@@ -137,6 +192,7 @@ export default function Review() {
           Nessuna card. Mentre leggi, usa <strong>Da ripassare</strong> su una nota o <strong>Aggiungi al ripasso</strong> nel
           glossario: quei concetti e paragrafi ti verranno richiesti qui, a intervalli sempre più lunghi finché non li ricordi.
         </p>
+        <BackupControls />
       </div>
     );
   }
@@ -147,8 +203,10 @@ export default function Review() {
       <div className="review">
         <h1 className="review-title">Ripasso</h1>
         <p className="state-message">
-          Niente da ripassare ora. {all.length} card in tutto; la prossima {formatWhen(next.due)}.
+          Niente da ripassare ora{paperFilter ? " per questo paper" : ""}. {all.length} card in tutto; la prossima{" "}
+          {formatWhen(next.due)}.{paperFilter && <> <Link to="/review">Tutti i paper</Link></>}
         </p>
+        <BackupControls />
       </div>
     );
   }
@@ -156,7 +214,14 @@ export default function Review() {
   return (
     <div className="review">
       <div className="review-header">
-        <h1 className="review-title">Ripasso</h1>
+        <h1 className="review-title">
+          Ripasso
+          {paperFilter && (
+            <Link to="/review" className="review-filter" title="Mostra tutte le card">
+              solo questo paper ×
+            </Link>
+          )}
+        </h1>
         <span className="review-count">{due.length} da ripassare</span>
       </div>
 
@@ -211,6 +276,7 @@ export default function Review() {
           </button>
         </div>
       )}
+      <BackupControls />
     </div>
   );
 }

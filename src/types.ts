@@ -34,6 +34,15 @@ export interface Paragraph {
   /** Keyed by Variant.key ("<language>-<level>"). */
   explanations: Record<string, string>;
   notebookSuggestion?: string;
+  /** Recall questions about this paragraph, written at import; question and answer keyed by Variant.key. */
+  recall?: RecallQuestion[];
+}
+
+export interface RecallQuestion {
+  /** Unique within the paragraph, e.g. "r1". */
+  id: string;
+  q: Record<string, string>;
+  a: Record<string, string>;
 }
 
 export type AnnotationTool = "none" | "text" | "draw" | "erase";

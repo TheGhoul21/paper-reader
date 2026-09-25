@@ -1,4 +1,5 @@
 import { forwardRef, useMemo } from "react";
+import { Link } from "react-router-dom";
 import ExplanationNote from "./ExplanationNote";
 import type { ConceptMatcher } from "../lib/concepts";
 import type { Paragraph } from "../types";
@@ -13,6 +14,8 @@ interface Props {
   hoverId: string | null;
   conceptMatcher: ConceptMatcher;
   isInReview: (paragraphId: string) => boolean;
+  /** Present when the paper has recall questions: how many, how many are in the deck, and actions. */
+  recallSummary?: { total: number; inDeck: number; reviewUrl: string; onAddAll: () => void };
   onToggleReview: (paragraphId: string) => void;
   onActivate: (paragraph: Paragraph) => void;
   onConcept: (conceptId: string, fromParagraphId: string, clientPos: { x: number; y: number }) => void;
@@ -28,7 +31,7 @@ interface Props {
  * click-to-reveal and the connector line, not by scroll position).
  */
 const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
-  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, isInReview, onToggleReview, onActivate, onConcept, onHover, onJumpToPage, sheet },
+  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, isInReview, recallSummary, onToggleReview, onActivate, onConcept, onHover, onJumpToPage, sheet },
   ref,
 ) {
   const pages = useMemo(() => {
@@ -59,6 +62,23 @@ const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
           </span>
           <span className="notes-sheet-chevron">{sheet.expanded ? "▾" : "▴"}</span>
         </button>
+      )}
+      {recallSummary && (
+        <div className="recall-summary">
+          <span>
+            <strong>{recallSummary.total}</strong> domande di ripasso
+            {recallSummary.inDeck > 0 && <> · {recallSummary.inDeck} nel ripasso</>}
+          </span>
+          {recallSummary.inDeck < recallSummary.total ? (
+            <button className="explanation-ask-btn" onClick={recallSummary.onAddAll}>
+              Aggiungile tutte
+            </button>
+          ) : (
+            <Link className="explanation-ask-btn" to={recallSummary.reviewUrl}>
+              Ripassa questo paper →
+            </Link>
+          )}
+        </div>
       )}
       {pages.map(([page, list]) => (
         <section key={page} className="notes-page">

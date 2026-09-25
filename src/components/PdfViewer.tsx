@@ -178,13 +178,35 @@ export default function PdfViewer({
   const conceptMatcher = useMemo(() => buildConceptMatcher(concepts), [concepts]);
 
   // Review deck (library-wide, localStorage): notes and glossary cards can be added from here.
-  const { cards: reviewCards, addCard, removeCard } = useReview();
-  const inReview = (kind: "concept" | "paragraph", refId: string) => Boolean(reviewCards[cardId(slug, kind, refId)]);
-  const toggleReview = (kind: "concept" | "paragraph", refId: string) => {
-    const id = cardId(slug, kind, refId);
-    if (reviewCards[id]) removeCard(id);
-    else addCard(slug, kind, refId, variant);
+  // A paragraph with recall questions is reviewed through them; otherwise as "explain paragraph N".
+  const { cards: reviewCards, addCard, addCards, removeCard, removeCards } = useReview();
+  const paragraphCards = (paragraphId: string) => {
+    const paragraph = paragraphs.find((p) => p.id === paragraphId);
+    return paragraph?.recall?.length
+      ? paragraph.recall.map((r) => ({ kind: "question" as const, refId: `${paragraphId}#${r.id}` }))
+      : [{ kind: "paragraph" as const, refId: paragraphId }];
   };
+  const inReview = (kind: "concept" | "paragraph", refId: string) =>
+    kind === "concept"
+      ? Boolean(reviewCards[cardId(slug, "concept", refId)])
+      : paragraphCards(refId).some((c) => reviewCards[cardId(slug, c.kind, c.refId)]);
+  const toggleReview = (kind: "concept" | "paragraph", refId: string) => {
+    if (kind === "concept") {
+      const id = cardId(slug, "concept", refId);
+      if (reviewCards[id]) removeCard(id);
+      else addCard(slug, "concept", refId, variant);
+      return;
+    }
+    const items = paragraphCards(refId);
+    if (inReview("paragraph", refId)) removeCards(items.map((c) => cardId(slug, c.kind, c.refId)));
+    else addCards(items.map((c) => ({ ...c, slug, variant })));
+  };
+  // All of this paper's recall questions, for the "add them all" action in the notes pane.
+  const allQuestions = useMemo(
+    () => paragraphs.flatMap((p) => (p.recall ?? []).map((r) => ({ kind: "question" as const, refId: `${p.id}#${r.id}` }))),
+    [paragraphs],
+  );
+  const questionsInDeck = allQuestions.filter((c) => reviewCards[cardId(slug, c.kind, c.refId)]).length;
 
   const highlightConcept = highlight ? conceptMatcher.byId.get(highlight.conceptId) ?? null : null;
   const highlightPattern = useMemo(() => (highlightConcept ? spellingPattern(pdfSpellings(highlightConcept)) : null), [highlightConcept]);
@@ -436,6 +458,16 @@ export default function PdfViewer({
             hoverId={hoverId}
             conceptMatcher={conceptMatcher}
             isInReview={(id) => inReview("paragraph", id)}
+            recallSummary={
+              allQuestions.length > 0
+                ? {
+                    total: allQuestions.length,
+                    inDeck: questionsInDeck,
+                    reviewUrl: `/review?paper=${slug}`,
+                    onAddAll: () => addCards(allQuestions.map((c) => ({ ...c, slug, variant }))),
+                  }
+                : undefined
+            }
             onToggleReview={(id) => toggleReview("paragraph", id)}
             onActivate={handleActivateNote}
             onConcept={(id, fromParagraphId, anchor) => {
