@@ -99,3 +99,24 @@ export interface ConceptIndexEntry {
 
 /** Concept id → every paper that defines it. Ids are shared across papers for the same concept. */
 export type ConceptsIndex = Record<string, ConceptIndexEntry[]>;
+
+/** One claim of the paper's argument (`papers/<slug>/structure.json`). */
+export interface ArgumentClaim {
+  id: string;
+  /** Short statement of the claim, keyed by Variant.key. */
+  title: Record<string, string>;
+  /** One or two sentences on what the claim says and why it matters, keyed by Variant.key. */
+  summary: Record<string, string>;
+  /** Paragraphs where the paper states the claim. */
+  statedIn: string[];
+  /** Paragraphs that support it: methods, derivations, results. */
+  evidence: string[];
+  /** Other claims this one builds on. */
+  dependsOn: string[];
+}
+
+/** The argument map of a paper: its thesis and the claims that carry it. */
+export interface PaperStructure {
+  thesis: Record<string, string>;
+  claims: ArgumentClaim[];
+}

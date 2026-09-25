@@ -1,0 +1,120 @@
+{
+  "thesis": {
+    "it-intermediate": "Adattando le Parity Twine Networks agli atomi neutri, e usando lo spostamento degli atomi come risorsa di calcolo (la CZSWAP), circuiti con interazioni tutti-con-tutti come la QFT richiedono molte meno porte a due qubit, meno trasporti e meno stage di Rydberg, con una fedeltà stimata fino a mille volte più alta.",
+    "it-expert": "Le PTN, co-progettate con il gate set nativo (CZ, CZSWAP, iSWAP), il layout e lo shuttling degli atomi neutri, ottimizzano insieme N₂Q, depth e trasporto per grafi d'interazione densi: sulla QFT30 si guadagnano fino a ~10³ in fedeltà stimata, e l'OQFT su ladder patch estende il vantaggio a n grande."
+  },
+  "claims": [
+    {
+      "id": "ptn",
+      "title": {
+        "it-intermediate": "Le PTN realizzano interazioni tutti-con-tutti usando solo porte tra vicini.",
+        "it-expert": "Una cascata di Twine chain genera tutte le label ℓᵢℓⱼ, rendendo ogni R_{ZᵢZⱼ} una rotazione singola."
+      },
+      "summary": {
+        "it-intermediate": "Catene di CNOT fanno portare a ogni qubit fisico la parità di due qubit logici, così una rotazione su un solo qubit equivale a un'interazione tra due. È la base di tutto il paper, ed è ideale per la QFT.",
+        "it-expert": "Le CNOT scrivono la parità del controllo sul target; n−1 catene coprono tutte le coppie con profondità lineare. È adatta a interazioni all-to-all (QFT) ed è embeddabile in layout diversi."
+      },
+      "statedIn": ["p0010", "p0017"],
+      "evidence": ["p0019", "p0020", "p0022", "p0055"],
+      "dependsOn": []
+    },
+    {
+      "id": "layouts",
+      "title": {
+        "it-intermediate": "Più connessioni riducono le CNOT ma non sempre la profondità: il layout a scala è il miglior compromesso.",
+        "it-expert": "I legs riducono il CNOT count ma allungano le catene; il ladder minimizza la depth con ¾n² CNOT (contro ⅔n² del square)."
+      },
+      "summary": {
+        "it-intermediate": "I rami laterali usano CNOT singole invece che doppie, ma le catene successive devono aspettare di più. Quale layout convenga dipende da cosa pesa di più sull'hardware; sugli atomi neutri la scala si può realizzare in 2D.",
+        "it-expert": "Stesso N₂Q asintotico sui tre layout, con diversa ripartizione CZ/CZSWAP e diverso N₁Q (Tab. III). Il trade-off gate count/depth va scelto per l'hardware; il ladder quasi-1D è realizzabile in 2D grazie al trasporto."
+      },
+      "statedIn": ["p0024", "p0027"],
+      "evidence": ["p0018", "p0023", "p0025", "p0231", "p0233"],
+      "dependsOn": ["ptn"]
+    },
+    {
+      "id": "czswap",
+      "title": {
+        "it-intermediate": "Sugli atomi mobili la doppia CNOT si realizza come CZ + scambio di posizione (CZSWAP), quasi gratis.",
+        "it-expert": "In architetture mobili monolitiche la DCNOT = (H⊗I)·CZSWAP·(I⊗H) costa una sola CZ: lo SWAP è un riposizionamento durante il ritorno."
+      },
+      "summary": {
+        "it-intermediate": "Per fare una CZ bisogna comunque avvicinare gli atomi e riportarli indietro; riportarli scambiati costa solo piccoli spostamenti extra. Così il trasporto sostituisce una seconda CZ invece di essere solo un costo.",
+        "it-expert": "Stessi big move della CZ, più offset move trascurabili e 4 transfer (gli AOD non si incrociano): una CZ e i suoi Rydberg stage in meno per DCNOT. È vantaggioso quando CZ e crosstalk pesano più del trasporto."
+      },
+      "statedIn": ["p0012", "p0046", "p0057"],
+      "evidence": ["p0030", "p0039", "p0045", "p0054", "p0060", "p0229"],
+      "dependsOn": ["ptn"]
+    },
+    {
+      "id": "global-rotations",
+      "title": {
+        "it-intermediate": "La struttura delle PTN dimezza le rotazioni globali necessarie.",
+        "it-expert": "Su LNN basta un GR_XY per layer di Hadamard (più due), e le GR alternate fanno da dynamical decoupling."
+      },
+      "summary": {
+        "it-intermediate": "Molti processori possono ruotare attorno a X o Y solo tutti gli atomi insieme. La regolarità delle PTN permette una sola rotazione globale per strato invece di due, e alternandole si proteggono anche i qubit in attesa.",
+        "it-expert": "Nella versione CZ-only le Hadamard residue vanno fatte con GR; la struttura PTN ne richiede circa la metà. Nella versione CZSWAP rotazioni locali X via S†_Y R_Z S_Y, con lo stesso conteggio di S_Y dell'iSWAP."
+      },
+      "statedIn": ["p0061", "p0062"],
+      "evidence": ["p0059", "p0063"],
+      "dependsOn": ["ptn"]
+    },
+    {
+      "id": "qft30",
+      "title": {
+        "it-intermediate": "Sulla QFT30 la versione Twine riduce porte, trasporti e stage di Rydberg, con fedeltà fino a mille volte più alta.",
+        "it-expert": "QFT30: N_CZ da n(n−1) a n(n−1)/2 + (n−1), meno shuttling e stage, fedeltà stimata fino a ~10³× la migliore alternativa."
+      },
+      "summary": {
+        "it-intermediate": "Con un modello di fedeltà che conta porte, disturbo di Rydberg, trasferimenti e attese, la QFT Twine batte gli approcci esistenti (Gao, Enola, Atomique) grazie alla riduzione combinata di tutti i costi.",
+        "it-expert": "Modello (Eq. 3): f_GR, f_CZ, crosstalk f_exc^{N_q S − 2N_CZ}, f_trans, idling. Contro Gao/Enola (n(n−1) CZ, più trasporto) e Atomique (ancille e SWAP, massimo N_CZ)."
+      },
+      "statedIn": ["p0101"],
+      "evidence": ["p0074", "p0076", "p0097", "p0098", "p0100"],
+      "dependsOn": ["czswap", "ptn"]
+    },
+    {
+      "id": "mobile-vs-static",
+      "title": {
+        "it-intermediate": "Con il crosstalk di Rydberg l'implementazione mobile batte quella statica; senza, la statica vince se le CZ sono molto buone.",
+        "it-expert": "Con f_exc < 1 la CZSWAP mobile supera la SWAP-free statica fino a f_CZ ≈ 0.999; con f_exc = 1 il crossover è a f_CZ ≈ 0.996."
+      },
+      "summary": {
+        "it-intermediate": "Nella versione statica ogni CZSWAP diventa due CZ, e le CZ quasi raddoppiano. Il risultato dipende fortemente dall'hardware: è un indicatore, non un verdetto.",
+        "it-expert": "N_CZ ≈ ×2 nella statica, quindi più stage e più crosstalk; senza crosstalk transfer e shuttling pesano più delle CZ extra. Il vantaggio mobile cresce a f_CZ basse e n grande (Fig. 6, App. C per l'OQFT)."
+      },
+      "statedIn": ["p0109"],
+      "evidence": ["p0103", "p0111", "p0239"],
+      "dependsOn": ["czswap", "qft30"]
+    },
+    {
+      "id": "oqft",
+      "title": {
+        "it-intermediate": "La QFT ottimistica, costruita su blocchi a scala spostati in gruppo, supera la QFT esatta per molti qubit.",
+        "it-expert": "OQFT su ladder PTN per m-patch, con scambi di patch via traslazioni AOD collettive: da O(n²) a O(n log(n/ε)) gate e crossover di fedeltà a favore dell'OQFT per n grande."
+      },
+      "summary": {
+        "it-intermediate": "L'OQFT accetta errori su pochi stati per usare molte meno porte. Sugli atomi neutri i suoi blocchi si mappano su patch a scala, e per farli interagire si spostano intere colonne di atomi insieme, un'operazione naturale per questo hardware.",
+        "it-expert": "Blocchi QFT_2m/QFT†_m su patch ladder; l'inversione d'ordine delle ladder PTN evita SWAP interni; il crossover QFT/OQFT segue f ∝ f₂Q^{N₂Q} più la maggiore parallelizzazione."
+      },
+      "statedIn": ["p0125", "p0138"],
+      "evidence": ["p0115", "p0117", "p0126", "p0127", "p0129", "p0137"],
+      "dependsOn": ["ptn", "layouts"]
+    },
+    {
+      "id": "outlook",
+      "title": {
+        "it-intermediate": "L'approccio si estende alle architetture a zone e all'aritmetica quantistica basata sulla QFT.",
+        "it-expert": "Estensioni: zone-based (lo scambio CZSWAP è gratuito al ritorno allo storage) e aritmetica di Fourier (Draper), più IQP e QAOA."
+      },
+      "summary": {
+        "it-intermediate": "Dove gli atomi devono comunque tornare in memoria dopo ogni porta, riportarli scambiati non costa nulla. E le operazioni aritmetiche fatte come QFT → fasi → QFT inversa beneficiano direttamente di una QFT efficiente.",
+        "it-expert": "Instradare verso posizioni scambiate costa overhead trascurabile in architetture zonate. A = QFT†·D·QFT: il Draper adder quantum–quantum ha D_ab con O(n²) gate a due qubit, un pattern PTN."
+      },
+      "statedIn": ["p0143"],
+      "evidence": ["p0144", "p0241"],
+      "dependsOn": ["czswap"]
+    }
+  ]
+}

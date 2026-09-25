@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import PdfViewer from "../components/PdfViewer";
 import { useAnnotations } from "../lib/annotations";
 import { papersUrl } from "../lib/paths";
-import type { Concept, ConceptsIndex, PaperMeta, Paragraph } from "../types";
+import type { Concept, ConceptsIndex, PaperMeta, PaperStructure, Paragraph } from "../types";
 
 export default function Reader() {
   const { slug } = useParams<{ slug: string }>();
@@ -11,6 +11,7 @@ export default function Reader() {
   const [paragraphs, setParagraphs] = useState<Paragraph[] | null>(null);
   const [concepts, setConcepts] = useState<Concept[]>([]);
   const [conceptsIndex, setConceptsIndex] = useState<ConceptsIndex>({});
+  const [structure, setStructure] = useState<PaperStructure | null>(null);
   const [searchParams] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [variant, setVariant] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export default function Reader() {
     setMeta(null);
     setParagraphs(null);
     setConcepts([]);
+    setStructure(null);
     setError(null);
     setVariant(null);
     Promise.all([
@@ -40,12 +42,16 @@ export default function Reader() {
       fetch(papersUrl("concepts-index.json"))
         .then((r) => (r.ok ? r.json() : {}))
         .catch(() => ({})),
+      fetch(papersUrl(`${slug}/structure.json`))
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
     ])
-      .then(([m, p, c, ci]: [PaperMeta, Paragraph[], Concept[], ConceptsIndex]) => {
+      .then(([m, p, c, ci, st]: [PaperMeta, Paragraph[], Concept[], ConceptsIndex, PaperStructure | null]) => {
         setMeta(m);
         setParagraphs(p);
         setConcepts(Array.isArray(c) ? c : []);
         setConceptsIndex(ci && typeof ci === "object" && !Array.isArray(ci) ? ci : {});
+        setStructure(st && Array.isArray(st.claims) ? st : null);
         setVariant(m.variants[0]?.key ?? null);
       })
       .catch((err) => setError(String(err)));
@@ -63,6 +69,7 @@ export default function Reader() {
         paragraphs={paragraphs}
         concepts={concepts}
         conceptsIndex={conceptsIndex}
+        structure={structure}
         slug={slug ?? ""}
         initialParagraphId={searchParams.get("p")}
         variants={meta.variants}

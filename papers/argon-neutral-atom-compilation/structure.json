@@ -1,0 +1,79 @@
+{
+  "thesis": {
+    "it-intermediate": "La compilazione per atomi neutri è lenta o imprecisa perché tratta insieme vincoli fissi dell'hardware e movimenti che dipendono dal circuito. ARGON li separa: precalcola offline i layout validi più densi e usa una rete neurale su grafi per scegliere quello che darà meno problemi di movimento. Il risultato è una compilazione in meno di un secondo e una fedeltà molto più alta sui circuiti grandi."
+  },
+  "claims": [
+    {
+      "id": "bottleneck",
+      "title": {"it-intermediate": "I compilatori attuali o esplodono nei tempi, o perdono fedeltà sui circuiti grandi."},
+      "summary": {"it-intermediate": "Chi ottimizza tutto insieme (Enola) raggiunge il timeout già a 25 qubit; chi decide il posizionamento in modo miope (DasAtom) è veloce ma serializza le porte e moltiplica gli stage di Rydberg."},
+      "statedIn": ["p0018", "p0037"],
+      "evidence": ["p0012", "p0038"],
+      "dependsOn": []
+    },
+    {
+      "id": "two-constraints",
+      "title": {"it-intermediate": "Il problema ha due tipi di vincoli: spaziali e fissi (raggi di interazione e restrizione) e cinematici e dinamici (movimenti AOD)."},
+      "summary": {"it-intermediate": "I primi limitano quante porte si possono fare in parallelo; i secondi limitano come si possono spostare gli atomi, perché righe e colonne AOD non possono incrociarsi. Il compilatore deve soddisfare entrambi a ogni passo."},
+      "statedIn": ["p0029", "p0032"],
+      "evidence": ["p0023", "p0030", "p0033"],
+      "dependsOn": []
+    },
+    {
+      "id": "decoupling",
+      "title": {"it-intermediate": "Separare i vincoli spaziali (precalcolabili) da quelli temporali (predicibili) rompe il collo di bottiglia."},
+      "summary": {"it-intermediate": "I vincoli spaziali non dipendono dal circuito, quindi si risolvono una volta sola offline; per quelli temporali basta una stima veloce del costo futuro. La compilazione diventa un problema di scelta e previsione, non di ricerca."},
+      "statedIn": ["p0014", "p0040"],
+      "evidence": ["p0041"],
+      "dependsOn": ["bottleneck", "two-constraints"]
+    },
+    {
+      "id": "offline-library",
+      "title": {"it-intermediate": "Una libreria offline di layout a massima densità garantisce il massimo parallelismo delle porte."},
+      "summary": {"it-intermediate": "Il layout con più porte senza conflitti è un Massimo Insieme Indipendente, risolto esattamente con un solver SMT per varie griglie e densità. Meno stage di Rydberg vuol dire più fedeltà, e il costo si paga una volta sola."},
+      "statedIn": ["p0045", "p0052"],
+      "evidence": ["p0043", "p0049"],
+      "dependsOn": ["two-constraints", "decoupling"]
+    },
+    {
+      "id": "gnn-placement",
+      "title": {"it-intermediate": "Una GNN addestrata offline sceglie il layout che minimizza i problemi di movimento futuri."},
+      "summary": {"it-intermediate": "Una scelta miope intrappola gli atomi in posizioni che creano conflitti dopo. La rete legge geometria e interazioni (anche future) e stima il costo di ogni layout in un solo passaggio; è addestrata su costi reali ottenuti con rollout lenti."},
+      "statedIn": ["p0047", "p0062"],
+      "evidence": ["p0068", "p0075"],
+      "dependsOn": ["decoupling"]
+    },
+    {
+      "id": "routing",
+      "title": {"it-intermediate": "Un router euristico leggero traduce i layout scelti in movimenti AOD senza collisioni."},
+      "summary": {"it-intermediate": "Rompe i deadlock parcheggiando un atomo e raggruppa i movimenti compatibili colorando un grafo dei conflitti. È l'unica parte fatta a tempo di compilazione, e domina il (piccolo) tempo totale."},
+      "statedIn": ["p0081"],
+      "evidence": ["p0082"],
+      "dependsOn": ["gnn-placement"]
+    },
+    {
+      "id": "speed",
+      "title": {"it-intermediate": "ARGON compila in 0.68 s in media, contro minuti o ore dei baseline."},
+      "summary": {"it-intermediate": "Tutti i task finiscono entro 10 secondi e la maggior parte sotto il secondo; il tempo è dominato dal routing euristico, perché la parte costosa è stata spostata offline."},
+      "statedIn": ["p0096"],
+      "evidence": ["p0103"],
+      "dependsOn": ["offline-library", "gnn-placement"]
+    },
+    {
+      "id": "fidelity",
+      "title": {"it-intermediate": "ARGON mantiene alta la fedeltà al crescere del circuito, grazie a meno stage di Rydberg."},
+      "summary": {"it-intermediate": "Circa due ordini di grandezza sul W-state a 50 qubit, fino a oltre 8–10 sui Random gates; vantaggio modesto su QASMBench. La scomposizione della fedeltà mostra che il guadagno viene dal parallelismo."},
+      "statedIn": ["p0099", "p0107"],
+      "evidence": ["p0086", "p0109"],
+      "dependsOn": ["offline-library"]
+    },
+    {
+      "id": "generalization",
+      "title": {"it-intermediate": "La GNN serve davvero e generalizza: toglierla peggiora i risultati, e funziona su griglie più grandi senza riaddestramento."},
+      "summary": {"it-intermediate": "Nello studio di ablazione il modello completo batte la scelta casuale del layout; addestrato su 16×16, funziona anche su 20×20 e 28×28."},
+      "statedIn": ["p0112", "p0117"],
+      "evidence": ["p0115"],
+      "dependsOn": ["gnn-placement"]
+    }
+  ]
+}

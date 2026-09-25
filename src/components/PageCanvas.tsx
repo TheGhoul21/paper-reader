@@ -18,6 +18,8 @@ interface Props {
   onHoverParagraph: (id: string | null) => void;
   onJumpToPage: (pageNumber: number) => void;
   onCitation: (text: string, pageNumber: number, clientPos: { x: number; y: number }) => void;
+  thread?: Set<string> | null;
+  focus?: Set<string> | null;
   tool: AnnotationTool;
   color: string;
   annotations: Annotation[];
@@ -38,6 +40,8 @@ export default function PageCanvas({
   onHoverParagraph,
   onJumpToPage,
   onCitation,
+  thread,
+  focus,
   tool,
   color,
   annotations,
@@ -136,6 +140,8 @@ export default function PageCanvas({
           hoverId={hoverId}
           onSelect={onSelect}
           onHover={onHoverParagraph}
+          thread={thread}
+          focus={focus}
         />
       )}
       {rendered && size && pageProxy && textLayerViewport && (

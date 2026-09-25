@@ -12,8 +12,9 @@ import ConceptHighlightBar from "./ConceptHighlightBar";
 import { buildConceptMatcher, pdfSpellings, spellingPattern } from "../lib/concepts";
 import { findOccurrences, markTextLayers, scrollToOccurrence, unmarkTextLayers, type Occurrence } from "../lib/conceptHighlight";
 import { cardId, useReview } from "../lib/review";
+import { indexStructure } from "../lib/structure";
 import Toolbar, { type FitMode } from "./Toolbar";
-import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, Variant } from "../types";
+import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, PaperStructure, Variant } from "../types";
 
 interface Props {
   title: string;
@@ -23,6 +24,8 @@ interface Props {
   concepts: Concept[];
   /** Library-wide concept index, for "also in other papers" links. */
   conceptsIndex: ConceptsIndex;
+  /** The paper's argument map, if it has one. */
+  structure: PaperStructure | null;
   slug: string;
   /** Paragraph to open on load (the reader's `?p=` link, e.g. from another paper's glossary). */
   initialParagraphId: string | null;
@@ -47,6 +50,7 @@ export default function PdfViewer({
   paragraphs,
   concepts,
   conceptsIndex,
+  structure,
   slug,
   initialParagraphId,
   variants,
@@ -177,6 +181,25 @@ export default function PdfViewer({
 
   const conceptMatcher = useMemo(() => buildConceptMatcher(concepts), [concepts]);
 
+  // Argument map: "Il filo" (dim everything off the thread) and the claim focused in the map.
+  const structureIndex = useMemo(() => indexStructure(structure, paragraphs), [structure, paragraphs]);
+  const [threadOnly, setThreadOnly] = useState(false);
+  const [focusClaim, setFocusClaim] = useState<string | null>(null);
+  const [notesTab, setNotesTab] = useState<"notes" | "map">("notes");
+  const focusSet = useMemo(
+    () => (focusClaim && structureIndex ? new Set(structureIndex.paragraphsOf.get(focusClaim) ?? []) : null),
+    [focusClaim, structureIndex],
+  );
+  const threadSet = threadOnly && structureIndex ? structureIndex.thread : null;
+
+  // Focusing a claim brings its first paragraph into view in the PDF.
+  function handleFocusClaim(claimId: string | null) {
+    setFocusClaim(claimId);
+    const first = claimId ? structureIndex?.paragraphsOf.get(claimId)?.[0] : undefined;
+    const paragraph = first ? paragraphs.find((p) => p.id === first) : undefined;
+    if (paragraph) scrollPdfToParagraph(paragraph);
+  }
+
   // Review deck (library-wide, localStorage): notes and glossary cards can be added from here.
   // A paragraph with recall questions is reviewed through them; otherwise as "explain paragraph N".
   const { cards: reviewCards, addCard, addCards, removeCard, removeCards } = useReview();
@@ -276,6 +299,10 @@ export default function PdfViewer({
   // Clicking a comment brings its paragraph into view in the PDF pane, unless it already is.
   function handleActivateNote(paragraph: Paragraph) {
     setActiveId(paragraph.id);
+    scrollPdfToParagraph(paragraph);
+  }
+
+  function scrollPdfToParagraph(paragraph: Paragraph) {
     const page = document.getElementById(`page-${paragraph.page + 1}`);
     if (!pdfPane || !page) return;
     const paneBox = pdfPane.getBoundingClientRect();
@@ -289,6 +316,7 @@ export default function PdfViewer({
   // From the glossary: bring a paragraph into view in both panes and make it the active one.
   function handleGoToParagraph(paragraph: Paragraph) {
     setNotesOpen(true);
+    setNotesTab("notes");
     handleActivateNote(paragraph);
     requestAnimationFrame(() =>
       requestAnimationFrame(() =>
@@ -408,6 +436,7 @@ export default function PdfViewer({
         onVariantChange={onVariantChange}
         notesOpen={notesOpen}
         onToggleNotes={() => setNotesOpen((o) => !o)}
+        thread={structureIndex ? { on: threadOnly, onToggle: () => setThreadOnly((t) => !t) } : undefined}
       />
       <div className="reader-body">
         {highlight && highlightConcept && (
@@ -437,6 +466,8 @@ export default function PdfViewer({
               onCitation={(text, pageNumber, clientPos) => {
                 setCitation({ text, pageNumber, anchor: clientPos });
               }}
+              thread={threadSet}
+              focus={focusSet}
               tool={tool}
               color={color}
               annotations={annotationsByPage.get(pageNumber - 1) ?? []}
@@ -457,6 +488,26 @@ export default function PdfViewer({
             activeId={activeId}
             hoverId={hoverId}
             conceptMatcher={conceptMatcher}
+            argument={
+              structure && structureIndex
+                ? {
+                    structure,
+                    index: structureIndex,
+                    tab: notesTab,
+                    onTab: setNotesTab,
+                    threadOnly,
+                    focusClaim,
+                    onFocusClaim: (id) => {
+                      handleFocusClaim(id);
+                      if (id) setNotesTab("map");
+                    },
+                    onGoToParagraph: (id) => {
+                      const paragraph = paragraphs.find((p) => p.id === id);
+                      if (paragraph) handleGoToParagraph(paragraph);
+                    },
+                  }
+                : undefined
+            }
             isInReview={(id) => inReview("paragraph", id)}
             recallSummary={
               allQuestions.length > 0

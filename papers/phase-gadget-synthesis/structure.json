@@ -1,0 +1,120 @@
+{
+  "thesis": {
+    "it-intermediate": "Riconoscere nei circuiti strutture grandi, i phase gadget e la loro generalizzazione, i Pauli gadget, e ricostruirle in modo intelligente riduce molto porte a due qubit e profondità. Lo ZX-calculus rende facile ragionarci; t|ket⟩ usa queste tecniche e sui circuiti di chimica quantistica dimezza il numero di ∧X rispetto a Qiskit e PyZX.",
+    "it-expert": "I phase gadget (e i Pauli gadget, loro coniugati Clifford) sono strutture macroscopiche con un'algebra semplice in ZX: si risintetizzano con depth logaritmica e, a coppie, si sintetizzano sfruttando la sottostringa comune e il Teorema 4.10 (commutano o vale Eulero). In t|ket⟩ si ottiene −54.5% di ∧X e −57.7% di depth su circuiti UCC."
+  },
+  "claims": [
+    {
+      "id": "macroscopic",
+      "title": {
+        "it-intermediate": "La riscrittura locale non basta: servono strutture grandi, facili da riconoscere e ricostruire.",
+        "it-expert": "Il peephole locale è in principio sufficiente (completezza ZX) ma in pratica servono strutture macroscopiche con un'algebra di interazione utile."
+      },
+      "summary": {
+        "it-intermediate": "t|ket⟩ ottimizza a passate successive sostituendo pezzi di circuito; il paper introduce una classe di strutture multi-qubit, i phase gadget, su cui ragionare a un livello più alto.",
+        "it-expert": "Rappresentazione a non-planar map, pass componibili con riscrittura DPO; ai Clifford si aggiunge una nuova classe di sottocircuiti multi-qubit."
+      },
+      "statedIn": ["p0029"],
+      "evidence": ["p0021", "p0022", "p0025", "p0027"],
+      "dependsOn": []
+    },
+    {
+      "id": "phase-gadget",
+      "title": {
+        "it-intermediate": "Un phase gadget è una scala di ∧X con una rotazione Z in mezzo, e nello ZX-calculus ha una forma semplicissima.",
+        "it-expert": "Φₙ(α) si definisce ricorsivamente via ∧X; in ZX è uno spider Z(α) collegato a uno spider X, con leggi di decomposizione, commutazione e fusione (Cor. 3.4)."
+      },
+      "summary": {
+        "it-intermediate": "La forma grafica rende evidenti proprietà nascoste nel circuito, come il fatto che il gadget non cambia permutando i qubit.",
+        "it-expert": "Lemma 3.3 e Cor. 3.4 sono l'algebra su cui si basano sintesi e ottimizzazione."
+      },
+      "statedIn": ["p0030", "p0044"],
+      "evidence": ["p0018", "p0038"],
+      "dependsOn": []
+    },
+    {
+      "id": "balanced-tree",
+      "title": {
+        "it-intermediate": "Ricostruire un phase gadget ad albero bilanciato invece che a scala riduce la profondità da lineare a logaritmica.",
+        "it-expert": "Balanced tree: ∧X-depth da 2(n−1) a 2⌈log n⌉ con lo stesso count, più ∧X esposte e allineabili tra gadget consecutivi."
+      },
+      "summary": {
+        "it-intermediate": "Le ∧X più esterne restano esposte e si possono cancellare con quelle dei gadget vicini, cosa frequente nei circuiti di chimica trotterizzati.",
+        "it-expert": "Nell'evoluzione trotterizzata (gadget separati da layer Clifford) le ∧X esterne allineate si cancellano a coppie, o se ne rimuove almeno una via ottimizzazione Clifford."
+      },
+      "statedIn": ["p0064"],
+      "evidence": ["p0067", "p0068", "p0070"],
+      "dependsOn": ["phase-gadget"]
+    },
+    {
+      "id": "pauli-gadget",
+      "title": {
+        "it-intermediate": "I Pauli gadget generalizzano i phase gadget a stringhe di Pauli qualsiasi, con cambi di base Clifford.",
+        "it-expert": "P(α,s) := U(s);Φ_{|s|}(α);U(s)† rappresenta e^{−iασ_s/2}: il mattone delle simulazioni hamiltoniane."
+      },
+      "summary": {
+        "it-intermediate": "Basta circondare un phase gadget con Hadamard (per X) o X(π/2) (per Y). Compaiono ovunque nella chimica quantistica.",
+        "it-expert": "Un circuito di soli Z-gadget è il caso g = id dei circuiti phase-polynomial; i Pauli gadget in basi miste escono da quella classe."
+      },
+      "statedIn": ["p0080"],
+      "evidence": ["p0072", "p0081"],
+      "dependsOn": ["phase-gadget"]
+    },
+    {
+      "id": "commute-or-euler",
+      "title": {
+        "it-intermediate": "Due Pauli gadget o commutano, o soddisfano un'\"equazione di Eulero\" che scambia l'ordine cambiando gli angoli.",
+        "it-expert": "Teor. 4.10: per stringhe s, t, o P(α,s) e P(β,t) commutano, o P(α₁,s)P(α₂,t)P(α₃,s) = P(β₁,t)P(β₂,s)P(β₃,t)."
+      },
+      "summary": {
+        "it-intermediate": "È ciò che rende difficili i Pauli gadget per i metodi esistenti, e allo stesso tempo ciò che ne permette la sintesi a coppie.",
+        "it-expert": "Prova in ZX: Lemma 4.5 (isolare una parte della stringa con un Clifford), Lemma 4.9 (ridurre l'intersezione a ≤ 1), poi (EU)."
+      },
+      "statedIn": ["p0084", "p0234"],
+      "evidence": ["p0085", "p0100", "p0202"],
+      "dependsOn": ["pauli-gadget"]
+    },
+    {
+      "id": "pairwise",
+      "title": {
+        "it-intermediate": "Sintetizzare due Pauli gadget insieme risparmia 2 ∧X per ogni qubit che condividono.",
+        "it-expert": "Costo a coppie 2(|s|+|t|−|r|−⌊|u|/2⌋−2) ∧X invece di 2(|s|+|t|−2), con r = massima sottostringa comune e u = resto dell'intersezione."
+      },
+      "summary": {
+        "it-intermediate": "La parte comune alle due stringhe si mette \"a fattor comune\" con un unico cambio di base, e il resto dell'intersezione si riduce a coppie.",
+        "it-expert": "Eq. 5 (fattorizzazione con U_r) ed Eq. 7 (riduzione di due qubit per applicazione) dalla prova del Lemma 4.9."
+      },
+      "statedIn": ["p0293"],
+      "evidence": ["p0205", "p0216"],
+      "dependsOn": ["commute-or-euler"]
+    },
+    {
+      "id": "example",
+      "title": {
+        "it-intermediate": "Su un pezzo di circuito UCC per H₂ le tecniche riducono le porte a due qubit da 12 a 10 e la profondità da 12 a 7, e la visione a Pauli gadget fa ancora meglio.",
+        "it-expert": "Esempio UCC di H₂: risintesi più Clifford porta da 12 a 10 ∧X e depth da 12 a 7; letto come P(α,YYXY);P(β,XYYY), commutanti, si riduce ulteriormente."
+      },
+      "summary": {
+        "it-intermediate": "Mostra passo per passo come si combinano risintesi degli alberi, ottimizzazione Clifford e sintesi a coppie.",
+        "it-expert": "Dimostra il valore della sintesi a coppie rispetto alla sola risintesi dei phase gadget."
+      },
+      "statedIn": ["p0387"],
+      "evidence": ["p0296", "p0326", "p0360"],
+      "dependsOn": ["balanced-tree", "pairwise"]
+    },
+    {
+      "id": "results",
+      "title": {
+        "it-intermediate": "Sui circuiti di chimica quantistica t|ket⟩ riduce le ∧X del 54.5% e la profondità del 57.7%, molto più di Qiskit e PyZX.",
+        "it-expert": "Benchmark UCC (H₂, LiH, CH₂, C₂H₄, varie mappature e basi): −54.5% ∧X-count (Qiskit −21.3%, PyZX −16.3%), −57.7% depth."
+      },
+      "summary": {
+        "it-intermediate": "Il vantaggio cresce con la dimensione del circuito, perché la differenza tra scala e albero cresce con il numero di qubit.",
+        "it-expert": "Solo ottimizzazione pura, senza vincoli architetturali; il routing dopo la risintesi (grafo d'interazione ad albero) resta un lavoro futuro."
+      },
+      "statedIn": ["p0421"],
+      "evidence": ["p0414", "p0415"],
+      "dependsOn": ["balanced-tree", "pairwise"]
+    }
+  ]
+}

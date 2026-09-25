@@ -1,0 +1,120 @@
+{
+  "thesis": {
+    "it-intermediate": "Si possono annotare i fili di un circuito quantistico con etichette che dicono quale informazione logica porta ogni qubit: i gate Clifford diventano semplici aggiornamenti delle etichette, e da queste si legge subito l'effetto di ogni rotazione. Il metodo è efficiente, unifica i modi esistenti di tracciare i Clifford, e aiuta a progettare circuiti più corti, anche con codici a stabilizzatori.",
+    "it-expert": "Il parity flow formalism traccia contravariantemente, con flow label e fasi Clifford, la trasformazione dei generatori di Pauli sotto Clifford accodati, con costo O(n) per gate. Distingue il tracking co- da quello contravariante (Clifford tableau contro flow tableau, inversi), li combina senza inversioni, e rende leggibili implementazioni equivalenti e parallele in codici stabilizer e parity code."
+  },
+  "claims": [
+    {
+      "id": "flow-labels",
+      "title": {
+        "it-intermediate": "Un circuito si può leggere come un codice che cambia nel tempo, e le etichette di flusso dicono cosa porta ogni qubit.",
+        "it-expert": "Le flow label ℓ_P = C†PC per i generatori X_j, Z_j rendono ogni Clifford un recoding, e generalizzano le parity label (caso CNOT-only)."
+      },
+      "summary": {
+        "it-intermediate": "Dopo una CNOT il secondo qubit porta la parità dei due, quindi una rotazione su di lui agisce su entrambi. Tracciare le etichette di X e Z di ogni qubit basta per conoscere l'effetto di qualsiasi operatore di Pauli.",
+        "it-expert": "Etichette sopra e sotto ogni filo (X e Z); con soli CNOT ℓ_Z coincide con la parity label; 2n+1 generatori bastano per tutto il gruppo di Pauli."
+      },
+      "statedIn": ["p0009", "p0014"],
+      "evidence": ["p0015", "p0016", "p0017", "p0019", "p0020", "p0024", "p0035"],
+      "dependsOn": []
+    },
+    {
+      "id": "efficient-updates",
+      "title": {
+        "it-intermediate": "Aggiornare le etichette gate per gate è facile ed efficiente, perché la regola dipende solo dal gate aggiunto.",
+        "it-expert": "L'update di ogni label dipende solo dal gate appeso (Eq. 3–4): costo O(n) per gate elementare, con regole esplicite per H, S e CNOT."
+      },
+      "summary": {
+        "it-intermediate": "Hadamard scambia X e Z, S trasforma X in Y, la CNOT mescola le parità: poche regole applicate sempre alle etichette correnti, senza ricalcolare nulla del passato.",
+        "it-expert": "Decomposizione di Pauli di C₂†g_jC₂ nei generatori, poi prodotto delle label precedenti; sul flow tableau sono operazioni di riga (Prop. B11)."
+      },
+      "statedIn": ["p0027"],
+      "evidence": ["p0025", "p0026", "p0028", "p0029", "p0465", "p0467", "p0468", "p0469"],
+      "dependsOn": ["flow-labels"]
+    },
+    {
+      "id": "circuit-design",
+      "title": {
+        "it-intermediate": "Le etichette permettono di progettare circuiti fatti di Clifford e rotazioni senza codificare e decodificare ogni volta.",
+        "it-expert": "Con U = C_{d+1}R_d…C₁ le label danno l'effetto logico di ogni R_j fisica, evitando la sintesi encode–rotate–decode di ogni rotazione multi-body."
+      },
+      "summary": {
+        "it-intermediate": "Una rotazione su un solo qubit può realizzare una rotazione logica su molti qubit se l'etichetta lo dice; si passa da una codifica all'altra invece di tornare ogni volta alla codifica di partenza.",
+        "it-expert": "Anche prodotti di Pauli fisici hanno effetto logico leggibile; con il gruppo di Clifford intero ogni stringa di Pauli logica si può portare su un singolo qubit."
+      },
+      "statedIn": ["p0033", "p0038"],
+      "evidence": ["p0030", "p0031", "p0032", "p0034", "p0037"],
+      "dependsOn": ["flow-labels", "efficient-updates"]
+    },
+    {
+      "id": "co-contra",
+      "title": {
+        "it-intermediate": "Esistono due modi di tracciare i Clifford, covariante e controvariante, facili in direzioni opposte; il flusso di parità è controvariante.",
+        "it-expert": "Covariante (Clifford tableau, outward, logico→fisico) e contravariante (flow tableau, inward, fisico→logico); F(C†) = T(C), quindi il flow tableau è l'inverse Clifford tableau."
+      },
+      "summary": {
+        "it-intermediate": "Il tableau classico dice dove va un operatore logico; le etichette di flusso dicono cosa fa logicamente un operatore fisico, che è quello che serve per interpretare le rotazioni. Ottenere l'altra direzione di solito richiede di invertire una tabella.",
+        "it-expert": "Tracciando solo i generatori, una direzione è per prodotto e l'altra richiede inversione; la coniugazione non preferita richiede un insieme generatore simplettico minimale. Questo classifica i tableau della letteratura (Rem. B14)."
+      },
+      "statedIn": ["p0048", "p0055"],
+      "evidence": ["p0040", "p0041", "p0045", "p0047", "p0058", "p0310", "p0311", "p0361"],
+      "dependsOn": ["flow-labels"]
+    },
+    {
+      "id": "combined",
+      "title": {
+        "it-intermediate": "Tracciando anche 2n \"fasi Clifford\" si ottengono entrambe le direzioni senza invertire nulla.",
+        "it-expert": "Le fasi η ∈ Z₄ (H +2, S +1, CNOT invariante) danno la trasformazione covariante direttamente dalle flow label: +4n bit contro l'inversione O(n³)."
+      },
+      "summary": {
+        "it-intermediate": "Il costo resta O(n) per gate, con pochissima memoria in più. È il tableau di flusso \"combinato\", utile soprattutto con stabilizzatori e qubit ausiliari.",
+        "it-expert": "Eq. 12–17; il combined flow tableau evita sia l'inversione a runtime sia il doppio tableau (App. C.1)."
+      },
+      "statedIn": ["p0059", "p0062"],
+      "evidence": ["p0060", "p0061", "p0508", "p0509"],
+      "dependsOn": ["co-contra", "efficient-updates"]
+    },
+    {
+      "id": "stabilizer-codes",
+      "title": {
+        "it-intermediate": "Il formalismo traccia anche codici a stabilizzatori, e generalizza i codici di parità a effetti logici con X, Y e Z qualsiasi.",
+        "it-expert": "Con ancille (label vuote o marcate •/×) si tracciano insieme effetti logici e stabilizzatori; i parity code (CNOT più |0⟩, solo Z) si generalizzano a prodotti di Pauli arbitrari."
+      },
+      "summary": {
+        "it-intermediate": "Un qubit ausiliario a |0⟩ parte con etichetta vuota; le CNOT gli scrivono sopra parità di altri qubit, rendendo disponibili operazioni logiche su più qubit con rotazioni singole.",
+        "it-expert": "Il tracking dell'encoding rivela operazioni logiche multi-qubit implementabili localmente (es. LHZ); marcature per generatori stabilizzati o anticommutanti."
+      },
+      "statedIn": ["p0064", "p0069"],
+      "evidence": ["p0065", "p0066", "p0068", "p0070", "p0539"],
+      "dependsOn": ["flow-labels"]
+    },
+    {
+      "id": "equivalences",
+      "title": {
+        "it-intermediate": "Gli stabilizzatori rivelano modi diversi, e a volte paralleli, di fare la stessa operazione logica.",
+        "it-expert": "Dato P̄⁺ stabilizzante, P⁺ = C P̄⁺ C† rende equivalenti due Pauli commutanti con P₁P₂ = P⁺: scelta dell'implementazione e parallelizzazione (depth ridotta)."
+      },
+      "summary": {
+        "it-intermediate": "Nell'esempio del modello di Heisenberg, con un qubit ausiliario tutti e tre i termini si eseguono in parallelo con rotazioni su qubit singoli.",
+        "it-expert": "Serve il tracking combinato: la direzione covariante per lo stabilizzatore fisico, quella contravariante per l'effetto logico dei candidati (Fig. 2)."
+      },
+      "statedIn": ["p0072", "p0075"],
+      "evidence": ["p0067", "p0071"],
+      "dependsOn": ["combined", "stabilizer-codes"]
+    },
+    {
+      "id": "foundations",
+      "title": {
+        "it-intermediate": "Le etichette sono una rappresentazione esatta del gruppo di Pauli, con un'operazione di gruppo e una struttura simplettica.",
+        "it-expert": "ρ: P → G = Z₄ × F₂ⁿ × F₂ⁿ con ⊛ è un isomorfismo di gruppo; la parte senza fase è lineare e la commutazione è data dal prodotto simplettico."
+      },
+      "summary": {
+        "it-intermediate": "Ogni operatore di Pauli ha un'unica forma standard (fase, X, Z) e quindi un'unica etichetta; la \"forma vettoriale\" permette i calcoli, e un semplice conteggio dice se due operatori commutano.",
+        "it-expert": "Forma standard i^κ X̄^ξ Z̄^ζ (A2), Def. A1 di ⊛ (A7), ω(ρ̃(P), ρ̃(Q)) = ν ⟺ PQ = (−1)^ν QP. È la base dei tableau dell'App. B."
+      },
+      "statedIn": ["p0103"],
+      "evidence": ["p0090", "p0091", "p0106", "p0200", "p0201"],
+      "dependsOn": []
+    }
+  ]
+}

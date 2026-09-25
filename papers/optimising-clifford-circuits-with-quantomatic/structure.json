@@ -1,0 +1,120 @@
+{
+  "thesis": {
+    "it-intermediate": "I circuiti Clifford si possono ottimizzare in modo completamente automatico e verificato usando lo ZX-calculus dentro l'assistente di dimostrazione Quantomatic: si derivano regole che trasformano circuiti in circuiti, si catalogano le forme minime per 1 e 2 qubit, e si guida il motore di riscrittura con metriche e targeting. Il sistema funziona, e i suoi limiti vengono dall'ambiente, non dal metodo.",
+    "it-expert": "Un ottimizzatore Clifford implementato come simproc in Quantomatic: regole derivate circuit-to-circuit su ZX_s (completo per Backens), forme normali C1/C2 con chiusura sotto i generatori, e un ciclo Simplification/Commutation guidato da metriche e targeting. Ottimalità per n ≤ 2, riduzioni consistenti su circuiti random, limiti imputabili all'API dei simproc."
+  },
+  "claims": [
+    {
+      "id": "motivation",
+      "title": {
+        "it-intermediate": "Ottimizzare i Clifford conviene, e farlo dentro un assistente di dimostrazione rende ogni ottimizzazione verificata.",
+        "it-expert": "I Clifford sono pervasivi e il loro frammento ZX è completo; un ottimizzatore in Quantomatic produce output certificati per costruzione."
+      },
+      "summary": {
+        "it-intermediate": "Pur non universali, i Clifford sono una parte enorme dei circuiti reali; lavorando in Quantomatic ogni passo di semplificazione è anche una prova di equivalenza.",
+        "it-expert": "Circuiti Clifford classicamente simulabili ma ubiqui (e centrali nell'error correction); la correttezza viene dalla derivabilità di ogni rewrite dagli assiomi."
+      },
+      "statedIn": ["p0006", "p0010"],
+      "evidence": ["p0007", "p0009"],
+      "dependsOn": []
+    },
+    {
+      "id": "completeness",
+      "title": {
+        "it-intermediate": "Nel frammento stabilizer dello ZX-calculus ogni equivalenza tra circuiti Clifford è dimostrabile per riscrittura.",
+        "it-expert": "Traduzione T: Cliff → ZX_s che preserva la semantica, più completezza di Backens (a ∗↔ b ⟺ ⟦a⟧ = ⟦b⟧)."
+      },
+      "summary": {
+        "it-intermediate": "Il circuito si traduce in un diagramma ZX con angoli multipli di π/2; il teorema garantisce che, se esiste un circuito più piccolo equivalente, c'è una sequenza di regole che ci porta. Resta da trovarla.",
+        "it-expert": "Diagrammi come framed open graph con Z(α)/X(β)/H; restringendo le fasi a {0, π/2, π, 3π/2} il frammento è completo. Il problema diventa la strategia di riscrittura."
+      },
+      "statedIn": ["p0064", "p0065"],
+      "evidence": ["p0036", "p0046", "p0054"],
+      "dependsOn": []
+    },
+    {
+      "id": "c1",
+      "title": {
+        "it-intermediate": "Ogni Clifford a un qubit si riduce in modo costruttivo a una delle 24 forme minime di C1.",
+        "it-expert": "Prop. 4.4, con prova costruttiva: line graph → forma Pauli-standard (Lemma 4.5) → C1, via π-commute, spider e Lemma 4.6."
+      },
+      "summary": {
+        "it-intermediate": "Si eliminano gli Hadamard, si alternano nodi verdi e rossi, si spingono i Pauli all'inizio, e si riduce per induzione sul numero di nodi. Nessuna delle 24 forme ha un equivalente più piccolo.",
+        "it-expert": "Riduzione per induzione sul numero di vertici; la minimalità di C1 è verificata enumerando i diagrammi sotto 4 vertici. La procedura effettiva serve all'ottimizzatore."
+      },
+      "statedIn": ["p0068", "p0069"],
+      "evidence": ["p0073", "p0076", "p0090"],
+      "dependsOn": ["completeness"]
+    },
+    {
+      "id": "c2",
+      "title": {
+        "it-intermediate": "Le 11520 forme minime per due qubit (C2) sono chiuse rispetto all'aggiunta di una porta, e i casi diventano le regole dell'ottimizzatore.",
+        "it-expert": "Prop. 4.7: per ogni generatore g, g∘k ∗↔ k′ ∈ C2 (|C2| = 24²·20 = 11520 = |C₂|); i casi della prova sono le C2 rules."
+      },
+      "summary": {
+        "it-intermediate": "La forma a sandwich (Clifford singoli, pochi nodi speciali, CNOT) conta esattamente quanti sono i Clifford a due qubit, e ogni porta aggiunta si riassorbe con poche regole.",
+        "it-expert": "Casi g = local Clifford (spinto oltre il CNOT), CNOT (9 sottocasi, 2 lavorati), σ (via le regole H e l'equivalenza iv)."
+      },
+      "statedIn": ["p0091", "p0092"],
+      "evidence": ["p0093", "p0095", "p0097", "p0101"],
+      "dependsOn": ["c1"]
+    },
+    {
+      "id": "rewriting-hard",
+      "title": {
+        "it-intermediate": "Applicare regole alla cieca non funziona: il sistema non termina e il motore sceglie da solo dove agire.",
+        "it-expert": "Gli assiomi ZX non sono né terminanti né confluenti; orientati per ridurre non sono completi; il matching di Quantomatic sceglie un match arbitrario."
+      },
+      "summary": {
+        "it-intermediate": "Per questo servono procedure (simproc) che applicano regole solo se riducono una misura (metrica) o solo in punti scelti (targeting).",
+        "it-expert": "Da qui REWRITE_METRIC e REWRITE_TARGETED come combinatori, e regole derivate strettamente riducenti dove possibile."
+      },
+      "statedIn": ["p0112"],
+      "evidence": ["p0105", "p0106", "p0108", "p0109", "p0111"],
+      "dependsOn": []
+    },
+    {
+      "id": "circuit-like",
+      "title": {
+        "it-intermediate": "Un diagramma si può rileggere come circuito se ammette un flusso causale: l'ottimizzatore resta sempre in questa classe.",
+        "it-expert": "Circuit-like = simple, |I| = |O|, con causal flow (Def. 6.4); ogni circuit-like è un circuito (Prop. 6.5), estraibile via path cover."
+      },
+      "summary": {
+        "it-intermediate": "Gli assiomi ZX di solito producono grafi che non sono circuiti; si usano quindi solo regole che trasformano circuiti in circuiti, e il flusso causale (dal calcolo basato su misure) permette di riconoscerli.",
+        "it-expert": "Criterio conservativo mutuato dal modello one-way: la path cover dà i fili dei qubit, gli archi fuori sono CNOT o TONC."
+      },
+      "statedIn": ["p0116", "p0129"],
+      "evidence": ["p0118", "p0120", "p0125", "p0128", "p0134"],
+      "dependsOn": ["completeness"]
+    },
+    {
+      "id": "optimiser",
+      "title": {
+        "it-intermediate": "L'ottimizzatore alterna semplificazione (regole che riducono sempre) e commutazione (spostare Pauli e CNOT per creare nuove riduzioni).",
+        "it-expert": "Init, poi un ciclo Simplification (Always rules, casi della 4.7) e Commutation (Pauli verso gli input via metrica, CNOT/TONC via targeting), poi tidy-up."
+      },
+      "summary": {
+        "it-intermediate": "Una metrica premia i diagrammi con i Pauli vicino agli ingressi e penalizza quelli che non sono circuiti; il targeting sceglie dove applicare le regole a due qubit.",
+        "it-expert": "Approccio volutamente conservativo: solo riscritture che restano circuit-like, anche rinunciando a percorsi via non-circuiti."
+      },
+      "statedIn": ["p0135"],
+      "evidence": ["p0137", "p0141", "p0146"],
+      "dependsOn": ["c2", "rewriting-hard", "circuit-like"]
+    },
+    {
+      "id": "results",
+      "title": {
+        "it-intermediate": "Il sistema riduce i circuiti random e dà forme ottime per 1–2 qubit; i limiti vengono da Quantomatic, non dal metodo.",
+        "it-expert": "Ottimalità per n ≤ 2, riduzioni consistenti su circuiti random (Tab. 1); tempo per passo crescente con la larghezza; colli di bottiglia nell'API dei simproc (matching, functor stateless)."
+      },
+      "summary": {
+        "it-intermediate": "Su circuiti più larghi non trova sempre il minimo e rallenta. La difficoltà principale è controllare dove il motore applica le regole; piccole estensioni di Quantomatic la risolverebbero.",
+        "it-expert": "Nessuna regola di riduzione per 3+ qubit (alcuni circuiti CNOT semplici restano irriducibili) e metrica e targeting molto conservativi; path cover ricalcolata a ogni invocazione; metriche in Python interpretato. Tutto risolvibile con estensioni minori."
+      },
+      "statedIn": ["p0150", "p0155"],
+      "evidence": ["p0145", "p0151", "p0152", "p0153"],
+      "dependsOn": ["optimiser"]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "thesis": {
+    "it-beginner": "Per eseguire circuiti quantistici troppo grandi per un solo processore conviene tagliarli in pezzi, ma farlo \"alla cieca\" costa moltissimo. DAScut decide dove tagliare, quali pezzi sono identici e dove eseguirli guardando la struttura del circuito e le caratteristiche dei processori, per ridurre tempi e perdita di qualità."
+  },
+  "claims": [
+    {
+      "id": "device-matters",
+      "title": {"it-beginner": "La qualità del risultato dipende molto da quale processore si usa e da quanto è \"intrecciato\" il circuito."},
+      "summary": {"it-beginner": "Negli esperimenti il rumore del dispositivo è la causa principale degli errori, i circuiti molto intrecciati perdono più qualità, e anche processori simili danno risultati diversi: scegliere dove eseguire conta, e i circuiti vanno tenuti piccoli."},
+      "statedIn": ["p0031", "p0032"],
+      "evidence": ["p0024", "p0030"],
+      "dependsOn": []
+    },
+    {
+      "id": "cutting-cost",
+      "title": {"it-beginner": "Tagliare un circuito ha costi che crescono esponenzialmente con il numero di tagli e con l'entanglement."},
+      "summary": {"it-beginner": "Ogni taglio richiede molte esecuzioni in più (costo di campionamento) e più calcolo per ricomporre i risultati. Per circuiti molto intrecciati come Effi_full il costo diventa impraticabile: tagliare poco e nei punti giusti è essenziale."},
+      "statedIn": ["p0035"],
+      "evidence": ["p0036", "p0038", "p0040"],
+      "dependsOn": []
+    },
+    {
+      "id": "structure-aware",
+      "title": {"it-beginner": "Guardare le interazioni tra qubit e riconoscere i pezzi identici permette di tagliare meglio e rieseguire meno."},
+      "summary": {"it-beginner": "Il grafo di interazione mostra dove il circuito è \"sottile\" e si può tagliare con poco danno; i sotto-circuiti isomorfi si eseguono una volta sola e si riusa il risultato."},
+      "statedIn": ["p0016", "p0043"],
+      "evidence": ["p0045"],
+      "dependsOn": ["cutting-cost"]
+    },
+    {
+      "id": "dascut",
+      "title": {"it-beginner": "DAScut adatta taglio, pianificazione ed esecuzione al circuito e ai processori disponibili."},
+      "summary": {"it-beginner": "Mette insieme i punti precedenti: un sistema in Python che divide, pianifica ed esegue i circuiti tenendo conto della loro struttura e delle caratteristiche dei processori, per migliorare tempo totale, qualità e numero di lavori completati."},
+      "statedIn": ["p0013", "p0015"],
+      "evidence": ["p0009"],
+      "dependsOn": ["device-matters", "cutting-cost", "structure-aware"]
+    }
+  ]
+}

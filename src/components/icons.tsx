@@ -118,3 +118,13 @@ export const CommentsIcon = (p: SVGProps<SVGSVGElement>) => (
     <path d="M13 7h2.5M13 10h2.5M13 13h1.5" />
   </Icon>
 );
+
+/** "Il filo": a thread through three nodes — the argument's path through the paper. */
+export const ThreadIcon = (p: SVGProps<SVGSVGElement>) => (
+  <Icon {...p}>
+    <circle cx="4.5" cy="15" r="1.8" />
+    <circle cx="10" cy="5" r="1.8" />
+    <circle cx="15.5" cy="13" r="1.8" />
+    <path d="M5.4 13.4l3.7-6.8M11 6.6l3.6 4.8" />
+  </Icon>
+);

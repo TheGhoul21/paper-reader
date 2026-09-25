@@ -18,6 +18,7 @@ import {
   PencilIcon,
   PlusIcon,
   SearchIcon,
+  ThreadIcon,
 } from "./icons";
 
 export type FitMode = "none" | "width" | "page";
@@ -48,6 +49,8 @@ interface Props {
   onVariantChange: (key: string) => void;
   notesOpen: boolean;
   onToggleNotes: () => void;
+  /** Present when the paper has an argument map: "Il filo" dims everything off the thread. */
+  thread?: { on: boolean; onToggle: () => void };
 }
 
 const COLORS = ["#e8916a", "#f2c14e", "#6fa8dc", "#93c47d", "#c27ba0"];
@@ -78,6 +81,7 @@ export default function Toolbar({
   onVariantChange,
   notesOpen,
   onToggleNotes,
+  thread,
 }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -222,6 +226,17 @@ export default function Toolbar({
 
         <div className="toolbar-sep toolbar-optional" />
 
+        {thread && (
+          <button
+            className={`toolbar-icon-btn${thread.on ? " is-active" : ""}`}
+            onClick={thread.onToggle}
+            aria-pressed={thread.on}
+            aria-label="Il filo: mostra solo i paragrafi che portano l'argomento"
+            title="Il filo: solo i paragrafi che portano l'argomento"
+          >
+            <ThreadIcon />
+          </button>
+        )}
         <button
           className={`toolbar-icon-btn${notesOpen ? " is-active" : ""}`}
           onClick={onToggleNotes}

@@ -1,0 +1,120 @@
+{
+  "thesis": {
+    "it-intermediate": "Con array di migliaia di atomi, il riordino che riempie le trappole vuote diventa un collo di bottiglia: più dura e più atomi si perdono. atommovr è un simulatore open-source che misura tempi, errori e limiti teorici degli algoritmi di riordino. Mostra che gli algoritmi attuali sono lontani dal limite, che il migliore dipende da quale errore domina, e propone InsideOut per il caso con due specie di atomi.",
+    "it-expert": "Un framework di benchmarking per il rearrangement su crossed-AOD, con error e timing model espliciti, stabilisce lower bound √N (LBAP), misura lo scaling delle euristiche (0.84–1.45 contro 0.45), mappa il crossover Hungarian/BalanceCompact in funzione di lifetime e tweezer error, e introduce InsideOut per il dual-species (success rate unitario, niente blocked configuration)."
+  },
+  "claims": [
+    {
+      "id": "loss-scaling",
+      "title": {
+        "it-intermediate": "La probabilità di un array senza difetti cala esponenzialmente con il numero di atomi: servono riordini più veloci e meno lossy.",
+        "it-expert": "Il success rate defect-free decade esponenzialmente in N, quindi la taglia massima cresce solo linearmente con gli atomi caricati."
+      },
+      "summary": {
+        "it-intermediate": "Gli atomi si perdono per la vita limitata nel vuoto e durante i trasferimenti tra trappole. Round multipli e ricarica continua aiutano, ma il riordino stesso deve migliorare.",
+        "it-expert": "Perdite vacuum-limited e da transfer, poco studiate le seconde; mitigazioni multi-round e continuous reloading (Fig. 2)."
+      },
+      "statedIn": ["p0015", "p0017"],
+      "evidence": ["p0019", "p0036"],
+      "dependsOn": []
+    },
+    {
+      "id": "framework",
+      "title": {
+        "it-intermediate": "atommovr permette di confrontare algoritmi di riordino con modelli realistici di tempi ed errori.",
+        "it-expert": "atommovr: move segment AOD parametrizzati con check di legalità, timing model naive o dettagliato, error model, benchmark automatici."
+      },
+      "summary": {
+        "it-intermediate": "Simula i comandi degli AOD passo per passo, controlla che le mosse siano legali, stima i tempi (anche accelerazioni e trasferimenti) e calcola metriche come tempo, riempimento e tasso di successo.",
+        "it-expert": "Toni RF 0–3 per riga/colonna, legalità (niente collisioni, niente tweezer carichi su siti occupati), adiabatic sine a tratti più t_transfer, perdite per lifetime e per tweezer."
+      },
+      "statedIn": ["p0020", "p0032"],
+      "evidence": ["p0033", "p0152", "p0155"],
+      "dependsOn": []
+    },
+    {
+      "id": "scaling-gap",
+      "title": {
+        "it-intermediate": "Gli algoritmi attuali scalano da N^0.84 a N^1.45, lontano dal limite teorico N^0.45.",
+        "it-expert": "Lower bound Z* ~ √N (0.45) dal LBAP, contro BalanceCompact 0.84, Tetris 1.03, ParHungarian 1.26, Hungarian 1.45."
+      },
+      "summary": {
+        "it-intermediate": "Il limite viene dalla distanza massima che un atomo deve percorrere se tutti si muovono insieme. C'è molto spazio per algoritmi migliori.",
+        "it-expert": "t_LB = s·d_minmax/|v| dal bottleneck assignment; coefficienti fittati a p_load = 0.5 (Tab. 1)."
+      },
+      "statedIn": ["p0035", "p0040"],
+      "evidence": ["p0037", "p0043", "p0049"],
+      "dependsOn": ["framework"]
+    },
+    {
+      "id": "parhungarian",
+      "title": {
+        "it-intermediate": "Aggiungere il parallelismo a un algoritmo sequenziale aiuta, ma non basta.",
+        "it-expert": "ParHungarian (parallelizzazione greedy dei cammini LSAP) migliora lo scaling da 1.45 a 1.26 ma resta lontano dagli algoritmi nativamente paralleli."
+      },
+      "summary": {
+        "it-intermediate": "ParHungarian prova a eseguire insieme i passi di più atomi, rimandando quelli in conflitto. È un miglioramento, ma il parallelismo va progettato fin dall'inizio.",
+        "it-expert": "Test di equivalenza X′_Par = X′_No-Par; strategia sub-ottima, perché l'ottimo costa O(2^M)."
+      },
+      "statedIn": ["p0041", "p0046"],
+      "evidence": ["p0169", "p0190", "p0194"],
+      "dependsOn": ["scaling-gap"]
+    },
+    {
+      "id": "noise-crossover",
+      "title": {
+        "it-intermediate": "L'algoritmo migliore dipende da quale errore domina: Hungarian con errori delle trappole, Balance and Compact con la vita nel vuoto.",
+        "it-expert": "Crossover: Hungarian (distance-optimal) vince con tweezer error dominante, BalanceCompact (time-optimal, sub-lineare) con lifetime dominante."
+      },
+      "summary": {
+        "it-intermediate": "Un algoritmo che fa poca strada e pochi trasferimenti soffre meno gli errori delle trappole; uno velocissimo soffre meno le perdite nel tempo.",
+        "it-expert": "Fig. 4 mappa success rate e tempi relativi in (τ_vac, tweezer error): la scelta dell'euristica va fatta sull'error budget dell'apparato."
+      },
+      "statedIn": ["p0052", "p0053"],
+      "evidence": ["p0051", "p0054", "p0060"],
+      "dependsOn": ["framework", "scaling-gap"]
+    },
+    {
+      "id": "dual-species-hard",
+      "title": {
+        "it-intermediate": "Con due specie di atomi il riordino è più difficile: compaiono configurazioni bloccate.",
+        "it-expert": "Il dual-species rompe l'intercambiabilità: abbinamento species-selective e blocked configuration dipendenti da densità e p_load."
+      },
+      "summary": {
+        "it-intermediate": "Un atomo del tipo sbagliato può occupare il posto destinato all'altro o sbarrargli la strada, e l'algoritmo non riesce a completare il target.",
+        "it-expert": "Un'estensione naive di ParHungarian degrada ad alto p_load (Fig. 5); cambia anche la condizione sperimentale ottimale."
+      },
+      "statedIn": ["p0057"],
+      "evidence": ["p0056", "p0058", "p0068"],
+      "dependsOn": []
+    },
+    {
+      "id": "insideout",
+      "title": {
+        "it-intermediate": "InsideOut costruisce il target strato per strato dal centro e riesce sempre.",
+        "it-expert": "InsideOut, layer-by-layer dal centro con push-out dei misplaced, ha success rate unitario a ogni p_load."
+      },
+      "summary": {
+        "it-intermediate": "Gli strati già completati non vengono più toccati, quindi non si creano blocchi. Negli array sparsi ParHungarian può essere un po' più veloce, ma in quelli densi InsideOut vince su tempo e successo.",
+        "it-expert": "Monotono sui layer interni, quindi niente blocked state; vantaggio in array densi e sulle configurazioni a zone separate, mentre ParHungarian è più veloce su pattern sparsi ad alta entropia."
+      },
+      "statedIn": ["p0062", "p0066"],
+      "evidence": ["p0063", "p0067", "p0207"],
+      "dependsOn": ["dual-species-hard"]
+    },
+    {
+      "id": "outlook",
+      "title": {
+        "it-intermediate": "Servono algoritmi migliori e modelli più fini: SLM mobili e reinforcement learning sono direzioni promettenti.",
+        "it-expert": "Direzioni: mover olografici SLM (senza vincolo rettilineo, ma ~1 kHz), timing AOD continuo e policy apprese (RL) sul dual-species."
+      },
+      "summary": {
+        "it-intermediate": "Gli array attuali sono già al limite degli algoritmi ingenui, e la mancanza di codice e modelli di errore comuni rende difficile confrontarli: atommovr vuole essere quella base comune.",
+        "it-expert": "Mancano implementazioni open-source ed error model condivisi; atommovr offre l'environment, anche per approcci alla AlphaZero data l'analogia con il Go."
+      },
+      "statedIn": ["p0070", "p0071"],
+      "evidence": ["p0073", "p0078"],
+      "dependsOn": ["scaling-gap", "insideout"]
+    }
+  ]
+}

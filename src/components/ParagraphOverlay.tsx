@@ -9,15 +9,22 @@ interface Props {
   hoverId: string | null;
   onSelect: (paragraph: Paragraph) => void;
   onHover: (id: string | null) => void;
+  /** "Il filo" on: paragraphs outside this set are dimmed. */
+  thread?: Set<string> | null;
+  /** Paragraphs of the claim focused in the argument map. */
+  focus?: Set<string> | null;
 }
 
 const BADGE_SIZE = 18;
 
-export default function ParagraphOverlay({ paragraphs, numbers, width, height, activeId, hoverId, onSelect, onHover }: Props) {
+export default function ParagraphOverlay({ paragraphs, numbers, width, height, activeId, hoverId, onSelect, onHover, thread, focus }: Props) {
   return (
     <div className="paragraph-overlay" style={{ width, height }}>
       {paragraphs.map((p) => {
-        const state = p.id === activeId ? " is-active" : p.id === hoverId ? " is-highlighted" : "";
+        const state =
+          (p.id === activeId ? " is-active" : p.id === hoverId ? " is-highlighted" : "") +
+          (focus?.has(p.id) ? " is-in-focus" : "") +
+          (thread && !thread.has(p.id) ? " is-off-thread" : "");
         const [bx, by] = p.rects[0] ?? [0, 0];
         // Badge sits just left of the paragraph (in the margin / column gutter), inside if there's no room.
         const badgeLeft = bx * width - BADGE_SIZE - 3 >= 0 ? bx * width - BADGE_SIZE - 3 : bx * width + 2;

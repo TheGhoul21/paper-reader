@@ -1,15 +1,17 @@
-# Flags runs of paragraphs whose explanation seems to describe a *neighbouring* paragraph's text
-# (explanations drifted by one or more positions), per variant.
+# Checks a paper's hand-written data against its paragraphs:
+#   1. explanation drift — runs of paragraphs whose explanation seems to describe a *neighbouring*
+#      paragraph's text (explanations shifted by one or more positions), per variant;
+#   2. recall questions — ids unique within a paragraph, question and answer for every variant;
+#   3. structure.json (argument map), if present — thesis/titles/summaries for every variant,
+#      unique claim ids, statedIn/evidence pointing at existing paragraphs, dependsOn at existing
+#      claims, no dependency cycles.
 #
-#   python3 .claude/skills/import-paper/scripts/check_alignment.py <slug>
+#   python3 .claude/skills/import-paper/scripts/check_paper.py <slug>
 #
 # Language-neutral heuristic: compares the "anchors" an explanation shares with each nearby
 # sourceText — numbers, equation/figure references, symbols, capitalised names — and reports where
 # a neighbour (offset -2..+2) matches clearly better than the paragraph itself. Isolated hits are
 # noise; a run of 3+ consecutive paragraphs with the same offset is a real drift. Exit code 1 if any.
-#
-# Also validates `recall` questions: ids unique within a paragraph, question and answer present
-# for every variant.
 import json, re, sys, unicodedata
 from collections import Counter
 
@@ -58,5 +60,45 @@ for p in paragraphs:
                 print(f"{p['id']}#{r.get('id')}: missing question or answer for {v}")
 if questions:
     print(f"{questions} recall questions checked")
+
+import os
+structure_path = f"papers/{slug}/structure.json"
+if os.path.exists(structure_path):
+    structure = json.load(open(structure_path))
+    paragraph_ids = {p["id"] for p in paragraphs}
+    claims = structure.get("claims", [])
+    claim_ids = [c.get("id") for c in claims]
+    problems = []
+    for v in variants:
+        if not structure.get("thesis", {}).get(v):
+            problems.append(f"thesis: missing {v}")
+    if len(claim_ids) != len(set(claim_ids)) or None in claim_ids:
+        problems.append(f"claim ids missing or duplicated: {claim_ids}")
+    for c in claims:
+        for field in ("title", "summary"):
+            for v in variants:
+                if not c.get(field, {}).get(v):
+                    problems.append(f"{c.get('id')}: {field} missing {v}")
+        if not c.get("statedIn"):
+            problems.append(f"{c.get('id')}: statedIn is empty")
+        for field in ("statedIn", "evidence"):
+            for pid in c.get(field, []):
+                if pid not in paragraph_ids:
+                    problems.append(f"{c.get('id')}: {field} {pid} is not a paragraph")
+        for dep in c.get("dependsOn", []):
+            if dep not in claim_ids:
+                problems.append(f"{c.get('id')}: dependsOn {dep} is not a claim")
+    deps = {c.get("id"): c.get("dependsOn", []) for c in claims}
+    def cyclic(node, stack):
+        if node in stack:
+            return True
+        return any(cyclic(d, stack | {node}) for d in deps.get(node, []) if d in deps)
+    if any(cyclic(c, frozenset()) for c in deps):
+        problems.append("dependsOn has a cycle")
+    covered = {pid for c in claims for pid in c.get("statedIn", []) + c.get("evidence", [])}
+    print(f"structure: {len(claims)} claims, thread covers {len(covered)}/{len(paragraph_ids)} paragraphs")
+    for msg in problems:
+        found = True
+        print(f"structure: {msg}")
 print("problems found — see above" if found else "OK")
 sys.exit(1 if found else 0)

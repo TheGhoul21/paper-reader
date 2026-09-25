@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { segmentText, type ConceptMatcher } from "../lib/concepts";
 import type { Paragraph } from "../types";
+import type { ParagraphRole } from "../lib/structure";
 import { ExternalLinkIcon } from "./icons";
 
 interface Props {
@@ -12,6 +13,9 @@ interface Props {
   active: boolean;
   highlighted: boolean;
   conceptMatcher: ConceptMatcher;
+  /** This paragraph's place in the argument map: which claims it states or supports. */
+  roles?: ParagraphRole[];
+  onRoleClick?: (claimId: string) => void;
   /** Whether this paragraph is in the review deck (marked as "to review" by the reader). */
   inReview: boolean;
   onToggleReview: () => void;
@@ -42,6 +46,8 @@ export default function ExplanationNote({
   active,
   highlighted,
   conceptMatcher,
+  roles,
+  onRoleClick,
   inReview,
   onToggleReview,
   onActivate,
@@ -86,6 +92,23 @@ export default function ExplanationNote({
       onMouseLeave={() => onHover(false)}
     >
       {showSection && paragraph.section && <div className="explanation-section">{paragraph.section}</div>}
+      {roles && roles.length > 0 && (
+        <div className="note-roles">
+          {roles.map((r) => (
+            <button
+              key={r.claimId}
+              className={`note-role note-role-${r.kind}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onRoleClick?.(r.claimId);
+              }}
+              title="Mostra nella mappa dell'argomento"
+            >
+              {r.kind === "stated" ? `Enuncia ${r.label}` : `Prova per ${r.label}`}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="explanation-note-body">
         <span className="paragraph-badge" aria-label={`Paragrafo ${number}`} title={inReview ? "Da ripassare" : undefined}>
           {number}

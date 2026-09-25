@@ -1,0 +1,92 @@
+{
+  "thesis": {
+    "it-intermediate": "Nelle architetture ad atomi neutri divise in zone, far interagire qubit lontani richiede di spostarli fisicamente, e questo domina i tempi. Il paper propone una CZ \"remota\" in cui a viaggiare è solo un'eccitazione di Rydberg lungo una catena di atomi di supporto, e un compilatore che concentra gli spostamenti lenti all'inizio. Il risultato sono circuiti più brevi e più fedeli, soprattutto quelli grandi.",
+    "it-expert": "Un remote CZ via directional transport (hop facilitati di una singola eccitazione di Rydberg lungo catene di ancilla) rende il costo dell'entanglement long-range lineare nel numero di hop sub-μs invece che nello shuttling. Un compilatore ibrido AOD+DT, statico per Ising e dinamico per QFT, supera ZAC, ZAP ed Enola in durata e fedeltà, con vantaggio crescente in n."
+  },
+  "claims": [
+    {
+      "id": "shuttling-bottleneck",
+      "title": {
+        "it-intermediate": "Nelle architetture a zone il costo dell'entanglement a distanza è lo spostamento fisico, non la porta.",
+        "it-expert": "La latenza della CZ long-range in architetture zonate è dominata dallo shuttling storage↔entanglement, non dalla CZ di Rydberg (sub-μs)."
+      },
+      "summary": {
+        "it-intermediate": "La CZ dura meno di un microsecondo, ma portare gli atomi nella zona di entanglement e riportarli indietro richiede decine o centinaia di microsecondi, con vincoli di non-incrocio.",
+        "it-expert": "Shuttling AOD con non-crossing, limiti di velocità e perdita per transfer, ripetuto per ogni finestra d'interazione: è il costo che ZAC e ZAP ottimizzano e che il DT vuole eliminare."
+      },
+      "statedIn": ["p0031"],
+      "evidence": ["p0015"],
+      "dependsOn": []
+    },
+    {
+      "id": "directional-transport",
+      "title": {
+        "it-intermediate": "Il trasporto direzionale sposta l'informazione, non l'atomo: un'eccitazione salta lungo una catena di atomi di supporto.",
+        "it-expert": "Il DT propaga coerentemente una singola eccitazione di Rydberg lungo una catena preconfigurata di ancilla tramite antiblockade."
+      },
+      "summary": {
+        "it-intermediate": "Grazie all'antiblockade di Rydberg l'eccitazione passa da un atomo al vicino solo in una direzione, in meno di un microsecondo per salto. Serve però un \"corridoio\" di atomi preparato in anticipo.",
+        "it-expert": "Hop |r,0⟩↔|0,r⟩ facilitati, T_hop ≈ 0.256 μs; il prezzo è un corridoio statico di ancilla da costruire con l'AOD."
+      },
+      "statedIn": ["p0012", "p0029"],
+      "evidence": ["p0028"],
+      "dependsOn": []
+    },
+    {
+      "id": "remote-cz",
+      "title": {
+        "it-intermediate": "Una CZ remota via DT costa circa 0.67 μs più 0.51 μs per ogni passo di distanza.",
+        "it-expert": "T_CZ ≃ 2t_π + 2L·T_hop + t_2π ≈ 0.667 + 0.512·L μs: costo lineare in hop veloci."
+      },
+      "summary": {
+        "it-intermediate": "Il controllo lancia un'eccitazione, che arriva accanto al target e ne condiziona la fase con un impulso 2π, poi torna indietro. Gli atomi dei qubit non si muovono mai.",
+        "it-expert": "π locale, L hop, 2π condizionato sul target (antiblockade), L hop di ritorno, π di ritorno; fasi residue in Z virtuali."
+      },
+      "statedIn": ["p0037", "p0044"],
+      "evidence": ["p0039", "p0041"],
+      "dependsOn": ["directional-transport"]
+    },
+    {
+      "id": "static-compiler",
+      "title": {
+        "it-intermediate": "Il compilatore statico configura i canali una volta sola e poi esegue tutte le CZ come CZ remote.",
+        "it-expert": "Compilatore statico: configurazione AOD one-shot sui canali DT, poi mapping quasi fisso con tutte le CZ remote."
+      },
+      "summary": {
+        "it-intermediate": "L'AOD serve ancora per caricare i qubit e costruire i canali, ma tutto il movimento lento è concentrato all'inizio; poi non si spostano più qubit tra le zone.",
+        "it-expert": "AOD e DT restano accoppiati: assegnazione a priorità ai canali e moto parallelo via MIS, niente placement intermedi per segmento (a differenza di ZAP)."
+      },
+      "statedIn": ["p0046", "p0032"],
+      "evidence": ["p0047", "p0050"],
+      "dependsOn": ["remote-cz", "shuttling-bottleneck"]
+    },
+    {
+      "id": "dynamic-compiler",
+      "title": {
+        "it-intermediate": "Per la QFT serve un compilatore dinamico che costruisce e adatta i canali stage per stage.",
+        "it-expert": "Per circuiti QFT-like, DTChannelPlan estende, accorcia e reinstrada i canali per stage, con riuso di ancilla e fallback AOD."
+      },
+      "summary": {
+        "it-intermediate": "Nella QFT poche coppie sono attive alla volta e cambiano lentamente: canali fissi per tutte sarebbero uno spreco. Ancilla \"volanti\" di canale e di riserva e qubit \"pre-uso\" fanno da binari riconfigurabili.",
+        "it-expert": "31 stage e 24 pattern sparsi a n=10: channel e reserve ancilla assegnati col metodo ungherese, qubit pre-use come relay, classificazione per coppia DT/AOD."
+      },
+      "statedIn": ["p0055"],
+      "evidence": ["p0056", "p0066"],
+      "dependsOn": ["static-compiler"]
+    },
+    {
+      "id": "results",
+      "title": {
+        "it-intermediate": "Rispetto a ZAC, ZAP ed Enola i circuiti durano molto meno e hanno fedeltà più alta, con vantaggio crescente con la dimensione.",
+        "it-expert": "Fedeltà media 0.264 contro 0.225 (+17.6%) su Ising, fino a 5.9–15.9× a n=150–200; forte riduzione della durata su QFT per entrambi i compilatori."
+      },
+      "summary": {
+        "it-intermediate": "Sui circuiti piccoli è pari a ZAP; sui grandi la fedeltà arriva a 15 volte quella del miglior concorrente. Anche la versione dinamica, sulla QFT, resta molto più veloce dei metodi precedenti.",
+        "it-expert": "Parità con ZAP a n piccolo, +6–11% a 42–50, 1.8–1.9× a 98–100; sulla QFT sia lo statico che il dinamico sono ben sotto Enola, ZAC e ZAP in durata."
+      },
+      "statedIn": ["p0098", "p0140"],
+      "evidence": ["p0134"],
+      "dependsOn": ["static-compiler", "dynamic-compiler"]
+    }
+  ]
+}

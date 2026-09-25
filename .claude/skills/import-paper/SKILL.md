@@ -56,7 +56,7 @@ For each surviving block, write one explanation per requested variant, at that v
 - Don't add back what extraction deliberately left out (authors, affiliations, metadata, headings, references) — nobody needs a comment explaining a list of names. Acknowledgments, funding and data-availability paragraphs get a one-line explanation at most, or can be dropped.
 - Explanation depth should actually track the requested level — an `expert` variant should read differently from a `beginner` one for the same paragraph (denser, assumes vocabulary, focuses on what's novel), not just be a shorter/longer version of the same text.
 - **Keep explanations attached to their block id, never to a position in a list.** Two ways this silently went wrong before: writing an explanation for a section heading (headings are not blocks — see step 3), and explaining text the extraction lost (it exists in the paper but in no block). Both push every following explanation one paragraph out of place. If the paper has text that no block contains, fold its explanation into the block just before it; never insert an extra entry.
-- After writing, run `python3 .claude/skills/import-paper/scripts/check_alignment.py <slug>`; it must print `OK` (it flags runs of 3+ paragraphs whose explanation matches a neighbour's text better than their own).
+- After writing, run `python3 .claude/skills/import-paper/scripts/check_paper.py <slug>`; it must print `OK` (it flags runs of 3+ paragraphs whose explanation matches a neighbour's text better than their own).
 - If a passage clearly wants an interactive notebook (a formula worth playing with, an algorithm worth stepping through), set `notebookSuggestion` on that block instead of building anything — notebooks are out of scope for this skill.
 
 **Optional: draft explanations with a local model first.** If the user is cost-conscious and has Ollama running locally, `scripts/generate_explanations_local.mjs` can draft a whole variant's explanations against `qwen3.5:4b` (thinking disabled) before you touch it by hand:
@@ -147,9 +147,36 @@ Add a `recall` array to the paragraphs that carry the paper's argument — its c
 - One question per idea, answerable from *this* paragraph (the answer view links back to it). Ask for the why/how and the numbers that matter, not for recall of wording; avoid yes/no.
 - Same level discipline as explanations: intermediate asks for the mechanism in plain terms, expert for the precise statement, conditions, trade-offs and figures. Answers are 1–3 sentences.
 - `id` is unique within the paragraph (`r1`, `r2`, …) — card ids depend on it, so don't renumber existing questions.
-- `check_alignment.py` validates them (unique ids, question and answer for every variant).
+- `check_paper.py` validates them (unique ids, question and answer for every variant).
 
 For an already-imported paper, the same can be added on its own: read `paragraphs.json`, add `recall` to the chosen paragraphs, run the checker. Nothing else changes.
+
+## 4d. Write the argument map (`structure.json`)
+
+Write `papers/<slug>/structure.json`: the paper's thesis and the 5–8 claims that carry it. The reader shows it as the "Mappa" tab (thesis, then each claim with where it's stated, its evidence, and what it builds on), labels notes "Enuncia C2" / "Prova per C3", and the toolbar's "Il filo" dims every paragraph that neither states nor supports a claim — so the map is also the paper's quick reading path.
+
+```json
+{
+  "thesis": { "it-intermediate": "…", "it-expert": "…" },
+  "claims": [
+    { "id": "czswap",
+      "title":   { "it-intermediate": "…", "it-expert": "…" },
+      "summary": { "it-intermediate": "…", "it-expert": "…" },
+      "statedIn": ["p0043", "p0060"],
+      "evidence": ["p0229", "p0101"],
+      "dependsOn": ["ptn"] }
+  ]
+}
+```
+
+- **Thesis**: one or two sentences — what the paper shows and why it matters, at each variant's level.
+- **Claims** are the paper's own assertions (a construction works, a bound holds, a method beats a baseline, a limitation), not topics or section names. List them in the order the argument builds them (they're numbered C1…Cn in that order). `title` is the claim itself as a short sentence; `summary` says what it rests on and why it matters.
+- `statedIn`: the paragraph(s) where the paper asserts it (abstract/intro mentions only if that's where it's really stated; prefer the body). `evidence`: the paragraphs that establish it — definitions it needs, derivations, proofs, experiments, figures' captions of results. Both must be real paragraph ids.
+- `dependsOn`: claims this one needs (no cycles). Keep the graph honest — a results claim usually depends on the method claim.
+- **Size the thread**: statedIn ∪ evidence across claims is "Il filo". Aim for roughly 20–35% of the paragraphs — enough to follow the argument end to end, few enough to read in ten minutes. Leave out background, related work, notation-only paragraphs, acknowledgments.
+- `check_paper.py` validates it (variants, ids, cycles) and prints how much of the paper the thread covers.
+
+For an already-imported paper, write it on its own from `paragraphs.json` (whole-paper read first); nothing else changes.
 
 ## 5. Write meta.json and update the library index
 

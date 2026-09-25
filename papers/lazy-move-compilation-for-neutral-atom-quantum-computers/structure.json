@@ -1,0 +1,134 @@
+{
+  "thesis": {
+    "it-intermediate": "Invece di spostare gli atomi a ogni porta, come fanno i compilatori attuali, conviene tenerli fermi e far passare le interazioni attraverso atomi \"buffer\" di un'altra specie, spostando fisicamente un atomo solo quando conviene davvero (lazy-move). Su 22 circuiti il compilatore BRIDGE ottiene una fedeltà 10–16 volte più alta e tempi di esecuzione centinaia di volte più brevi, senza spostare nessun atomo dato.",
+    "it-expert": "Un fabric buffer-relay statico a doppia specie (dati Rb, buffer Cs, gate BAM multi-hop) sostituisce la connettività per riconfigurazione: BRIDGE-F compila a zero trasporto con placement mobility-aware, BRIDGE-H aggiunge move solo sopra una soglia di break-even. Rispetto a Enola e ZAP: ~16× e ~10× di fedeltà geomean, ~1000× e ~540× di tempo."
+  },
+  "claims": [
+    {
+      "id": "reconfiguration-cost",
+      "title": {
+        "it-intermediate": "Spostare gli atomi a ogni porta ha costi che si accumulano con la profondità del circuito.",
+        "it-expert": "La connettività per riconfigurazione paga heating, handover SLM–AOD e latenza di trasporto su quasi ogni gate di un circuito profondo."
+      },
+      "summary": {
+        "it-intermediate": "L'interazione di Rydberg funziona solo tra vicini, e i compilatori attuali avvicinano gli atomi ogni volta: ogni spostamento li scalda, rischia di perderli ed è lento.",
+        "it-expert": "V ∝ R⁻⁶ limita i gate ai nearest-neighbor; le alternative sono riposizionare o fare da relay. Il costo di trasporto è per-gate e dinamico."
+      },
+      "statedIn": ["p0007"],
+      "evidence": ["p0011", "p0026"],
+      "dependsOn": []
+    },
+    {
+      "id": "fabric",
+      "title": {
+        "it-intermediate": "Atomi buffer di un'altra specie, disposti a scacchiera, permettono porte a distanza senza muovere i dati.",
+        "it-expert": "Substrato dual-species (Rb dati, Cs buffer) staggered più gate BAM multi-hop, con F = F_relay^{2L−1} e T ≈ (2L−1)τ_p."
+      },
+      "summary": {
+        "it-intermediate": "I buffer si pilotano senza disturbare i dati; le risonanze di Förster fanno sì che i dati interagiscano con i buffer ma non tra loro; la griglia regolare rende il routing prevedibile. Il costo cresce con la lunghezza del relay.",
+        "it-expert": "Indirizzamento specie-selettivo, canali a raggi distinti via Förster (d_DB = 5.66, d_BB = d_DD = 8 μm), 4 buffer equidistanti per dato. La lunghezza del relay governa sia la fedeltà sia la latenza."
+      },
+      "statedIn": ["p0008", "p0037"],
+      "evidence": ["p0029", "p0031", "p0035", "p0044", "p0045", "p0050", "p0053"],
+      "dependsOn": []
+    },
+    {
+      "id": "bridge-f",
+      "title": {
+        "it-intermediate": "BRIDGE-F compila tutto il circuito con gli atomi dato fermi, scegliendo bene dove metterli e come instradare i relay.",
+        "it-expert": "BRIDGE-F: placement CBO mobility-aware (con ML warm-start), routing shortest-path sul grafo dei buffer con prenotazione disgiunta, serializzazione anti-crosstalk."
+      },
+      "summary": {
+        "it-intermediate": "Con gli atomi fermi il posizionamento iniziale decide la lunghezza di tutti i relay: BRIDGE lo ottimizza sul grafo di chi interagisce con chi, riservando spazio per eventuali spostamenti futuri.",
+        "it-expert": "Obiettivo: relay pesato per interazione più penalità soft di spaziatura; lo scheduler non-crossing estrae un profilo di hotspot per BRIDGE-H."
+      },
+      "statedIn": ["p0055", "p0077"],
+      "evidence": ["p0058", "p0065", "p0066", "p0067", "p0072"],
+      "dependsOn": ["fabric"]
+    },
+    {
+      "id": "static-suffices",
+      "title": {
+        "it-intermediate": "Un fabric completamente statico basta per la maggior parte dei circuiti: l'errore viene quasi tutto dalla lunghezza dei relay.",
+        "it-expert": "RQ1: a zero trasporto la fedeltà mediana è 0.86 (>0.9 su 10 benchmark), e il canale relay/BAM traccia da solo la fedeltà totale."
+      },
+      "summary": {
+        "it-intermediate": "Coerenza e porte singole restano quasi perfette; i pochi crolli (QFT grandi, interazioni tutti-con-tutti) sono dovuti a relay lunghi. Accorciare i relay è la leva principale.",
+        "it-expert": "Il relay va da 0.982 a 1.9·10⁻⁸; la perdita scala con la topologia d'interazione, non con il numero di qubit (cat_n35 0.740 contro qft_n18)."
+      },
+      "statedIn": ["p0121", "p0131"],
+      "evidence": ["p0122", "p0124", "p0127"],
+      "dependsOn": ["bridge-f"]
+    },
+    {
+      "id": "break-even",
+      "title": {
+        "it-intermediate": "BRIDGE-H sposta un atomo solo se l'errore dello spostamento è minore di quello risparmiato sui relay futuri.",
+        "it-expert": "BRIDGE-H: shuttle sugli hotspot solo se E_shuttle < τ·(1 − F_relay^{2ΣΔL}) sui gate futuri, con budget K."
+      },
+      "summary": {
+        "it-intermediate": "Conviene soprattutto quando un qubit cambia \"gruppo di vicini\" tra fasi del circuito. Il parametro τ regola la prudenza, K il numero massimo di spostamenti.",
+        "it-expert": "Modello E_shuttle con heating, decoerenza e pavimento di handover E₀ ≈ 0.014; motivato dalla disparità tra località spaziale e temporale (phase shift)."
+      },
+      "statedIn": ["p0071", "p0090"],
+      "evidence": ["p0075", "p0080", "p0081", "p0092", "p0093"],
+      "dependsOn": ["bridge-f"]
+    },
+    {
+      "id": "mobility-niche",
+      "title": {
+        "it-intermediate": "La mobilità selettiva aiuta solo pochi circuiti e bastano circa 30 spostamenti: è un meccanismo \"senza rimpianti\".",
+        "it-expert": "Fedeltà-neutra sulla mediana (utile solo sui circuiti con phase shift, es. qft_n18 +23–38%), e il budget satura a ≈30 move (−37% di tempo)."
+      },
+      "summary": {
+        "it-intermediate": "Sui circuiti standard spostare atomi non migliora la fedeltà media, e se è troppo aggressivo peggiora; dove serve, pochi spostamenti catturano tutto il beneficio. Questo conferma la premessa lazy-move.",
+        "it-expert": "Sweep τ ∈ [0,5] e K fino a illimitato: rendimenti decrescenti netti (826 → 518 μs), default lazy-move con budget piccolo."
+      },
+      "statedIn": ["p0135", "p0146"],
+      "evidence": ["p0129", "p0132", "p0139"],
+      "dependsOn": ["break-even"]
+    },
+    {
+      "id": "vs-sota",
+      "title": {
+        "it-intermediate": "Rispetto a Enola e ZAP, BRIDGE ha fedeltà 16 e 10 volte più alta e tempi 1000 e 540 volte più brevi, senza spostare atomi dato.",
+        "it-expert": "Suite RQ4 (22 circuiti): geomean 0.627 contro 0.060 (ZAP) e 0.040 (Enola), ~12 μs contro 6.6–12 ms, 0 move contro 6489 e 8407."
+      },
+      "summary": {
+        "it-intermediate": "I due approcci pagano in \"valute\" diverse: la riconfigurazione paga a ogni porta, BRIDGE un costo fisso una volta sola (circa il doppio delle trappole e il controllo di due specie).",
+        "it-expert": "Confronto tra punti di co-design architettura/compilatore, ri-stimati con lo stesso error model; costo di BRIDGE statico e ammortizzato."
+      },
+      "statedIn": ["p0019", "p0145"],
+      "evidence": ["p0141", "p0147", "p0149", "p0153"],
+      "dependsOn": ["bridge-f", "reconfiguration-cost"]
+    },
+    {
+      "id": "concurrency",
+      "title": {
+        "it-intermediate": "Con hardware futuro, eseguire 2–3 catene di relay in parallelo accelererebbe i circuiti di 1.5–1.8 volte.",
+        "it-expert": "RQ5: cap di 2/3 catene disgiunte dà ~1.5×/1.8× di speedup (≈2.5× illimitato); il crosstalk rende il parallelismo illimitato distruttivo per la fedeltà."
+      },
+      "summary": {
+        "it-intermediate": "Oggi BRIDGE-F esegue le porte a lungo raggio una alla volta per evitare interferenze, ma lo scheduler è già pronto per parallelizzarle.",
+        "it-expert": "Il guadagno si concentra sui circuiti ricchi di relay con vera concorrenza; quelli seriali (adder, qft) guadagnano poco oltre cap = 2."
+      },
+      "statedIn": ["p0152"],
+      "evidence": ["p0150", "p0154"],
+      "dependsOn": ["bridge-f"]
+    },
+    {
+      "id": "placement-leverage",
+      "title": {
+        "it-intermediate": "Il posizionamento intelligente spiega quasi tutto il vantaggio di BRIDGE-F su un compilatore ingenuo con lo stesso hardware.",
+        "it-expert": "Ablation: CBO contro row-major raddoppia circa il relay medio e spiega quasi tutto il gap Static-Naive; il warm-start ML migliora qualità e costo."
+      },
+      "summary": {
+        "it-intermediate": "Con posizioni \"in fila\" i relay diventano circa due volte più lunghi e la fedeltà crolla, soprattutto sui circuiti con interazioni a lungo raggio.",
+        "it-expert": "Poiché il modello è governato da F_relay^{2L−1}, accorciare il relay medio è la decisione a maggior leva; la prenotazione disgiunta dei buffer è la leva complementare."
+      },
+      "statedIn": ["p0174"],
+      "evidence": ["p0170", "p0171", "p0172"],
+      "dependsOn": ["bridge-f"]
+    }
+  ]
+}

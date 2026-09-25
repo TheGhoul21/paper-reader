@@ -1538,3 +1538,191 @@ body {
   flex-basis: 100%;
   color: var(--fg);
 }
+
+/* Argument map (ArgumentMap.tsx), "Il filo", and paragraph roles on notes. */
+.notes-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  gap: 4px;
+  margin: 0 -14px 12px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.notes-tab {
+  padding: 5px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notes-tab.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.notes-thread-hint {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+.argument-map {
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.map-thesis {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  background: var(--card-bg);
+}
+
+.map-thesis p {
+  margin: 0;
+}
+
+.map-claims {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.map-claim {
+  margin-bottom: 8px;
+  padding: 9px 12px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  cursor: pointer;
+  scroll-margin: 56px;
+}
+
+.map-claim:hover {
+  border-color: rgba(181, 69, 27, 0.55);
+}
+
+.map-claim.is-focused {
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.map-claim-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.map-claim-label {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.map-claim-summary {
+  margin: 6px 0 8px;
+  color: var(--muted);
+}
+
+.map-claim-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.map-link-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.map-link-label {
+  min-width: 82px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.map-paragraph-chip,
+.map-claim-chip {
+  min-width: 22px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--chip-bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.map-paragraph-chip:hover,
+.map-claim-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.note-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.note-role {
+  padding: 1px 7px;
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.note-role-stated {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* In the PDF (always light — it sits on the white page). */
+.paragraph-hit.is-off-thread {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.paragraph-hit.is-off-thread:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.paragraph-hit.is-in-focus {
+  background: rgba(242, 193, 78, 0.22);
+  box-shadow: inset 3px 0 0 #e0a100;
+}
+
+.paragraph-badge-pdf.is-off-thread {
+  opacity: 0.35;
+}
+
+/* Bottom sheet: the tabs stick just below the sheet's own 48px bar, with the sheet's 12px gutter. */
+.notes-pane.is-sheet .notes-tabs {
+  top: 48px;
+  margin: -8px -12px 12px;
+  padding: 8px 12px;
+}

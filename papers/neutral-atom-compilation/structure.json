@@ -1,0 +1,79 @@
+{
+  "thesis": {
+    "it-expert": "Sfruttando la struttura algebrica delle famiglie di gate e il modello di controllo riga/colonna degli array ad atomi neutri, la compilazione diventa un problema di decomposizione rank-one su gruppi (per i gate singoli) e di partizione combinatoria (per i C-Z via trasporto AOD), con garanzie dimostrabili: fino a 2× in meno di addressing layer, ~50% in meno di trasporti, e >30% su QAOA-MaxCut."
+  },
+  "claims": [
+    {
+      "id": "addressing-model",
+      "title": {"it-expert": "Compilare gate a singolo qubit = decomporre M ∈ G^{m×n} nel minimo numero di termini rank-one uvᵀ·G."},
+      "summary": {"it-expert": "Ogni addressing layer seleziona righe e colonne e applica lo stesso G alle intersezioni; il costo è il numero di layer (Eq. 1), e la struttura di G determina la difficoltà."},
+      "statedIn": ["p0023", "p0024"],
+      "evidence": ["p0020", "p0021", "p0022"],
+      "dependsOn": []
+    },
+    {
+      "id": "self-inverse",
+      "title": {"it-expert": "Per gate self-inverse il minimo numero di layer è il rango GF(2), calcolabile esattamente."},
+      "summary": {"it-expert": "G = {I,X} ≅ GF(2): l'eliminazione gaussiana dà una decomposizione ottima con rank_GF(2)(M) termini, contro min(m,n) del naive. È il mattone degli altri casi."},
+      "statedIn": ["p0033"],
+      "evidence": ["p0027", "p0030", "p0031", "p0032"],
+      "dependsOn": ["addressing-model"]
+    },
+    {
+      "id": "pauli",
+      "title": {"it-expert": "Per i gate di Pauli si ottiene una decomposizione 4/3-ottimale del tensore m×n×2 su GF(2)."},
+      "summary": {"it-expert": "G ≅ (Z2)², quindi rango tensoriale (NP-completo in generale, aperto per terza dimensione 2); la migliore delle tre espansioni a due slice è ≤ ⁴⁄₃·rank(T) via il Lemma 8 di [19]."},
+      "statedIn": ["p0041", "p0045"],
+      "evidence": ["p0035", "p0039", "p0044"],
+      "dependsOn": ["self-inverse"]
+    },
+    {
+      "id": "cyclic",
+      "title": {"it-expert": "Fase (Z4), π/8 (Z8) e Clifford si compilano con schemi ricorsivi mod 2, con bound 3-ottimale (fase) e 7-ottimale sotto congettura (π/8)."},
+      "summary": {"it-expert": "Stadio mod 2 più residuo dimezzato; il Lemma II.1 (ρ4 = rango GF(2) di M/2) chiude il bound per Z4. I Clifford si fattorizzano P·Hᵃ·Sᵇ in tre sottoproblemi indipendenti."},
+      "statedIn": ["p0050", "p0072"],
+      "evidence": ["p0051", "p0052", "p0057", "p0061"],
+      "dependsOn": ["self-inverse"]
+    },
+    {
+      "id": "cz-transport",
+      "title": {"it-expert": "Per i C-Z la metrica è il numero di trasporti AOD, sotto i vincoli di adiacenza e di esecuzione simultanea per righe."},
+      "summary": {"it-expert": "Trasporto in entangling zone e C-Z su tutte le coppie di due righe adiacenti entro R_b; C-Z tra righe e colonne diverse richiedono due trasporti. Il trasporto è l'operazione più lenta e più rumorosa."},
+      "statedIn": ["p0084"],
+      "evidence": ["p0076", "p0078", "p0081"],
+      "dependsOn": []
+    },
+    {
+      "id": "aligned-cz",
+      "title": {"it-expert": "I C-Z allineati si schedulano in modo ottimo per riga con colorazione di intervalli, e per più righe con raggruppa-ed-elimina."},
+      "summary": {"it-expert": "L'AOD preserva l'ordine, quindi gate compatibili = intervalli disgiunti (grafo a intervalli, perfetto); più righe si gestiscono con la matrice binaria per coppie (a,b), gruppi a intervalli disgiunti e rango GF(2) per gruppo."},
+      "statedIn": ["p0091", "p0100"],
+      "evidence": ["p0088", "p0093", "p0102"],
+      "dependsOn": ["cz-transport", "self-inverse"]
+    },
+    {
+      "id": "non-aligned-cz",
+      "title": {"it-expert": "I C-Z non allineati tra due righe richiedono il minimo numero di sottosequenze strettamente crescenti, calcolabile in O(m log m)."},
+      "summary": {"it-expert": "Compatibilità sse le connessioni non si incrociano ((a₁−b₁)(a₂−b₂) > 0); lo scheduling generale fa prima i non allineati per coppie di righe, poi i residui allineati."},
+      "statedIn": ["p0111"],
+      "evidence": ["p0107", "p0109", "p0115"],
+      "dependsOn": ["cz-transport"]
+    },
+    {
+      "id": "qaoa",
+      "title": {"it-expert": "QAOA-MaxCut si compila decomponendo il grafo in star forest, ciascuna in strati H–C-Z–H–Rz–H–C-Z–H."},
+      "summary": {"it-expert": "I controlled-Zγ sono simmetrici e commutanti, quindi raggruppabili; ogni strato si compila con gli algoritmi precedenti (greedy lessicografico, App. B)."},
+      "statedIn": ["p0122"],
+      "evidence": ["p0117", "p0119", "p0121"],
+      "dependsOn": ["cyclic", "aligned-cz", "non-aligned-cz"]
+    },
+    {
+      "id": "results",
+      "title": {"it-expert": "Contro il baseline naive: fino a 2× meno addressing layer, ~50% meno trasporti per C-Z, >30% su QAOA-MaxCut, compilazione sotto il secondo."},
+      "summary": {"it-expert": "Il vantaggio cresce con n per fase e π/8 e cala per self-inverse e Pauli; la 4/3-ottimalità è verificata esaustivamente su array piccoli; runtime sub-secondo fino a 200×200."},
+      "statedIn": ["p0138", "p0144", "p0155"],
+      "evidence": ["p0130", "p0132", "p0147"],
+      "dependsOn": ["pauli", "aligned-cz", "qaoa"]
+    }
+  ]
+}
