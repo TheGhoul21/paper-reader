@@ -1,0 +1,26 @@
+{
+  "slug": "argon-neutral-atom-compilation",
+  "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+  "authors": [
+    "Xiaoyu Li",
+    "Wenjie Sun",
+    "Zhigang Wang",
+    "Lianhui Yu",
+    "Geng Chen",
+    "Guowu Yang"
+  ],
+  "importedAt": "2026-09-15T08:38:16Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "2607.21216",
+  "pageCount": 15,
+  "variants": [
+    {
+      "key": "it-intermediate",
+      "language": "it",
+      "level": "intermediate",
+      "label": "Italiano · Laurea in campo affine"
+    }
+  ]
+}

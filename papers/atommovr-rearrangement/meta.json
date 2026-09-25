@@ -1,0 +1,15 @@
+{
+  "slug": "atommovr-rearrangement",
+  "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+  "authors": ["Nikhil K. Harle", "Bo-Yu Chen", "Bob Bao", "Hannes Bernien"],
+  "importedAt": "2026-09-16T00:00:00Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "url",
+  "sourceRef": "https://quantum-journal.org/papers/q-2026-07-29-2177/pdf/",
+  "pageCount": 18,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

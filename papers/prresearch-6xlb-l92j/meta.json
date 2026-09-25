@@ -1,0 +1,15 @@
+{
+  "slug": "prresearch-6xlb-l92j",
+  "title": "Parity flow formalism: Tracking quantum information throughout computation",
+  "authors": ["Berend Klaver", "Katharina Ludwig", "Anette Messinger", "Stefan M. A. Rombouts", "Michael Fellner", "Kilian Ender", "Wolfgang Lechner"],
+  "importedAt": "2026-09-16T00:00:00Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "url",
+  "sourceRef": "https://journals.aps.org/prresearch/pdf/10.1103/6xlb-l92j",
+  "pageCount": 33,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

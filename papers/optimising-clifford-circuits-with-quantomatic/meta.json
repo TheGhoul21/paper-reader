@@ -1,0 +1,15 @@
+{
+  "slug": "optimising-clifford-circuits-with-quantomatic",
+  "title": "Optimising Clifford Circuits with Quantomatic",
+  "authors": ["Andrew Fagan", "Ross Duncan"],
+  "importedAt": "2026-09-16T00:00:00Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "1901.10114",
+  "pageCount": 21,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

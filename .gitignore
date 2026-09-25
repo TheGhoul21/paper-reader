@@ -1,0 +1,19 @@
+# Node / Vite
+node_modules/
+dist/
+public/papers/
+*.tsbuildinfo
+
+# Local Claude Code settings (machine-specific permissions)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Python (import-paper skill scripts run via uv, no venv checked in)
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Old Quarto site: a local, stale copy of github.com/TheGhoul21/phase-kickback — not part of this repo
+legacy/

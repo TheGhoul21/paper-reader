@@ -1,0 +1,129 @@
+[
+  {
+    "slug": "dascut",
+    "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+    "authors": ["Theodora Adufu", "Yoonhee Kim"],
+    "importedAt": "2026-09-15T08:00:00Z",
+    "language": "it",
+    "background": "no background in quantum computing",
+    "pageCount": 18,
+    "variants": [
+      { "key": "it-beginner", "language": "it", "level": "beginner", "label": "Italiano · Nessun background" }
+    ]
+  },
+  {
+    "slug": "neutral-atom-compilation",
+    "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+    "authors": ["Dekuan Dong", "Fengyu Zou", "Hengzhun Chen", "Guorui Zhu", "Yingzhou Li"],
+    "importedAt": "2026-09-15T08:19:45Z",
+    "language": "it",
+    "background": "expert in this exact subfield",
+    "pageCount": 14,
+    "variants": [
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "argon-neutral-atom-compilation",
+    "title": "ARGON: A GNN-Empowered Compilation Framework for Scalable Neutral Atom Computing",
+    "authors": ["Xiaoyu Li", "Wenjie Sun", "Zhigang Wang", "Lianhui Yu", "Geng Chen", "Guowu Yang"],
+    "importedAt": "2026-09-15T08:38:16Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 15,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" }
+    ]
+  },
+  {
+    "slug": "directional-transport-remote-cz",
+    "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+    "authors": ["Lingyi Kong", "Chen Huang", "Zhemin Zhang", "Yidong Zhou", "Xiangyu Ren", "Shaochen Li", "Zhiding Liang"],
+    "importedAt": "2026-09-15T13:30:49Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 7,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "atommovr-rearrangement",
+    "title": "atommovr: An open-source simulation framework for rearrangement in atomic arrays",
+    "authors": ["Nikhil K. Harle", "Bo-Yu Chen", "Bob Bao", "Hannes Bernien"],
+    "importedAt": "2026-09-16T00:00:00Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 18,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "optimising-clifford-circuits-with-quantomatic",
+    "title": "Optimising Clifford Circuits with Quantomatic",
+    "authors": ["Andrew Fagan", "Ross Duncan"],
+    "importedAt": "2026-09-16T00:00:00Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 21,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "prresearch-6xlb-l92j",
+    "title": "Parity flow formalism: Tracking quantum information throughout computation",
+    "authors": ["Berend Klaver", "Katharina Ludwig", "Anette Messinger", "Stefan M. A. Rombouts", "Michael Fellner", "Kilian Ender", "Wolfgang Lechner"],
+    "importedAt": "2026-09-16T00:00:00Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 33,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "phase-gadget-synthesis",
+    "title": "Phase Gadget Synthesis for Shallow Circuits",
+    "authors": ["Alexander Cowtan", "Silas Dilkes", "Ross Duncan", "Will Simmons", "Seyon Sivarajah"],
+    "importedAt": "2026-09-15T14:30:00Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 16,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+    "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+    "authors": ["Javad Kazemi", "Michael Fellner", "Riccardo J. Valencia-Tortora", "Michael Schuler", "Wolfgang Lechner"],
+    "importedAt": "2026-09-18T08:05:17Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 19,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  },
+  {
+    "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+    "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+    "authors": ["Chen Huang", "Jingbo Wang", "Zhemin Zhang", "Ming Zhong", "Zhuo Fu", "Zhiding Liang", "Yuan Sun", "Dong E. Liu"],
+    "importedAt": "2026-09-23T15:29:40Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 18,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "slug": "optimizing-atom-transport-gate-count-and-depth-with",
+  "title": "Optimizing Atom Transport, Gate-Count and Depth with Parity Twine",
+  "authors": ["Javad Kazemi", "Michael Fellner", "Riccardo J. Valencia-Tortora", "Michael Schuler", "Wolfgang Lechner"],
+  "importedAt": "2026-09-18T08:05:17Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "2609.03583",
+  "pageCount": 19,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

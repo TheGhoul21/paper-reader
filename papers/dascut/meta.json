@@ -1,0 +1,22 @@
+{
+  "slug": "dascut",
+  "title": "DAScut: density-and-structure-aware circuit cutting for scalable quantum simulations",
+  "authors": [
+    "Theodora Adufu",
+    "Yoonhee Kim"
+  ],
+  "importedAt": "2026-09-15T08:00:00Z",
+  "language": "it",
+  "background": "no background in quantum computing",
+  "sourceType": "local",
+  "sourceRef": "legacy/papers/dascut/source/dascut.pdf",
+  "pageCount": 18,
+  "variants": [
+    {
+      "key": "it-beginner",
+      "language": "it",
+      "level": "beginner",
+      "label": "Italiano · Nessun background"
+    }
+  ]
+}

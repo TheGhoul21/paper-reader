@@ -1,0 +1,25 @@
+{
+  "slug": "neutral-atom-compilation",
+  "title": "Structure-Aware Compilation for Scalable Neutral-Atom Quantum Computing",
+  "authors": [
+    "Dekuan Dong",
+    "Fengyu Zou",
+    "Hengzhun Chen",
+    "Guorui Zhu",
+    "Yingzhou Li"
+  ],
+  "importedAt": "2026-09-15T08:19:45Z",
+  "language": "it",
+  "background": "expert in this exact subfield",
+  "sourceType": "arxiv",
+  "sourceRef": "2607.01787",
+  "pageCount": 14,
+  "variants": [
+    {
+      "key": "it-expert",
+      "language": "it",
+      "level": "expert",
+      "label": "Italiano · Esperto nel sottocampo"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "slug": "directional-transport-remote-cz",
+  "title": "Compiler Framework for Directional Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Remote CZ Approach",
+  "authors": ["Lingyi Kong", "Chen Huang", "Zhemin Zhang", "Yidong Zhou", "Xiangyu Ren", "Shaochen Li", "Zhiding Liang"],
+  "importedAt": "2026-09-15T13:30:49Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "2604.11000",
+  "pageCount": 7,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

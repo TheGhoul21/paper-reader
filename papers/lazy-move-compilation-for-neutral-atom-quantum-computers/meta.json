@@ -1,0 +1,24 @@
+{
+  "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
+  "title": "Lazy-Move Compilation for Neutral-Atom Quantum Computers via a Buffer-Relay Fabric",
+  "authors": [
+    "Chen Huang",
+    "Jingbo Wang",
+    "Zhemin Zhang",
+    "Ming Zhong",
+    "Zhuo Fu",
+    "Zhiding Liang",
+    "Yuan Sun",
+    "Dong E. Liu"
+  ],
+  "importedAt": "2026-09-23T15:29:40Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "2606.31833",
+  "pageCount": 18,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

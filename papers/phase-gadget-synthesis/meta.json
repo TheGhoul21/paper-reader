@@ -1,0 +1,15 @@
+{
+  "slug": "phase-gadget-synthesis",
+  "title": "Phase Gadget Synthesis for Shallow Circuits",
+  "authors": ["Alexander Cowtan", "Silas Dilkes", "Ross Duncan", "Will Simmons", "Seyon Sivarajah"],
+  "importedAt": "2026-09-15T14:30:00Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "1906.01734",
+  "pageCount": 16,
+  "variants": [
+    { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+    { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+  ]
+}

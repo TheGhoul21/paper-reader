@@ -1,0 +1,5579 @@
+[
+  {
+    "id": "p0002",
+    "page": 0,
+    "order": 2,
+    "rects": [
+      [
+        0.17776960485121784,
+        0.16480565311932804,
+        0.8289325190525428,
+        0.36103971076734137
+      ]
+    ],
+    "sourceText": "We study the compilation of structured quantum gate families on two-dimensional neutral-atomarrays, aiming to reduce addressing and transport overhead under realistic hardware constraints.For single-qubit gates, we exploit the algebraic structures of gate families at the matrix level, en-abling eﬀicient rank-one decompositions over appropriate algebraic structures and thereby reducingthe number of addressing layers. For controlled-Z (C-Z) gates, we formulate the transport schedul-ing problem using graph-theoretic models, leading to eﬀicient compilation algorithms under realistictransport constraints. We provide provable performance guarantees for the proposed methods andvalidate them through extensive numerical experiments.Across representative single-qubit gatefamilies, our methods reduce the number of addressing layers by up to a factor of two comparedwith naïve row- or column-wise implementations. For C-Z gates, our scheduling strategy reducesthe required number of atom transport operations by approximately 50%. When applied to QAOAcircuits for MaxCut, the proposed framework reduces transport cost by more than 30% on average.These results show that the physical constraints of neutral-atom hardware can be converted into al-gebraic and graph-theoretic structure, turning a hardware-level scheduling bottleneck into tractabledecomposition and coloring problems.",
+    "section": "Abstract",
+    "explanations": {
+      "it-expert": "Abstract: per i gate a singolo qubit sfruttano la struttura algebrica delle famiglie di gate per decomposizioni rank-one efficienti sul livello matriciale, riducendo il numero di 'addressing layer'. Per i gate C-Z formulano lo scheduling del trasporto come problema grafo-teorico. Risultati: fino a 2x meno addressing layer rispetto a implementazioni naive riga/colonna, ~50% meno operazioni di trasporto per i C-Z, >30% di riduzione del costo di trasporto su QAOA-MaxCut. Garanzie di prestazione dimostrabili + validazione numerica estensiva."
+    }
+  },
+  {
+    "id": "p0005",
+    "page": 0,
+    "order": 5,
+    "rects": [
+      [
+        0.5441241794162326,
+        0.3882085241452612,
+        0.8923105476728452,
+        0.40078754617710305
+      ],
+      [
+        0.5951176562340431,
+        0.4026744341609454,
+        0.8413174697776246,
+        0.41525345619278725
+      ],
+      [
+        0.5212516036688113,
+        0.4383309104225852,
+        0.8346214543760212,
+        0.4496521227287524
+      ],
+      [
+        0.5212516036688113,
+        0.4608043709186592,
+        0.917938232421875,
+        0.5212902878270005
+      ]
+    ],
+    "sourceText": "TABLE I: Summary of optimality guarantees for different single-qubit gate families. Gate familyAlgebra structure Optimality Self-inverse gates Z2OptimalPauli gates(Z2)243-optimalPhase gatesZ43-optimalπ/8 gatesZ87-optimal (conjectured)",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Tabella I: riepiloga le garanzie di ottimalità ottenute per le diverse famiglie di gate a singolo qubit — gate self-inverse (struttura Z2): ottimale; gate di Pauli ((Z2)^2): 4/3-ottimale; gate di fase (Z4): 3-ottimale; gate π/8 (Z8): 7-ottimale (congetturato)."
+    }
+  },
+  {
+    "id": "p0006",
+    "page": 0,
+    "order": 6,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.4205064869890309,
+        0.4887089448816636,
+        0.6211436107905224
+      ]
+    ],
+    "sourceText": "Quantum compilation plays a central role in bridgingthe gap between high-level quantum algorithms and theirphysical realization on hardware. Over the past decades,substantial progress has been made in compiler design forleading quantum computing platforms, including super-conducting circuits [1–3] and trapped ions [4, 5]. For su-perconducting architectures, compilation efforts primar-ily focus on qubit mapping and SWAP minimization un-der fixed, low-degree connectivity graphs, as well as gatescheduling subject to coherence-time constraints [6–8]. Incontrast, trapped-ion systems benefit from near all-to-allconnectivity, shifting the compilation emphasis towardlaser-control optimization, motional mode management,and gate parallelism [9, 10].",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Contesto: la compilazione quantistica è stata sviluppata soprattutto per circuiti superconduttori (focus su qubit mapping/SWAP minimization su grafi di connettività fissa e a basso grado, scheduling vincolato dai tempi di coerenza) e per ioni intrappolati (connettività quasi all-to-all, ottimizzazione del controllo laser, gestione dei modi di moto, parallelismo dei gate)."
+    }
+  },
+  {
+    "id": "p0007",
+    "page": 0,
+    "order": 7,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.5656441197250829,
+        0.9184704948874081,
+        0.8096775093463936
+      ]
+    ],
+    "sourceText": "In this work, we develop a systematic framework fortranspiling quantum circuits on neutral-atom arrays byexplicitly exploiting the algebraic structure of the under-lying gate sets.For single-qubit gates, including self-inverse gates, Pauli gates, phase gates, and T (π/8)gates, we reformulate the parallelization problem as amatrix decomposition problem over appropriate alge-braic structures. This perspective enables us to deriveprovable bounds on the number of required operationsfor each gate family. The resulting optimality guaran-tees are summarized in Table I. For two-qubit C-Z gates,we adopt a graph-theoretical formulation that capturesthe interaction pattern among atoms. By distinguishingbetween row/column-aligned and non-aligned gates un-der realistic transport constraints, we design schedulingstrategies that significantly reduce the required numberof transport operations.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Sintesi del contributo: per i gate a singolo qubit (self-inverse, Pauli, fase, T/π8) riformulano la parallelizzazione come problema di decomposizione matriciale su opportune strutture algebriche, ottenendo bound dimostrabili sul numero di operazioni (Tabella I). Per i C-Z, una formulazione grafo-teorica che distingue gate allineati e non-allineati riduce le operazioni di trasporto."
+    }
+  },
+  {
+    "id": "p0008",
+    "page": 0,
+    "order": 8,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.6230304987743648,
+        0.4887089947469873,
+        0.8525978627831045
+      ]
+    ],
+    "sourceText": "The compilation landscape of neutral-atom quantumcomputers differs fundamentally from that of both super-conducting and trapped-ion platforms. By leveraging op-tical tweezer arrays and Rydberg-mediated interactions,neutral-atom platforms support reconfigurable qubit lay-outs, long coherence time, and the ability to physicallytransport atoms during computation [11–15]. These fea-tures make neutral-atom platforms a promising candi-date for scalable quantum computation, enabling nativeparallel in-place single-qubit operations and flexible im-plementations of entangling gates through atomic trans-port.Eﬀiciently transpiling abstract quantum circuitsinto hardware-compatible instruction sequences on suchplatforms, however, remains a nontrivial challenge, par-ticularly when achievable parallelism is limited by circuitstructure and overhead associated with atomic transport.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Specificità della piattaforma ad atomi neutri rispetto a superconduttori/ioni intrappolati: array di tweezer ottici riconfigurabili, interazioni mediate da stati di Rydberg, tempi di coerenza lunghi e possibilità di trasportare fisicamente gli atomi durante il calcolo — da cui nasce il problema specifico di compilazione qui affrontato (parallelismo in-place + overhead di trasporto)."
+    }
+  },
+  {
+    "id": "p0009",
+    "page": 0,
+    "order": 9,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.8160176903310449,
+        0.9184697967728758,
+        0.9153919412632181
+      ]
+    ],
+    "sourceText": "We evaluate the proposed methods through numericalexperiments on randomly generated instances.Acrossall considered single-qubit gate families, our methods re-duce the number of addressing layers by up to a factor oftwo compared with naïve row- or column-wise implemen-tations. For C-Z gates, the proposed scheduling strat-egy reduces the required number of atom transport op-",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Inizio del riepilogo dei risultati sperimentali (continua a pagina successiva): riduzione fino a 2x del numero di addressing layer rispetto a implementazioni naive riga/colonna, su tutte le famiglie di gate a singolo qubit considerate; per i C-Z, la strategia di scheduling proposta riduce le operazioni di trasporto atomico..."
+    }
+  },
+  {
+    "id": "p0011",
+    "page": 1,
+    "order": 11,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.06819083473899147,
+        0.48870889501633985,
+        0.15310068804808338
+      ],
+      [
+        0.08823529411764706,
+        0.1405216467500937,
+        0.48870904461231107,
+        0.21096431847774622
+      ]
+    ],
+    "sourceText": "erations by approximately 50%. We further benchmarkthe complete compilation framework on randomly gen-erated QAOA-MaxCut instances, where it reduces theC-Z transport cost by more than 30% on average. In ad-dition, small-scale exhaustive tests confirm the theoret-ical 4 3-optimality for Pauli gates. Runtime benchmarksfurther show that all compilation procedures completewithin one second for the tested array sizes, indicatingthat the proposed methods are computationally eﬀicientat near-term neutral-atom scales.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Continua: riduzione di ~50% delle operazioni di trasporto per C-Z; su istanze QAOA-MaxCut generate casualmente, riduzione >30% del costo di trasporto in media; test esaustivi su piccola scala confermano il bound teorico di 4/3-ottimalità per i gate di Pauli; tutte le procedure di compilazione completano in meno di un secondo alle scale testate."
+    }
+  },
+  {
+    "id": "p0012",
+    "page": 1,
+    "order": 12,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.21285118719544074,
+        0.4886770809397978,
+        0.2398961385091146
+      ]
+    ],
+    "sourceText": "The main contributions of this work are summarizedas follows:",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Lead-in all'elenco puntato dei contributi principali del paper."
+    }
+  },
+  {
+    "id": "p0013",
+    "page": 1,
+    "order": 13,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.2510961282132852,
+        0.4886934866313062,
+        0.3070728995583274
+      ]
+    ],
+    "sourceText": "• We introduce a unified algebraic framework for de-composing and scheduling several families of single-qubit gates on neutral-atom arrays, with provablebounds on the operation count.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Contributo 1: un framework algebrico unificato per decomporre e schedulare diverse famiglie di gate a singolo qubit su array di atomi neutri, con bound dimostrabili sul numero di operazioni."
+    }
+  },
+  {
+    "id": "p0014",
+    "page": 1,
+    "order": 14,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.3186478855633976,
+        0.4886934866313062,
+        0.389090566924124
+      ]
+    ],
+    "sourceText": "• We develop eﬀicient scheduling algorithms for C-Zgates under realistic transport constraints, leverag-ing graph-theoretical tools such as interval graphcoloring and the computation of a minimum num-ber of strictly increasing subsequences.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Contributo 2: algoritmi di scheduling efficienti per i gate C-Z sotto vincoli di trasporto realistici, basati su strumenti grafo-teorici — colorazione di grafi a intervalli e calcolo del numero minimo di sottosequenze strettamente crescenti."
+    }
+  },
+  {
+    "id": "p0015",
+    "page": 1,
+    "order": 15,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.40066686302724513,
+        0.4886934866313062,
+        0.4711095251218237
+      ]
+    ],
+    "sourceText": "• We validate the effectiveness of our approachthrough numerical simulations, demonstrating sub-stantial reductions in operation counts relative tonaïve strategies and verifying theoretical guaran-tees for Pauli gates.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Contributo 3: validazione numerica dell'approccio, con riduzioni sostanziali del conteggio di operazioni rispetto a strategie naive e verifica empirica delle garanzie teoriche per i gate di Pauli."
+    }
+  },
+  {
+    "id": "p0016",
+    "page": 1,
+    "order": 16,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.48268454965918955,
+        0.4886935364966299,
+        0.5531272117537681
+      ]
+    ],
+    "sourceText": "• We apply the proposed compilation framework toQAOA circuits for the MaxCut problem and nu-merically demonstrate significant improvements incompilation eﬀiciency on neutral-atom architec-tures.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Contributo 4: applicazione del framework di compilazione a circuiti QAOA per il problema MaxCut, con miglioramenti numerici significativi dell'efficienza di compilazione."
+    }
+  },
+  {
+    "id": "p0017",
+    "page": 1,
+    "order": 17,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.5643272399902344,
+        0.4886927386514502,
+        0.6203039920691288
+      ]
+    ],
+    "sourceText": "Taken together, these results provide practical guidancefor compiling quantum algorithms on neutral-atom plat-forms, helping to bridge the gap between abstract algo-rithm design and hardware-aware circuit optimization.",
+    "section": "I. Introduction",
+    "explanations": {
+      "it-expert": "Chiusura dell'introduzione: questi risultati offrono indicazioni pratiche per compilare algoritmi quantistici su piattaforme ad atomi neutri, collegando il design astratto degli algoritmi all'ottimizzazione hardware-aware dei circuiti."
+    }
+  },
+  {
+    "id": "p0020",
+    "page": 1,
+    "order": 20,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.7128702028833255,
+        0.48870904461231107,
+        0.8411764279760495
+      ]
+    ],
+    "sourceText": "In a neutral-atom quantum computer, single-qubitgates are implemented by driving qubit transitions us-ing externally applied control fields. Under neutral-atomarchitecture, each single-qubit addressing layer projectsmultiple horizontal and vertical laser beams onto theatomic array, so that atoms located at the intersectionsof these beams are simultaneously addressed and undergoidentical single-qubit operations. This addressing schemeis illustrated in Figure 1.",
+    "section": "II.A Single-Qubit Gates",
+    "explanations": {
+      "it-expert": "Meccanismo fisico di addressing: ogni addressing layer proietta fasci laser orizzontali e verticali sull'array atomico; gli atomi alle intersezioni dei fasci vengono indirizzati simultaneamente e subiscono la stessa operazione a singolo qubit (illustrato in Fig. 1)."
+    }
+  },
+  {
+    "id": "p0021",
+    "page": 1,
+    "order": 21,
+    "rects": [
+      [
+        0.5231077904794731,
+        0.3258827671860204,
+        0.913342245263991,
+        0.3818595192649148
+      ],
+      [
+        0.6640898261974061,
+        0.3837464072487571,
+        0.772376116584329,
+        0.39632542928059894
+      ]
+    ],
+    "sourceText": "FIG. 1: Single-qubit gate addressing. Qubits (yellowcircles) are addressed by horizontal and vertical laserbeams (semi-transparent green rectangles). Qubits atbeam intersections undergo identical single-qubit gates simultaneously.",
+    "section": "II.A Single-Qubit Gates",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 1: qubit (cerchi gialli) indirizzati da fasci laser orizzontali/verticali (rettangoli verdi semi-trasparenti); i qubit alle intersezioni dei fasci subiscono simultaneamente lo stesso gate a singolo qubit."
+    }
+  },
+  {
+    "id": "p0022",
+    "page": 1,
+    "order": 22,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.8430632774275962,
+        0.4886927386514502,
+        0.9135812316278015
+      ],
+      [
+        0.5179967443927441,
+        0.4233534841826468,
+        0.9184392791947508,
+        0.4521774137863005
+      ]
+    ],
+    "sourceText": "We focus on several families of single-qubit gates anddevelop optimized strategies for implementing them ona neutral-atom quantum computer. Consider an m × natomic array on which a collection of single-qubit gatesfrom a group G is to be applied.This target can be represented by a matrix M ∈Gm×n, where Mij specifiesthe gate to be applied to the qubit at position (i, j).",
+    "section": "II.A Single-Qubit Gates",
+    "explanations": {
+      "it-expert": "Formalizzazione: un pattern di gate a singolo qubit su un array m×n è rappresentato da una matrice M ∈ G^(m×n), dove l'entrata M_ij specifica il gate da applicare al qubit in posizione (i,j), con G il gruppo dei gate considerati."
+    }
+  },
+  {
+    "id": "p0023",
+    "page": 1,
+    "order": 23,
+    "rects": [
+      [
+        0.5179967942580678,
+        0.4537565057927912,
+        0.9184534409466911,
+        0.5241991678873698
+      ],
+      [
+        0.5574493906856363,
+        0.5241564355715357,
+        0.5649050544289982,
+        0.5367354961356732
+      ],
+      [
+        0.5649101905573427,
+        0.5241564355715357,
+        0.6011485679476869,
+        0.547157210533065
+      ],
+      [
+        0.604771333582261,
+        0.5323342602662365,
+        0.8789896248212827,
+        0.547157210533065
+      ],
+      [
+        0.5179966945274204,
+        0.5569219107579704,
+        0.9184532414853962,
+        0.584274638782848
+      ],
+      [
+        0.5179967443927441,
+        0.5858537307893387,
+        0.918470694348703,
+        0.6273645728525489
+      ],
+      [
+        0.6391911724813624,
+        0.6375112822561553,
+        0.7972438537996579,
+        0.6503226540305398
+      ],
+      [
+        0.5179966945274204,
+        0.6600860441573942,
+        0.8197934019799326,
+        0.6729728621665878
+      ]
+    ],
+    "sourceText": "Each single-qubit addressing layer selects a subset ofrows and columns and applies a single-qubit gate uni-formly to all qubits at their intersections. The goal isto realize the target matrix M with as few such steps aspossible. Each step can be expressed as \u0000 uv⊤\u0001 · G,G ∈G, u ∈{0, 1}m, v ∈{0, 1}n, where the binary vectors u and v indicate the selectedrows and columns, respectively. The outer product uv⊤ specifies the subset of addressed qubits, and multiplica-tion by a group element G corresponds to applying G tothe selected positions according to 0 · G = I,1 · G = G, where I denotes the identity element of G.",
+    "section": "II.A Single-Qubit Gates",
+    "explanations": {
+      "it-expert": "Ogni addressing layer seleziona un sottoinsieme di righe e colonne (vettori binari u,v) e applica uniformemente un elemento G del gruppo alle intersezioni selezionate: un passo si scrive come uv^T · G. Il prodotto esterno uv^T individua i qubit indirizzati; moltiplicare per G corrisponde ad applicare G alle posizioni selezionate (0·G=I, 1·G=G, con I elemento identità del gruppo)."
+    }
+  },
+  {
+    "id": "p0024",
+    "page": 1,
+    "order": 24,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.6745532257388337,
+        0.9184531417547488,
+        0.7015981963186553
+      ],
+      [
+        0.573326808954376,
+        0.7114859686957465,
+        0.6252018548304739,
+        0.7240649907275883
+      ],
+      [
+        0.656009798735575,
+        0.7311802103061869,
+        0.6795163123436223,
+        0.7443516278507734
+      ],
+      [
+        0.6822353188508476,
+        0.7335327610825048,
+        0.6896909825942096,
+        0.7461117831143466
+      ],
+      [
+        0.7242108014673968,
+        0.7335327610825048,
+        0.7316664652107587,
+        0.7461117831143466
+      ],
+      [
+        0.6896977144129136,
+        0.7415480180220171,
+        0.7233866772620506,
+        0.7575967191445707
+      ],
+      [
+        0.897650226268893,
+        0.7432173911971275,
+        0.9184544382531659,
+        0.7557964132289694
+      ],
+      [
+        0.5786601047889859,
+        0.7436466409702494,
+        0.6514753952525021,
+        0.7565334589794429
+      ],
+      [
+        0.7352892308453329,
+        0.7437221642696497,
+        0.7664683722203074,
+        0.7575954861111112
+      ],
+      [
+        0.7126389048457925,
+        0.7500136404326467,
+        0.7175501904456444,
+        0.7588189635613952
+      ],
+      [
+        0.6570653479083691,
+        0.7615931347163036,
+        0.6784609626321232,
+        0.7703984578450521
+      ],
+      [
+        0.6167369169347426,
+        0.7728153575550426,
+        0.8631121068218954,
+        0.789293616709083
+      ],
+      [
+        0.5179965947967728,
+        0.7939850007644808,
+        0.9184430689593546,
+        0.8255955859868214
+      ]
+    ],
+    "sourceText": "Using this notation, the compilation problem can beformulated as the following optimization problem: mink kX \u0000 \u0001 utv⊤ (1) s.t.M = · Gt, t t=1 Gt ∈G, ut ∈{0, 1}m, vt ∈{0, 1}n, where the sum is taken element-wise in Gm×n using thegroup operation.",
+    "section": "II.A Single-Qubit Gates",
+    "explanations": {
+      "it-expert": "Equazione (1), il problema di ottimizzazione centrale: minimizzare k tale che M si decomponga come somma di k termini rank-one u_t v_t^T · G_t, con G_t∈G, sotto la costrizione che la somma (nel senso della struttura di gruppo/anello su G^(m×n)) ricostruisca esattamente M. k rappresenta il numero minimo di addressing layer necessari."
+    }
+  },
+  {
+    "id": "p0026",
+    "page": 1,
+    "order": 26,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.8864610460069444,
+        0.9184711930019404,
+        0.9138137354995265
+      ]
+    ],
+    "sourceText": "We first consider the case G = {I, X}, where X isa self-inverse single-qubit gate, i.e., X2 = I.Many",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "Caso G={I,X} con X self-inverso (X²=I) — include, tra gli altri, i gate di Pauli e l'Hadamard (continua a pagina successiva)."
+    }
+  },
+  {
+    "id": "p0027",
+    "page": 2,
+    "order": 27,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.06819083473899147,
+        0.4887089947469873,
+        0.12447539242831143
+      ],
+      [
+        0.11221896900850184,
+        0.13419307361949573,
+        0.16409405228359247,
+        0.1467721149174854
+      ],
+      [
+        0.19490198372236264,
+        0.15388606293032867,
+        0.2184085222630719,
+        0.16705748047491517
+      ],
+      [
+        0.22112747890497345,
+        0.16425373578312422,
+        0.25481803744446996,
+        0.18030247543797348
+      ],
+      [
+        0.24406864440519047,
+        0.16441636133675624,
+        0.4646987416385825,
+        0.18234913758557253
+      ],
+      [
+        0.11755230224210453,
+        0.16635245506209556,
+        0.19036593468360652,
+        0.17923929233743688
+      ],
+      [
+        0.19595753289515677,
+        0.18430022037390506,
+        0.21735314761891084,
+        0.19310552423650568
+      ]
+    ],
+    "sourceText": "commonly used single-qubit gates, including the Pauligates and the Hadamard gates, satisfy this property. Inthis setting, the group G is isomorphic to the finite fieldGF(2), and the optimization problem (1) reduces to mink kX utv⊤ t ,ut ∈{0, 1}m, vt ∈{0, 1}n, s.t.M = t=1",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "...tra cui i gate di Pauli e l'Hadamard. In questo caso G è isomorfo al campo finito GF(2), e il problema (1) si riduce a un problema di decomposizione su GF(2)."
+    }
+  },
+  {
+    "id": "p0029",
+    "page": 2,
+    "order": 29,
+    "rects": [
+      [
+        0.0882352691849852,
+        0.1967767079671224,
+        0.4886927885167739,
+        0.2431597468828914
+      ]
+    ],
+    "sourceText": "where M ∈{0, 1}m×n encodes the target single-qubitgate pattern, and the summation is element-wise inGF(2).",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "M ∈{0,1}^(m×n) codifica il pattern target dei gate self-inverse; la somma nell'equazione è element-wise su GF(2)."
+    }
+  },
+  {
+    "id": "p0030",
+    "page": 2,
+    "order": 30,
+    "rects": [
+      [
+        0.0882352691849852,
+        0.2447388196232343,
+        0.48869383568857233,
+        0.3151815009839607
+      ]
+    ],
+    "sourceText": "The reduced problem is equivalent to computing therank of M over GF(2). Since GF(2) is a field, Gaussianelimination can be applied to determine the GF(2)-rankand to explicitly construct a corresponding decomposi-tion. The procedure is as follows:",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "Il problema ridotto equivale a calcolare il rango di M su GF(2): essendo GF(2) un campo, l'eliminazione gaussiana determina il rango e costruisce esplicitamente la decomposizione."
+    }
+  },
+  {
+    "id": "p0031",
+    "page": 2,
+    "order": 31,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.3232817601675939,
+        0.4886927885167739,
+        0.365101669773911
+      ],
+      [
+        0.24576306810566023,
+        0.3723472055762705,
+        0.40992260602564595,
+        0.3904438211460306
+      ],
+      [
+        0.1669951046214384,
+        0.3723484386097301,
+        0.2565108405219184,
+        0.3883959066988242
+      ],
+      [
+        0.1289330027461831,
+        0.3966795025449811,
+        0.48870231279360704,
+        0.43849814058554293
+      ]
+    ],
+    "sourceText": "1. Apply a sequence of elementary row operations,represented by an invertible matrix Tr, to trans-form M into reduced row echelon form 1 + e2v⊤2 + · · · + ekv⊤k , TrM = e1v⊤ where ei is the i-th column of the m × m identitymatrix, {v1, . . . , vk} are linearly independent overGF(2).",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "Passo 1 dell'algoritmo: applicare operazioni elementari di riga (matrice invertibile T_r) per portare M in forma a scala ridotta per righe, T_r M = e1 v1^T + ... + ek vk^T, con {v1,...,vk} linearmente indipendenti su GF(2)."
+    }
+  },
+  {
+    "id": "p0032",
+    "page": 2,
+    "order": 32,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.4467461711228496,
+        0.48867927501404207,
+        0.47526103318339646
+      ],
+      [
+        0.2365326725579555,
+        0.482815520931976,
+        0.4041709650575725,
+        0.500912252098623
+      ],
+      [
+        0.17274672065684998,
+        0.48281559799656726,
+        0.2472804200415518,
+        0.4988643376514165
+      ]
+    ],
+    "sourceText": "2. Define ut = T −1ret. Then M admits the decompo-sition 1 + u2v⊤2 + · · · + ukv⊤k . M = u1v⊤",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "Passo 2: definendo u_t = T_r^{-1} e_t si ottiene la decomposizione M = u1 v1^T + ... + uk vk^T — k termini rank-one, dove k è esattamente il rango GF(2) di M."
+    }
+  },
+  {
+    "id": "p0033",
+    "page": 2,
+    "order": 33,
+    "rects": [
+      [
+        0.0882352691849852,
+        0.5112172521726049,
+        0.4887089947469873,
+        0.6395235543299203
+      ]
+    ],
+    "sourceText": "The GF(2)-rank of M thus characterizes the minimumnumber of addressing layers required to realize the targetgate pattern under the row-column addressing constraintof the neutral-atom architecture.In contrast, a naïveimplementation that applies gates sequentially column-by-column or row-by-row would generally require up tomin{m, n} steps.This self-inverse scenario provides abaseline, illustrating how algebraic structure can be ex-ploited to optimize the compilation process.",
+    "section": "II.A.1 Self-inverse Gates",
+    "explanations": {
+      "it-expert": "Il rango GF(2) di M è quindi il numero minimo di addressing layer necessari per il pattern target, contro i fino a min(m,n) passi di un'implementazione naive riga-per-riga o colonna-per-colonna — questo caso funge da baseline per mostrare quanto la struttura algebrica riduca il costo."
+    }
+  },
+  {
+    "id": "p0035",
+    "page": 2,
+    "order": 35,
+    "rects": [
+      [
+        0.10451471415999668,
+        0.7003171516187263,
+        0.3409636753057343,
+        0.7128961736505682
+      ],
+      [
+        0.14722386528463924,
+        0.7226261948094224,
+        0.4296938827614379,
+        0.7354375665838068
+      ],
+      [
+        0.08823529411764706,
+        0.7447830354324495,
+        0.48869996912339153,
+        0.8152255433978457
+      ]
+    ],
+    "sourceText": "We now consider the Pauli group {±I, ±X, ±Y, ±Z, ±iI, ±iX, ±iY, ±iZ} . Since global phases are physically irrelevant, we restrictattention to the phase-free Pauli group G = {I, X, Y, Z}.The group operation, denoted by + and defined by Paulimultiplication modulo global phase, is summarized in thefollowing table:",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Gruppo di Pauli {±I,±X,±Y,±Z,±iI,±iX,±iY,±iZ}; poiché le fasi globali sono fisicamente irrilevanti, si restringe l'attenzione al gruppo di Pauli senza fase G={I,X,Y,Z}, con operazione di gruppo + data dalla moltiplicazione di Pauli modulo fase globale."
+    }
+  },
+  {
+    "id": "p0036",
+    "page": 2,
+    "order": 36,
+    "rects": [
+      [
+        0.24148038477679484,
+        0.8331458351828835,
+        0.334261476603988,
+        0.9095768784031724
+      ]
+    ],
+    "sourceText": "+ I X YZII X YZX X IZ YY YZ I XZ Z Y X I",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Tavola di Cayley del gruppo (I agisce come elemento neutro)."
+    }
+  },
+  {
+    "id": "p0037",
+    "page": 2,
+    "order": 37,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.06819083473899147,
+        0.9184397778479881,
+        0.09660675549747968
+      ],
+      [
+        0.5510636373283038,
+        0.1101653070160837,
+        0.8853751787173203,
+        0.12297665952432035
+      ],
+      [
+        0.5179966945274204,
+        0.13752164744367504,
+        0.9184545379838133,
+        0.16487437546855271
+      ]
+    ],
+    "sourceText": "Here, the identity I acts as the zero element. The groupG is Abelian and isomorphic to (Z2)2 via the mapping I ↔(0, 0), X ↔(0, 1), Y ↔(1, 0), Z ↔(1, 1), under which the group operation reduces to component-wise addition modulo 2, i.e., the bitwise XOR operation.",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "G è abeliano e isomorfo a (Z2)² tramite I↔(0,0), X↔(0,1), Y↔(1,0), Z↔(1,1); sotto questa identificazione l'operazione di gruppo diventa somma componente-per-componente modulo 2 (XOR bit a bit)."
+    }
+  },
+  {
+    "id": "p0038",
+    "page": 2,
+    "order": 38,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.16664664913909605,
+        0.9184549369064032,
+        0.1936916004527699
+      ],
+      [
+        0.5551029280120251,
+        0.20590897762414181,
+        0.6069779738881229,
+        0.21848801892213146
+      ],
+      [
+        0.637785917793224,
+        0.22560194766882694,
+        0.6612924314012715,
+        0.23877338447956123
+      ],
+      [
+        0.6640130335988562,
+        0.2279556929463088,
+        0.6714686973422181,
+        0.24053473424429844
+      ],
+      [
+        0.705986920525046,
+        0.22795571221245658,
+        0.7134425842684079,
+        0.24053475351044626
+      ],
+      [
+        0.6714738334705627,
+        0.23596963978777027,
+        0.705164441875383,
+        0.25201837944261957
+      ],
+      [
+        0.5604378694023182,
+        0.23806961136634905,
+        0.6332515143101511,
+        0.25095644864169037
+      ],
+      [
+        0.717065349902982,
+        0.23814509613345367,
+        0.7482444912779564,
+        0.25201839870876735
+      ],
+      [
+        0.6944150239034416,
+        0.24443657229645083,
+        0.6993263095032936,
+        0.25324187615905147
+      ],
+      [
+        0.6388431125217013,
+        0.2560161051124033,
+        0.6602370816897722,
+        0.26482140897500395
+      ],
+      [
+        0.5985130359923917,
+        0.2679794966572463,
+        0.8813358880335989,
+        0.2844577365451389
+      ]
+    ],
+    "sourceText": "With this identification, the optimization problem (1)can be reformulated as mink kX \u0000 \u0001 utv⊤ s.t.M = · Gt, t t=1 Gt ∈{0, 1}2, ut ∈{0, 1}m, vt ∈{0, 1}n,",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Con l'identificazione a (Z2)², il problema (1) si riformula come minimizzare k con M = Σ u_t v_t^T · G_t, G_t∈{0,1}²."
+    }
+  },
+  {
+    "id": "p0039",
+    "page": 2,
+    "order": 39,
+    "rects": [
+      [
+        0.5179964950661254,
+        0.2972110401500355,
+        0.918464710509855,
+        0.39666104557538273
+      ]
+    ],
+    "sourceText": "which is equivalent to computing the rank and construct-ing a rank-one decomposition of an m×n×2 tensor overGF(2). For a third-order tensor T = [X1|X2| · · · |Xp] ∈Fm×n×p, where F is a given field, the tensor rank is theminimal number r such that each slice Xi ∈Fm×n can beexpressed as a linear combination of r rank-one matricesover F.",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Questo equivale a calcolare il rango e costruire una decomposizione rank-one di un tensore del terzo ordine m×n×2 su GF(2): per T=[X1|X2|...|Xp]∈F^(m×n×p), il rango tensoriale è il minimo r tale che ogni slice Xi si esprima come combinazione lineare di r matrici rank-one su F."
+    }
+  },
+  {
+    "id": "p0040",
+    "page": 2,
+    "order": 40,
+    "rects": [
+      [
+        0.5179965449314491,
+        0.39866561119002525,
+        0.9184531417547488,
+        0.46910827328460386
+      ]
+    ],
+    "sourceText": "In general, computing the rank of a third-order tensorover a finite field is NP-complete [16]. Here, the third di-mension is fixed to be 2, for which several special-case re-sults exist [17–19], though the exact complexity remainsopen.",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Nota di complessità: calcolare il rango di un tensore del terzo ordine su un campo finito è in generale NP-completo [16]; qui la terza dimensione è fissata a 2 (alcuni casi speciali noti [17–19]), ma la complessità esatta resta aperta."
+    }
+  },
+  {
+    "id": "p0041",
+    "page": 2,
+    "order": 41,
+    "rects": [
+      [
+        0.5179964950661254,
+        0.471188323666351,
+        0.9184533412160437,
+        0.5416322573266849
+      ],
+      [
+        0.6682089013991013,
+        0.5462953201448074,
+        0.6776994194080627,
+        0.5588743807089449
+      ],
+      [
+        0.6858445211173663,
+        0.5462953201448074,
+        0.6953350391263277,
+        0.5588743807089449
+      ],
+      [
+        0.7559230031530841,
+        0.5462953201448074,
+        0.7654135211620455,
+        0.5588743807089449
+      ],
+      [
+        0.773558622871349,
+        0.5462953201448074,
+        0.7830491408803104,
+        0.5588743807089449
+      ],
+      [
+        0.6777056525735294,
+        0.5605541961361663,
+        0.6858450197706035,
+        0.5902279169872554
+      ],
+      [
+        0.765418108771829,
+        0.5605541961361663,
+        0.7735574759689032,
+        0.5902279169872554
+      ],
+      [
+        0.5928151249106414,
+        0.5678054347182765,
+        0.6645797031377655,
+        0.582272115379873
+      ],
+      [
+        0.6989589017980239,
+        0.5678054347182765,
+        0.7522921593360652,
+        0.582272115379873
+      ],
+      [
+        0.721557068668939,
+        0.5890642801920573,
+        0.7310475866779004,
+        0.6016433407561947
+      ],
+      [
+        0.7391910428315206,
+        0.5890642801920573,
+        0.748681560840482,
+        0.6016433407561947
+      ],
+      [
+        0.8092694750019148,
+        0.5890642801920573,
+        0.8187599930108762,
+        0.6016433407561947
+      ],
+      [
+        0.8269050947201797,
+        0.5890642801920573,
+        0.8363956127291411,
+        0.6016433407561947
+      ],
+      [
+        0.7310521742876839,
+        0.6033231561834161,
+        0.739191541484758,
+        0.6329968770345052
+      ],
+      [
+        0.818766226176343,
+        0.6033231561834161,
+        0.8269055933734171,
+        0.6329968770345052
+      ],
+      [
+        0.6103412902433109,
+        0.610575627798986,
+        0.7179262248519199,
+        0.6252733481050742
+      ],
+      [
+        0.7523054235121783,
+        0.610575627798986,
+        0.805640276740579,
+        0.6250410368948272
+      ],
+      [
+        0.6682090011297488,
+        0.6318344732727668,
+        0.6776995191387102,
+        0.6444135338369043
+      ],
+      [
+        0.6858446208480137,
+        0.6318344732727668,
+        0.6953351388569751,
+        0.6444135338369043
+      ],
+      [
+        0.8092694251365911,
+        0.6318344732727668,
+        0.8187599431455524,
+        0.6444135338369043
+      ],
+      [
+        0.826905044854856,
+        0.6318344732727668,
+        0.8363955628638174,
+        0.6444135338369043
+      ],
+      [
+        0.6777057523041768,
+        0.6460920391660748,
+        0.685845119501251,
+        0.6757670701152146
+      ],
+      [
+        0.8187661763110192,
+        0.6460920391660748,
+        0.8269055435080933,
+        0.6757670701152146
+      ],
+      [
+        0.6103397444182751,
+        0.6533445878462358,
+        0.664579802868413,
+        0.6678099198774858
+      ],
+      [
+        0.6989590015286714,
+        0.6533445878462358,
+        0.8056402268752553,
+        0.6680422696200284
+      ],
+      [
+        0.8391142203137766,
+        0.6535769375887784,
+        0.843623441808364,
+        0.6661559596206202
+      ]
+    ],
+    "sourceText": "We present a simple algorithm that produces a rank-one decomposition of an m × n × 2 tensor over GF(2)using at most 4/3 times the optimal number of terms.Let T = [X1|X2] be a tensor with two slices. It admitsthree equivalent decompositions: \" # \" # 01 10 T = X1 ⊗ + X2 ⊗ \" # \" # 01 11 = (X1 + X2) ⊗ + X2 ⊗ \" # \" # 11 10 = X1 ⊗ + (X1 + X2) ⊗ .",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Presentano un algoritmo semplice che produce una decomposizione rank-one di un tensore m×n×2 su GF(2) usando al più 4/3 del numero ottimo di termini. Per T=[X1|X2], esistono tre decomposizioni equivalenti (illustrate di seguito)."
+    }
+  },
+  {
+    "id": "p0043",
+    "page": 2,
+    "order": 43,
+    "rects": [
+      [
+        0.5179965947967728,
+        0.6920860367591934,
+        0.9184617185904309,
+        0.7480628273703835
+      ]
+    ],
+    "sourceText": "Each representation expresses Tas the sum of twomatrix-vector tensor products. Decomposing the matri-ces into rank-one components gives rank-one expansionswith",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Ogni rappresentazione esprime T come somma di due prodotti tensoriali matrice-vettore; decomponendo le matrici nelle loro componenti rank-one si ottengono espansioni rank-one con rispettivamente rank(X1)+rank(X2), rank(X1+X2)+rank(X2), rank(X1)+rank(X1+X2) termini."
+    }
+  },
+  {
+    "id": "p0044",
+    "page": 2,
+    "order": 44,
+    "rects": [
+      [
+        0.6200718100554024,
+        0.760278952242148,
+        0.8163670059902216,
+        0.8112253516611426
+      ],
+      [
+        0.5179965947967728,
+        0.82388274838226,
+        0.9184379826963337,
+        0.8509276418974905
+      ],
+      [
+        0.5902270148782169,
+        0.865214492335464,
+        0.8190907497032016,
+        0.879089047210385
+      ],
+      [
+        0.6417775870927798,
+        0.8836867207228535,
+        0.8462116515714359,
+        0.9163920084635416
+      ]
+    ],
+    "sourceText": "rank(X1) + rank(X2),rank(X1 + X2) + rank(X2),rank(X1) + rank(X1 + X2) terms, respectively. Our algorithm chooses the decom-position with the fewest rank-one terms, ∆:= min{rank(X1) + rank(X2), rank(X1) + rank(X1 + X2),rank(X2) + rank(X1 + X2)}.",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "L'algoritmo sceglie la decomposizione con il minor numero di termini rank-one, Δ := min{rank(X1)+rank(X2), rank(X1)+rank(X1+X2), rank(X2)+rank(X1+X2)}."
+    }
+  },
+  {
+    "id": "p0045",
+    "page": 3,
+    "order": 45,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.06819083473899147,
+        0.39240534165326285,
+        0.08076987603698114
+      ],
+      [
+        0.10584805058498009,
+        0.09095569572063407,
+        0.4645906336167279,
+        0.11204483533146406
+      ],
+      [
+        0.3218937792809181,
+        0.0994658036665483,
+        0.47106803943908293,
+        0.12067363238093828
+      ],
+      [
+        0.08823529411764706,
+        0.1263941273544774,
+        0.15742002748975567,
+        0.13897316865246706
+      ],
+      [
+        0.11847711700239992,
+        0.14482564637155243,
+        0.16384199553844975,
+        0.1659147859823824
+      ],
+      [
+        0.1557026158750447,
+        0.15333574468439276,
+        0.45842314078137764,
+        0.17454232109917533
+      ],
+      [
+        0.1365653393315334,
+        0.17510217608827533,
+        0.16384033751643562,
+        0.1959589948557844
+      ],
+      [
+        0.1557026158750447,
+        0.18337995355779474,
+        0.22812034257876326,
+        0.20481884118282434
+      ],
+      [
+        0.08823530658397799,
+        0.21054057882289695,
+        0.48869268878612643,
+        0.25205144015225495
+      ]
+    ],
+    "sourceText": "Applying Lemma 8 of [19] (see Section A), rank(T ) ≥rank(X1) + rank(X2) + rank(X1 + X2) 2, we obtain ∆≤2 3 (rank(X1) + rank(X2) + rank(X1 + X2)) ≤4 3rank(T ), establishing that our algorithm produces a rank-one de-composition using at most 4/3 times the optimal numberof terms.",
+    "section": "II.A.2 Pauli Gates",
+    "explanations": {
+      "it-expert": "Derivazione del bound di 4/3-ottimalità: applicando il Lemma 8 di [19] (dimostrato in Appendice A) si ha rank(T) ≥ (rank(X1)+rank(X2)+rank(X1+X2))/2, da cui Δ ≤ (2/3)(rank(X1)+rank(X2)+rank(X1+X2)) ≤ (4/3)·rank(T) — l'algoritmo usa quindi al più 4/3 volte il numero ottimo di termini."
+    }
+  },
+  {
+    "id": "p0047",
+    "page": 3,
+    "order": 47,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.31299259686710856,
+        0.4886770809397978,
+        0.34003756744693026
+      ],
+      [
+        0.2786404977436938,
+        0.34050619722616793,
+        0.2881310157526552,
+        0.3530852577903054
+      ],
+      [
+        0.31418300454133474,
+        0.34050619722616793,
+        0.32367352255029613,
+        0.3530852577903054
+      ],
+      [
+        0.2881372489181219,
+        0.3547638016517716,
+        0.31416694790709254,
+        0.38443879406861586
+      ],
+      [
+        0.2460163340849035,
+        0.3622486615421796,
+        0.27410609426062094,
+        0.37482768357402146
+      ],
+      [
+        0.32639213013493157,
+        0.3622486615421796,
+        0.330901351629519,
+        0.37482768357402146
+      ]
+    ],
+    "sourceText": "We next consider the cyclic group generated by thephase gate \" # 1 00 i S = ,",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Gruppo ciclico generato dal gate di fase S = diag(1, i)."
+    }
+  },
+  {
+    "id": "p0048",
+    "page": 3,
+    "order": 48,
+    "rects": [
+      [
+        0.08823528165131612,
+        0.396474433667732,
+        0.4886884003682853,
+        0.45375978103791825
+      ],
+      [
+        0.13981209549249388,
+        0.46463629212042296,
+        0.1916871787675845,
+        0.47721658571802006
+      ],
+      [
+        0.22249511020635468,
+        0.4843304951985677,
+        0.24600164874706393,
+        0.4975019512754498
+      ],
+      [
+        0.2487222509446487,
+        0.48668296891029433,
+        0.2561779146880106,
+        0.4992620294744318
+      ],
+      [
+        0.2906961129381766,
+        0.48668296891029433,
+        0.2981517766815385,
+        0.4992620294744318
+      ],
+      [
+        0.2561830508163552,
+        0.49469818731751103,
+        0.2898736093558517,
+        0.5107469269723603
+      ],
+      [
+        0.4678906210107741,
+        0.4963675990249171,
+        0.4886948828603707,
+        0.508946621056759
+      ],
+      [
+        0.14514706181544884,
+        0.4967969258626302,
+        0.2179606817906199,
+        0.5096837438718237
+      ],
+      [
+        0.30177454231611267,
+        0.49687237209743923,
+        0.33295370862374896,
+        0.5107469269723603
+      ],
+      [
+        0.2791242163165722,
+        0.5031638097281408,
+        0.2840355019164241,
+        0.5119691328568892
+      ],
+      [
+        0.223552304934832,
+        0.5147433810763888,
+        0.24494627410290287,
+        0.5235487042051373
+      ],
+      [
+        0.18322226580451517,
+        0.5259655653828322,
+        0.43710406932955476,
+        0.5424438245368727
+      ],
+      [
+        0.08823536891563266,
+        0.5509888234764638,
+        0.4886939354192198,
+        0.579403463036123
+      ]
+    ],
+    "sourceText": "namely G = {I, S, S2, S3}.The group has order fourand is isomorphic to the additive group modulo 4, Z4 ={0, 1, 2, 3}.Under this identification, the optimizationproblem (1) becomes mink kX \u0000 \u0001 utv⊤ (2) s.t.M = · Gt, t t=1 Gt ∈Z4, ut ∈{0, 1}m, vt ∈{0, 1}n, with all additions performed modulo 4. We denote theoptimal value of k by r4(M).",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "G={I,S,S²,S³}, gruppo di ordine 4 isomorfo a Z4={0,1,2,3}; con questa identificazione il problema (1) diventa un problema di decomposizione su Z4."
+    }
+  },
+  {
+    "id": "p0050",
+    "page": 3,
+    "order": 50,
+    "rects": [
+      [
+        0.08823536268246719,
+        0.5799206435078322,
+        0.48869144215303306,
+        0.6214314855710424
+      ]
+    ],
+    "sourceText": "We present a polynomial-time algorithm that producesa decomposition of M using at most 3r4(M) terms. Theprocedure consists of two stages:",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Presentano un algoritmo polinomiale che produce una decomposizione con al più 3·r4(M) termini, in due stadi."
+    }
+  },
+  {
+    "id": "p0051",
+    "page": 3,
+    "order": 51,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.6302148452912918,
+        0.48864147709865197,
+        0.6572597773388179
+      ],
+      [
+        0.3069232367222605,
+        0.6663471568714489,
+        0.3166416641933466,
+        0.6789261789032908
+      ],
+      [
+        0.3425980611564287,
+        0.6663471568714489,
+        0.3624847013186785,
+        0.6807788887409248
+      ],
+      [
+        0.25118791667464513,
+        0.6676285098297428,
+        0.27469445521535435,
+        0.6809387977677163
+      ],
+      [
+        0.27741505741293915,
+        0.676958026308002,
+        0.3033819260940053,
+        0.6931218619298454
+      ],
+      [
+        0.31664545395795035,
+        0.6769581033725931,
+        0.3417691997453278,
+        0.6931218619298454
+      ],
+      [
+        0.2063872518103107,
+        0.6805428398980035,
+        0.24665348825891034,
+        0.6950082489938447
+      ],
+      [
+        0.36602124980851714,
+        0.6805429169625947,
+        0.37053047130310457,
+        0.6931219389944365
+      ],
+      [
+        0.2867336896509906,
+        0.6865880946920375,
+        0.29164497525084254,
+        0.695393417820786
+      ],
+      [
+        0.3245359682569317,
+        0.6865880946920375,
+        0.3294472538567836,
+        0.695393417820786
+      ],
+      [
+        0.2522434907801011,
+        0.6981815376667061,
+        0.2736390805711933,
+        0.7069868607954546
+      ],
+      [
+        0.1289330027461831,
+        0.7159214983082781,
+        0.20196195365556704,
+        0.7320853339301215
+      ],
+      [
+        0.18531372967888327,
+        0.7159214983082781,
+        0.3117250430038552,
+        0.7343568898210622
+      ],
+      [
+        0.29449183644812094,
+        0.7178912692599826,
+        0.3856300902522467,
+        0.7343569668856534
+      ]
+    ],
+    "sourceText": "1. Let M1 = M mod 2. Compute its rank over GF(2)and obtain a rank-one decomposition \u0010 \u0011⊤ k1X u(1) v(1) M1 = , t t t=1 where u(1) t∈{0, 1}m, v(1) t∈{0, 1}n.",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Stadio 1: sia M1 = M mod 2; se ne calcola il rango su GF(2) e si ottiene una decomposizione rank-one M1 = Σ_{t=1}^{k1} u_t^(1) (v_t^(1))^T, con u_t^(1)∈{0,1}^m, v_t^(1)∈{0,1}^n — esattamente l'algoritmo dei gate self-inverse applicato alla componente binaria di M."
+    }
+  },
+  {
+    "id": "p0052",
+    "page": 3,
+    "order": 52,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.7421441126351405,
+        0.17392749412387026,
+        0.7547231346669824
+      ],
+      [
+        0.29874998603770936,
+        0.7615099820223722,
+        0.30846841350879545,
+        0.774089004054214
+      ],
+      [
+        0.33442481047187755,
+        0.7615099820223722,
+        0.354309830011106,
+        0.7759404037937974
+      ],
+      [
+        0.24301307029973448,
+        0.7627900248826153,
+        0.26651960884044373,
+        0.7761016229186395
+      ],
+      [
+        0.26924018610536665,
+        0.7721196184254656,
+        0.295208700342116,
+        0.788283454047309
+      ],
+      [
+        0.30847222820606107,
+        0.7721196184254656,
+        0.33359594906077666,
+        0.788283454047309
+      ],
+      [
+        0.1607499964096967,
+        0.7754720822729245,
+        0.2393838720383987,
+        0.790171074144768
+      ],
+      [
+        0.35784802405662786,
+        0.7757045090800584,
+        0.4161677142373877,
+        0.7882835311119003
+      ],
+      [
+        0.27856046389910133,
+        0.7817496868095013,
+        0.2834717494989532,
+        0.7905550099382497
+      ],
+      [
+        0.3163627175723805,
+        0.7817496868095013,
+        0.3212740031722324,
+        0.7905550099382497
+      ],
+      [
+        0.2440702650282118,
+        0.7933443628176294,
+        0.265465854819304,
+        0.8021496859463778
+      ],
+      [
+        0.1289330027461831,
+        0.8097676749181266,
+        0.48867882622612846,
+        0.8396535545888574
+      ],
+      [
+        0.3129460951861213,
+        0.8480757125700363,
+        0.3226645226572074,
+        0.8606547346018781
+      ],
+      [
+        0.3486209196202895,
+        0.8480757896346275,
+        0.3685075597825393,
+        0.8625074444395123
+      ],
+      [
+        0.25721077513850593,
+        0.849356988463739,
+        0.28071731367921515,
+        0.8626672764017125
+      ],
+      [
+        0.2023169947605507,
+        0.8537613069168245,
+        0.252676371655433,
+        0.8834791857786853
+      ],
+      [
+        0.28343791587679995,
+        0.8586865820065893,
+        0.30940480949052795,
+        0.8748504176284327
+      ],
+      [
+        0.32266831242181115,
+        0.8586866590711806,
+        0.3477920582091886,
+        0.874850494693024
+      ],
+      [
+        0.37204410827237794,
+        0.8622715497257734,
+        0.3765533297669654,
+        0.8748505717576153
+      ],
+      [
+        0.2927565481148514,
+        0.868316650390625,
+        0.29766783371470334,
+        0.8771219735193734
+      ],
+      [
+        0.3305588267207925,
+        0.8683167274552163,
+        0.3354701123206444,
+        0.8771220505839646
+      ],
+      [
+        0.25826796986698325,
+        0.8799100163007023,
+        0.279661963967716,
+        0.8887153394294508
+      ],
+      [
+        0.1289330027461831,
+        0.8976501310714567,
+        0.20196195365556704,
+        0.9138139666933002
+      ],
+      [
+        0.18531372967888327,
+        0.8976501310714567,
+        0.3117250430038552,
+        0.9160855225842408
+      ],
+      [
+        0.29449183644812094,
+        0.8996198249585701,
+        0.3856300902522467,
+        0.9160855225842408
+      ]
+    ],
+    "sourceText": "2. Define \u0010 \u0011⊤ k1X u(1) v(1) M2 = M − (mod4), t t t=1 so that M2 ∈{0, 2}m×n.Compute the rank ofM2/2 over GF(2) and obtain \u0010 \u0011⊤ k2X 12M2 = u(2) v(2) , t t t=1 where u(2) t∈{0, 1}m, v(2) t∈{0, 1}n.",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Stadio 2: si definisce il residuo M2 = M − Σ 2·u_t^(1)(v_t^(1))^T (mod 4), che risulta in {0,2}^(m×n). Si calcola poi il rango di M2/2 su GF(2), ottenendo una seconda decomposizione con k2 termini."
+    }
+  },
+  {
+    "id": "p0053",
+    "page": 3,
+    "order": 53,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.06819105629969124,
+        0.9021427927453534,
+        0.08077009278114396
+      ],
+      [
+        0.626534306145961,
+        0.08832186881941978,
+        0.6362527086843852,
+        0.10090091011740944
+      ],
+      [
+        0.662209155512791,
+        0.08832186881941978,
+        0.6820958455403646,
+        0.10275348509200896
+      ],
+      [
+        0.7666911704867494,
+        0.08832186881941978,
+        0.7764095730251737,
+        0.10090091011740944
+      ],
+      [
+        0.80236442416322,
+        0.08832186881941978,
+        0.8222511141907936,
+        0.10275348509200896
+      ],
+      [
+        0.5707990359636693,
+        0.08960323141078756,
+        0.5943055495717167,
+        0.10291353861490886
+      ],
+      [
+        0.7028153862049377,
+        0.08960323141078756,
+        0.7263218998129851,
+        0.10291353861490886
+      ],
+      [
+        0.5970261517693015,
+        0.09893276715519453,
+        0.6229930204503676,
+        0.11509660277703795
+      ],
+      [
+        0.6362565483143127,
+        0.09893276715519453,
+        0.6613802941016902,
+        0.11509660277703795
+      ],
+      [
+        0.7290425020105699,
+        0.09893276715519453,
+        0.7631482392354728,
+        0.117368120135683
+      ],
+      [
+        0.7764134126551011,
+        0.09893276715519453,
+        0.8015355128867954,
+        0.11509660277703795
+      ],
+      [
+        0.8257892583709916,
+        0.1017097800669044,
+        0.9184545379838133,
+        0.11509660277703795
+      ],
+      [
+        0.531526154162837,
+        0.1025175614790483,
+        0.5662646324805964,
+        0.11509660277703795
+      ],
+      [
+        0.6865359536962572,
+        0.1025175614790483,
+        0.6991845423879187,
+        0.11509660277703795
+      ],
+      [
+        0.6063447840073529,
+        0.10856281627308238,
+        0.6112560696072049,
+        0.117368120135683
+      ],
+      [
+        0.6441470875459558,
+        0.10856281627308238,
+        0.6490583731458078,
+        0.117368120135683
+      ],
+      [
+        0.7843039518867443,
+        0.10856281627308238,
+        0.7892152374865962,
+        0.117368120135683
+      ],
+      [
+        0.5718562306921466,
+        0.12015625924775095,
+        0.5932501998602175,
+        0.12896155347727767
+      ],
+      [
+        0.703872580933415,
+        0.12015625924775095,
+        0.7252665501014859,
+        0.12896155347727767
+      ],
+      [
+        0.5179967942580678,
+        0.13578175053452002,
+        0.8221667420630362,
+        0.14836079183250966
+      ]
+    ],
+    "sourceText": "Combining the two stages, we obtain a decomposition \u0010 \u0011⊤ \u0010 \u0011⊤ k1X k2X u(1) v(1) 2u(2)t v(2) (mod4),(3) M = + t t t t=1 t=1 which is valid under the constraints of (2).",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Equazione (3): combinando i due stadi si ottiene una decomposizione valida di M modulo 4, M = Σ_{t=1}^{k1} u_t^(1)(v_t^(1))^T + Σ_{t=1}^{k2} 2u_t^(2)(v_t^(2))^T, valida sotto i vincoli di (2)."
+    }
+  },
+  {
+    "id": "p0054",
+    "page": 3,
+    "order": 54,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.1502476605502042,
+        0.9184557347515829,
+        0.20811204235963146
+      ],
+      [
+        0.6471633412479575,
+        0.21610071201517125,
+        0.6833665137197457,
+        0.23035546505089963
+      ],
+      [
+        0.6860849717084099,
+        0.21953650195189198,
+        0.6935406354517718,
+        0.23211554324988162
+      ],
+      [
+        0.7280588586345996,
+        0.21953650195189198,
+        0.7355145223779616,
+        0.23211554324988162
+      ],
+      [
+        0.6935457715801164,
+        0.22755170109296086,
+        0.7272347344292535,
+        0.24359918844820272
+      ],
+      [
+        0.7391372880125358,
+        0.22972590513903685,
+        0.8340762269263174,
+        0.24442362544512508
+      ],
+      [
+        0.602362688849954,
+        0.22995821634928384,
+        0.6426289377648846,
+        0.2444236447112729
+      ],
+      [
+        0.7164869620129953,
+        0.23601736203588622,
+        0.7213982476128472,
+        0.2448226658984868
+      ],
+      [
+        0.6545669954586653,
+        0.2475969141179865,
+        0.6759626101824193,
+        0.2564022179805871
+      ],
+      [
+        0.5179967443927441,
+        0.26322364807128906,
+        0.8252623813604217,
+        0.27776454193423494
+      ]
+    ],
+    "sourceText": "Since by definition there exists a decomposition of Msatisfying the constraints of (2) using k = r4(M) terms,reducing each coeﬀicient modulo 2 produces a valid de-composition of M1 over GF(2): r4(M)X \u0000 \u0001 utv⊤ · (Gt mod 2) . M1 = t t=1 This immediately implies that k1 ≤r4(M).",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Poiché esiste per definizione una decomposizione ottima di M su Z4 con r4(M) termini, riducendola modulo 2 si ottiene una decomposizione valida di M1 su GF(2): questo implica immediatamente k1 ≤ r4(M)."
+    }
+  },
+  {
+    "id": "p0055",
+    "page": 3,
+    "order": 55,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.27768955808697326,
+        0.9184696970422284,
+        0.3047345094006471
+      ],
+      [
+        0.8824608497370302,
+        0.3045857554734355,
+        0.8955652573529411,
+        0.3171647967714252
+      ],
+      [
+        0.5634869344873366,
+        0.3045857747395833,
+        0.5765913421032476,
+        0.317164816037573
+      ],
+      [
+        0.6384264877419067,
+        0.31355399314803306,
+        0.661933001349954,
+        0.3267253914264717
+      ],
+      [
+        0.6646520078571794,
+        0.3239216660008286,
+        0.6983426162619996,
+        0.3399704056556779
+      ],
+      [
+        0.6875931982900582,
+        0.3240842722883128,
+        0.8166494930491728,
+        0.3420170485371291
+      ],
+      [
+        0.8051062689887153,
+        0.3240842722883128,
+        0.8816446541181577,
+        0.3420170485371291
+      ],
+      [
+        0.8982876048368567,
+        0.3263281619910038,
+        0.9027968263314441,
+        0.33890718402284564
+      ],
+      [
+        0.5336421393101511,
+        0.3263282005232994,
+        0.5607462864296109,
+        0.3389072225551413
+      ],
+      [
+        0.576599669612311,
+        0.3263282005232994,
+        0.6338904387031505,
+        0.33890849412089646
+      ],
+      [
+        0.6394820369147007,
+        0.34396809279316604,
+        0.6608776516384549,
+        0.35277341592191447
+      ],
+      [
+        0.5179966945274204,
+        0.3526605162957702,
+        0.9184606215533089,
+        0.48096685698538116
+      ]
+    ],
+    "sourceText": "To analyze the second stage, it is convenient to intro-duce an auxiliary quantity ) ( kX utv⊤ t mod 4, ut ∈Zm 4 , vt ∈Zn4 , min k : M = t=1 (4)which is denoted by ρ4(M).In contrast to r4(M), itallows multiplication between elements of Z4 and thusendows Z4 with its standard ring structure. In the fol-lowing, ρ4(M) will serve as an intermediate measure tobound the number of rank-one terms produced in the sec-ond stage. A relationship between ρ4(M) and the matrixGF(2)-rank is formalized in the following lemma, whoseproof is given in Section A.",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Equazione (4): per analizzare il secondo stadio introducono una quantità ausiliaria ρ4(M), il minimo k per una decomposizione di M su Z4 dove però ai termini è permesso un fattore moltiplicativo in Z4 (a differenza di r4(M) che usa solo prodotti 0/1·G); ρ4 sfrutta la struttura d'anello di Z4 e servirà come misura intermedia per limitare k2."
+    }
+  },
+  {
+    "id": "p0056",
+    "page": 3,
+    "order": 56,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.48383604878126973,
+        0.9184445649190666,
+        0.5157531584152067
+      ],
+      [
+        0.6885342068142362,
+        0.5147801794186987,
+        0.7016386144301471,
+        0.5273592399828362
+      ],
+      [
+        0.70164853762957,
+        0.5281703448054766,
+        0.7922002256306169,
+        0.5605990862605548
+      ],
+      [
+        0.642285864337597,
+        0.5365238767681699,
+        0.6839998033311632,
+        0.5509892473317156
+      ],
+      [
+        0.5179964950661254,
+        0.5695645496098682,
+        0.879325816833895,
+        0.5835132791538431
+      ]
+    ],
+    "sourceText": "Lemma II.1. Suppose M ∈{0, 2}m×n and define N ∈{0, 1}m×n by ( 1,Mij = 2,0,Mij = 0. Nij = Then ρ4(M) is equal to the rank of N over GF(2).",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Lemma II.1: se M∈{0,2}^(m×n) e si definisce N∈{0,1}^(m×n) da N_ij=1 se M_ij=2 e N_ij=0 se M_ij=0, allora ρ4(M) è uguale al rango di N su GF(2) — collega la quantità ausiliaria ρ4 al rango GF(2), calcolabile con eliminazione gaussiana (dimostrazione in Appendice A)."
+    }
+  },
+  {
+    "id": "p0057",
+    "page": 3,
+    "order": 57,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.5895771835789536,
+        0.9184489530675551,
+        0.618508502690479
+      ],
+      [
+        0.8089624542036867,
+        0.6254556443956163,
+        0.8186808567421109,
+        0.6380347049597538
+      ],
+      [
+        0.8446357078801573,
+        0.625455682927912,
+        0.8543541602839052,
+        0.6380347434920494
+      ],
+      [
+        0.619658476386974,
+        0.6257926093207465,
+        0.6558616488587623,
+        0.6400473623564749
+      ],
+      [
+        0.7532255384657118,
+        0.626735725788155,
+        0.7767320520737592,
+        0.6400473238241793
+      ],
+      [
+        0.7794526542713439,
+        0.6360652807987097,
+        0.8054195229524101,
+        0.6522290778882576
+      ],
+      [
+        0.8186830508163552,
+        0.6360653193310054,
+        0.8438067467384089,
+        0.6522291549528488
+      ],
+      [
+        0.6558676326976103,
+        0.6372435983985362,
+        0.6958866493374694,
+        0.6532923380533854
+      ],
+      [
+        0.6851388769212112,
+        0.639417706113873,
+        0.7495946946486928,
+        0.655338942402541
+      ],
+      [
+        0.5748594695446538,
+        0.6396502099855982,
+        0.6151240729039011,
+        0.654116852114899
+      ],
+      [
+        0.8570703244676777,
+        0.6396502099855982,
+        0.8615795459622652,
+        0.65222923201744
+      ],
+      [
+        0.7887712865093954,
+        0.6456953106504498,
+        0.7936825721092473,
+        0.6545006337791982
+      ],
+      [
+        0.8265752356036816,
+        0.645695387715041,
+        0.8314865212035335,
+        0.6545007108437895
+      ],
+      [
+        0.7542827331941891,
+        0.657289986658578,
+        0.77567670236226,
+        0.6660953097873263
+      ],
+      [
+        0.6270637262880413,
+        0.6572900637231692,
+        0.6484576954561121,
+        0.6660953868519176
+      ],
+      [
+        0.5179967942580678,
+        0.6723499490757181,
+        0.9184380824269812,
+        0.7007645886353772
+      ],
+      [
+        0.5829983879538143,
+        0.7082890211933791,
+        0.8534404280918096,
+        0.7229880130652225
+      ],
+      [
+        0.5179965947967728,
+        0.7296125623914931,
+        0.9184379826963337,
+        0.7566575329713147
+      ],
+      [
+        0.6528791041156046,
+        0.7655529446072049,
+        0.7835598615259906,
+        0.7802507034455887
+      ]
+    ],
+    "sourceText": "Applying Theorem II.1 to M2 gives k2 = ρ4(M2). Byconstruction, M2 can be expressed as \u0010 \u0011 r4(M)X k1X u(1) v(1) (utv⊤ t ) · Gt − M2 = , t t t=1 t=1 which is a valid decomposition under the definition ofρ4(·). It then follows that k2 = ρ4(M2) ≤r4(M) + k1 ≤2r4(M). so that the total number of terms in the final decompo-sition (3) satisfies k1 + k2 ≤3r4(M).",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Applicando il Lemma II.1 a M2 si ottiene k2=ρ4(M2), e per costruzione M2 può essere espresso in modo da dare k2 = ρ4(M2) ≤ r4(M) + k1 ≤ 2·r4(M). Combinando con k1≤r4(M), il numero totale di termini della decomposizione finale soddisfa k1+k2 ≤ 3·r4(M) — il bound garantito per i gate di fase."
+    }
+  },
+  {
+    "id": "p0058",
+    "page": 3,
+    "order": 58,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.7866739600595801,
+        0.742419473486009,
+        0.8028377956814237
+      ],
+      [
+        0.7257712370429943,
+        0.7866739600595801,
+        0.7756057938719108,
+        0.8059337885692867
+      ],
+      [
+        0.5179967942580678,
+        0.7899509776722301,
+        0.9184704948874081,
+        0.8314617426708492
+      ],
+      [
+        0.702397066004136,
+        0.835227041533499,
+        0.7143782572029462,
+        0.8478060635653409
+      ],
+      [
+        0.7795638040779462,
+        0.8352271185980903,
+        0.8122558095096762,
+        0.8534327805644334
+      ],
+      [
+        0.7438905504014757,
+        0.8390010486949574,
+        0.7536089529398999,
+        0.8515800707267992
+      ],
+      [
+        0.6761715458888634,
+        0.8402824016532513,
+        0.6996780594969108,
+        0.8535926895912247
+      ],
+      [
+        0.714380750469133,
+        0.8496119181315104,
+        0.7403476191501991,
+        0.8657757537533538
+      ],
+      [
+        0.7536127925698274,
+        0.8496119951961016,
+        0.7787348928015216,
+        0.8657758308179451
+      ],
+      [
+        0.5939068763084661,
+        0.8529644590435606,
+        0.6725407519371681,
+        0.8676622178819444
+      ],
+      [
+        0.8158759322820925,
+        0.8529644590435606,
+        0.841725168664471,
+        0.8668377808850221
+      ],
+      [
+        0.7236993827071845,
+        0.8592419865155461,
+        0.7286106683070364,
+        0.8680473096442946
+      ],
+      [
+        0.7615033318014706,
+        0.8592420635801373,
+        0.7664146174013226,
+        0.8680473867088857
+      ],
+      [
+        0.6772270950616575,
+        0.8708354294902146,
+        0.6986227097854115,
+        0.879640752618963
+      ],
+      [
+        0.5179967942580678,
+        0.8864609689423533,
+        0.9184574301725899,
+        0.9153934825550426
+      ]
+    ],
+    "sourceText": "Remark II.2. The vectors u(1) t , v(1) tobtained in the firststage provide some flexibility in the second stage. Specif-ically, one may alternatively define \u0012 \u0011⊤\u0013 \u0010 k1X u(1) v(1) M2 = M − · Gt t t t=1 for any choice Gt ∈{1, 3}, and in practice the coeﬀicientsGt can be selected to minimize k2.",
+    "section": "II.A.3 Phase Gates",
+    "explanations": {
+      "it-expert": "Osservazione II.2: i vettori u_t^(1),v_t^(1) ottenuti nel primo stadio offrono flessibilità nel secondo — si può definire M2 = M − Σ u_t^(1)(v_t^(1))^T·G_t per qualunque scelta di G_t∈{1,3}, e in pratica questi coefficienti possono essere scelti per minimizzare k2."
+    }
+  },
+  {
+    "id": "p0060",
+    "page": 4,
+    "order": 60,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.10055321394795119,
+        0.48869268878612643,
+        0.15652998529299342
+      ],
+      [
+        0.2447173174689798,
+        0.1666916163280757,
+        0.3313935473074321,
+        0.18151579962836373
+      ],
+      [
+        0.08823529411764706,
+        0.19330573804450757,
+        0.47261206932317196,
+        0.2061925753198489
+      ]
+    ],
+    "sourceText": "We now consider the single-qubit Clifford group gen-erated by {I, X, Y, Z, S, H}. Up to an irrelevant globalphase, any single-qubit Clifford operator admits a decom-position of the form U = PHaSb where P ∈{I, X, Y, Z}, a ∈{0, 1}, and b ∈{0, 1, 2, 3}.",
+    "section": "II.A.4 Clifford Gates",
+    "explanations": {
+      "it-expert": "Gruppo di Clifford a singolo qubit generato da {I,X,Y,Z,S,H}: a meno di una fase globale irrilevante, ogni operatore di Clifford a singolo qubit si decompone come U = P·H^a·S^b, con P∈{I,X,Y,Z}, a∈{0,1}, b∈{0,1,2,3}."
+    }
+  },
+  {
+    "id": "p0061",
+    "page": 4,
+    "order": 61,
+    "rects": [
+      [
+        0.08823526295181973,
+        0.20777164806019177,
+        0.4886927885167739,
+        0.3650110418146307
+      ]
+    ],
+    "sourceText": "This factorization suggests a natural compilation strat-egy for Clifford gates on a neutral-atom array. In par-ticular, the Clifford compilation problem can be decom-posed into three independent subproblems correspondingto the implementation of phase gates, Hadamard gates,and Pauli gates. Concretely, we first realize the requiredphase-gate pattern using the algorithm developed in Sec-tion II A 3. We then implement the Hadamard gates us-ing the method for self-inverse gates described in Sec-tion II A 1. Finally, the remaining Pauli gates are syn-thesized using the approach presented in Section II A 2.",
+    "section": "II.A.4 Clifford Gates",
+    "explanations": {
+      "it-expert": "Questa fattorizzazione suggerisce una strategia naturale: il problema di compilazione dei Clifford si decompone in tre sottoproblemi indipendenti (gate di fase, Hadamard, Pauli), risolti rispettivamente con gli algoritmi delle Sezioni II.A.3, II.A.1 e II.A.2."
+    }
+  },
+  {
+    "id": "p0062",
+    "page": 4,
+    "order": 62,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.366897929798473,
+        0.4887089947469873,
+        0.46627241192442
+      ]
+    ],
+    "sourceText": "The modular decomposition enables the Clifford com-pilation problem to be addressed by combining special-ized algorithms for each gate family, each with provableperformance guarantees. As a result, the overall compi-lation procedure is eﬀicient, scalable, and well suited tothe row-column addressing constraints of neutral-atomarchitectures.",
+    "section": "II.A.4 Clifford Gates",
+    "explanations": {
+      "it-expert": "La decomposizione modulare permette di affrontare la compilazione dei Clifford combinando algoritmi specializzati per ciascuna famiglia, ciascuno con garanzie di prestazione dimostrabili — risultando efficiente, scalabile e adatto ai vincoli di addressing riga-colonna."
+    }
+  },
+  {
+    "id": "p0064",
+    "page": 4,
+    "order": 64,
+    "rects": [
+      [
+        0.08823531281714346,
+        0.527487591059521,
+        0.48869333703533496,
+        0.554532523107047
+      ],
+      [
+        0.11898692760592193,
+        0.5419534625429095,
+        0.16345497829462188,
+        0.5588708742700442
+      ],
+      [
+        0.27161601945465685,
+        0.5583395139135495,
+        0.28110653746361824,
+        0.570918574477687
+      ],
+      [
+        0.3220620747485192,
+        0.5583395139135495,
+        0.3315525927574806,
+        0.570918574477687
+      ],
+      [
+        0.28111110014073987,
+        0.5725983899049084,
+        0.3190007427938623,
+        0.6022721107559975
+      ],
+      [
+        0.2381372389450572,
+        0.5800832112630209,
+        0.2670815910389221,
+        0.5926622332948627
+      ],
+      [
+        0.33427125020743975,
+        0.5800832112630209,
+        0.3387804717020272,
+        0.5926622332948627
+      ]
+    ],
+    "sourceText": "In this subsection, we consider the group generated bythe π 8 gate \" # 100 ei π4 T = .",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Gruppo generato dal gate T=π/8, T=diag(1, e^{iπ/4})."
+    }
+  },
+  {
+    "id": "p0065",
+    "page": 4,
+    "order": 65,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.6159749271893742,
+        0.48870425754123265,
+        0.6719529893663194
+      ],
+      [
+        0.13981209549249388,
+        0.6844216549035275,
+        0.1916871787675845,
+        0.6970006769353693
+      ],
+      [
+        0.22249511020635468,
+        0.7041158194493766,
+        0.24600164874706393,
+        0.7172860039605035
+      ],
+      [
+        0.2487222509446487,
+        0.7064683702256944,
+        0.2561779146880106,
+        0.7190473922575363
+      ],
+      [
+        0.2906961129381766,
+        0.7064683702256944,
+        0.2981517766815385,
+        0.7190473922575363
+      ],
+      [
+        0.2561830508163552,
+        0.7144822400025647,
+        0.2898736093558517,
+        0.7305310181897096
+      ],
+      [
+        0.4678906210107741,
+        0.7161516902422664,
+        0.4886948828603707,
+        0.7287307122741082
+      ],
+      [
+        0.14514706181544884,
+        0.7165822501134391,
+        0.2179606817906199,
+        0.7294690681226326
+      ],
+      [
+        0.30177454231611267,
+        0.716657696348248,
+        0.33295370862374896,
+        0.7305310181897096
+      ],
+      [
+        0.2791242163165722,
+        0.7229491725112452,
+        0.2840355019164241,
+        0.7317544956399937
+      ],
+      [
+        0.223552304934832,
+        0.7345287438594934,
+        0.24494627410290287,
+        0.7433340669882418
+      ],
+      [
+        0.18322226580451517,
+        0.7457509666982324,
+        0.43710406932955476,
+        0.7622291487876816
+      ]
+    ],
+    "sourceText": "Analogous to the phase-gate group, this group is cyclicof order eight and is isomorphic to the additive groupmodulo 8, Z8 = {0, 1, 2, 3, 4, 5, 6, 7}. Under this identifi-cation, the compilation problem (1) reduces to mink kX \u0000 \u0001 utv⊤ (5) s.t.M = · Gt, t t=1 Gt ∈Z8, ut ∈{0, 1}m, vt ∈{0, 1}n,",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Il gruppo è ciclico di ordine 8, isomorfo a Z8={0,...,7}; con questa identificazione il problema (1) si riduce a un problema di decomposizione su Z8."
+    }
+  },
+  {
+    "id": "p0067",
+    "page": 4,
+    "order": 67,
+    "rects": [
+      [
+        0.08823536891563266,
+        0.7723650691485164,
+        0.48867807824627246,
+        0.800780941741635
+      ]
+    ],
+    "sourceText": "where all additions are performed modulo 8. We denotethe optimal value of k by r8(M).",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Si denota con r8(M) il valore ottimo di k per il problema (5)."
+    }
+  },
+  {
+    "id": "p0068",
+    "page": 4,
+    "order": 68,
+    "rects": [
+      [
+        0.08823536268246719,
+        0.8012968121152936,
+        0.48867713080512154,
+        0.828341705630524
+      ]
+    ],
+    "sourceText": "As in the phase-gate case, we adopt a two-stage de-composition strategy:",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Come per i gate di fase, adottano una strategia di decomposizione a due stadi."
+    }
+  },
+  {
+    "id": "p0069",
+    "page": 4,
+    "order": 69,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.8383991742374921,
+        0.48864147709865197,
+        0.8654440677527225
+      ],
+      [
+        0.3069232367222605,
+        0.8761236017400568,
+        0.3166416641933466,
+        0.8887026237718987
+      ],
+      [
+        0.3425980611564287,
+        0.876123678804648,
+        0.3624847013186785,
+        0.8905553336095329
+      ],
+      [
+        0.25118791667464513,
+        0.8774048776337595,
+        0.27469445521535435,
+        0.8907151655717329
+      ],
+      [
+        0.27741505741293915,
+        0.8867344711766099,
+        0.3033819260940053,
+        0.9028983067984533
+      ],
+      [
+        0.31664545395795035,
+        0.8867345482412011,
+        0.3417691997453278,
+        0.9028983838630446
+      ],
+      [
+        0.2063872518103107,
+        0.8903192847666114,
+        0.24665348825891034,
+        0.9047846938624526
+      ],
+      [
+        0.36602124980851714,
+        0.8903194388957939,
+        0.37053047130310457,
+        0.9028984609276357
+      ],
+      [
+        0.2867336896509906,
+        0.8963645395606455,
+        0.29164497525084254,
+        0.9051698626893939
+      ],
+      [
+        0.3245359682569317,
+        0.8963646166252367,
+        0.3294472538567836,
+        0.9051699397539852
+      ],
+      [
+        0.2522434907801011,
+        0.9079579054707229,
+        0.2736390805711933,
+        0.9167632285994712
+      ],
+      [
+        0.5586928323982587,
+        0.06547322899404198,
+        0.6317217957739737,
+        0.08163706461588542
+      ],
+      [
+        0.6150752048866421,
+        0.06547322899404198,
+        0.7414864932789522,
+        0.08390857234145656
+      ],
+      [
+        0.724253286723218,
+        0.06744292769769225,
+        0.8153898949716606,
+        0.08390857234145656
+      ]
+    ],
+    "sourceText": "1. Let M1 = M mod 2. Compute its rank over GF(2)and obtain a rank-one decomposition \u0010 \u0011⊤ k1X u(1) v(1) M1 = , t t t=1 where u(1) t∈{0, 1}m, v(1) t∈{0, 1}n.",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Stadio 1 (identico nella struttura al caso dei gate di fase): M1=M mod 2, calcolo del rango GF(2) e decomposizione rank-one M1=Σ_{t=1}^{k1} u_t^(1)(v_t^(1))^T."
+    }
+  },
+  {
+    "id": "p0070",
+    "page": 4,
+    "order": 70,
+    "rects": [
+      [
+        0.5395163243113,
+        0.09277164574825403,
+        0.6036873611749387,
+        0.10535068704624369
+      ],
+      [
+        0.7285115360434539,
+        0.11482692487312085,
+        0.738229938581878,
+        0.12740596617111052
+      ],
+      [
+        0.7641847897199244,
+        0.11482692487312085,
+        0.7840714797474979,
+        0.12925854114571003
+      ],
+      [
+        0.6727745704401552,
+        0.11610828746448863,
+        0.6962810840482027,
+        0.12941859466860992
+      ],
+      [
+        0.6990017361111112,
+        0.1254378232088956,
+        0.7249686047921773,
+        0.14160165883073902
+      ],
+      [
+        0.7382337782118056,
+        0.1254378232088956,
+        0.7633558784434998,
+        0.14160165883073902
+      ],
+      [
+        0.5905098509944342,
+        0.12879030632250238,
+        0.6691453721788194,
+        0.1434880266285906
+      ],
+      [
+        0.7876080282373366,
+        0.12902261753274938,
+        0.8459293141084558,
+        0.14160165883073902
+      ],
+      [
+        0.7083203683491626,
+        0.13506787232678347,
+        0.7132316539490146,
+        0.14387317618938408
+      ],
+      [
+        0.7461243174434488,
+        0.13506787232678347,
+        0.7510356030433006,
+        0.14387317618938408
+      ],
+      [
+        0.6738317651686325,
+        0.14666131530145202,
+        0.6952273798923866,
+        0.15546660953097874
+      ],
+      [
+        0.55869298199423,
+        0.1657752220076744,
+        0.9184396781173407,
+        0.19429135563397648
+      ],
+      [
+        0.7645948322769863,
+        0.20244685086337003,
+        0.7972868377087163,
+        0.22065120273166233
+      ],
+      [
+        0.6874281440684998,
+        0.20244687012951784,
+        0.6994093352673101,
+        0.2150259114275075
+      ],
+      [
+        0.7289199829101562,
+        0.20621958645907315,
+        0.7386383854485805,
+        0.21879862775706282
+      ],
+      [
+        0.6612009783975439,
+        0.20750095868351484,
+        0.6847074920055913,
+        0.22081126588763614
+      ],
+      [
+        0.6063071855532578,
+        0.21190520007200916,
+        0.656666574914471,
+        0.24162311746616555
+      ],
+      [
+        0.6994118285334967,
+        0.2168304944279218,
+        0.7253786972145629,
+        0.23299433004976522
+      ],
+      [
+        0.738642225078508,
+        0.2168304944279218,
+        0.7637659708658854,
+        0.23299431078361743
+      ],
+      [
+        0.8009053149254494,
+        0.22018295827538076,
+        0.8320844563004238,
+        0.23405624158454663
+      ],
+      [
+        0.7465327643101511,
+        0.22646052427966185,
+        0.751444049910003,
+        0.23526582814226246
+      ],
+      [
+        0.7087304607715482,
+        0.22646054354580966,
+        0.7136417463714001,
+        0.23526584740841028
+      ],
+      [
+        0.6622581731260212,
+        0.2380539865204782,
+        0.6836537878497754,
+        0.24685929038307883
+      ],
+      [
+        0.5586928822635825,
+        0.2584845225016276,
+        0.7000617232977175,
+        0.2763024147110756
+      ],
+      [
+        0.6834134868547028,
+        0.2584845225016276,
+        0.8098247253816891,
+        0.2769198754821161
+      ],
+      [
+        0.7925931643816381,
+        0.26045296408913354,
+        0.8837297227647569,
+        0.2769198754821161
+      ]
+    ],
+    "sourceText": "2. Define \u0010 \u0011⊤ k1X u(1) v(1) M2 = M − (mod8), t t t=1 so that M2 ∈{0, 2, 4, 6}m×n. Apply the algorithmfor compiling phase gates and obtain \u0011⊤\u0013 \u0012 \u0010 k2X 12M2 = u(2) v(2) · Gt, t t t=1 where Gt ∈Z4, u(2) t∈{0, 1}m, v(2) t∈{0, 1}n.",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Stadio 2: M2 = M − Σ 2u_t^(1)(v_t^(1))^T (mod 8), risultando in {0,2,4,6}^(m×n); si applica poi l'algoritmo dei gate di fase (mod 4) a M2/2, ottenendo k2 termini con G_t∈Z4."
+    }
+  },
+  {
+    "id": "p0071",
+    "page": 4,
+    "order": 71,
+    "rects": [
+      [
+        0.5179967942580678,
+        0.28527541112418126,
+        0.9184380824269812,
+        0.3123203624378551
+      ],
+      [
+        0.6199836481630413,
+        0.3217965906316584,
+        0.6297020507014655,
+        0.33437563192964803
+      ],
+      [
+        0.655658547395195,
+        0.321796629163954,
+        0.6755452374227686,
+        0.33622691607234456
+      ],
+      [
+        0.7940458409926471,
+        0.321796629163954,
+        0.8037642435310712,
+        0.33437567046194366
+      ],
+      [
+        0.8297206903594772,
+        0.321796629163954,
+        0.8496056849660437,
+        0.33622695460464014
+      ],
+      [
+        0.5642483779807496,
+        0.32307667202419704,
+        0.587754891588797,
+        0.33638825079407353
+      ],
+      [
+        0.6962647780873417,
+        0.32307798212224786,
+        0.7197712916953891,
+        0.33638828932636916
+      ],
+      [
+        0.5904754937863818,
+        0.3324074793343592,
+        0.6164423624674479,
+        0.34857131495620264
+      ],
+      [
+        0.629705890331393,
+        0.3324074793343592,
+        0.6548296361187704,
+        0.34857131495620264
+      ],
+      [
+        0.7224919437582976,
+        0.3324074793343592,
+        0.7905045552970538,
+        0.3496332650232797
+      ],
+      [
+        0.8037680831609988,
+        0.3324074793343592,
+        0.8288918289483762,
+        0.34857135348849827
+      ],
+      [
+        0.524975546045241,
+        0.3359922929243608,
+        0.5597139744976767,
+        0.34857131495620264
+      ],
+      [
+        0.6799869911343444,
+        0.3359922929243608,
+        0.6926355798260059,
+        0.34857131495620264
+      ],
+      [
+        0.8531438291462419,
+        0.3359923314566564,
+        0.9114635193270016,
+        0.34857135348849827
+      ],
+      [
+        0.5997941260244332,
+        0.3420362376203441,
+        0.6047054116242851,
+        0.3508415607490925
+      ],
+      [
+        0.6375980751187194,
+        0.34203627615263965,
+        0.6425093607185712,
+        0.3508415992813881
+      ],
+      [
+        0.773856318854039,
+        0.34203627615263965,
+        0.7787676044538909,
+        0.3508415992813881
+      ],
+      [
+        0.811658622392642,
+        0.3420363146849353,
+        0.8165699079924938,
+        0.3508416378136837
+      ],
+      [
+        0.5653055727092269,
+        0.35363095216076784,
+        0.5866995418772978,
+        0.3624362752895163
+      ],
+      [
+        0.6973219728158191,
+        0.3536309906930635,
+        0.7187175875395732,
+        0.36243631382181185
+      ]
+    ],
+    "sourceText": "Combining the two stages, we obtain a valid decomposi-tion \u0010 \u0011⊤ \u0010 \u0011⊤ k1X k2X u(1) v(1) (2Gt) u(2) v(2) M = + (mod8). t t t t t=1 t=1",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Combinando i due stadi si ottiene una decomposizione valida modulo 8: M = Σ u_t^(1)(v_t^(1))^T + Σ (2G_t) u_t^(2)(v_t^(2))^T (mod 8)."
+    }
+  },
+  {
+    "id": "p0072",
+    "page": 4,
+    "order": 72,
+    "rects": [
+      [
+        0.5179967942580678,
+        0.3732060133808791,
+        0.9184657078163296,
+        0.4436486754754577
+      ],
+      [
+        0.5580817827212265,
+        0.4569216256189828,
+        0.8783572327856924,
+        0.471387034714824
+      ],
+      [
+        0.5179966945274204,
+        0.4826214337589765,
+        0.9184379826963337,
+        0.5118617818813131
+      ]
+    ],
+    "sourceText": "As in the phase gate case, reducing an optimal Z8 de-composition modulo 2 implies k1 ≤r8(M). Moreover,applying the phase-gate algorithm to M2/2 yields k2 ≤3r4(M2/2).We conjecture that r4(M2/2) = r8(M2),which implies r4(M2/2) = r8(M2) ≤r8(M) + k1 ≤2r8(M). Under this conjecture, the total number of terms pro-duced by the algorithm satisfies k1 + k2 ≤7r8(M).",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Come nel caso della fase, k1≤r8(M); applicando l'algoritmo per la fase a M2/2 si ha k2≤3·r4(M2/2). Sotto la congettura r4(M2/2)=r8(M2) (non dimostrata), si ottiene k2≤2·r8(M) e quindi il bound totale k1+k2≤7·r8(M)."
+    }
+  },
+  {
+    "id": "p0073",
+    "page": 4,
+    "order": 73,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.5206012147845644,
+        0.9184702954261131,
+        0.5624198528251263
+      ],
+      [
+        0.6964460385391136,
+        0.5658244123362531,
+        0.705936556548075,
+        0.5784034729003906
+      ],
+      [
+        0.764864304486443,
+        0.5658244508685488,
+        0.7743548224954044,
+        0.5784035114326862
+      ],
+      [
+        0.7059427897135416,
+        0.580083288327612,
+        0.7632306167502808,
+        0.6097570091787011
+      ],
+      [
+        0.6548561644709967,
+        0.5875681096857245,
+        0.6919116350560407,
+        0.6020334802492701
+      ],
+      [
+        0.7770734799453636,
+        0.5875681482180201,
+        0.781582701439951,
+        0.6001471702498619
+      ],
+      [
+        0.5179966446620966,
+        0.6244207054677636,
+        0.918470694348703,
+        0.8105903394294508
+      ]
+    ],
+    "sourceText": "Remark II.3. The recursive structure of the above al-gorithm extends naturally to the cyclic group generatedby a π/2p rotation, \" # 100 eiπ/2p Rp = , which is isomorphic to Z2p+1.Under this identifica-tion, the compilation problem reduces to an optimizationproblem analogous to (5), with the coeﬀicients satisfy-ing Gt ∈Z2p+1.One can then first reduce the targetmatrix modulo 2 and compute a rank-one decompositionover GF(2), as in the first stage of the phase- and π/8-gate algorithms. After subtracting this binary decompo-sition, all entries of the residual matrix become even, sothe residual can be divided by two and regarded as aninstance over Z2p. Repeating this procedure recursivelyreduces the original compilation problem to a sequenceof binary matrix decompositions and lower-order cyclic-group compilation problems.",
+    "section": "II.A.5 π/8 Gates",
+    "explanations": {
+      "it-expert": "Osservazione II.3: la struttura ricorsiva si estende naturalmente al gruppo ciclico generato da una rotazione π/2^p, isomorfo a Z_{2^(p+1)}. Riducendo ricorsivamente modulo 2 e dividendo per 2 il residuo, il problema si riduce a una sequenza di decomposizioni binarie e problemi di compilazione su gruppi ciclici di ordine inferiore."
+    }
+  },
+  {
+    "id": "p0075",
+    "page": 4,
+    "order": 75,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.8719951745235559,
+        0.9184532414853962,
+        0.9135059395221748
+      ]
+    ],
+    "sourceText": "Unlike single-qubit gates, the execution of C-Z gatesrequires the participating qubits to be physically trans-ported to a designated entangling zone. Within this zone,",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "A differenza dei gate a singolo qubit, l'esecuzione dei gate C-Z richiede il trasporto fisico dei qubit coinvolti in una zona di entangling dedicata (continua a pagina successiva)."
+    }
+  },
+  {
+    "id": "p0076",
+    "page": 5,
+    "order": 76,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.06819083473899147,
+        0.48870904461231107,
+        0.196498408462062
+      ]
+    ],
+    "sourceText": "C-Z gates can be performed between adjacent rows orcolumns of qubits.An acousto-optic deflector (AOD)is used to extract multiple qubits from the atom arrayand transport them into the entangling zone. In a singletransport, several rows and columns of the atom arrayare selected, and all atoms located at their intersectionsare moved simultaneously. During the transport, the rel-ative positions of the selected atoms are preserved [20].The transportation process is illustrated in Figure 2.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Meccanismo di trasporto: un deflettore acusto-ottico (AOD) estrae più qubit dall'array e li trasporta nella zona di entangling; in un singolo trasporto si selezionano più righe/colonne e tutti gli atomi alle intersezioni si muovono simultaneamente, preservando le posizioni relative."
+    }
+  },
+  {
+    "id": "p0077",
+    "page": 5,
+    "order": 77,
+    "rects": [
+      [
+        0.35399288601345485,
+        0.34912105521770437,
+        0.45882804721009496,
+        0.3613414571742819
+      ],
+      [
+        0.08823529411764706,
+        0.39107975815281726,
+        0.4886927885167739,
+        0.44705647169941604
+      ]
+    ],
+    "sourceText": "Entangling Zone FIG. 2: Illustration of qubit transport.In the origi-nal neutral-atom array, several qubits (highlighted withdarker colors) are selected by AOD and transported tothe entangling zone.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 2: nell'array originale, alcuni qubit selezionati (evidenziati) vengono estratti dall'AOD e trasportati nella zona di entangling."
+    }
+  },
+  {
+    "id": "p0078",
+    "page": 5,
+    "order": 78,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.4963991955073193,
+        0.4886934367659824,
+        0.6102408592147056
+      ]
+    ],
+    "sourceText": "In the entangling zone, C-Z gates are implementedby bringing two adjacent rows (or columns) of atomssuﬀiciently close such that their separation is smallerthan the characteristic Rydberg blockade radius.Inthis regime, corresponding atoms in the two rows (orcolumns) can undergo simultaneous C-Z gate operations.Consequently, the following constraints must be satisfiedwhen performing C-Z gates in the entangling zone:",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Nella zona di entangling, i C-Z si eseguono avvicinando due righe (o colonne) adiacenti a una distanza inferiore al raggio caratteristico di blocco di Rydberg, permettendo l'operazione simultanea su tutte le coppie corrispondenti."
+    }
+  },
+  {
+    "id": "p0079",
+    "page": 5,
+    "order": 79,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.6476959074386442,
+        0.4886772804010927,
+        0.6747408780184659
+      ]
+    ],
+    "sourceText": "• C-Z gates can only be applied between vertically orhorizontally adjacent qubits.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Vincolo 1: i C-Z si possono applicare solo tra qubit adiacenti verticalmente o orizzontalmente."
+    }
+  },
+  {
+    "id": "p0080",
+    "page": 5,
+    "order": 80,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.7206984240599353,
+        0.4886935364966299,
+        0.7766750605419429
+      ]
+    ],
+    "sourceText": "• C-Z gates must be executed simultaneously on allcorresponding atom pairs between two adjacentrows (or columns), rather than on only a subsetof those pairs.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Vincolo 2: i C-Z devono essere eseguiti simultaneamente su tutte le coppie corrispondenti tra due righe (o colonne) adiacenti, non su un sottoinsieme."
+    }
+  },
+  {
+    "id": "p0081",
+    "page": 5,
+    "order": 81,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.8141313803316367,
+        0.48870904461231107,
+        0.9135060165867661
+      ]
+    ],
+    "sourceText": "Under the transportation and entangling constraints, aC-Z gate between two qubits located in different rows anddifferent columns cannot be implemented within a singletransport operation. To realize such C-Z gates, atomsselected from two rows are transported to the entanglingzone in two separate steps. The process is illustrated inFigure 3.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Un C-Z tra qubit in righe e colonne diverse non è realizzabile in un solo trasporto: richiede due trasporti separati (illustrato in Fig. 3)."
+    }
+  },
+  {
+    "id": "p0082",
+    "page": 5,
+    "order": 82,
+    "rects": [
+      [
+        0.9103154201133579,
+        0.035485029220581055,
+        0.9184548371757557,
+        0.04806406811030224
+      ]
+    ],
+    "sourceText": "6",
+    "explanations": {
+      "it-expert": "Numero di pagina (elemento decorativo del PDF)."
+    }
+  },
+  {
+    "id": "p0083",
+    "page": 5,
+    "order": 83,
+    "rects": [
+      [
+        0.7590125588809743,
+        0.08783774905734593,
+        0.7692020889980341,
+        0.09571145760892617
+      ],
+      [
+        0.7593095567491319,
+        0.11504526812620837,
+        0.7694990868661918,
+        0.12291897667778863
+      ],
+      [
+        0.7903982922921773,
+        0.1560211277971364,
+        0.8927583382799734,
+        0.16725728969381312
+      ],
+      [
+        0.5179967443927441,
+        0.18937012643525095,
+        0.9184544382531659,
+        0.2598128077959774
+      ]
+    ],
+    "sourceText": "① ② Entangling Zone FIG. 3: Transporting selected rows of qubits in two steps.After the transport operations, C-Z gates between qubitslocated in different rows and columns become column-aligned in the entangling zone, enabling their implemen-tation.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 3: trasportando righe selezionate di qubit in due passi (①②), i C-Z tra qubit di righe e colonne diverse diventano allineati per colonna nella zona di entangling, rendendone possibile l'implementazione."
+    }
+  },
+  {
+    "id": "p0084",
+    "page": 5,
+    "order": 84,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.2832059763898753,
+        0.9184541390612234,
+        0.35364863848445394
+      ]
+    ],
+    "sourceText": "Because qubit transport is both the most time-consuming operation and a dominant source of error inneutral-atom architectures, an essential goal of C-Z gatecompilation is to realize a given set of target C-Z gatesusing as few transport operations as possible.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "Il trasporto è sia l'operazione più lenta sia la principale fonte di errore nelle architetture ad atomi neutri: l'obiettivo della compilazione dei C-Z è quindi minimizzare il numero di operazioni di trasporto per un dato insieme di gate target."
+    }
+  },
+  {
+    "id": "p0085",
+    "page": 5,
+    "order": 85,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.35553556500059186,
+        0.9184704948874081,
+        0.5127736486569799
+      ]
+    ],
+    "sourceText": "Under the assumptions described above, C-Z gates nat-urally divide into two categories: row/column-aligned C-Z gates, which act on pairs of qubits within the samerow or the same column, and non-aligned C-Z gates,which couple qubits located in different rows and dif-ferent columns. We analyze these two cases separatelyand develop corresponding compilation strategies in thefollowing subsections. By combining these strategies, weultimately obtain a unified compilation framework ca-pable of realizing arbitrary patterns of C-Z gates on aneutral-atom quantum computer.",
+    "section": "II.B C-Z Gates",
+    "explanations": {
+      "it-expert": "I C-Z si dividono in due categorie: allineati (stessa riga o colonna) e non-allineati (righe e colonne diverse); le due strategie vengono sviluppate separatamente e poi combinate in un framework unificato."
+    }
+  },
+  {
+    "id": "p0087",
+    "page": 5,
+    "order": 87,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.5742059958101523,
+        0.9184695973115808,
+        0.6591145679204151
+      ]
+    ],
+    "sourceText": "We consider the compilation problem for row-alignedC-Z gates, namely, implementing a set of C-Z gates inwhich each gate acts on a pair of qubits within the samerow of the atom array, while minimizing the numberof transport operations.The compilation problem forcolumn-aligned C-Z gates can be treated analogously.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Problema per i C-Z allineati su riga: implementare un insieme di gate che agiscono su coppie di qubit nella stessa riga, minimizzando le operazioni di trasporto (il caso colonna è analogo)."
+    }
+  },
+  {
+    "id": "p0088",
+    "page": 5,
+    "order": 88,
+    "rects": [
+      [
+        0.5179965947967728,
+        0.6610014173719618,
+        0.9184611202065461,
+        0.818239385431463
+      ]
+    ],
+    "sourceText": "We first consider a simpler setting in which all C-Zgates act on qubits within a single row. Suppose the rowcontains n qubits, labeled 0, 1, . . . , n−1 from left to rightaccording to their spatial order in the array. Each C-Zgate is uniquely specified by an ordered pair (a, b) with0 ≤a < b ≤n −1, indicating that the gate acts onqubits a and b. Because the relative ordering of qubitsis preserved during transport, two C-Z gates (a1, b1) and(a2, b2) can be executed within a single transport oper-ation if and only if their corresponding intervals do notoverlap, namely",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Caso base a una riga di n qubit etichettati 0..n-1: un C-Z è la coppia ordinata (a,b), 0≤a<b≤n-1. Poiché l'ordine relativo dei qubit si preserva durante il trasporto, due gate (a1,b1) e (a2,b2) sono eseguibili nello stesso trasporto se e solo se gli intervalli corrispondenti non si sovrappongono."
+    }
+  },
+  {
+    "id": "p0089",
+    "page": 5,
+    "order": 89,
+    "rects": [
+      [
+        0.6419050428602431,
+        0.8316701253255209,
+        0.7945335238587623,
+        0.8455446802004419
+      ]
+    ],
+    "sourceText": "(a1, b1) ∩(a2, b2) = ∅,",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Condizione di compatibilità: (a1,b1)∩(a2,b2)=∅, interpretando ogni gate come l'intervallo aperto (a,b) sulla retta reale."
+    }
+  },
+  {
+    "id": "p0090",
+    "page": 5,
+    "order": 90,
+    "rects": [
+      [
+        0.5179964950661254,
+        0.8575289947818024,
+        0.9184703951567607,
+        0.9148753773082386
+      ]
+    ],
+    "sourceText": "where each gate is identified with the open interval (a, b)on the real line.Under this interpretation, the physi-cal scheduling problem reduces to a purely combinato-rial one. Given a set of intervals {(ai, bi)}, the goal is",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Sotto questa interpretazione, lo scheduling fisico si riduce a un problema puramente combinatorio: dato un insieme di intervalli, partizionarli nel minimo numero di gruppi tali che nessuna coppia nello stesso gruppo si intersechi."
+    }
+  },
+  {
+    "id": "p0091",
+    "page": 6,
+    "order": 91,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.06819083473899147,
+        0.4887089947469873,
+        0.25436204852479877
+      ]
+    ],
+    "sourceText": "to partition them into the minimum number of groupssuch that no two intervals within the same group inter-sect. From a graph-theoretic perspective, this is preciselythe graph-coloring problem on an interval graph, whosevertices correspond to the intervals (ai, bi), with edgesconnecting pairs of overlapping intervals. Since intervalgraphs are perfect [21], their chromatic number, namely,the minimum number of colors required so that adja-cent vertices receive different colors, can be computed inpolynomial time by sorting the intervals and greedily as-signing colors. The resulting coloring directly yields anoptimal transport schedule for the corresponding set ofC–Z gates.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Questo è esattamente il problema di colorazione di grafi su un grafo a intervalli (vertici = intervalli, archi = coppie che si sovrappongono). I grafi a intervalli sono perfetti, quindi il numero cromatico si calcola in tempo polinomiale ordinando gli intervalli e assegnando colori greedy — la colorazione risultante è direttamente uno scheduling ottimo del trasporto."
+    }
+  },
+  {
+    "id": "p0092",
+    "page": 6,
+    "order": 92,
+    "rects": [
+      [
+        0.0882352691849852,
+        0.25624891724249327,
+        0.4887089947469873,
+        0.34115750861890387
+      ]
+    ],
+    "sourceText": "When the set of row-aligned C-Z gates involves m dif-ferent rows, a straightforward approach is to implementthe gates row by row using the strategy described inthe previous paragraph. Here, we present an alternativemethod that exploits the structure of qubit transport andthe self-inverse property of C-Z gates.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Per m righe diverse coinvolte, un approccio diretto è applicare la strategia riga-per-riga. Presentano un metodo alternativo che sfrutta la struttura del trasporto e la self-inversione dei C-Z."
+    }
+  },
+  {
+    "id": "p0093",
+    "page": 6,
+    "order": 93,
+    "rects": [
+      [
+        0.08823521931966145,
+        0.3430443966027462,
+        0.48869922114353553,
+        0.4424188787286932
+      ]
+    ],
+    "sourceText": "Specifically, the row-aligned C-Z gates acting on anm×n atom array can be represented by an m×n(n−1)/2binary matrix M. The columns of M are indexed by or-dered pairs (a, b) with 0 ≤a < b ≤n −1. The entryMi,(a,b) equals 1 (respectively, 0) if a C-Z gate is (respec-tively, is not) applied between qubits a and b in the i-throw. An illustration example is shown in Figure 4.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "I C-Z allineati su un array m×n si rappresentano con una matrice binaria M di dimensione m×n(n-1)/2, indicizzata per colonne dalle coppie ordinate (a,b); M_{i,(a,b)}=1 se il gate è applicato tra i qubit a,b nella riga i (esempio in Fig. 4)."
+    }
+  },
+  {
+    "id": "p0095",
+    "page": 6,
+    "order": 95,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.55757722950945,
+        0.4886927386514502,
+        0.584622161556976
+      ]
+    ],
+    "sourceText": "FIG. 4: Encoding a set of C-Z gates into a binary matrixrepresentation.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 4: codifica di un insieme di gate C-Z in rappresentazione matriciale binaria."
+    }
+  },
+  {
+    "id": "p0096",
+    "page": 6,
+    "order": 96,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.6079256847651318,
+        0.48870904461231107,
+        0.6639024368440262
+      ]
+    ],
+    "sourceText": "Then, the matrix is partitioned according to its columnindexes, such that any two indexes (interpreted as inter-vals) within the same group are disjoint. This groupingcan be obtained in two steps:",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "La matrice viene poi partizionata per indice di colonna, in modo che due indici (interpretati come intervalli) nello stesso gruppo siano disgiunti — ottenibile in due passi."
+    }
+  },
+  {
+    "id": "p0097",
+    "page": 6,
+    "order": 97,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.674785498416785,
+        0.4338992249731924,
+        0.687364520448627
+      ]
+    ],
+    "sourceText": "1. Collect the indexes of all nonzero columns.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Passo 1: raccogliere gli indici di tutte le colonne non nulle."
+    }
+  },
+  {
+    "id": "p0098",
+    "page": 6,
+    "order": 98,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.6987804836697049,
+        0.48869358636195365,
+        0.7402913257329151
+      ]
+    ],
+    "sourceText": "2. Interpret these column indexes as open intervalsand apply interval-graph coloring to obtain a validgrouping.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Passo 2: interpretare questi indici come intervalli aperti e applicare la colorazione di grafi a intervalli per ottenere un raggruppamento valido."
+    }
+  },
+  {
+    "id": "p0099",
+    "page": 6,
+    "order": 99,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.7511743873056739,
+        0.4886927386514502,
+        0.7782193578854956
+      ],
+      [
+        0.18762581021178001,
+        0.793797887936987,
+        0.4014980091768153,
+        0.8591710870916193
+      ]
+    ],
+    "sourceText": "For example, after removing all-zero columns, the matrixin Figure 4 can be grouped as follows: (0, 1) (1, 2)(0, 2)(0, 3)011001101020101",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Esempio: rimosse le colonne nulle, la matrice di Fig. 4 si raggruppa come mostrato (gruppi di colonne compatibili)."
+    }
+  },
+  {
+    "id": "p0100",
+    "page": 6,
+    "order": 100,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.8719950974589646,
+        0.4887032103694342,
+        0.9135058624575837
+      ],
+      [
+        0.5179967443927441,
+        0.06819074804132635,
+        0.9184382818882761,
+        0.15310059171734433
+      ]
+    ],
+    "sourceText": "Note that within each group, any collection of C-Z gatescorresponding to a rank-1 pattern can be implementedusing a single transport operation. Moreover, since the C-Z gate is self-inverse, Gaussian elimination can beapplied to determine the minimum number of trans-port operations required to realize the desired gate setwithin each group. Combining the implementations forall groups then yields a complete procedure for executingthe full set of C-Z gates.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "All'interno di ogni gruppo, un pattern di C-Z rank-1 è implementabile con un solo trasporto; poiché il C-Z è self-inverso, l'eliminazione gaussiana determina il numero minimo di trasporti necessari per il gruppo — combinando tutti i gruppi si ottiene la procedura completa."
+    }
+  },
+  {
+    "id": "p0101",
+    "page": 6,
+    "order": 101,
+    "rects": [
+      [
+        0.9103154201133579,
+        0.035485029220581055,
+        0.9184548371757557,
+        0.04806406811030224
+      ]
+    ],
+    "sourceText": "7",
+    "explanations": {
+      "it-expert": "Numero di pagina."
+    }
+  },
+  {
+    "id": "p0102",
+    "page": 6,
+    "order": 102,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.15501398992056797,
+        0.9184543385225183,
+        0.21129854760988795
+      ]
+    ],
+    "sourceText": "In the above example, the first group of columns hasrank two, whereas the remaining two groups each haverank one. Consequently, the entire set of C-Z gates canbe implemented using a total of 4 transport operations.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Nell'esempio, il primo gruppo di colonne ha rango 2, gli altri due rango 1: l'intero insieme di C-Z si implementa con un totale di 4 operazioni di trasporto."
+    }
+  },
+  {
+    "id": "p0103",
+    "page": 6,
+    "order": 103,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.22302290405889955,
+        0.9184704948874081,
+        0.3079314954353101
+      ]
+    ],
+    "sourceText": "Remark II.4. We now present a unified perspectivethat encompasses both the row-by-row method and thegrouping-and-elimination method.Specifically, the rowindexes can first be partitioned into k groups, where the i-th group contains mi rows. The grouping-and-eliminationprocedure is then applied independently to each group.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Osservazione II.4: prospettiva unificata che comprende sia il metodo riga-per-riga sia quello raggruppa-ed-elimina — gli indici di riga si partizionano in k gruppi da m_i righe ciascuno, applicando la procedura di raggruppamento-eliminazione indipendentemente a ciascun gruppo."
+    }
+  },
+  {
+    "id": "p0104",
+    "page": 6,
+    "order": 104,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.3098461459381412,
+        0.9184702954261131,
+        0.40922064733023594
+      ]
+    ],
+    "sourceText": "From this viewpoint, the row-by-row method corre-sponds to the special case in which all mi = 1, whereasthe grouping-and-elimination method corresponds to thecase k = 1. In practice, heuristic strategies can be devel-oped to optimize the grouping of both rows and columnsof the matrix M, thereby reducing the overall transportcost.",
+    "section": "II.B.1 C-Z allineati",
+    "explanations": {
+      "it-expert": "Il metodo riga-per-riga corrisponde al caso speciale m_i=1 per tutti i, quello raggruppa-ed-elimina al caso k=1. In pratica si possono sviluppare euristiche per ottimizzare il raggruppamento di righe e colonne di M, riducendo ulteriormente il costo di trasporto."
+    }
+  },
+  {
+    "id": "p0105",
+    "page": 6,
+    "order": 105,
+    "rects": [
+      [
+        0.6289575115527982,
+        0.4396415093932489,
+        0.8074945188036152,
+        0.45096272169941604
+      ]
+    ],
+    "sourceText": "2.Non-aligned C-Z Gates",
+    "explanations": {
+      "it-expert": "Inizio Sezione II.B.2, Non-aligned C-Z Gates."
+    }
+  },
+  {
+    "id": "p0106",
+    "page": 6,
+    "order": 106,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.4710166237571023,
+        0.9184532414853962,
+        0.5414592858516809
+      ]
+    ],
+    "sourceText": "We consider the problem of implementing non-alignedC-Z gates, namely, C-Z gates acting on pairs of qubitslocated in different rows and columns of the atom ar-ray, with the goal of minimizing the number of transportoperations.",
+    "section": "II.B.2 C-Z non allineati",
+    "explanations": {
+      "it-expert": "Problema per i C-Z non allineati: gate che agiscono su qubit in righe e colonne diverse, minimizzando le operazioni di trasporto."
+    }
+  },
+  {
+    "id": "p0107",
+    "page": 6,
+    "order": 107,
+    "rects": [
+      [
+        0.5179966446620966,
+        0.5433739556206597,
+        0.9184695973115808,
+        0.6861461292613636
+      ]
+    ],
+    "sourceText": "We first consider the case of two rows of qubits, eachcontaining n qubits labeled 1, 2, . . . , n from left to right.An inter-row C-Z gate is uniquely specified by a pair(a1, a2), indicating that the gate acts on qubit a1 inthe first row and qubit a2 in the second row. Since therelative ordering of qubits within each row is preservedduring transport, two inter-row C-Z gates (a1, a2) and(b1, b2) can be executed within a single transport opera-tion if and only if their induced connections do not cross,i.e.,",
+    "section": "II.B.2 C-Z non allineati",
+    "explanations": {
+      "it-expert": "Caso base a due righe di n qubit: un C-Z inter-riga è la coppia (a1,a2). Poiché l'ordine relativo entro ciascuna riga si preserva, due gate (a1,a2) e (b1,b2) sono eseguibili nello stesso trasporto se e solo se le connessioni indotte non si incrociano, cioè (a1-b1)(a2-b2)>0."
+    }
+  },
+  {
+    "id": "p0108",
+    "page": 6,
+    "order": 108,
+    "rects": [
+      [
+        0.6382875130846609,
+        0.7007423169685133,
+        0.798151302960963,
+        0.7152077260643545
+      ]
+    ],
+    "sourceText": "(a1 −b1)(a2 −b2) > 0.",
+    "section": "II.B.2 C-Z non allineati",
+    "explanations": {
+      "it-expert": "Condizione di non-incrocio: (a1-b1)(a2-b2)>0."
+    }
+  },
+  {
+    "id": "p0109",
+    "page": 6,
+    "order": 109,
+    "rects": [
+      [
+        0.5179965947967728,
+        0.7277666342378867,
+        0.9184426700367647,
+        0.7693528454713147
+      ],
+      [
+        0.5179965947967728,
+        0.7566983001400726,
+        0.918455535290288,
+        0.7851129396997317
+      ],
+      [
+        0.5179964950661254,
+        0.7983380712644018,
+        0.9241500555300245,
+        0.8122126261393229
+      ],
+      [
+        0.7767985724156199,
+        0.8163317285402857,
+        0.7865169749540442,
+        0.8289107505721275
+      ],
+      [
+        0.795125375386157,
+        0.8163317285402857,
+        0.8518715652765012,
+        0.8464612864484691
+      ],
+      [
+        0.5179963454701542,
+        0.8259631070223722,
+        0.772264168932547,
+        0.8431065106632734
+      ],
+      [
+        0.7865208145839716,
+        0.8269426750414299,
+        0.8099004209431169,
+        0.8431065106632734
+      ],
+      [
+        0.8518754547717524,
+        0.8302196926540799,
+        0.9184391794641034,
+        0.8427987146859217
+      ],
+      [
+        0.5179962956048305,
+        0.8495158956508444,
+        0.8188612196180556,
+        0.8656797312726878
+      ],
+      [
+        0.5179962956048305,
+        0.8527929132634943,
+        0.9184442657271242,
+        0.883429710311119
+      ],
+      [
+        0.6280175502004187,
+        0.8705428923019255,
+        0.8893565258948631,
+        0.886476690118963
+      ],
+      [
+        0.6295763900856567,
+        0.8976497457485006,
+        0.6893857569476358,
+        0.9156999684343434
+      ],
+      [
+        0.6746107113906761,
+        0.9010022095959596,
+        0.8068365458569495,
+        0.9171683571555398
+      ]
+    ],
+    "sourceText": "Under this condition, the scheduling problem admits acombinatorial reformulation. Given a set of pairs S ⊂Z2 +, the task is to find the smallest integer k togetherwith a partition {S1, . . . , Sk} of S such that (a1−b1)(a2−b2) > 0, ∀(ai, bi) ∈Sj, i = 1, 2, j = 1, . . . , k. \u0010 1 , a(i)2\u0011 Let S = {a(1), . . . , a(m)} with a(i) = a(i) . We sort these points by non-decreasing order of a(i) 1 , breaking tiesby decreasing a(i) 2 , and define the resulting sequence xi = a(i) 2 ,i = 1, · · · , m.",
+    "section": "II.B.2 C-Z non allineati",
+    "explanations": {
+      "it-expert": "Riformulazione combinatoria: dato un insieme di coppie S, trovare la partizione {S1,...,Sk} di cardinalità minima tale che entro ciascun sottoinsieme la condizione di non-incrocio valga per ogni coppia di elementi."
+    }
+  },
+  {
+    "id": "p0111",
+    "page": 7,
+    "order": 111,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.06819083473899147,
+        0.48870904461231107,
+        0.18234029442372948
+      ]
+    ],
+    "sourceText": "Under this ordering, each subset Sj corresponds to astrictly increasing subsequence of (x1, . . . , xm).Con-sequently, the minimum number of transport opera-tions is equal to the minimum number of strictly in-creasing subsequences required to partition the sequence(x1, . . . , xm).This quantity can be computed opti-mally using a greedy algorithm with time complexityO(m log m).",
+    "section": "II.B.2 C-Z non allineati",
+    "explanations": {
+      "it-expert": "Il numero minimo di operazioni di trasporto è quindi uguale al numero minimo di sottosequenze strettamente crescenti necessarie per partizionare la sequenza — calcolabile in modo ottimo con un algoritmo greedy in tempo O(m log m)."
+    }
+  },
+  {
+    "id": "p0112",
+    "page": 7,
+    "order": 112,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.18391936716407237,
+        0.48870889501633985,
+        0.25436204852479877
+      ]
+    ],
+    "sourceText": "Consequently, a straightforward strategy for compilingnon-aligned C-Z gates is to process the gates row pair byrow pair. Specifically, for each pair of rows, all requiredinter-row C-Z gates are implemented using the methoddescribed above.",
+    "section": "II.B.2 C-Z non allineati",
+    "explanations": {
+      "it-expert": "Strategia pratica per i C-Z non allineati generali: processare le coppie di righe una alla volta, applicando il metodo sopra a ciascuna coppia."
+    }
+  },
+  {
+    "id": "p0114",
+    "page": 7,
+    "order": 114,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.31547621524695196,
+        0.48869268878612643,
+        0.35698707657630996
+      ]
+    ],
+    "sourceText": "By combining the two cases discussed above, arbitraryC-Z gates on a neutral-atom array can be scheduled eﬀi-ciently.",
+    "section": "II.B.3 Scheduling generale",
+    "explanations": {
+      "it-expert": "Combinando i due casi (allineati e non-allineati) si ottiene uno scheduling efficiente per C-Z arbitrari su un array ad atomi neutri."
+    }
+  },
+  {
+    "id": "p0115",
+    "page": 7,
+    "order": 115,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.35887392602785667,
+        0.48869378582324857,
+        0.4582496797195589
+      ]
+    ],
+    "sourceText": "First, all non-aligned C-Z gates are scheduled row pairby row pair using the method described in Section II B 2.During this process, some row- or column-aligned C-Zgates may also be executed without requiring additionaltransport operations.The remaining row-aligned andcolumn-aligned gates are then scheduled separately us-ing the approach developed in Section II B 1.",
+    "section": "II.B.3 Scheduling generale",
+    "explanations": {
+      "it-expert": "Procedura completa: prima si schedulano tutti i C-Z non-allineati riga-coppia per riga-coppia (Sezione II.B.2) — nel processo alcuni C-Z allineati vengono già eseguiti gratuitamente; i rimanenti C-Z allineati (riga/colonna) si schedulano poi con l'approccio della Sezione II.B.1."
+    }
+  },
+  {
+    "id": "p0117",
+    "page": 7,
+    "order": 117,
+    "rects": [
+      [
+        0.0882352691849852,
+        0.5325721586593474,
+        0.48870904461231107,
+        0.6464125508009785
+      ]
+    ],
+    "sourceText": "The Quantum Approximation Optimization Algo-rithm (QAOA) circuit for the MaxCut problem is ap-layer parameterized quantum-classical hybrid circuit.Each layer consists of a fixed gate sequence, with rota-tion angles determined by a parameter pair (γ, β) thatgoverns the controlled-phase (Zγ) and Rx gates. An ex-ample graph and the corresponding single-layer QAOA-MaxCut circuit are shown in Figure 5.",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Il circuito QAOA per MaxCut è un circuito ibrido quantistico-classico parametrico a p layer; ogni layer ha una sequenza fissa di gate con angoli di rotazione determinati dalla coppia di parametri (γ,β) che governa i gate controlled-phase (Zγ) e Rx (esempio in Fig. 5)."
+    }
+  },
+  {
+    "id": "p0118",
+    "page": 7,
+    "order": 118,
+    "rects": [
+      [
+        0.10451470169366575,
+        0.6482994773171165,
+        0.3982289881488077,
+        0.6627661194464173
+      ],
+      [
+        0.17132026073979398,
+        0.6811058738014915,
+        0.18927006939657373,
+        0.6947468459004104
+      ],
+      [
+        0.325478771932764,
+        0.6817523686572758,
+        0.36731944364659924,
+        0.6953933407561947
+      ],
+      [
+        0.23040360095454196,
+        0.6933509749595566,
+        0.24756141114079094,
+        0.7059299969913984
+      ]
+    ],
+    "sourceText": "Here, the controlled-Zγ gate is defined as Zγ Rz(γ) :=",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Il gate controlled-Zγ è definito come Zγ := Rz(γ)."
+    }
+  },
+  {
+    "id": "p0119",
+    "page": 7,
+    "order": 119,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.7361239038332544,
+        0.48870904461231107,
+        0.8210322832820391
+      ],
+      [
+        0.14479412752039292,
+        0.8408989183830492,
+        0.43080707624846815,
+        0.8546306725704309
+      ]
+    ],
+    "sourceText": "Each controlled-Zγ gate is symmetric on the two tar-get qubits and commutes with all other controlled-Zγgates, allowing flexible rearrangement when multiplegates share qubits. On neutral-atom quantum comput-ers, the gate can be further decomposed into a sequenceof native C-Z and single-qubit gates: HZHRz(γ)HZH",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Ogni controlled-Zγ è simmetrico sui due qubit target e commuta con gli altri controlled-Zγ, permettendo un riarrangiamento flessibile quando più gate condividono qubit; su atomi neutri si decompone in una sequenza di gate C-Z e a singolo qubit nativi: H·Z·H·Rz(γ)·H·Z·H."
+    }
+  },
+  {
+    "id": "p0120",
+    "page": 7,
+    "order": 120,
+    "rects": [
+      [
+        0.08823528165131612,
+        0.8864610460069444,
+        0.48869268878612643,
+        0.9135059395221748
+      ],
+      [
+        0.9103154201133579,
+        0.035485029220581055,
+        0.9184548371757557,
+        0.04806406811030224
+      ],
+      [
+        0.5179967443927441,
+        0.06819082510591758,
+        0.5325499391244128,
+        0.08076986158737029
+      ],
+      [
+        0.5429003347758374,
+        0.09613119953810567,
+        0.8998936671836704,
+        0.10986302115700462
+      ],
+      [
+        0.5429003347758374,
+        0.14197084638807508,
+        0.8998936671836704,
+        0.15570266800697405
+      ],
+      [
+        0.5179966945274204,
+        0.1843713895239011,
+        0.9184543385225183,
+        0.2692799809003117
+      ]
+    ],
+    "sourceText": "Consider two controlled-Zγ with one common targetqubit, the circuit on these three qubits can be arranged 8 as HZHRz(γ)HZH HZHRz(γ)HZH where we use the facts that controlled-Zγ gate is sym-metric on the two target qubits and C-Z gates commute.More generally, if a set of controlled-Zγ gates correspondsto a graph with paths no longer than 1, i.e., a star forestin graph theory, then the corresponding quantum circuitcan be arranged in a layered structure as",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Esempio con due controlled-Zγ che condividono un qubit target: sfruttando simmetria e commutatività dei C-Z, il circuito sui tre qubit si riorganizza in una struttura a strati H-Z-H-Rz(γ)-H-Z-H condivisa."
+    }
+  },
+  {
+    "id": "p0121",
+    "page": 7,
+    "order": 121,
+    "rects": [
+      [
+        0.5896699194814644,
+        0.28848376418604993,
+        0.9184545379838133,
+        0.30229233250473486
+      ],
+      [
+        0.5179966945274204,
+        0.3202539887091126,
+        0.918454039330576,
+        0.36176485003847064
+      ]
+    ],
+    "sourceText": "HZHRHZH(6) Here, H, Z, and R denote sets of Hadamard, C-Z, andRz gates, respectively. Each block can be compiled inde-pendently using the algorithms developed in Section II",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Equazione (6): più in generale, se un insieme di controlled-Zγ corrisponde a un grafo con cammini di lunghezza al più 1 (una 'star forest' in teoria dei grafi), il circuito si organizza in strati H-Z-H-R-H-Z-H, dove H, Z, R denotano insiemi di gate Hadamard, C-Z e Rz rispettivamente — ogni blocco compilabile indipendentemente con gli algoritmi della Sezione II."
+    }
+  },
+  {
+    "id": "p0122",
+    "page": 7,
+    "order": 122,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.36365169949001735,
+        0.9184709935406454,
+        0.5064251832287721
+      ]
+    ],
+    "sourceText": "In summary, our compilation of QAOA-MaxCut cir-cuits proceeds in two stages: (i) the input graph is de-composed into a collection of star forests; (ii) for eachstar forest, the associated Hadamard, C-Z, and Rz layersare compiled independently.Star-forest decompositionis performed via a greedy edge-ordering heuristic alignedwith the qubit layout, as described in Section B. TheHadamard layer at the end of a star-forest subcircuit canbe merged with the Hadamard layer at the beginning ofthe subsequent subcircuit to reduce depth.",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "La compilazione di QAOA-MaxCut procede in due stadi: (i) il grafo di input viene decomposto in una collezione di star forest (euristica greedy di ordinamento degli archi allineata al layout dei qubit, dettagliata in Appendice B); (ii) per ciascuna star forest si compilano indipendentemente i layer Hadamard, C-Z e Rz. Il layer Hadamard finale di una sotto-circuito si può fondere con quello iniziale del successivo per ridurre la profondità."
+    }
+  },
+  {
+    "id": "p0124",
+    "page": 7,
+    "order": 124,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.5678221962668679,
+        0.9184544382531659,
+        0.6382648583614465
+      ]
+    ],
+    "sourceText": "In this section, we evaluate the performance of theproposed compilation methods through numerical exper-iments. The results demonstrate both the effectivenessof our algorithm in reducing circuit layers and transportoperations, and their practical computational eﬀiciency.",
+    "section": "IV. Numerical Experiments",
+    "explanations": {
+      "it-expert": "Valutazione sperimentale del metodo: efficacia nella riduzione di layer di circuito/operazioni di trasporto ed efficienza computazionale pratica."
+    }
+  },
+  {
+    "id": "p0125",
+    "page": 7,
+    "order": 125,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.6401517463452888,
+        0.9184704948874081,
+        0.7973897144047901
+      ]
+    ],
+    "sourceText": "Our experiments consist of five parts. We first com-pare our single-qubit gate compilation scheme with anaïve row-by-row or column-by-column strategy.Wethen use small-scale instances to empirically verify the4/3-optimality for Pauli gate compilation. Next, we eval-uate the proposed scheduling algorithm for C-Z gates.We further apply the full compilation pipeline to QAOA-MaxCut circuits to assess its performance. Finally, wemeasure the runtime of the compilation procedures forboth single-qubit and C-Z gates under different arraysizes, illustrating their scalability.",
+    "section": "IV. Numerical Experiments",
+    "explanations": {
+      "it-expert": "Cinque esperimenti: confronto con strategia naive riga/colonna per i gate a singolo qubit; verifica empirica della 4/3-ottimalità per i gate di Pauli; valutazione dello scheduling C-Z; applicazione della pipeline completa a QAOA-MaxCut; misura del runtime di compilazione al variare della dimensione dell'array."
+    }
+  },
+  {
+    "id": "p0127",
+    "page": 7,
+    "order": 127,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.8719951745235559,
+        0.9184533412160437,
+        0.9135059395221748
+      ]
+    ],
+    "sourceText": "We evaluate the performance of the proposed single-qubit gate compilation methods through numerical ex-periments.For each gate family, we generate random",
+    "section": "IV.A Valutazione gate singolo qubit",
+    "explanations": {
+      "it-expert": "Per ciascuna famiglia di gate generano matrici pattern casuali (continua a pagina successiva)."
+    }
+  },
+  {
+    "id": "p0128",
+    "page": 8,
+    "order": 128,
+    "rects": [
+      [
+        0.4894918304642821,
+        0.07345293989085187,
+        0.8961374120774612,
+        0.08591980404324001
+      ],
+      [
+        0.4894918304642821,
+        0.1037850139117,
+        0.8961374120774612,
+        0.11625313999676945
+      ],
+      [
+        0.4894918304642821,
+        0.13411708793254815,
+        0.8961374120774612,
+        0.14658520438454367
+      ],
+      [
+        0.4894918304642821,
+        0.16444915232032237,
+        0.8961374120774612,
+        0.17691727840539181
+      ],
+      [
+        0.4894918304642821,
+        0.1947812167080966,
+        0.8961374120774612,
+        0.20724936205931385
+      ],
+      [
+        0.25533823250165955,
+        0.22857088031190814,
+        0.7513517990610958,
+        0.24114992160989782
+      ]
+    ],
+    "sourceText": "q0HZγZγRx(β) q1HZγZγRx(β) q2HRx(β) q3HZγRx(β) q4HRx(β) FIG. 5: Example graph and QAOA-MaxCut circuit for a single layer.",
+    "section": "III. QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Fig. 5: grafo di esempio e relativo circuito QAOA-MaxCut a un layer (righe q0..q4 con sequenze di gate H, Zγ, Rx(β))."
+    }
+  },
+  {
+    "id": "p0130",
+    "page": 8,
+    "order": 130,
+    "rects": [
+      [
+        0.5179965947967728,
+        0.3190494306159742,
+        0.9184707940793505,
+        0.44735575203943734
+      ]
+    ],
+    "sourceText": "To empirically validate the theoretical 4/3-optimalityguarantee for Pauli gates compilation, we conduct nu-merical experiments on small-scale instances.Specifi-cally, for atom arrays of sizes 4 × 4, 4 × 5, 5 × 5, and5 × 6, we randomly generate Pauli gates acting on eachatom.For each instance, the optimal implementationsolution is obtained via exhaustive search and comparedagainst the output of our algorithm by computing theratio of required operations.",
+    "section": "IV.B Verifica 4/3-ottimalità",
+    "explanations": {
+      "it-expert": "Per validare empiricamente il bound teorico di 4/3-ottimalità sui gate di Pauli, conducono esperimenti su istanze a piccola scala (array 4×4, 4×5, 5×5, 5×6): per ciascuna istanza la soluzione ottima è ottenuta per ricerca esaustiva e confrontata con l'output dell'algoritmo tramite il rapporto tra operazioni richieste."
+    }
+  },
+  {
+    "id": "p0131",
+    "page": 8,
+    "order": 131,
+    "rects": [
+      [
+        0.12436601227405024,
+        0.38643707891907353,
+        0.45256202049504696,
+        0.3990161009509154
+      ]
+    ],
+    "sourceText": "FIG. 6: Randomly generated matrix patterns.",
+    "section": "IV.B Verifica 4/3-ottimalità",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 6: pattern di matrici generate casualmente usate nei test."
+    }
+  },
+  {
+    "id": "p0132",
+    "page": 8,
+    "order": 132,
+    "rects": [
+      [
+        0.5179965947967728,
+        0.44955829658893626,
+        0.9184588264016544,
+        0.5489340117483428
+      ]
+    ],
+    "sourceText": "Since the ratios take values from a small discrete set,we visualize their frequency and cumulative frequency inFigure 8. Separate histograms are shown for each arraysize, illustrating the occurrence of different approxima-tion ratios.Together, these results provide numericalevidence supporting the 4/3-optimality bound on smallinstances.",
+    "section": "IV.B Verifica 4/3-ottimalità",
+    "explanations": {
+      "it-expert": "Poiché i rapporti assumono valori da un piccolo insieme discreto, ne visualizzano frequenza e frequenza cumulativa in istogrammi separati per dimensione dell'array (Fig. 8), a supporto empirico del bound di 4/3-ottimalità su piccole istanze."
+    }
+  },
+  {
+    "id": "p0133",
+    "page": 8,
+    "order": 133,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.45118328055950124,
+        0.48869822383706085,
+        0.5071600326383957
+      ],
+      [
+        0.08823529411764706,
+        0.5191239251030816,
+        0.4886927885167739,
+        0.6474314988261521
+      ]
+    ],
+    "sourceText": "pattern matrices M over the corresponding group, withmatrix dimensions ranging from n = 10 to n = 200. Foreach dimension n, 100 independent instances are sam-pled. To reflect locally correlated gate patterns, the randommatrices are generated as follows.We first sample asparse binary matrix with a prescribed density. This pat-tern is then smoothed using a Gaussian filter to introduceshort-range correlations, followed by thresholding to ob-tain a binary support.Finally, each nonzero entry ismapped uniformly at random to an element of the targetgate set, producing the final pattern matrix. Examplesare shown in Figure 6.",
+    "section": "IV.A Valutazione gate singolo qubit",
+    "explanations": {
+      "it-expert": "Matrici pattern generate su gruppi corrispondenti, dimensioni da n=10 a n=200, 100 istanze indipendenti per dimensione. Per riflettere pattern di gate localmente correlati: si campiona una matrice binaria sparsa con densità prescritta, la si smussa con un filtro gaussiano per introdurre correlazioni a corto raggio, si sogliano i valori per ottenere un supporto binario, e infine si mappa ogni entrata non-nulla a un elemento casuale del gruppo target (esempi in Fig. 6)."
+    }
+  },
+  {
+    "id": "p0135",
+    "page": 8,
+    "order": 135,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.625757776125513,
+        0.9184554355596405,
+        0.7540653113162878
+      ]
+    ],
+    "sourceText": "In our numerical evaluation of C-Z gate compilation,we consider neutral-atom arrays of size n×n with n rang-ing from 10 to 200. For each array size, a random set ofrequired C-Z gates is generated by independently includ-ing each pair of atoms with probability 8/n2. With thischoice, the expected number of C-Z gates scales quadrat-ically with the array size n, or equivalently linearly withthe total number of atoms. This keeps the gate densitycomparable across different array sizes.",
+    "section": "IV.C Valutazione C-Z",
+    "explanations": {
+      "it-expert": "Array n×n con n da 10 a 200; per ciascuna dimensione, un insieme casuale di C-Z richiesti generato includendo indipendentemente ogni coppia di atomi con probabilità 8/n² — così il numero atteso di gate scala quadraticamente con n (linearmente col numero totale di atomi), mantenendo la densità di gate comparabile tra le diverse scale."
+    }
+  },
+  {
+    "id": "p0136",
+    "page": 8,
+    "order": 136,
+    "rects": [
+      [
+        0.0882352878844816,
+        0.659395391290838,
+        0.4887089947469873,
+        0.8166334364149306
+      ]
+    ],
+    "sourceText": "We compare our methods with a naïve strategy thatapplies single-qubit gates independently row-by-row orcolumn-by-column. For each instance, we record the to-tal number of required operations. We report the averageoperation count with one standard deviation, as well asthe ratio between our methods and the naïve method.We conduct this evaluation for four representative gatefamilies: self-inverse gates, Pauli gates, phase gates, andπ/8 gates. The results are summarized in Figure 7, wherethe upper panels show the average operation counts andthe lower panels show the corresponding ratios.",
+    "section": "IV.C Valutazione C-Z",
+    "explanations": {
+      "it-expert": "Confronto con una strategia naive che applica i C-Z riga-per-riga o colonna-per-colonna; valutazione su quattro famiglie rappresentative (self-inverse, Pauli, fase, π/8), riepilogata in Fig. 7 (conteggi medi sopra, rapporti sotto)."
+    }
+  },
+  {
+    "id": "p0137",
+    "page": 8,
+    "order": 137,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.7562678173334911,
+        0.9184638129340278,
+        0.9135059395221748
+      ]
+    ],
+    "sourceText": "For each value of n, we generate 20 independent in-stances and record the average number of transport op-erations required by our compilation methods, as wellas by a naïve baseline that implements the required C-Z gates one at a time. The results are summarized inFigure 9. In particular, we compare the two strategiesfor compiling row/column-aligned C-Z gates introducedin Section II B 1, labeled as “row by row” and “group andreduce” in Figure 9, respectively. The left panel showsthe average number of transports as a function of the ar-ray size, while the right panel shows the ratio between the",
+    "section": "IV.C Valutazione C-Z",
+    "explanations": {
+      "it-expert": "Per ciascun n, 20 istanze indipendenti; confrontano le due strategie per C-Z allineati ('row by row' vs 'group and reduce', Fig. 9): pannello sinistro = trasporti medi in funzione della dimensione dell'array, pannello destro = rapporto naive/proposto."
+    }
+  },
+  {
+    "id": "p0138",
+    "page": 8,
+    "order": 138,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.8285973288796165,
+        0.4887024125242545,
+        0.9135057083284012
+      ]
+    ],
+    "sourceText": "Across all tested dimensions, our methods outperformthe naïve approach for self-inverse and Pauli gates, with adiminishing relative gap as the matrix size increases. Incontrast, for phase gates and π/8 gates, the advantageof our methods becomes increasingly pronounced withgrowing system size.",
+    "section": "IV.C Valutazione C-Z",
+    "explanations": {
+      "it-expert": "Per gate self-inverse e Pauli i metodi proposti battono la strategia naive con un vantaggio relativo che si riduce all'aumentare della dimensione; per fase e π/8, invece, il vantaggio cresce con la dimensione del sistema."
+    }
+  },
+  {
+    "id": "p0139",
+    "page": 9,
+    "order": 139,
+    "rects": [
+      [
+        0.09132842768251506,
+        0.3594004313151042,
+        0.9153590981477226,
+        0.37197945334694604
+      ]
+    ],
+    "sourceText": "FIG. 7: Comparison between our compilation methods and the naïve methods for several single-qubit gate families.",
+    "section": "IV.C Valutazione C-Z",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 7: confronto tra i metodi di compilazione proposti e i metodi naive per diverse famiglie di gate a singolo qubit."
+    }
+  },
+  {
+    "id": "p0140",
+    "page": 9,
+    "order": 140,
+    "rects": [
+      [
+        0.23782189063776552,
+        0.5694711473253038,
+        0.768868091059666,
+        0.5823579653344974
+      ]
+    ],
+    "sourceText": "FIG. 8: Empirical verification of the 4/3-optimality bound for Pauli gates.",
+    "section": "IV.B Verifica 4/3-ottimalità",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 8: verifica empirica del bound di 4/3-ottimalità per i gate di Pauli."
+    }
+  },
+  {
+    "id": "p0142",
+    "page": 9,
+    "order": 142,
+    "rects": [
+      [
+        0.5179966446620966,
+        0.7113108008798926,
+        0.9184609207452512,
+        0.8251510003600457
+      ]
+    ],
+    "sourceText": "To evaluate the performance of our compilationmethod on structured circuits, we consider QAOA cir-cuits for MaxCut on random graphs. We fix the neutral-atom array size to 30 × 30 and generate Erdős–Rényigraphs with the number of vertices ranging from 30 to500 and edge probability ρ = 0.05. For each graph size,we generate 50 independent instances to mitigate statis-tical fluctuations.",
+    "section": "IV.D Valutazione QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Array 30×30 fisso; grafi Erdős–Rényi con numero di vertici da 30 a 500 ed probabilità di arco ρ=0.05; 50 istanze indipendenti per dimensione del grafo, per mitigare fluttuazioni statistiche."
+    }
+  },
+  {
+    "id": "p0143",
+    "page": 9,
+    "order": 143,
+    "rects": [
+      [
+        0.10363561966839958,
+        0.758745135683002,
+        0.47327737247242646,
+        0.7713241577148438
+      ]
+    ],
+    "sourceText": "FIG. 9: Numerical results of C-Z gates compilation.",
+    "section": "IV.D Valutazione QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 9: risultati numerici della compilazione dei C-Z."
+    }
+  },
+  {
+    "id": "p0144",
+    "page": 9,
+    "order": 144,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.8141315344608191,
+        0.48870904461231107,
+        0.9135057853929924
+      ],
+      [
+        0.5179967443927441,
+        0.6140631473425663,
+        0.6981862884720945,
+        0.6266421693744082
+      ]
+    ],
+    "sourceText": "transport cost of the naïve baseline and that of our pro-posed compilation methods. We observe that the naïvebaseline requires approximately twice as many transportoperations as either proposed method, while the two pro-posed methods exhibit nearly identical performance. Amore detailed characterization of the regimes in whicheach strategy offers a relative advantage is an interesting direction for future work.",
+    "section": "IV.D Valutazione QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "La baseline naive richiede circa il doppio delle operazioni di trasporto rispetto a entrambi i metodi proposti, che a loro volta hanno prestazioni quasi identiche tra loro; caratterizzare più precisamente i regimi in cui ciascuna strategia ha un vantaggio relativo è indicato come direzione di lavoro futuro."
+    }
+  },
+  {
+    "id": "p0145",
+    "page": 9,
+    "order": 145,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.8285972518150253,
+        0.9184534409466911,
+        0.91350563126381
+      ]
+    ],
+    "sourceText": "For each instance, we record the total number ofatom transports required for implementing C-Z gates,as well as the number of addressing layers required forHadamard gates and Rz rotations, as produced by ourcompilation method. For comparison, we also record thecorresponding number of atom transports for C-Z gates",
+    "section": "IV.D Valutazione QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Per ciascuna istanza registrano il numero totale di trasporti atomici per i C-Z e il numero di addressing layer per Hadamard e rotazioni Rz prodotti dal metodo; per confronto registrano anche i trasporti C-Z della baseline naive (continua a pagina successiva)."
+    }
+  },
+  {
+    "id": "p0146",
+    "page": 10,
+    "order": 146,
+    "rects": [
+      [
+        0.10736274719238281,
+        0.2122893092608211,
+        0.4695650985817504,
+        0.22486835055881077
+      ]
+    ],
+    "sourceText": "FIG. 10: QAOA-MaxCut compilation performance",
+    "section": "IV.D Valutazione QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 10: prestazioni di compilazione su QAOA-MaxCut."
+    }
+  },
+  {
+    "id": "p0147",
+    "page": 10,
+    "order": 147,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.264315826724274,
+        0.4887089448816636,
+        0.43601985892864187
+      ]
+    ],
+    "sourceText": "under the naïve method. We report the mean and stan-dard deviation of these quantities over all trials. The re-sults are summarized in Figure 10. The left panel showsthe average number of transports or addressing layers asa function of the graph size, while the right panel showsthe ratio between the transport cost of the naïve baselineand that of our proposed compilation method. We ob-serve that the overall circuit depth is dominated by theimplementation of C-Z gates, and that our compilationmethod reduces the C-Z transport cost by more than 30%compared with a naïve sequential implementation of C-Zgates.",
+    "section": "IV.D Valutazione QAOA-MaxCut",
+    "explanations": {
+      "it-expert": "Riportano media e deviazione standard su tutte le prove (Fig. 10): pannello sinistro = trasporti/addressing layer medi in funzione della dimensione del grafo, pannello destro = rapporto naive/proposto. La profondità complessiva del circuito è dominata dall'implementazione dei C-Z, e il metodo proposto riduce il costo di trasporto C-Z di oltre il 30% rispetto a un'implementazione sequenziale naive."
+    }
+  },
+  {
+    "id": "p0149",
+    "page": 10,
+    "order": 149,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.5210961621217053,
+        0.4887089947469873,
+        0.75066383438881
+      ]
+    ],
+    "sourceText": "We further evaluate the classical runtime of our com-pilation algorithms. We consider atom arrays with linearsizes 20, 40, 60, 80, 100, 120, 140, 160, 180, and 200, wherethe array size denotes the array dimension rather thanthe total number of atoms. For each size, we examinefive representative gate families: self-inverse gates, Pauligates, phase gates, π/8 gates, and C-Z gates. For eachcombination of array size and gate family, we generate100 independent random instances using the same gen-eration procedure as in the previous experiments. Ourcompilation methods are applied to each instance, andthe compilation time is recorded. We report the meancompilation time over the 100 samples for each setting,thereby characterizing the scaling behavior of the clas-sical compilation cost across different gate families andsystem sizes.",
+    "section": "IV.E Tempo di compilazione",
+    "explanations": {
+      "it-expert": "Array con dimensioni lineari 20,40,...,200; cinque famiglie rappresentative (self-inverse, Pauli, fase, π/8, C-Z); 100 istanze casuali indipendenti per ogni combinazione dimensione/famiglia, misurando il tempo medio di compilazione per caratterizzare la scalabilità classica del metodo."
+    }
+  },
+  {
+    "id": "p0150",
+    "page": 10,
+    "order": 150,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.7562678943980824,
+        0.4887089947469873,
+        0.9135057853929924
+      ]
+    ],
+    "sourceText": "All experiments were performed on a standard desk-top workstation equipped with a 12th Gen Intel Corei7-12700H CPU (2.30 GHz) and 16 GB of RAM, run-ning a 64-bit operating system on an x64 architecture.The results are summarized in Figure 11.Each curveshows the average compilation time as a function of theatom array size for the compilation method for a fixedgate family. All compilation tasks complete within onesecond across the tested array sizes, indicating that theproposed methods are computationally eﬀicient and wellsuited for near-term neutral-atom array scales.",
+    "section": "IV.E Tempo di compilazione",
+    "explanations": {
+      "it-expert": "Esperimenti su workstation desktop standard (Intel Core i7-12700H 12ª gen, 2.30GHz, 16GB RAM, x64). Risultati in Fig. 11: tutte le compilazioni completano entro un secondo alle scale testate, indicando efficienza computazionale adeguata alle scale near-term."
+    }
+  },
+  {
+    "id": "p0151",
+    "page": 10,
+    "order": 151,
+    "rects": [
+      [
+        0.5808088015886693,
+        0.2594433601456459,
+        0.8556429794411254,
+        0.2720224014436356
+      ]
+    ],
+    "sourceText": "FIG. 11: Compilation time evaluation.",
+    "section": "IV.E Tempo di compilazione",
+    "explanations": {
+      "it-expert": "Didascalia Fig. 11: valutazione del tempo di compilazione."
+    }
+  },
+  {
+    "id": "p0153",
+    "page": 10,
+    "order": 153,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.3366125858191288,
+        0.9184542387918709,
+        0.4649188494441485
+      ]
+    ],
+    "sourceText": "In this work, we have presented a comprehensive com-pilation framework for structured quantum gate fami-lies on neutral-atom arrays. For single-qubit gates, weexploit the algebraic structures of gate families at thematrix level, enabling low-rank decompositions over ap-propriate groups and reducing the number of physicaloperations. For C-Z gates, we map the transport and ad-jacency constraints to classical graph-theoretic problems,allowing eﬀicient scheduling using standard algorithms.",
+    "section": "V. Conclusion",
+    "explanations": {
+      "it-expert": "Riepilogo: framework di compilazione completo per famiglie strutturate di gate su array ad atomi neutri. Per i gate a singolo qubit, decomposizioni a basso rango su gruppi appropriati sfruttando la struttura algebrica; per i C-Z, mappatura dei vincoli di trasporto/adiacenza su problemi grafo-teorici classici risolvibili con algoritmi standard."
+    }
+  },
+  {
+    "id": "p0154",
+    "page": 10,
+    "order": 154,
+    "rects": [
+      [
+        0.5179967443927441,
+        0.46687644419043955,
+        0.9184544382531659,
+        0.5662521978821418
+      ],
+      [
+        0.5179966945274204,
+        0.5536731758502998,
+        0.9184543385225183,
+        0.6964453494910038
+      ]
+    ],
+    "sourceText": "We demonstrated the effectiveness of our methodsthrough extensive numerical experiments.Across rep-resentative single-qubit gate families, our compilationmethods reduce the number of addressing layers by upto a factor of two compared with naïve row- or column-wise implementations, and small-scale tests confirm thetheoretical 4 3-optimality bound for Pauli gates. For C-Zgates, the proposed scheduling strategy reduces the re-quired number of atom transport operations by approx-imately 50%. When applied to QAOA circuits for Max-Cut, the complete framework reduces the C-Z transportcost by more than 30% on average. In addition, our tim-ing benchmarks show that all compilation tasks completewithin one second fofr the tested array sizes, indicatingthat the proposed methods are computationally eﬀicientat near-term neutral-atom scales.",
+    "section": "V. Conclusion",
+    "explanations": {
+      "it-expert": "Le famiglie di gate a singolo qubit testate riducono gli addressing layer fino a un fattore 2 rispetto a implementazioni naive; test a piccola scala confermano il bound teorico di 4/3-ottimalità per i gate di Pauli."
+    }
+  },
+  {
+    "id": "p0155",
+    "page": 10,
+    "order": 155,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.6984042543353457,
+        0.9184696970422284,
+        0.9135060165867661
+      ]
+    ],
+    "sourceText": "These results indicate that our compilation techniquescan eﬀiciently handle realistic neutral-atom arrays withinfeasible runtime limits. Looking forward, our approachprovides a foundation for optimizing larger-scale quan-tum circuits and can be extended to other gate fami-lies and quantum algorithms, facilitating more practi-cal and scalable implementations on near-term neutral-atom quantum processors. Our evaluation focuses on ad-dressing layers and atom transports as direct measuresof scheduling and shuttling overhead.In future work,it would be useful to incorporate more comprehensivehardware-aware metrics, such as fidelity, decoherence,movement duration, and approximate success probabil-ity, as suggested by recent unified evaluation frameworksfor neutral-atom compilers [22].",
+    "section": "V. Conclusion",
+    "explanations": {
+      "it-expert": "Per i C-Z, riduzione di ~50% delle operazioni di trasporto; su QAOA-MaxCut, riduzione >30% del costo di trasporto in media; benchmark di timing sub-secondo. Direzioni future: estensione ad altre famiglie di gate/algoritmi, e incorporazione di metriche hardware-aware più complete (fedeltà, decoerenza, durata del movimento, probabilità di successo approssimata), come suggerito da recenti framework di valutazione unificati per compilatori ad atomi neutri [22]."
+    }
+  },
+  {
+    "id": "p0156",
+    "page": 11,
+    "order": 156,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.06819113336428247,
+        0.9184408748851103,
+        0.09523608467795631
+      ],
+      [
+        0.8029657002368005,
+        0.09948376934937757,
+        0.813807369057649,
+        0.11206281064736723
+      ],
+      [
+        0.6656584396860958,
+        0.09948377898245146,
+        0.6765001085069444,
+        0.11206282028044114
+      ],
+      [
+        0.08823529411764706,
+        0.10055321394795119,
+        0.48868146908828636,
+        0.1279059516059028
+      ],
+      [
+        0.6765113780701083,
+        0.11109993674538353,
+        0.7125172833212061,
+        0.14539769683221374
+      ],
+      [
+        0.8029657002368005,
+        0.12162266355572325,
+        0.813807369057649,
+        0.20263352056946418
+      ],
+      [
+        0.6656584396860958,
+        0.12162267318879715,
+        0.6765001085069444,
+        0.20263352056946418
+      ],
+      [
+        0.10584805058498009,
+        0.13814256648824672,
+        0.4645906336167279,
+        0.1592317060990767
+      ],
+      [
+        0.3218937792809181,
+        0.14665266480108705,
+        0.47106803943908293,
+        0.16786049351547705
+      ],
+      [
+        0.7231879140816483,
+        0.1514799715292574,
+        0.7562880671881382,
+        0.1830400794443458
+      ],
+      [
+        0.6153986812417024,
+        0.15377038897890033,
+        0.6611240362030228,
+        0.17154262041804766
+      ],
+      [
+        0.8165310629053053,
+        0.15896354058776238,
+        0.8210402843998927,
+        0.17154258188575205
+      ]
+    ],
+    "sourceText": "Such a matrix is also invertible over the ring Z4.Itsinverse is given by   Lemma A.1 (Lemma 8 in [19]). Let T = [X1|X2] be anm × n × 2 tensor over GF(2). Then 1...   rank(T ) ≥rank(X1) + rank(X2) + rank(X1 + X2) 2. 1ev1 1 L−1 = ,",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Nota preliminare: la matrice descritta è invertibile anche sull'anello Z4, con inversa data da una formula esplicita (usata nella dimostrazione del Lemma A.1)."
+    }
+  },
+  {
+    "id": "p0159",
+    "page": 11,
+    "order": 159,
+    "rects": [
+      [
+        0.08823524425232332,
+        0.17464537572379063,
+        0.48870131548713236,
+        0.2615170719647648
+      ],
+      [
+        0.7239738913143382,
+        0.18148782518174914,
+        0.8029661988900378,
+        0.22259442493168993
+      ],
+      [
+        0.5179967443927441,
+        0.2345042373194839,
+        0.5596378301483353,
+        0.24708327861747356
+      ],
+      [
+        0.6348595214045905,
+        0.24801028858531604,
+        0.6479639290205015,
+        0.2605893298833057
+      ],
+      [
+        0.14624178020003575,
+        0.26093550402708726,
+        0.15708343655455345,
+        0.27351454532507696
+      ],
+      [
+        0.2557009279338363,
+        0.26093550402708726,
+        0.26654257182202307,
+        0.27351454532507696
+      ],
+      [
+        0.3617074754503038,
+        0.26093550402708726,
+        0.3725491193384906,
+        0.27351454532507696
+      ],
+      [
+        0.4721062354792177,
+        0.2609355232932351,
+        0.4829479043000664,
+        0.27351456459122475
+      ],
+      [
+        0.6479738522199244,
+        0.2614004347059462,
+        0.8365247639176113,
+        0.2938292146933199
+      ],
+      [
+        0.5998447891933466,
+        0.2695203838926373,
+        0.6303251179215176,
+        0.28421810419872556
+      ],
+      [
+        0.1570947185840482,
+        0.27387362778788865,
+        0.17307363771924786,
+        0.28751459988680755
+      ],
+      [
+        0.37256041383431626,
+        0.27387362778788865,
+        0.3888530606537863,
+        0.28751459988680755
+      ],
+      [
+        0.14624178020003575,
+        0.28307566016611424,
+        0.15708343655455345,
+        0.3263478905263573
+      ],
+      [
+        0.2557009279338363,
+        0.28307566016611424,
+        0.26654257182202307,
+        0.3263478905263573
+      ],
+      [
+        0.3617074754503038,
+        0.28307566016611424,
+        0.3725491193384906,
+        0.3263478905263573
+      ],
+      [
+        0.4721062354792177,
+        0.2830756794322621,
+        0.4829479043000664,
+        0.32634792905865295
+      ],
+      [
+        0.18366007088056577,
+        0.2909683266071358,
+        0.1996406231051177,
+        0.3046105510056621
+      ],
+      [
+        0.399439518747766,
+        0.2909683266071358,
+        0.415732165567236,
+        0.3046092987060547
+      ],
+      [
+        0.08823524425232332,
+        0.301547869287356,
+        0.14352545395396113,
+        0.3160132783831972
+      ],
+      [
+        0.26926791122536253,
+        0.301547869287356,
+        0.3589911367378983,
+        0.3160132783831972
+      ],
+      [
+        0.48567159814772265,
+        0.3015478885535038,
+        0.5010875627106312,
+        0.31412692985149343
+      ],
+      [
+        0.2111306782641442,
+        0.3051390599722814,
+        0.22832446628146702,
+        0.32526609632703996
+      ],
+      [
+        0.42722220825993157,
+        0.3051390792384292,
+        0.44441761690027576,
+        0.32526609632703996
+      ],
+      [
+        0.5179966945274204,
+        0.3068262350679648,
+        0.9184684005438113,
+        0.39362119424222697
+      ],
+      [
+        0.23899666779960682,
+        0.33134714762369794,
+        0.2545328327253753,
+        0.3449893527560764
+      ],
+      [
+        0.4550881977953942,
+        0.33134714762369794,
+        0.4709364448497498,
+        0.3449893527560764
+      ],
+      [
+        0.08823529411764706,
+        0.35550400705048535,
+        0.48870475619446996,
+        0.4259466691450639
+      ]
+    ],
+    "sourceText": "Proof. In this proof, addition in GF(2) is denoted by ⊕.Let rank(T ) = r, rank(X1) = r1, rank(X2) = r2, andrank(X1 + X2) = r3. By definition of tensor rank, wehave r1, r2 ≤r ≤r1 + r2. Since rank(T ) = r, there existmatrices G ∈GF(2)m×r, F ∈GF(2)r×n, and λ1, . . . , λr,µ1, . . . , µr ∈GF(2) such that ......evt1 where (     3,vi = 1,0,vi = 0,∀i = 1, . . . , t. evi = λ1 µ1     λ2 µ2 X1 = G F,X2 = G F. ... ... Similarly, any elementary column transformation overGF(2) and any permutation matrix remain invertibleover Z4. Since the matrices S and T are products of per-mutation matrices and elementary row or column trans-formations over GF(2), they are therefore invertible overZ4 as well. λr µr By r1, r2 ≤r, there are at least r1 ones among {λi} and atleast r2 ones among {µi}. Furthermore, since r ≤r1+r2,at least r1 + r2 −r entries of λi ⊕µi are zero, implyingthat at most 2r−(r1 +r2) entries are one. It then followsthat",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Dimostrazione, impostazione: siano r=rank(T), r1=rank(X1), r2=rank(X2), r3=rank(X1+X2); da r1,r2≤r≤r1+r2 e dall'esistenza di matrici G,F e coefficienti λ_i,µ_i∈GF(2) tali che X1=G·diag(λ)·F, X2=G·diag(µ)·F, si ha che X1+X2=G·diag(λ⊕µ)·F. Poiché r1,r2≤r, almeno r1 dei λ_i e almeno r2 dei µ_i sono 1; da r≤r1+r2 segue che al più 2r-(r1+r2) delle entrate λ_i⊕µ_i sono 1, ossia r3≤2r-(r1+r2)."
+    }
+  },
+  {
+    "id": "p0160",
+    "page": 11,
+    "order": 160,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.39362173369436554,
+        0.9184407751544629,
+        0.422036334721729
+      ],
+      [
+        0.6244182711333232,
+        0.4240453700826626,
+        0.6339087891422845,
+        0.4366244306468
+      ],
+      [
+        0.6725064944597631,
+        0.4240453700826626,
+        0.6819970124687245,
+        0.4366244306468
+      ],
+      [
+        0.21311277501723347,
+        0.42432191636827254,
+        0.22395441890542023,
+        0.43690097693241003
+      ],
+      [
+        0.4335016986123877,
+        0.4243219549005682,
+        0.4443433674332363,
+        0.43690101546470567
+      ],
+      [
+        0.2239657134012459,
+        0.4370277096526791,
+        0.27695278092926623,
+        0.4514931187485204
+      ],
+      [
+        0.633913376752068,
+        0.43830424607402146,
+        0.6725069931130004,
+        0.4527696166375671
+      ],
+      [
+        0.6847156200533598,
+        0.4454812714547822,
+        0.9184543385225183,
+        0.46025443799567944
+      ],
+      [
+        0.5624509823867698,
+        0.4457890674321338,
+        0.6198838676502502,
+        0.45836808946397567
+      ],
+      [
+        0.21311277501723347,
+        0.4464620725072996,
+        0.22395441890542023,
+        0.4897343028675426
+      ],
+      [
+        0.4335016986123877,
+        0.44646211103959516,
+        0.4443433674332363,
+        0.48973434139983824
+      ],
+      [
+        0.28753921409058414,
+        0.4541224084719263,
+        0.34052630655126637,
+        0.4685890891335227
+      ],
+      [
+        0.6401878805721507,
+        0.4553989448932686,
+        0.6725012087354473,
+        0.46797796692511046
+      ],
+      [
+        0.11441996206645093,
+        0.46493430089468907,
+        0.21039479074914472,
+        0.4793996714582347
+      ],
+      [
+        0.4470670612808926,
+        0.4649343394269847,
+        0.4624830258438011,
+        0.47751336145882656
+      ],
+      [
+        0.35201799479964513,
+        0.4685255108457623,
+        0.3692118077496298,
+        0.4886525472005208
+      ],
+      [
+        0.5179965947967728,
+        0.4834282229645084,
+        0.9184710932712928,
+        0.5394049750434028
+      ],
+      [
+        0.37988238864474827,
+        0.4945012487546362,
+        0.43233195784824346,
+        0.5089679294162326
+      ],
+      [
+        0.08823536891563266,
+        0.5181858948986939,
+        0.15966656005460453,
+        0.5307649169305358
+      ],
+      [
+        0.2191863465153314,
+        0.5417070485124684,
+        0.35773151372772416,
+        0.5564060403843119
+      ],
+      [
+        0.6478168761808109,
+        0.5531299475467566,
+        0.7886217902688419,
+        0.566772152679135
+      ],
+      [
+        0.08823536891563266,
+        0.5650773096566248,
+        0.2152585297628166,
+        0.5776563316884668
+      ],
+      [
+        0.5179965449314491,
+        0.5788196216930043,
+        0.9184537401386336,
+        0.6061723497178819
+      ],
+      [
+        0.2255164252387153,
+        0.5885984632703993,
+        0.35139981438131895,
+        0.6032961835764875
+      ],
+      [
+        0.08823536891563266,
+        0.6119687244145557,
+        0.2778503567564721,
+        0.6245477464463975
+      ],
+      [
+        0.6335179447348601,
+        0.6193571765013416,
+        0.8029309441061581,
+        0.6332304598105074
+      ]
+    ],
+    "sourceText": "Applying the row transformation S and column trans-formation T to M over the ring Z4, we obtain \" #   λ1 ⊕µ1 Dr 0 ,where Dr = Ir · 2.(A1) SMT =   λ2 ⊕µ2 00 X1 + X2 = G F, ... Since any decomposition of M of the form (4) induces adecomposition of SMT with the same number of terms,and vice versa due to the invertibility of S and T, wehave λr ⊕µr and hence r3 ≤2r −(r1 + r2). ρ4(M) = ρ4(SMT). Rearranging gives The diagonal form in (A1) immediately yields a decom-position with r rank-one terms, implying 2r ≥r1 + r2 + r3, which concludes the proof. ρ4(M) = ρ4(SMT) ≤r.",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Applicando trasformazioni di riga/colonna invertibili S,T a M su Z4 si ottiene SMT in forma diagonale a blocchi con D_r=2·I_r; questa forma dà direttamente una decomposizione con r termini rank-one, quindi 2r≥r1+r2+r3 — riarrangiando si ottiene r3≤2r-(r1+r2), che conclude la dimostrazione del Lemma A.1."
+    }
+  },
+  {
+    "id": "p0161",
+    "page": 11,
+    "order": 161,
+    "rects": [
+      [
+        0.08823529411764706,
+        0.6357779840026239,
+        0.48868471033432903,
+        0.6772887875335385
+      ],
+      [
+        0.5179966446620966,
+        0.6452779288243766,
+        0.9184641121259702,
+        0.6723241324376579
+      ],
+      [
+        0.28884314244089565,
+        0.6781046703608349,
+        0.29833366044985704,
+        0.6906836923926768
+      ],
+      [
+        0.330609464957044,
+        0.6781046703608349,
+        0.3400999829660054,
+        0.6906836923926768
+      ],
+      [
+        0.6160833321365655,
+        0.68574130896366,
+        0.9184543385225183,
+        0.6996900770399306
+      ],
+      [
+        0.29833824805964054,
+        0.692362236254143,
+        0.3306099386776195,
+        0.7068288783834438
+      ],
+      [
+        0.22958822811351104,
+        0.6998471346768466,
+        0.2843087389578227,
+        0.7124261567086885
+      ],
+      [
+        0.34281861548330267,
+        0.6998471346768466,
+        0.3473278369778901,
+        0.7124261567086885
+      ],
+      [
+        0.3014509911630668,
+        0.7094570121379814,
+        0.33060622371100135,
+        0.7220360341698232
+      ],
+      [
+        0.5179966446620966,
+        0.7117375075215041,
+        0.8378979053372652,
+        0.7256875086312342
+      ],
+      [
+        0.5342743318844465,
+        0.7262034560694839,
+        0.6261516895169527,
+        0.7387824781013258
+      ],
+      [
+        0.08823529411764706,
+        0.7342300415039062,
+        0.48868605669806986,
+        0.7615840410945391
+      ],
+      [
+        0.6908543405969159,
+        0.7497269601532908,
+        0.7143608542049632,
+        0.7628970675998263
+      ],
+      [
+        0.7170798607121885,
+        0.7520794338650174,
+        0.7245355244555505,
+        0.7646584558968592
+      ],
+      [
+        0.756109300002553,
+        0.7520794338650174,
+        0.763564963745915,
+        0.7646584558968592
+      ],
+      [
+        0.7245422562742545,
+        0.7600946908045296,
+        0.7552851757972069,
+        0.7761421588936237
+      ],
+      [
+        0.7671877293804892,
+        0.7622688370521622,
+        0.7879763335184334,
+        0.7750802088265467
+      ],
+      [
+        0.648462233200572,
+        0.7625011867947049,
+        0.6863182915581597,
+        0.7769665958905461
+      ],
+      [
+        0.08823529411764706,
+        0.7631630945687342,
+        0.4886855580448325,
+        0.7905157840613163
+      ],
+      [
+        0.7451207279379851,
+        0.7685603132151594,
+        0.7497243444904004,
+        0.7773656363439079
+      ],
+      [
+        0.69190988976971,
+        0.7801398074988163,
+        0.7133055044934641,
+        0.7889451306275647
+      ],
+      [
+        0.1370947719399446,
+        0.7924569640496765,
+        0.14793642829446232,
+        0.8050359860815183
+      ],
+      [
+        0.2744003246033114,
+        0.7924571181788589,
+        0.2852419684914982,
+        0.8050361402107008
+      ],
+      [
+        0.5179964950661254,
+        0.8003638681739268,
+        0.9184657078163296,
+        0.8277165576665089
+      ],
+      [
+        0.14794772279028798,
+        0.8040732952079388,
+        0.1839519700193717,
+        0.8383710456616951
+      ],
+      [
+        0.1370947719399446,
+        0.8145958486229482,
+        0.14793642829446232,
+        0.8956068404997238
+      ],
+      [
+        0.2744003246033114,
+        0.8145960027521307,
+        0.2852419684914982,
+        0.8956069946289062
+      ],
+      [
+        0.39182353798860037,
+        0.8226478653724747,
+        0.4026651818767872,
+        0.8352268874043166
+      ],
+      [
+        0.36577778236538755,
+        0.822647942437066,
+        0.37661942625357436,
+        0.8352269644689079
+      ],
+      [
+        0.3766307207494,
+        0.8328108354048296,
+        0.3910050485648361,
+        0.846453040537208
+      ],
+      [
+        0.5395163243113,
+        0.8385203968394886,
+        0.9184551363676982,
+        0.867452910452178
+      ],
+      [
+        0.19462418400384243,
+        0.8444533685241082,
+        0.2277243371103324,
+        0.8760134764391967
+      ],
+      [
+        0.39182353798860037,
+        0.8447867499457465,
+        0.4726056366964103,
+        0.8654162474352904
+      ],
+      [
+        0.36577778236538755,
+        0.8447868270103378,
+        0.37661942625357436,
+        0.8654163244998816
+      ],
+      [
+        0.3774150274937449,
+        0.8457240095042219,
+        0.39021847294826134,
+        0.8868318037553267
+      ],
+      [
+        0.2879673078948376,
+        0.8516293150005918,
+        0.35312146454854726,
+        0.8645161330097854
+      ],
+      [
+        0.10431045956081814,
+        0.8519368027195786,
+        0.1325603684568717,
+        0.8645158247514204
+      ],
+      [
+        0.6457515542024101,
+        0.8687990747316919,
+        0.6552420722113715,
+        0.8813780967635337
+      ],
+      [
+        0.6638528661790237,
+        0.8687990747316919,
+        0.683745589910769,
+        0.8889261110864505
+      ],
+      [
+        0.7384263580920649,
+        0.8687991517962832,
+        0.7479168761010263,
+        0.881378173828125
+      ],
+      [
+        0.7739688648897058,
+        0.8687991517962832,
+        0.7834593828986672,
+        0.881378173828125
+      ],
+      [
+        0.19541011137120864,
+        0.8744612414427478,
+        0.27440079832388686,
+        0.915567802660393
+      ],
+      [
+        0.7090342403237336,
+        0.8763470890546086,
+        0.7167178384618822,
+        0.8889261110864505
+      ],
+      [
+        0.6552483053768382,
+        0.8830579507230508,
+        0.6638434914981618,
+        0.9127316715741398
+      ],
+      [
+        0.7479214637108098,
+        0.8830580277876421,
+        0.7739674686606414,
+        0.9127317486387311
+      ],
+      [
+        0.7212433659173305,
+        0.8905428491457544,
+        0.733891954608992,
+        0.9031218711775962
+      ],
+      [
+        0.7861779904833027,
+        0.8905428491457544,
+        0.7906872119778902,
+        0.9031218711775962
+      ],
+      [
+        0.6837482826382506,
+        0.8916059551816998,
+        0.7090128979651756,
+        0.9041849772135416
+      ]
+    ],
+    "sourceText": "Proof of Theorem II.1. There exist invertible matrices Sand T over GF(2) such that SNT is in Smith normalform, namely, On the other hand, since Dr is a submatrix of SMT, wehave \" # ρ4(M) = ρ4(SMT) ≥ρ(Dr).(A2) Ir 0 SNT = , 0 0 It therefore suﬀices to show that ρ4(Dr) = r. Indeed, since where Ir denotes the r × r identity matrix. Hence, theGF(2)-rank of N is r. rX \u0000 \u0001 eie⊤ · 2, Dr = Consider any elementary row transformation matrix Lover GF(2), which must be of the form i t=1   we have ρ4(Dr) ≤r. We prove the reverse inequality byinduction on r. 1...     v1 • First, consider the case r = 2. Suppose ρ4(D2) = 1.Then there exist a, b, c, d ∈Z4 such that 1v1 1 ∈{0, 1}t.  ...vt ,where L = \" # h \" # ......vt1 i ab 2 00 2 = , c d",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Dimostrazione del Teorema II.1 (ρ4(M)=rango GF(2) di N): esistono matrici invertibili S,T su GF(2) tali che SNT è in forma normale di Smith, diag(I_r,0); poiché D_r=2·I_r è sottomatrice di SMT, si ha ρ4(M)=ρ4(SMT)≥ρ(D_r) (Eq. A2). Resta da mostrare ρ4(D_r)=r: poiché D_r=Σ 2·e_i e_i^T ammette banalmente una decomposizione a r termini, ρ4(D_r)≤r; la disuguaglianza inversa si dimostra per induzione su r."
+    }
+  },
+  {
+    "id": "p0163",
+    "page": 12,
+    "order": 163,
+    "rects": [
+      [
+        0.1289330027461831,
+        0.06819083473899147,
+        0.22531955694061478,
+        0.08076987603698114
+      ],
+      [
+        0.1601356182223052,
+        0.09623979318021524,
+        0.4167821048911101,
+        0.1088188344782049
+      ],
+      [
+        0.1289330027461831,
+        0.12367316929980962,
+        0.4887018141403697,
+        0.18101963852391098
+      ]
+    ],
+    "sourceText": "which implies ac = 2,ad = 0,bc = 0,bd = 2. From the first and fourth equations, we concludethat a, b, c, d̸ = 0. The second and third equationsthen force a = b = c = d = 2, which contradictsac = 2 and bd = 2. Hence, ρ(D2) ≥2.",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Le relazioni ac=2, ad=0, bc=0, bd=2 forzano a,b,c,d≠0 (dalla prima e quarta) e poi a=b=c=d=2 (dalla seconda e terza) — il che contraddice ac=2 e bd=2 simultaneamente (2·2=4≡0 mod4, non 2). Quindi ρ4(D2)≥2, stabilendo il caso base."
+    }
+  },
+  {
+    "id": "p0164",
+    "page": 12,
+    "order": 164,
+    "rects": [
+      [
+        0.10975653205821717,
+        0.19299133377845842,
+        0.48869378582324857,
+        0.22003628509213227
+      ],
+      [
+        0.22833987466650071,
+        0.2327370691781092,
+        0.25184641320720996,
+        0.2459072151569405
+      ],
+      [
+        0.2775082058376736,
+        0.24307923365120937,
+        0.40212279675053614,
+        0.26120014383335305
+      ],
+      [
+        0.2545670154047947,
+        0.24310348973129736,
+        0.2882559533212699,
+        0.2591522293861466
+      ],
+      [
+        0.1694656820858226,
+        0.24551125728722775,
+        0.22380544625076593,
+        0.259976666383069
+      ],
+      [
+        0.37925004647448174,
+        0.24551125728722775,
+        0.40745043287090227,
+        0.26062065663963857
+      ],
+      [
+        0.22939706939497803,
+        0.2631499550559304,
+        0.2507910385630489,
+        0.271955258918531
+      ],
+      [
+        0.12893305261150684,
+        0.28427542098844893,
+        0.16878344965916053,
+        0.2968544622864386
+      ],
+      [
+        0.1776127908744064,
+        0.2996627730552596,
+        0.1871033088833678,
+        0.31224181435324927
+      ],
+      [
+        0.21251474018969568,
+        0.2996627730552596,
+        0.22200525819865707,
+        0.31224181435324927
+      ],
+      [
+        0.2835637759539037,
+        0.2996627730552596,
+        0.2930542939628651,
+        0.31224181435324927
+      ],
+      [
+        0.3170376447291156,
+        0.2996627730552596,
+        0.326528162738077,
+        0.31224181435324927
+      ],
+      [
+        0.18710788402682035,
+        0.3139215912481751,
+        0.21169463014291004,
+        0.3275625826132418
+      ],
+      [
+        0.2930605021956699,
+        0.3139215912481751,
+        0.31621915530535133,
+        0.3275625826132418
+      ],
+      [
+        0.14085789599449805,
+        0.32140645113858307,
+        0.1730783873913335,
+        0.3358718409682765
+      ],
+      [
+        0.2247239156486162,
+        0.32140645113858307,
+        0.27902934753816894,
+        0.3358718409682765
+      ],
+      [
+        0.32924679525537426,
+        0.32140645113858307,
+        0.43600144729115603,
+        0.3339854924365728
+      ],
+      [
+        0.1922859989739711,
+        0.33078395959102747,
+        0.20651590434554357,
+        0.34465728143248897
+      ],
+      [
+        0.2982386171428207,
+        0.33078395959102747,
+        0.3110404419743158,
+        0.34465728143248897
+      ],
+      [
+        0.12893307754416872,
+        0.36008476488517993,
+        0.16601608625424455,
+        0.3726637869170218
+      ],
+      [
+        0.19681045432495914,
+        0.3753344603259154,
+        0.20630097233392056,
+        0.3879135208900529
+      ],
+      [
+        0.3896160250395731,
+        0.3753344603259154,
+        0.39910654304853455,
+        0.3879135208900529
+      ],
+      [
+        0.31032517377068014,
+        0.375334498858211,
+        0.31981569177964153,
+        0.3879135594223485
+      ],
+      [
+        0.34152615615744997,
+        0.375334498858211,
+        0.35101667416641136,
+        0.3879135594223485
+      ],
+      [
+        0.170583338519327,
+        0.3843026980005129,
+        0.1940898645937053,
+        0.39747415407739506
+      ],
+      [
+        0.20630719303305634,
+        0.3878143387611466,
+        0.3095010246326721,
+        0.40405874541311554
+      ],
+      [
+        0.3510228823992162,
+        0.38959333631727433,
+        0.38844628427542893,
+        0.42032896870314473
+      ],
+      [
+        0.2114836499581929,
+        0.3956511911719736,
+        0.30432455524120455,
+        0.42032896870314473
+      ],
+      [
+        0.4018251755658318,
+        0.3967691286645754,
+        0.4886947332643995,
+        0.4096559466737689
+      ],
+      [
+        0.32434313905005363,
+        0.39707692464192706,
+        0.33699172774171515,
+        0.4096559466737689
+      ],
+      [
+        0.29357516220192503,
+        0.412747161556976,
+        0.29848644780177697,
+        0.4215524846857244
+      ],
+      [
+        0.17164053324780432,
+        0.4147168554440893,
+        0.1930361479715584,
+        0.42352217857283775
+      ],
+      [
+        0.12893302767884499,
+        0.4280061818132497,
+        0.1975802751927594,
+        0.45001956669971194
+      ],
+      [
+        0.12893305261150684,
+        0.43736505990076546,
+        0.4886862062940411,
+        0.46578097102617977
+      ],
+      [
+        0.12893305261150684,
+        0.45183100844874524,
+        0.48870131548713236,
+        0.4933431220777107
+      ],
+      [
+        0.23865359437231923,
+        0.5067471590909091,
+        0.2621601329130285,
+        0.5199186151677911
+      ],
+      [
+        0.2648807101779514,
+        0.5192890359897806,
+        0.33826249565174377,
+        0.533988027861624
+      ],
+      [
+        0.23971078910079657,
+        0.5371613165344855,
+        0.26110640382455064,
+        0.5459666396632339
+      ],
+      [
+        0.12893301521251405,
+        0.5584244390930793,
+        0.22531955694061478,
+        0.5710034611249211
+      ],
+      [
+        0.29798365574257046,
+        0.5767309786093355,
+        0.32149019428327974,
+        0.589310039173473
+      ],
+      [
+        0.20783497928793915,
+        0.5863181605483546,
+        0.2881537543402778,
+        0.6046370303992069
+      ],
+      [
+        0.32554412043951697,
+        0.5886804599954625,
+        0.36908116060144763,
+        0.6025550148703835
+      ],
+      [
+        0.271496741600286,
+        0.5952168859616674,
+        0.29311782238530176,
+        0.604730162957702
+      ],
+      [
+        0.29664871116089664,
+        0.606829518019551,
+        0.3220135308558645,
+        0.6165054013030697
+      ],
+      [
+        0.12893305261150684,
+        0.6306719153818457,
+        0.36572445140165444,
+        0.6432509759459832
+      ],
+      [
+        0.2045441421807981,
+        0.6566562074603457,
+        0.22805068072150736,
+        0.6698276250049321
+      ],
+      [
+        0.23077125798643025,
+        0.6670239381115846,
+        0.26446181652592676,
+        0.6830714062006786
+      ],
+      [
+        0.16215360554215175,
+        0.6694304341017597,
+        0.20000972623139426,
+        0.6838970762310606
+      ],
+      [
+        0.25371242348664724,
+        0.6754895605222143,
+        0.2586237090864992,
+        0.6842948836509628
+      ],
+      [
+        0.2056013244429445,
+        0.6870691318704625,
+        0.22699695163302952,
+        0.6958744549992109
+      ],
+      [
+        0.2058791116951338,
+        0.6914355345446654,
+        0.22938565023584304,
+        0.7040145565765072
+      ],
+      [
+        0.23343955145941842,
+        0.7012107926185684,
+        0.26713010999891496,
+        0.7172595708057133
+      ],
+      [
+        0.25638071695963544,
+        0.7012107926185684,
+        0.3278932010426241,
+        0.719306175154869
+      ],
+      [
+        0.18736112507340175,
+        0.7036173656733349,
+        0.20000972623139426,
+        0.7161963877051768
+      ],
+      [
+        0.3171438080033446,
+        0.709676337964607,
+        0.32759687635633683,
+        0.719190963590988
+      ],
+      [
+        0.2045441421807981,
+        0.7215340354225852,
+        0.2299089868084278,
+        0.7312111902718592
+      ],
+      [
+        0.20587909922880285,
+        0.7277751113429214,
+        0.22938562530318116,
+        0.7403541333747633
+      ],
+      [
+        0.28918302448746425,
+        0.7277751113429214,
+        0.3126895630281735,
+        0.7403541333747633
+      ],
+      [
+        0.3167451098074321,
+        0.7373635648476957,
+        0.3427224003411586,
+        0.7525372746014836
+      ],
+      [
+        0.23343955145941842,
+        0.7375504464814158,
+        0.26713010999891496,
+        0.7535992246685606
+      ],
+      [
+        0.32606376697814543,
+        0.7375504464814158,
+        0.4139520483079299,
+        0.7557742956912878
+      ],
+      [
+        0.25638071695963544,
+        0.7397245927290483,
+        0.2842188567117928,
+        0.7554134792751737
+      ],
+      [
+        0.18736112507340175,
+        0.7399569424715909,
+        0.20000972623139426,
+        0.7525359645034327
+      ],
+      [
+        0.4032043008243336,
+        0.7460160688920454,
+        0.40811558642418555,
+        0.7548213920207939
+      ],
+      [
+        0.20454576280381945,
+        0.7578736892854324,
+        0.2299089868084278,
+        0.7675508441347064
+      ],
+      [
+        0.28784967559614993,
+        0.7578736892854324,
+        0.31321289960075827,
+        0.7675508441347064
+      ],
+      [
+        0.20587914909412658,
+        0.7641147652057686,
+        0.22938567516850492,
+        0.7766937872376105
+      ],
+      [
+        0.23343960132474215,
+        0.7658761535028015,
+        0.24089526506810408,
+        0.7784551755346433
+      ],
+      [
+        0.35441674126519096,
+        0.7658761535028015,
+        0.3618724050085529,
+        0.7784551755346433
+      ],
+      [
+        0.24090202181946999,
+        0.7737032187105429,
+        0.3018253800136591,
+        0.7905309657857875
+      ],
+      [
+        0.36458994048872806,
+        0.773890100344263,
+        0.3832298478269889,
+        0.7888769284643308
+      ],
+      [
+        0.2851667217179841,
+        0.7760655566899464,
+        0.3527832280576619,
+        0.792113949554135
+      ],
+      [
+        0.18736117493872548,
+        0.776297906432489,
+        0.200009776096718,
+        0.7888769284643308
+      ],
+      [
+        0.3724821003433926,
+        0.776297906432489,
+        0.38856321845958436,
+        0.7919854828805635
+      ],
+      [
+        0.20454581266914318,
+        0.7942133431482796,
+        0.22990903667375154,
+        0.8038904979975536
+      ],
+      [
+        0.12893307754416872,
+        0.8174900864109849,
+        0.48869388555389603,
+        0.8603718304874921
+      ]
+    ],
+    "sourceText": "• Next, assume that ρ4(Dr) ≥r but ρ4(Dr+1) ≤r.Then there exists a decomposition rX t ,ut, vt ∈Zr+1 utv⊤ Dr+1 = 4. t=1 Write \" # \" # ut,0 vt,0 ut = ,vt = ,t = 1, . . . , r. but bvt Then \" # # \" rX ut,0vt,0 ut,0bv⊤ 200 Dr tvt,0butbutbv⊤ .(A3) = t t=1 Since Pr t=1 ut,0vt,0 = 2̸ = 0, there must be aninvertible element among {ut,0, vt,0}r t=1. Withoutloss of generality, assume ut0,0 is invertible. From(A3), we have rX ut,0bvt = 0, t=1 which implies X bvt0 = −u−1 ut,0bvt. t0,0 t̸=t0 Substituting this into (A3) yields rX butbv⊤ Dr = t t=1 X butbv⊤ t + but0bv⊤ = t0 t̸=t0 X X u−1 butbv⊤ t0,0ut,0but0bv⊤ t − = t t̸=t0 t̸=t0 X \u0000 \u0001 but −u−1 bv⊤ t0,0ut,0but0 = t , t̸=t0 which expresses Dr as a sum of at most r −1 rank-one terms, contradicting the induction hypothesisρ4(Dr) ≥r. Therefore, ρ4(Dr+1) ≥r + 1.",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Passo induttivo, setup: assumendo ρ4(D_r)≥r, si suppone per assurdo ρ4(D_{r+1})≤r, cioè esiste una decomposizione D_{r+1}=Σ_{t=1}^r u_t v_t^T (mod 4) con u_t,v_t∈Z4^{r+1}; scrivendo u_t,v_t in blocchi (componente 0 + resto)."
+    }
+  },
+  {
+    "id": "p0167",
+    "page": 12,
+    "order": 167,
+    "rects": [
+      [
+        0.08823536891563266,
+        0.8719950974589646,
+        0.48869388555389603,
+        0.9148756085020123
+      ]
+    ],
+    "sourceText": "By induction, we conclude that ρ4(Dr) ≥r for all r ≥2.Combined with the upper bound, this yields ρ4(Dr) = r,and consequently ρ4(M) = r, completing the proof.",
+    "section": "Appendix A",
+    "explanations": {
+      "it-expert": "Per induzione, ρ4(D_r)≥r per ogni r≥2; combinato col limite superiore, ρ4(D_r)=r e quindi ρ4(M)=r, concludendo la dimostrazione del Teorema II.1."
+    }
+  },
+  {
+    "id": "p0169",
+    "page": 12,
+    "order": 169,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.10055321394795119,
+        0.9184543385225183,
+        0.1709958856756037
+      ]
+    ],
+    "sourceText": "In our implementation, we employ a simple greedy al-gorithm to decompose the graph into a collection of starforests. The algorithm iteratively assigns edges to exist-ing groups whenever the star-forest property is preserved;if not, a new group is created.",
+    "section": "Appendix B",
+    "explanations": {
+      "it-expert": "Algoritmo greedy per decomporre il grafo in una collezione di star forest: assegna iterativamente ogni arco a un gruppo esistente se la proprietà di star forest è preservata, altrimenti crea un nuovo gruppo."
+    }
+  },
+  {
+    "id": "p0170",
+    "page": 12,
+    "order": 170,
+    "rects": [
+      [
+        0.5179966945274204,
+        0.17288275439329823,
+        0.9184543385225183,
+        0.33012089584812976
+      ],
+      [
+        0.5179966945274204,
+        0.33200778383197205,
+        0.9184544382531659,
+        0.431382265957919
+      ]
+    ],
+    "sourceText": "A key design choice is the order in which edges are pro-cessed. Rather than traversing edges arbitrarily, edgesare processed in lexicographic order of their endpoints,sorted increasingly first by the smaller endpoint and thenby the larger one. This ordering is motivated by the phys-ical layout of neutral-atom arrays, where graph verticesare mapped to qubits row by row according to their in-dices.By prioritizing edges in this way, the resultingstar forests tend to involve qubits concentrated withinadjacent rows, which can reduce the number of trans-port operations required for implementing C-Z gates. We emphasize that this ordering does not affect thecorrectness of the star-forest decomposition; it is purelya heuristic to improve compilation eﬀiciency under hard-ware constraints.Any valid star-forest decompositioncan be used in our compilation framework, and the strat-egy described here is one concrete choice that performswell in practice.",
+    "section": "Appendix B",
+    "explanations": {
+      "it-expert": "Gli archi sono processati in ordine lessicografico degli estremi (crescente per l'estremo minore, poi per il maggiore), motivato dal layout fisico dell'array (i vertici del grafo sono mappati a qubit riga per riga secondo il loro indice) — così le star forest risultanti coinvolgono qubit concentrati in righe adiacenti, riducendo il trasporto. Questo ordinamento è puramente euristico e non influisce sulla correttezza: qualunque decomposizione valida in star forest è compatibile col framework."
+    }
+  }
+]

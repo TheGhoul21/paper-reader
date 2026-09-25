@@ -1,0 +1,129 @@
+---
+name: import-paper
+description: Import an academic paper (arXiv link/ID, direct PDF URL, or local PDF path) into the paper-reader library — extracts the PDF's paragraphs with their on-page positions and writes a layman-terms explanation for each one, so the reader app can show the original PDF with click-to-explain paragraphs. Also handles adding an extra background-level/language variant to an already-imported paper. Use when the user asks to import/add a paper, gives a paper link/PDF and asks for it to be explained, or asks to add another explanation level/language to a paper already in the library.
+---
+
+# import-paper
+
+Turns a paper into `papers/<slug>/{meta.json, paragraphs.json, source/paper.pdf}` — the data the reader web app (`src/`) reads. See `CLAUDE.md` for the data model.
+
+Each paragraph can carry **multiple explanation variants** — one per (language, background level) combination — selectable in the reader. Canonical level keys: `beginner` (no background in the field), `intermediate` (adjacent-field grad level), `expert` (expert in this exact subfield). A variant key is `"<language>-<level>"`, e.g. `"it-beginner"`.
+
+If the target slug already exists in `papers/`, skip straight to **"Adding a variant to an already-imported paper"** below instead of running the full import.
+
+## 1. Get the interview answers, fast
+
+You need, for each variant to generate: **background level(s)** and **target language(s)**.
+
+- First, check whether the user's own invocation already answers these (e.g. "importa questo paper in italiano per un principiante" answers both, one variant). Don't ask what's already answered.
+- For whatever is still missing, ask in **one** `AskUserQuestion` call with all the missing fields as separate questions (allow multi-select on both) — never ask them one at a time.
+  - Background: "no background in this field" / "adjacent-field grad level" / "expert in this exact subfield" — multiple selectable.
+  - Language: default to the language the user is writing to you in; only ask if genuinely ambiguous (e.g. a bare URL with no surrounding text).
+- **Default to generating exactly one variant** (one language × one level) unless the user clearly asks for more. Each additional variant costs roughly another full pass of writing explanations for every paragraph (see step 4) — say so explicitly if the user's request would produce more than one, so they can confirm the cost before you commit to it. It's always cheap to add another variant later (see below), so when unsure, generate one now and offer the rest as a follow-up.
+- If the user says something like "just decide" / "pick something sensible", stop asking and default to a single variant: background = "no background in this field", language = the language of this conversation.
+
+## 2. Resolve the source
+
+```
+uv run .claude/skills/import-paper/scripts/resolve_source.py <input> [--slug SLUG]
+```
+
+`<input>` can be an arXiv id/URL, a direct PDF URL, or a local file path. This downloads/copies the PDF to `papers/<slug>/source/paper.pdf` and prints a JSON skeleton (`slug`, `title`, `authors`, `sourceType`, `sourceRef`, `pdfPath`) to stdout — it does not write `meta.json`.
+
+For `local` and generic `url` sources, `resolve_source.py` cannot fetch real metadata (title/authors come from the filename). Correct `title`/`authors` from the actual first page before writing `meta.json` — `extract_blocks.py --all` shows the page-1 blocks classified as `title`/`authors`, which the default output leaves out.
+
+## 3. Extract blocks
+
+```
+uv run .claude/skills/import-paper/scripts/extract_blocks.py papers/<slug>/source/paper.pdf --out /tmp/blocks-<slug>.json
+```
+
+Produces an ordered array of `{id, page, order, kind, section?, rects, text}` — one entry per paragraph worth a comment, in reading order, with page-relative fractional bounding boxes (see the script's docstring for the coordinate convention — no flipping needed, it already matches the reader's canvas).
+
+The script classifies every text block (font size/weight, position, text patterns — full list in its docstring) and **only emits `body` paragraphs and `caption`s**. Everything else is left out on purpose and must not get a comment: title, author names, affiliations, emails, dates/DOIs/arXiv stamps/copyright/keywords (all the page-1 front matter above the abstract), section headings, labels inside figures, page numbers, and the bibliography. Headings aren't lost: each emitted block carries the nearest preceding heading as `section`. Display equations are merged into the paragraph before them (extra rect), so they're explained in context. If something looks wrongly dropped or kept, rerun with `--all` to see every block with its `kind`.
+
+**Read the output and sanity-check it** before moving on:
+- Reading order should track the actual paper. The two-column heuristic is approximate — miss-ordered runs are the most likely defect. Note that a running page number sitting near the horizontal center of the page (x fraction ~0.48–0.52) silently defeats the two-column detection for that whole page (it lands in neither the "left" nor "right" bucket) — check for this specifically and re-sequence by hand when it happens, since the fallback is a plain top-to-bottom sort that interleaves both columns.
+- Drop anything that still isn't real paper prose: leftover front matter/affiliations, figure-internal text the figure detection missed (axis labels, circuit/table cells, algorithm pseudo-code lines), stray footnote markers. Running headers/footers are stripped when they repeat on ≥3 pages ignoring page numbers.
+- Merge a paragraph that the PDF splits across a column or page break (append the second block's rects and text to the first), and sub-figure captions ("(a) …", "(b) …") into their figure's main caption.
+- You may merge, split, reorder, or delete entries in this intermediate array freely — it's scratch data, not the final output.
+
+## 4. Write the explanations
+
+For each surviving block, write one explanation per requested variant, at that variant's language and background level, into an `explanations` object keyed by variant (keep the original text too, renamed `sourceText`).
+
+- Read the full block text list once up front for whole-paper context (what the paper is actually arguing), then write explanations in batches of roughly 15–20 blocks × all variants for that batch, so each batch stays coherent with the paper's argument without one tool call per paragraph.
+- Don't add back what extraction deliberately left out (authors, affiliations, metadata, headings, references) — nobody needs a comment explaining a list of names. Acknowledgments, funding and data-availability paragraphs get a one-line explanation at most, or can be dropped.
+- Explanation depth should actually track the requested level — an `expert` variant should read differently from a `beginner` one for the same paragraph (denser, assumes vocabulary, focuses on what's novel), not just be a shorter/longer version of the same text.
+- If a passage clearly wants an interactive notebook (a formula worth playing with, an algorithm worth stepping through), set `notebookSuggestion` on that block instead of building anything — notebooks are out of scope for this skill.
+
+**Optional: draft explanations with a local model first.** If the user is cost-conscious and has Ollama running locally, `scripts/generate_explanations_local.mjs` can draft a whole variant's explanations against `qwen3.5:4b` (thinking disabled) before you touch it by hand:
+
+```
+ollama pull qwen3.5:4b   # once
+node .claude/skills/import-paper/scripts/generate_explanations_local.mjs \
+  papers/<slug>/paragraphs.json \
+  --variant it-beginner --level beginner --language it \
+  --title "<paper title>"
+```
+
+It batches through Ollama's HTTP API the same way you would (whole-paper context, ~18 blocks per call), retries paragraphs the model drops from a batch, and writes straight into `paragraphs.json`. It only fills paragraphs missing that variant key, so it's safe to re-run (use `--force` to regenerate everything). This is a first draft, not a substitute for the writing step above: it occasionally produces a syntactically-fine but useless cop-out ("this isn't covered by the given text") on figure/table-caption paragraphs even when the source text was right there in its batch — always read through the result and rewrite whatever reads as thin, wrong, or evasive before considering the variant done.
+
+Assemble the final `papers/<slug>/paragraphs.json`: array of
+```json
+{
+  "id": "p0000",
+  "page": 0,
+  "order": 0,
+  "section": "Introduction",
+  "rects": [[0.12, 0.18, 0.88, 0.24]],
+  "sourceText": "...",
+  "explanations": {
+    "it-beginner": "...",
+    "en-expert": "..."
+  },
+  "notebookSuggestion": "optional"
+}
+```
+`section` comes pre-filled from the extraction (nearest preceding heading) — fix it where a heading was misdetected, and drop the `kind` field (it's scratch info, not part of `paragraphs.json`).
+
+## 5. Write meta.json and update the library index
+
+`papers/<slug>/meta.json`:
+```json
+{
+  "slug": "...",
+  "title": "...",
+  "authors": ["..."],
+  "importedAt": "<ISO 8601 timestamp>",
+  "language": "...",
+  "background": "...",
+  "sourceType": "arxiv|url|local",
+  "sourceRef": "...",
+  "pageCount": N,
+  "variants": [
+    { "key": "it-beginner", "language": "it", "level": "beginner", "label": "Italiano · Nessun background" }
+  ]
+}
+```
+`language`/`background` at the top level mirror the *first* generated variant (used by the library card); `variants` lists every combination actually present in `paragraphs.json`, in the order they should appear in the reader's selector. Label format: `"<Language name> · <level phrase>"` — level phrases: beginner → "Nessun background" / "No background", intermediate → "Laurea in campo affine" / "Adjacent-field grad level", expert → "Esperto nel sottocampo" / "Expert in this subfield" (match the label's own language to that variant's language).
+
+Then update `papers/index.json` (array of `{slug, title, authors, importedAt, language, background, pageCount, variants}`, mirroring the corresponding fields from `meta.json`) — append a new entry, or replace the existing one if this slug was already there (re-import). The library homepage reads `pageCount`/`variants` straight off this file, so keep them byte-for-byte in sync with `meta.json`.
+
+## Adding a variant to an already-imported paper
+
+Given a slug that already exists and a new (language, level) not yet in its `meta.json` `variants`:
+
+1. Read the existing `papers/<slug>/paragraphs.json` directly — it already has correctly curated `sourceText` per paragraph (merged/reordered/cleaned). **Do not re-run `extract_blocks.py` or redo the curation.**
+2. Read all `sourceText` fields once for whole-paper context, then write the new `explanations["<language>-<level>"]` per paragraph the same batched way as step 4 above, merging into each entry's existing `explanations` object (don't touch other keys). This step is a good candidate for the local-model draft path described in step 4 — it already operates directly on `paragraphs.json` and only fills the missing variant.
+3. Append the new variant to `meta.json`'s `variants` array. Leave `language`/`background` (the default/first variant) and everything else unchanged.
+4. Append the same new variant to this paper's entry in `papers/index.json` (its `variants` array must mirror `meta.json`'s) — everything else in that entry is unchanged.
+
+This is the cheap path — never regenerate `rects`/`page`/`order`/`sourceText` when only adding a variant.
+
+## Do NOT
+
+- Don't hand-write `rects`/`page`/`order` — those come only from `extract_blocks.py`'s output (you may reorder/delete/merge entries, but positions must stay grounded in the actual extraction).
+- Don't build a notebook — leave `notebookSuggestion` instead.
+- Don't skip the reading-order sanity check in step 3; a wrong order silently produces a confusing reader experience with no error.
+- Don't silently generate more than one variant — that's a real cost multiplier the user should knowingly opt into.
