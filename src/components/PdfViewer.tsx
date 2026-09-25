@@ -11,6 +11,7 @@ import ConceptPopover from "./ConceptPopover";
 import ConceptHighlightBar from "./ConceptHighlightBar";
 import { buildConceptMatcher, pdfSpellings, spellingPattern } from "../lib/concepts";
 import { findOccurrences, markTextLayers, scrollToOccurrence, unmarkTextLayers, type Occurrence } from "../lib/conceptHighlight";
+import { cardId, useReview } from "../lib/review";
 import Toolbar, { type FitMode } from "./Toolbar";
 import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, Variant } from "../types";
 
@@ -175,6 +176,15 @@ export default function PdfViewer({
   }, [paragraphs]);
 
   const conceptMatcher = useMemo(() => buildConceptMatcher(concepts), [concepts]);
+
+  // Review deck (library-wide, localStorage): notes and glossary cards can be added from here.
+  const { cards: reviewCards, addCard, removeCard } = useReview();
+  const inReview = (kind: "concept" | "paragraph", refId: string) => Boolean(reviewCards[cardId(slug, kind, refId)]);
+  const toggleReview = (kind: "concept" | "paragraph", refId: string) => {
+    const id = cardId(slug, kind, refId);
+    if (reviewCards[id]) removeCard(id);
+    else addCard(slug, kind, refId, variant);
+  };
 
   const highlightConcept = highlight ? conceptMatcher.byId.get(highlight.conceptId) ?? null : null;
   const highlightPattern = useMemo(() => (highlightConcept ? spellingPattern(pdfSpellings(highlightConcept)) : null), [highlightConcept]);
@@ -425,6 +435,8 @@ export default function PdfViewer({
             activeId={activeId}
             hoverId={hoverId}
             conceptMatcher={conceptMatcher}
+            isInReview={(id) => inReview("paragraph", id)}
+            onToggleReview={(id) => toggleReview("paragraph", id)}
             onActivate={handleActivateNote}
             onConcept={(id, fromParagraphId, anchor) => {
               setCitation(null);
@@ -467,6 +479,8 @@ export default function PdfViewer({
             onGoToParagraph={handleGoToParagraph}
             onSelectConcept={(id) => setOpenConcept((c) => (c ? { ...c, id } : c))}
             onHighlight={() => setHighlight({ conceptId: concept.id, occurrences: null, index: 0 })}
+            inReview={inReview("concept", concept.id)}
+            onToggleReview={() => toggleReview("concept", concept.id)}
             onClose={() => setOpenConcept(null)}
           />
         );

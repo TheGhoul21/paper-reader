@@ -45,8 +45,36 @@ body {
 }
 
 .app-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   padding: 16px 24px;
   border-bottom: 1px solid var(--border);
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-nav-link:hover,
+.app-nav-link.active {
+  color: var(--accent);
+}
+
+.app-nav-badge {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  text-align: center;
 }
 
 .app-title {
@@ -1205,6 +1233,22 @@ body {
   color: var(--accent);
 }
 
+/* Review deck toggle (note + glossary card), and the marker on notes that are in the deck. */
+.review-toggle.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.review-toggle.is-on:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+
+.explanation-note.is-in-review .paragraph-badge {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
 .explanation-ask-hint {
   margin: 0;
   font-size: 0.72rem;
@@ -1268,4 +1312,171 @@ body {
   background: var(--card-bg);
   color: var(--fg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Review page (pages/Review.tsx) and its entry points. */
+.review-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 8px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.review-banner:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.review {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.review-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.review-title {
+  margin: 0 0 16px;
+  font-size: 1.6rem;
+}
+
+.review-count {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.review-card {
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+.review-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.review-paper-link {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.review-prompt {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+  line-height: 1.45;
+}
+
+.review-context {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--border);
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.review-reveal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.review-answer {
+  margin: 4px 0 16px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--chip-bg);
+  line-height: 1.5;
+}
+
+.review-answer p {
+  margin: 0 0 8px;
+}
+
+.review-open {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.review-grades {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.review-grade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.review-grade small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.review-grade:hover {
+  border-color: var(--accent);
+}
+
+.review-grade-again:hover {
+  border-color: #c0392b;
+}
+
+.review kbd {
+  padding: 0 4px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.review-remove {
+  display: block;
+  margin-top: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .review-grades {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

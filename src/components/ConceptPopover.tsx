@@ -18,6 +18,8 @@ interface Props {
   onGoToParagraph: (paragraph: Paragraph) => void;
   onSelectConcept: (id: string) => void;
   onHighlight: () => void;
+  inReview: boolean;
+  onToggleReview: () => void;
   onClose: () => void;
 }
 
@@ -34,6 +36,8 @@ export default function ConceptPopover({
   onGoToParagraph,
   onSelectConcept,
   onHighlight,
+  inReview,
+  onToggleReview,
   onClose,
 }: Props) {
   const { text, isFallback } = conceptDefinition(concept, variant);
@@ -77,6 +81,9 @@ export default function ConceptPopover({
           }}
         >
           Evidenzia nel PDF
+        </button>
+        <button className={`explanation-ask-btn review-toggle${inReview ? " is-on" : ""}`} onClick={onToggleReview} aria-pressed={inReview}>
+          {inReview ? "Nel ripasso ✓" : "Aggiungi al ripasso"}
         </button>
         {definedIn &&
           (definedIn.id === fromParagraphId ? (

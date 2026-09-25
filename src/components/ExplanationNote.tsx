@@ -12,6 +12,9 @@ interface Props {
   active: boolean;
   highlighted: boolean;
   conceptMatcher: ConceptMatcher;
+  /** Whether this paragraph is in the review deck (marked as "to review" by the reader). */
+  inReview: boolean;
+  onToggleReview: () => void;
   onActivate: () => void;
   onHover: (hovering: boolean) => void;
   onConcept: (conceptId: string, clientPos: { x: number; y: number }) => void;
@@ -39,6 +42,8 @@ export default function ExplanationNote({
   active,
   highlighted,
   conceptMatcher,
+  inReview,
+  onToggleReview,
   onActivate,
   onHover,
   onConcept,
@@ -75,14 +80,14 @@ export default function ExplanationNote({
   return (
     <div
       id={`note-${paragraph.id}`}
-      className={`explanation-note${active ? " is-active" : ""}${highlighted ? " is-highlighted" : ""}`}
+      className={`explanation-note${active ? " is-active" : ""}${highlighted ? " is-highlighted" : ""}${inReview ? " is-in-review" : ""}`}
       onClick={onActivate}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
     >
       {showSection && paragraph.section && <div className="explanation-section">{paragraph.section}</div>}
       <div className="explanation-note-body">
-        <span className="paragraph-badge" aria-label={`Paragrafo ${number}`}>
+        <span className="paragraph-badge" aria-label={`Paragrafo ${number}`} title={inReview ? "Da ripassare" : undefined}>
           {number}
         </span>
         <div>
@@ -115,6 +120,17 @@ export default function ExplanationNote({
       {active && (
         <>
           <div className="explanation-ask-row">
+            <button
+              className={`explanation-ask-btn review-toggle${inReview ? " is-on" : ""}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleReview();
+              }}
+              aria-pressed={inReview}
+              title="Aggiunge questo paragrafo al ripasso: te lo richiederò finché non lo ricordi"
+            >
+              {inReview ? "Da ripassare ✓" : "Da ripassare"}
+            </button>
             {(["claude", "chatgpt"] as const).map((target) => (
               <button key={target} className="explanation-ask-btn" onClick={() => handleAsk(target)}>
                 {copied === target ? "Copiato ✓" : ASK_LABELS[target]}

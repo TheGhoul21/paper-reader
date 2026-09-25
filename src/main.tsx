@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Library from "./pages/Library";
 import Reader from "./pages/Reader";
+import Review from "./pages/Review";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<App />}>
           <Route index element={<Library />} />
           <Route path="paper/:slug" element={<Reader />} />
+          <Route path="review" element={<Review />} />
         </Route>
       </Routes>
     </BrowserRouter>

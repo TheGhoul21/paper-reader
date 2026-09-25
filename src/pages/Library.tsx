@@ -4,6 +4,7 @@ import PaperThumbnail from "../components/PaperThumbnail";
 import { SearchIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
 import type { LibraryEntry, Variant } from "../types";
 import { papersUrl } from "../lib/paths";
+import { useDueCount } from "../lib/review";
 
 const PAGE_SIZE = 6;
 
@@ -56,6 +57,7 @@ export default function Library() {
   const [level, setLevel] = useState<Variant["level"] | "all">("all");
   const [sortBy, setSortBy] = useState<SortKey>("recent");
   const [page, setPage] = useState(1);
+  const dueCount = useDueCount();
 
   useEffect(() => {
     fetch(papersUrl("index.json"))
@@ -118,6 +120,12 @@ export default function Library() {
           {papers.length} paper importat{papers.length === 1 ? "o" : "i"}
         </p>
       </div>
+
+      {dueCount > 0 && (
+        <Link to="/review" className="review-banner">
+          <strong>{dueCount}</strong> da ripassare oggi <span aria-hidden>→</span>
+        </Link>
+      )}
 
       <div className="library-controls">
         <div className="library-search">
