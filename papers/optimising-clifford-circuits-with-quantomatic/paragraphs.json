@@ -54,7 +54,20 @@
     "explanations": {
       "it-intermediate": "In questo paper si studia l'ottimizzazione automatizzata dei circuiti Clifford. I circuiti Clifford non sono universali per il calcolo quantistico — sono noti per essere simulabili efficientemente su un computer classico (teorema di Gottesman-Knill) — ma restano comunque un ingrediente essenziale: quasi tutti gli schemi pratici di calcolo quantistico fault-tolerant li usano come base, integrata con un piccolo numero di gate non-Clifford (tipicamente il gate T) per raggiungere l'universalità.",
       "it-expert": "Motivazione: i Clifford circuit sono classicamente simulabili (Gottesman-Knill) ma restano il substrato quasi universale degli schemi FT (Clifford+T, Clifford+magic-state), rendendo la loro ottimizzazione rilevante indipendentemente dalla non-universalità."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché vale la pena ottimizzare i circuiti Clifford, anche se da soli non bastano per il calcolo quantistico?",
+          "it-expert": "Perché i Clifford sono un target di ottimizzazione rilevante nonostante siano classicamente simulabili?"
+        },
+        "a": {
+          "it-intermediate": "Perché sono una parte enorme dei circuiti reali e della correzione d'errore: ridurli riduce porte e profondità di quasi ogni circuito. Inoltre la loro teoria nello ZX-calculus è ben compresa.",
+          "it-expert": "Occupano una frazione consistente di qualunque circuito (e dominano l'error correction), e il frammento stabilizer dello ZX è completo e semplice: per loro un ottimizzatore puramente basato su riscrittura è fattibile."
+        }
+      }
+    ]
   },
   {
     "id": "p0007",
@@ -130,7 +143,20 @@
     "explanations": {
       "it-intermediate": "L'ottimizzatore è stato sviluppato come procedura di semplificazione nell'assistente di dimostrazione grafico Quantomatic. Lavorando dentro l'assistente di dimostrazione si ottiene un vantaggio importante: la correttezza del sistema è garantita 'per costruzione', dato che ogni riscrittura eseguita è verificata dalla logica interna di Quantomatic — non serve una verifica di correttezza separata.",
       "it-expert": "Vantaggio architetturale chiave: costruire l'optimiser DENTRO Quantomatic (anziché come tool esterno che usa lo ZX-calculus solo come specifica) rende la correttezza automatica — ogni step è una rewrite verificata dal proof assistant stesso, eliminando la necessità di una prova di correttezza a parte per il tool."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Qual è il vantaggio di costruire l'ottimizzatore dentro un assistente di dimostrazione come Quantomatic?",
+          "it-expert": "Cosa si guadagna implementando l'ottimizzatore come simproc in Quantomatic?"
+        },
+        "a": {
+          "it-intermediate": "Ogni ottimizzazione è anche una dimostrazione, verificata passo per passo, che il circuito nuovo è equivalente a quello vecchio: non c'è rischio di introdurre errori.",
+          "it-expert": "Correttezza per costruzione: ogni passo è una riscrittura derivata dagli assiomi ZX, quindi l'output è certificato equivalente."
+        }
+      }
+    ]
   },
   {
     "id": "p0012",
@@ -509,7 +535,20 @@
     "explanations": {
       "it-intermediate": "L'ordine di C_n cresce molto rapidamente: |C1|=24, |C2|=11520, |C3|=92827280, e così via — questa crescita esplosiva spiega perché il paper si limita a enumerare esplicitamente solo i casi a 1 e 2 qubit.",
       "it-expert": "Crescita esplosiva di |C_n| — giustifica il limite pratico dell'approccio enumerativo a n≤2 (|C3|≈9.3×10⁷ è già al limite della trattabilità per un'enumerazione esaustiva)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quanto è grande il gruppo di Clifford su 1, 2 e 3 qubit, e perché conta per il paper?",
+          "it-expert": "Riporta |C₁|, |C₂|, |C₃| e spiega la scelta di limitare le forme normali a 1–2 qubit."
+        },
+        "a": {
+          "it-intermediate": "24, 11520 e circa 93 milioni: cresce in modo esplosivo. Per questo si possono catalogare tutte le forme migliori solo per 1 e 2 qubit (C1 e C2).",
+          "it-expert": "24, 11520, 92 827 280 (gruppo ridotto, cioè quozientato per scalari). La crescita rende praticabili cataloghi di forme minime solo per n ≤ 2, e oltre si ottimizza per riscrittura locale."
+        }
+      }
+    ]
   },
   {
     "id": "p0026",
@@ -729,7 +768,20 @@
     "explanations": {
       "it-intermediate": "Lo ZX-calculus è formalizzato usando 'grafi aperti', una generalizzazione della solita nozione di grafo. I grafi aperti hanno tre tipi di archi: gli archi 'chiusi' hanno un vertice a ciascuna estremità (come in un grafo convenzionale); gli archi 'semi-aperti' sono incidenti a un solo vertice, con l'altra estremità aperta; e gli archi 'aperti' sono aperti a entrambe le estremità...",
       "it-expert": "Formalizzazione via open graphs: tre tipi di edge (closed/half-open/open) — gli edge aperti definiscono il 'boundary' (interfaccia input/output) del diagramma, essenziale per la struttura di PROP/categoria monoidale."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa sono i diagrammi dello ZX-calculus?",
+          "it-expert": "Definisci un termine dello ZX-calculus e la sua nozione di uguaglianza."
+        },
+        "a": {
+          "it-intermediate": "Grafi \"aperti\" (con fili di ingresso e uscita) i cui nodi sono verdi (Z) o rossi (X) con un angolo, più nodi H gialli. Due diagrammi sono lo stesso se sono lo stesso grafo, comunque siano disegnati.",
+          "it-expert": "Framed open graph finito e non diretto, con vertici interni Z(α), X(β) e H (grado 2); uguaglianza = isomorfismo di grafi etichettati framed, distinta dalla derivabilità ∗↔."
+        }
+      }
+    ]
   },
   {
     "id": "p0037",
@@ -1319,7 +1371,20 @@
     "explanations": {
       "it-intermediate": "Grazie alla regola H-euler, i vertici H sono ridondanti (possono sempre essere eliminati riscrivendo il diagramma). Tenendo questo presente, la seguente regola di 'cambio colore' sarà utile. Lemma 3.5: la seguente regola è ammissibile...",
       "it-expert": "H-euler rule rende gli H-box ridondanti (eliminabili via riscrittura) — motiva il Lemma 3.5 (color-changing rule, dimostrato in App. C), strumento tecnico chiave riusato ripetutamente nelle dimostrazioni della Sezione 4."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché i nodi Hadamard si possono eliminare, e cosa permette il cambio colore?",
+          "it-expert": "Cosa rende ridondanti i vertici H e cosa afferma il Lemma 3.5?"
+        },
+        "a": {
+          "it-intermediate": "La regola H-euler scrive ogni Hadamard con tre rotazioni, quindi gli H non servono. Il cambio colore permette di trasformare un nodo verde in rosso (e viceversa) circondandolo di rotazioni ±π/2.",
+          "it-expert": "H-euler li riscrive in fasi ±π/2. Lemma 3.5: coniugando con ±π/2 su ogni gamba si scambia il colore di uno spider, con fase α + nπ/2 (n = vertici rossi nel LHS)."
+        }
+      }
+    ]
   },
   {
     "id": "p0051",
@@ -1734,7 +1799,20 @@
     "explanations": {
       "it-intermediate": "Teorema 4.3 (Backens): siano a e b termini di ZX_s. Allora a∗↔b se e solo se ⟦a⟧=⟦b⟧ — questo è il teorema di COMPLETEZZA del frammento stabilizer: le regole di riscrittura del calcolo bastano da sole a dimostrare OGNI uguaglianza semanticamente vera tra diagrammi stabilizer, senza bisogno di 'trucchi' esterni.",
       "it-expert": "Teorema 4.3 [Backens '14]: completeness di ZX_s — a∗↔b ⟺ ⟦a⟧=⟦b⟧. Risultato d'importazione cruciale: senza completeness, l'esistenza di un circuito equivalente più piccolo non garantirebbe una DERIVAZIONE che lo trovi — con completeness sì, motivando l'intero approccio rewriting-based del paper."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa garantisce il teorema di completezza di Backens?",
+          "it-expert": "Enuncia il Teorema 4.3 e la sua conseguenza per l'ottimizzazione."
+        },
+        "a": {
+          "it-intermediate": "Che due diagrammi stabilizer che rappresentano la stessa operazione si possono sempre trasformare l'uno nell'altro con le regole. Quindi, se esiste un circuito più piccolo equivalente, esiste una dimostrazione per riscrittura che ci arriva: il problema è trovarla.",
+          "it-expert": "Per a, b ∈ ZX_s: a ∗↔ b ⟺ ⟦a⟧ = ⟦b⟧. Ogni circuito Clifford più piccolo equivalente è raggiungibile per riscrittura; resta il problema della strategia, perché il sistema non termina e non è confluente."
+        }
+      }
+    ]
   },
   {
     "id": "p0065",
@@ -1816,7 +1894,20 @@
     "explanations": {
       "it-intermediate": "Sia C1 l'insieme dei 24 diagrammi mostrati in Figura 3. Si noti che tutti sono nell'immagine del funtore di traduzione T, quindi corrispondono a circuiti Clifford. Inoltre, ciascuno dei diagrammi...",
       "it-expert": "C1 = i 24 diagrammi di Fig. 3, tutti nell'immagine di T (quindi genuini circuiti, non diagrammi ZX arbitrari) — proprietà verificata esplicitamente per l'insieme finito."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cos'è C1 e come ci si arriva da un qualsiasi Clifford a un qubit?",
+          "it-expert": "Cos'è C1 e com'è la prova costruttiva della Prop. 4.4?"
+        },
+        "a": {
+          "it-intermediate": "È il catalogo dei 24 diagrammi più piccoli possibili, uno per ogni Clifford a un qubit. Qualsiasi circuito a un qubit si porta in forma \"Pauli-standard\" (catena alternata verde/rosso, al più due Pauli all'inizio) e poi si riduce a uno di questi 24.",
+          "it-expert": "C1 sono i 24 line graph minimi (verificato per enumerazione sotto 4 vertici). Prova costruttiva: H-euler, poi forma Pauli-standard (Lemma 4.5), poi casi n ≤ 3 con π-commute e Lemma 4.6, e n ≥ 4 per induzione sul numero di vertici."
+        }
+      }
+    ]
   },
   {
     "id": "p0069",
@@ -2433,7 +2524,20 @@
     "explanations": {
       "it-intermediate": "Sia C2 l'insieme dei diagrammi definiti in Figura 4. Si noti che C2 ha 24²·(1+1+9+9)=11520 elementi — combaciando esattamente con |C2| calcolato algebricamente all'inizio del paper. Come nel caso di C1, tutti gli elementi di C2 sono evidentemente circuiti, e si può...",
       "it-expert": "C2 (Fig. 4) = 24²×20=11520 elementi, esattamente |C2|(gruppo) — verifica di consistenza cruciale: il conteggio combinatorio del catalogo esplicito combacia con la cardinalità algebrica calcolata in §2, confermando che il catalogo copre l'intero gruppo senza ridondanze né lacune."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cos'è C2 e perché è importante che sia \"chiuso\" rispetto ai generatori?",
+          "it-expert": "Qual è la struttura di C2 e il ruolo della Prop. 4.7?"
+        },
+        "a": {
+          "it-intermediate": "È il catalogo delle 11520 forme minime per i Clifford a due qubit. La Proposizione 4.7 dice che aggiungendo una porta a una forma di C2 si torna sempre, per riscrittura, a una forma di C2: i casi della dimostrazione diventano le regole dell'ottimizzatore.",
+          "it-expert": "24²·(1+1+9+9) = 11520 forme a sandwich (C1⊗C1, A/B, CNOT, …), pari a |C₂|. Prop. 4.7: g∘k ∗↔ k′ ∈ C2 per ogni generatore g, e i casi della prova sono orientati come C2 rules."
+        }
+      }
+    ]
   },
   {
     "id": "p0092",
@@ -3053,7 +3157,20 @@
     "explanations": {
       "it-intermediate": "Un problema di fondo: usati come regole di riscrittura, gli assiomi dello ZX-calculus non garantiscono di terminare né di arrivare a un risultato unico. Ad esempio la regola π-commute si può riapplicare subito al contrario, tornando al grafo di partenza all'infinito. E se si orientano le regole solo nel verso che semplifica il grafo, si perde la completezza: a volte, per dimostrare un'uguaglianza, bisogna prima far crescere il diagramma.",
       "it-expert": "Gli assiomi ZX come sistema di riscrittura non sono né terminanti né confluenti (π-commute è auto-inversa, quindi strategie ingenue ciclano). Orientarli per ridurre la complessità rompe la completezza rispetto a ⟦·⟧: alcune derivazioni richiedono passi che aumentano la dimensione. Da qui regole derivate, metriche e targeting."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché non basta applicare gli assiomi dello ZX-calculus finché possibile?",
+          "it-expert": "Quali proprietà mancano agli assiomi ZX come sistema di riscrittura, e perché è un problema?"
+        },
+        "a": {
+          "it-intermediate": "Perché alcune regole si possono applicare avanti e indietro all'infinito (π-commute), e perché orientandole solo nel verso che semplifica si perde la completezza: a volte bisogna far crescere il diagramma prima di poterlo ridurre.",
+          "it-expert": "Non terminanti e non confluenti (π-commute auto-inversa); orientati per ridurre la complessità non sono più completi rispetto a ⟦·⟧. Da qui regole derivate, metriche e targeting."
+        }
+      }
+    ]
   },
   {
     "id": "p0114",
@@ -3110,7 +3227,20 @@
     "explanations": {
       "it-intermediate": "La maggior parte dei termini dello ZX-calculus NON sono circuiti: alcuni non corrispondono a unitarie Clifford e quindi non interessano, tuttavia ci sono molti non-circuiti che sono equivalenti a...",
       "it-expert": "Osservazione cruciale: 'essere un circuito' non è chiuso sotto riscrittura arbitraria — un diagramma equivalente a un circuito può non essere sintatticamente un circuito. Questo è ESATTAMENTE il problema tecnico menzionato in p0014: bisogna restringersi a riscritture che restano dentro la classe dei circuiti."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché l'ottimizzatore deve restare sempre dentro la classe dei \"circuiti\"?",
+          "it-expert": "Perché le regole dell'ottimizzatore devono essere circuit-to-circuit?"
+        },
+        "a": {
+          "it-intermediate": "Perché la maggior parte dei diagrammi ZX non è un circuito, ed estrarre un circuito da un diagramma qualsiasi è difficile. Usando solo regole che trasformano circuiti in circuiti, alla fine si ha sempre un circuito eseguibile.",
+          "it-expert": "Estrarre un circuito da un diagramma ZX generico è difficile; con sole riscritture circuit-preserving l'estraibilità è garantita a ogni passo. Gli assiomi grezzi violano quasi sempre questa proprietà, da cui le regole derivate."
+        }
+      }
+    ]
   },
   {
     "id": "p0117",
@@ -3368,7 +3498,20 @@
     "explanations": {
       "it-intermediate": "Definizione 6.4: un ZX-diagramma semplice è detto 'circuit-like' se ha lo stesso numero di input e output e il suo grafo sottostante ammette un flusso causale — questa è la caratterizzazione STRUTTURALE (puramente combinatoria) di 'essere un circuito', l'obiettivo che sostituisce la definizione originale (basata sull'immagine di T) con un criterio verificabile localmente.",
       "it-expert": "Def. 6.4: circuit-like = simple + |input|=|output| + causal flow esistente sul grafo sottostante — questa è la definizione OPERATIVA usata dall'implementazione (verificabile algoritmicamente), sostituendo la definizione semantica originaria ('immagine di T', non verificabile direttamente su un grafo dato)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quando un diagramma ZX si può rileggere come circuito?",
+          "it-expert": "Definisci un diagramma circuit-like e come si estrae il circuito."
+        },
+        "a": {
+          "it-intermediate": "Quando è \"semplice\", ha tanti ingressi quante uscite e ammette un flusso causale: un modo coerente di seguire ogni qubit dall'ingresso all'uscita. I cammini così individuati sono i fili dei qubit, gli altri collegamenti diventano CNOT.",
+          "it-expert": "Simple, con |I| = |O| e causal flow (Def. 6.4). Prop. 6.5: la path cover del flow dà i fili dei qubit, gli archi fuori dalla cover sono CNOT/TONC, i vertici di grado 2 gate singoli."
+        }
+      }
+    ]
   },
   {
     "id": "p0129",
@@ -3549,7 +3692,20 @@
     "explanations": {
       "it-intermediate": "Il loro ottimizzatore può essere riassunto come l'alternanza ripetuta di due fasi:",
       "it-expert": "Struttura algoritmica top-level: ciclo a 2 fasi, ripetuto fino a convergenza."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quali sono le due fasi che l'ottimizzatore alterna?",
+          "it-expert": "Descrivi il ciclo dell'ottimizzatore e le sue fasi."
+        },
+        "a": {
+          "it-intermediate": "Semplificazione: applica ovunque regole che riducono sempre il diagramma. Commutazione: con regole reversibili, guidate da targeting e metrica, sposta i Pauli verso gli ingressi e riordina i CNOT, creando nuove occasioni di semplificazione.",
+          "it-expert": "Init (rimuove − e H), poi il ciclo Simplification (regole strettamente riducenti, casi della Prop. 4.7) e Commutation (Pauli verso gli input via REWRITE_METRIC, CNOT/TONC via targeting), infine il tidy-up delle rotazioni singole."
+        }
+      }
+    ]
   },
   {
     "id": "p0136",
@@ -3857,7 +4013,20 @@
     "explanations": {
       "it-intermediate": "Il loro ottimizzatore riduce tutti i circuiti a 1 e 2 qubit a elementi di C1 e C2 rispettivamente; tuttavia in circuiti più grandi non trova sempre una forma minimale. In particolare il loro rule-set non...",
       "it-expert": "Risultato onesto sui limiti: ottimalità GARANTITA solo per N≤2 (dove C1/C2 sono forme normali complete); per N≥3 il rule-set (euristico, greedy) non garantisce di trovare il minimo globale."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "L'ottimizzatore trova sempre il circuito più piccolo?",
+          "it-expert": "Quali garanzie di ottimalità ha l'ottimizzatore e dove non valgono?"
+        },
+        "a": {
+          "it-intermediate": "Solo per circuiti a 1 e 2 qubit, che riduce sempre alle forme minime di C1 e C2. Sui circuiti più larghi non trova sempre il minimo.",
+          "it-expert": "Ottimalità garantita per n ≤ 2 (riduzione a C1/C2); per n > 2 non trova sempre una forma minimale, e il tempo per passo cresce con la larghezza (più CNOT, più match candidati)."
+        }
+      }
+    ]
   },
   {
     "id": "p0151",
@@ -3895,7 +4064,20 @@
     "explanations": {
       "it-intermediate": "In effetti, la difficoltà principale incontrata è stata prendere il controllo del motore di matching. La riscrittura mirata (targeted) può selezionare buone posizioni di riscrittura con alta efficienza ma non discrimina...",
       "it-expert": "Ammissione onesta di limite implementativo: il matching engine di Quantomatic è il vero collo di bottiglia; il targeting risolve 'dove' ma non 'quale tra match equivalenti', causando overhead evitabile."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Qual è stata la difficoltà principale nell'usare Quantomatic come ottimizzatore automatico?",
+          "it-expert": "Quali limiti di Quantomatic sono emersi, e sono fondamentali?"
+        },
+        "a": {
+          "it-intermediate": "Controllare dove il motore applica le regole: quando ci sono più posti possibili sceglie da solo, a volte producendo diagrammi che non sono circuiti. I limiti vengono dall'ambiente pensato per l'uso interattivo e si superano con piccole estensioni.",
+          "it-expert": "Matching non controllabile (scelta arbitraria tra match multipli), functor stateless (path cover ricalcolata a ogni invocazione), metriche in Python interpretato. Sono limiti dell'API dei simproc, risolvibili con estensioni minori, non del metodo."
+        }
+      }
+    ]
   },
   {
     "id": "p0153",

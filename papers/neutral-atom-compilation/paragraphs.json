@@ -105,7 +105,18 @@
     "section": "I. Introduction",
     "explanations": {
       "it-expert": "Specificità della piattaforma ad atomi neutri rispetto a superconduttori/ioni intrappolati: array di tweezer ottici riconfigurabili, interazioni mediate da stati di Rydberg, tempi di coerenza lunghi e possibilità di trasportare fisicamente gli atomi durante il calcolo — da cui nasce il problema specifico di compilazione qui affrontato (parallelismo in-place + overhead di trasporto)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "In che cosa il problema di compilazione su array di atomi neutri differisce da quello su superconduttori, e quali costi diventano le metriche?"
+        },
+        "a": {
+          "it-expert": "Niente grafo di connettività fisso da routare con SWAP: gate a singolo qubit per addressing riga/colonna e C-Z via trasporto AOD in entangling zone. Le metriche sono il numero di addressing layer e di operazioni di trasporto."
+        }
+      }
+    ]
   },
   {
     "id": "p0009",
@@ -381,7 +392,18 @@
     "section": "II.A Single-Qubit Gates",
     "explanations": {
       "it-expert": "Ogni addressing layer seleziona un sottoinsieme di righe e colonne (vettori binari u,v) e applica uniformemente un elemento G del gruppo alle intersezioni selezionate: un passo si scrive come uv^T · G. Il prodotto esterno uv^T individua i qubit indirizzati; moltiplicare per G corrisponde ad applicare G alle posizioni selezionate (0·G=I, 1·G=G, con I elemento identità del gruppo)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Formalizza un addressing layer e il problema di compilazione dei gate a singolo qubit (Eq. 1)."
+        },
+        "a": {
+          "it-expert": "Un layer = u vᵀ · G con u ∈ {0,1}ᵐ, v ∈ {0,1}ⁿ, G ∈ G applicato alle intersezioni. Compilare M ∈ G^{m×n} significa minimizzare k tale che M = Σₜ uₜvₜᵀ·Gₜ, cioè una decomposizione rank-one nel senso della struttura di G."
+        }
+      }
+    ]
   },
   {
     "id": "p0024",
@@ -579,7 +601,18 @@
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
       "it-expert": "Il problema ridotto equivale a calcolare il rango di M su GF(2): essendo GF(2) un campo, l'eliminazione gaussiana determina il rango e costruisce esplicitamente la decomposizione."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Perché per gate self-inverse il problema si risolve esattamente, e quanti layer servono?"
+        },
+        "a": {
+          "it-expert": "G = {I, X} ≅ GF(2), campo: il minimo numero di layer è il rango di M su GF(2), calcolabile con eliminazione gaussiana (uₜ = Tᵣ⁻¹eₜ). Il baseline naive usa fino a min(m,n)."
+        }
+      }
+    ]
   },
   {
     "id": "p0031",
@@ -837,7 +870,18 @@
     "section": "II.A.2 Pauli Gates",
     "explanations": {
       "it-expert": "Questo equivale a calcolare il rango e costruire una decomposizione rank-one di un tensore del terzo ordine m×n×2 su GF(2): per T=[X1|X2|...|Xp]∈F^(m×n×p), il rango tensoriale è il minimo r tale che ogni slice Xi si esprima come combinazione lineare di r matrici rank-one su F."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "A quale problema si riduce la compilazione dei gate di Pauli, e perché non è risolvibile esattamente in modo noto?"
+        },
+        "a": {
+          "it-expert": "G ≅ (Z2)², quindi il pattern è un tensore m×n×2 su GF(2) e la compilazione è il suo rango tensoriale; su campi finiti il rango del terzo ordine è NP-completo in generale, e per terza dimensione 2 la complessità è aperta."
+        }
+      }
+    ]
   },
   {
     "id": "p0040",
@@ -1143,7 +1187,18 @@
     "section": "II.A.2 Pauli Gates",
     "explanations": {
       "it-expert": "Derivazione del bound di 4/3-ottimalità: applicando il Lemma 8 di [19] (dimostrato in Appendice A) si ha rank(T) ≥ (rank(X1)+rank(X2)+rank(X1+X2))/2, da cui Δ ≤ (2/3)(rank(X1)+rank(X2)+rank(X1+X2)) ≤ (4/3)·rank(T) — l'algoritmo usa quindi al più 4/3 volte il numero ottimo di termini."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Come si ottiene la garanzia 4/3-ottimale per i gate di Pauli?"
+        },
+        "a": {
+          "it-expert": "Si prende la migliore delle tre decomposizioni a due slice, Δ = min delle somme di coppie tra rank(X1), rank(X2), rank(X1+X2) ≤ ⅔(r₁+r₂+r₃); dal Lemma 8 di [19] rank(T) ≥ (r₁+r₂+r₃)/2, quindi Δ ≤ ⁴⁄₃ rank(T)."
+        }
+      }
+    ]
   },
   {
     "id": "p0047",
@@ -1395,7 +1450,18 @@
     "section": "II.A.3 Phase Gates",
     "explanations": {
       "it-expert": "Stadio 1: sia M1 = M mod 2; se ne calcola il rango su GF(2) e si ottiene una decomposizione rank-one M1 = Σ_{t=1}^{k1} u_t^(1) (v_t^(1))^T, con u_t^(1)∈{0,1}^m, v_t^(1)∈{0,1}^n — esattamente l'algoritmo dei gate self-inverse applicato alla componente binaria di M."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Descrivi l'algoritmo a due stadi per i gate di fase (Z4) e la sua garanzia."
+        },
+        "a": {
+          "it-expert": "Stadio 1: rango GF(2) di M mod 2 (k₁ ≤ r4(M)). Stadio 2: residuo M₂ ∈ {0,2}^{m×n}, rango GF(2) di M₂/2, con k₂ = ρ4(M₂) ≤ 2r4(M) per il Lemma II.1. Totale ≤ 3·r4(M)."
+        }
+      }
+    ]
   },
   {
     "id": "p0052",
@@ -2163,7 +2229,18 @@
     "section": "II.A.4 Clifford Gates",
     "explanations": {
       "it-expert": "Questa fattorizzazione suggerisce una strategia naturale: il problema di compilazione dei Clifford si decompone in tre sottoproblemi indipendenti (gate di fase, Hadamard, Pauli), risolti rispettivamente con gli algoritmi delle Sezioni II.A.3, II.A.1 e II.A.2."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Come si compila un pattern di Clifford a singolo qubit?"
+        },
+        "a": {
+          "it-expert": "Ogni Clifford a meno di fase è P·Hᵃ·Sᵇ, quindi il problema si separa in tre sottoproblemi indipendenti (fase su Z4, Hadamard su GF(2), Pauli su (Z2)²), ognuno con il suo algoritmo e la sua garanzia."
+        }
+      }
+    ]
   },
   {
     "id": "p0062",
@@ -2781,7 +2858,18 @@
     "section": "II.A.5 π/8 Gates",
     "explanations": {
       "it-expert": "Come nel caso della fase, k1≤r8(M); applicando l'algoritmo per la fase a M2/2 si ha k2≤3·r4(M2/2). Sotto la congettura r4(M2/2)=r8(M2) (non dimostrata), si ottiene k2≤2·r8(M) e quindi il bound totale k1+k2≤7·r8(M)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Che garanzia si ha per i gate π/8 e su cosa poggia?"
+        },
+        "a": {
+          "it-expert": "Schema ricorsivo a due stadi (mod 2, poi l'algoritmo Z4 su M₂/2): k₁ ≤ r8(M) e k₂ ≤ 3r4(M₂/2). Il bound 7·r8(M) vale sotto la congettura non dimostrata r4(M₂/2) = r8(M₂)."
+        }
+      }
+    ]
   },
   {
     "id": "p0073",
@@ -2913,7 +3001,18 @@
     "section": "II.B C-Z Gates",
     "explanations": {
       "it-expert": "Nella zona di entangling, i C-Z si eseguono avvicinando due righe (o colonne) adiacenti a una distanza inferiore al raggio caratteristico di blocco di Rydberg, permettendo l'operazione simultanea su tutte le coppie corrispondenti."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Quali sono i due vincoli di esecuzione dei C-Z nella entangling zone e da dove vengono?"
+        },
+        "a": {
+          "it-expert": "Le righe (o colonne) trasportate vengono avvicinate sotto il raggio di blocco di Rydberg, quindi: (1) solo coppie adiacenti in verticale o in orizzontale; (2) il C-Z avviene simultaneamente su tutte le coppie corrispondenti delle due righe, non su un sottoinsieme."
+        }
+      }
+    ]
   },
   {
     "id": "p0079",
@@ -3038,7 +3137,18 @@
     "section": "II.B C-Z Gates",
     "explanations": {
       "it-expert": "Il trasporto è sia l'operazione più lenta sia la principale fonte di errore nelle architetture ad atomi neutri: l'obiettivo della compilazione dei C-Z è quindi minimizzare il numero di operazioni di trasporto per un dato insieme di gate target."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Perché l'obiettivo della compilazione dei C-Z è il numero di trasporti?"
+        },
+        "a": {
+          "it-expert": "Il trasporto AOD è l'operazione più lenta e la principale fonte di errore sulla piattaforma; i C-Z in sé sono paralleli e veloci."
+        }
+      }
+    ]
   },
   {
     "id": "p0085",
@@ -3146,7 +3256,18 @@
     "section": "II.B.1 C-Z allineati",
     "explanations": {
       "it-expert": "Questo è esattamente il problema di colorazione di grafi su un grafo a intervalli (vertici = intervalli, archi = coppie che si sovrappongono). I grafi a intervalli sono perfetti, quindi il numero cromatico si calcola in tempo polinomiale ordinando gli intervalli e assegnando colori greedy — la colorazione risultante è direttamente uno scheduling ottimo del trasporto."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "A quale problema classico si riducono i C-Z allineati su una riga, e perché è facile?"
+        },
+        "a": {
+          "it-expert": "Ogni gate (a,b) è un intervallo aperto; poiché l'AOD preserva l'ordine, due gate stanno nello stesso trasporto sse gli intervalli sono disgiunti. È la colorazione di un grafo a intervalli, perfetto, quindi il numero cromatico si calcola in tempo polinomiale."
+        }
+      }
+    ]
   },
   {
     "id": "p0092",
@@ -3302,7 +3423,18 @@
     "section": "II.B.1 C-Z allineati",
     "explanations": {
       "it-expert": "All'interno di ogni gruppo, un pattern di C-Z rank-1 è implementabile con un solo trasporto; poiché il C-Z è self-inverso, l'eliminazione gaussiana determina il numero minimo di trasporti necessari per il gruppo — combinando tutti i gruppi si ottiene la procedura completa."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Come funziona il metodo \"raggruppa ed elimina\" per C-Z allineati su più righe?"
+        },
+        "a": {
+          "it-expert": "Matrice binaria m × n(n−1)/2 indicizzata per coppie (a,b); colonne raggruppate in insiemi a intervalli disgiunti (colorazione); dentro ogni gruppo un pattern rank-1 è un trasporto, e la self-inversione del C-Z permette l'eliminazione gaussiana: trasporti = Σ rango GF(2) dei gruppi."
+        }
+      }
+    ]
   },
   {
     "id": "p0101",
@@ -3552,7 +3684,18 @@
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
       "it-expert": "Il numero minimo di operazioni di trasporto è quindi uguale al numero minimo di sottosequenze strettamente crescenti necessarie per partizionare la sequenza — calcolabile in modo ottimo con un algoritmo greedy in tempo O(m log m)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Per C-Z non allineati tra due righe, quando due gate stanno nello stesso trasporto e come si calcola il minimo?"
+        },
+        "a": {
+          "it-expert": "Sse le connessioni non si incrociano: (a₁−b₁)(a₂−b₂) > 0. Ordinando per la prima coordinata, ogni trasporto è una sottosequenza strettamente crescente della seconda; il minimo numero si ottiene con un greedy in O(m log m)."
+        }
+      }
+    ]
   },
   {
     "id": "p0112",
@@ -3756,7 +3899,18 @@
     "section": "III. QAOA-MaxCut",
     "explanations": {
       "it-expert": "Equazione (6): più in generale, se un insieme di controlled-Zγ corrisponde a un grafo con cammini di lunghezza al più 1 (una 'star forest' in teoria dei grafi), il circuito si organizza in strati H-Z-H-R-H-Z-H, dove H, Z, R denotano insiemi di gate Hadamard, C-Z e Rz rispettivamente — ogni blocco compilabile indipendentemente con gli algoritmi della Sezione II."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Come si compila QAOA-MaxCut con questi algoritmi?"
+        },
+        "a": {
+          "it-expert": "I controlled-Zγ sono simmetrici e commutano: il grafo si decompone in star forest (greedy lessicografico sul layout), e per ciascuna il circuito diventa strati H–C-Z–H–Rz–H–C-Z–H, ognuno compilato con gli algoritmi della Sez. II."
+        }
+      }
+    ]
   },
   {
     "id": "p0122",
@@ -4122,7 +4276,18 @@
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
       "it-expert": "La baseline naive richiede circa il doppio delle operazioni di trasporto rispetto a entrambi i metodi proposti, che a loro volta hanno prestazioni quasi identiche tra loro; caratterizzare più precisamente i regimi in cui ciascuna strategia ha un vantaggio relativo è indicato come direzione di lavoro futuro."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-expert": "Quali guadagni si osservano rispetto alla baseline naive?"
+        },
+        "a": {
+          "it-expert": "Fino a 2× in meno di addressing layer sui gate a singolo qubit (vantaggio che cresce con n per fase e π/8, cala per self-inverse e Pauli), ~50% in meno di trasporti sui C-Z, >30% in meno di costo di trasporto su QAOA-MaxCut; compilazione sotto il secondo fino a 200×200."
+        }
+      }
+    ]
   },
   {
     "id": "p0145",

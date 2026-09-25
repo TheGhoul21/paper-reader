@@ -60,7 +60,20 @@
     "explanations": {
       "it-intermediate": "Un passaggio cruciale in questi processori è il riordino fisico delle pinzette ottiche per portare gli atomi in configurazioni geometriche specifiche (vedi Fig. 1b). La possibilità di scegliere liberamente la geometria target è un vantaggio degli atomi neutri rispetto ad esempio ai qubit superconduttori a stato solido, la cui geometria è fissata dal chip.",
       "it-expert": "Il rearrangement come subroutine: la riconfigurabilità geometrica (in-situ, tra un ciclo sperimentale e l'altro) è il vantaggio distintivo degli array neutral-atom rispetto a piattaforme a geometria fissa (superconducting qubits), abilitando ad es. l'implementazione di osservabili many-body arbitrarie."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cos'è il riordino (rearrangement) degli atomi e perché serve?",
+          "it-expert": "Perché il rearrangement è un building block obbligato dei processori ad atomi neutri?"
+        },
+        "a": {
+          "it-intermediate": "Il caricamento riempie le trappole a caso, circa a metà. Per avere una griglia piena, o una qualsiasi geometria voluta, bisogna spostare gli atomi con le trappole mobili nelle posizioni giuste: è un passo obbligato prima di ogni calcolo.",
+          "it-expert": "Il loading è stocastico (p ≈ 0.5), mentre calcolo, simulazione e schemi di error correction richiedono configurazioni target precise (e shuttling tra zone): serve un rearrangement con tweezer mobili, anche usabile per cooling e riempimento continuo."
+        }
+      }
+    ]
   },
   {
     "id": "p0014",
@@ -98,7 +111,20 @@
     "explanations": {
       "it-intermediate": "Man mano che i processori atomici crescono, servono algoritmi di riordino sempre più efficienti: la probabilità di ottenere un array 'senza difetti' (defect-free) cala esponenzialmente con il numero di atomi, quindi anche piccoli ritardi diventano costosi su array grandi.",
       "it-expert": "Motivazione quantitativa: la probability di successo per un defect-free array scala esponenzialmente negativo con N, rendendo critico ridurre sia il numero di mosse sia il tempo per mossa (vedi dati di vacuum-limited lifetime richiamati subito dopo, non incluso in questo blocco)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché ottenere un array \"senza difetti\" diventa più difficile con array più grandi?",
+          "it-expert": "Come scala la probabilità di un target defect-free con N, e cosa implica per la massima taglia raggiungibile?"
+        },
+        "a": {
+          "it-intermediate": "Ogni atomo può perdersi durante il riordino, quindi la probabilità che tutti arrivino al posto giusto cala esponenzialmente con il numero di atomi: servono algoritmi più veloci e più attenti alle perdite.",
+          "it-expert": "Per perdite indipendenti il success rate decade esponenzialmente in N, quindi la massima taglia defect-free cresce solo linearmente con gli atomi caricati (Fig. 2a); mitigazioni: multi-round e continuous reloading."
+        }
+      }
+    ]
   },
   {
     "id": "p0016",
@@ -372,7 +398,20 @@
     "explanations": {
       "it-intermediate": "Oltre ai limiti dati dalla vita utile nel vuoto (gli atomi collidono col gas residuo e vengono persi), c'è un'altra fonte di perdita poco studiata: gli atomi si perdono anche durante i trasferimenti tra trappole statiche e mobili, un fenomeno comune nei setup sperimentali ma non ancora ben caratterizzato insieme alla vita nel vuoto.",
       "it-expert": "Seconda sorgente di errore, meno esplorata in letteratura: atom loss nei trap-transfer statico↔mobile (Fig. 1a), tipicamente non modellata in congiunzione con la vacuum-limited lifetime — gap che il paper affronta."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quali sono le due cause di perdita di atomi considerate?",
+          "it-expert": "Quali due canali di perdita modella atommovr e come dipendono dall'algoritmo?"
+        },
+        "a": {
+          "it-intermediate": "La vita limitata nel vuoto (gli atomi urtano il gas residuo, quindi più dura il riordino più se ne perdono) e gli errori durante i trasferimenti tra trappole fisse e mobili e durante il trasporto.",
+          "it-expert": "Vacuum-limited lifetime, e^{−t/τ} in funzione della durata totale, e tweezer error per transfer e movimento. Il primo favorisce algoritmi veloci e paralleli, il secondo algoritmi con meno trasferimenti e meno distanza."
+        }
+      }
+    ]
   },
   {
     "id": "p0020",
@@ -467,7 +506,20 @@
     "explanations": {
       "it-intermediate": "...in una griglia rettilinea di fasci spostabili, espandibili o comprimibili. Questo è molto vantaggioso perché permette di eseguire simultaneamente molti spostamenti di singoli atomi in un unico 'segmento di mossa AOD', definito come un'operazione che sposta uno o più atomi di un singolo sito in orizzontale e/o verticale (anche in diagonale). Uno spostamento multi-sito (più di un sito) è descritto da una sequenza consecutiva di segmenti di mossa AOD.",
       "it-expert": "...griglia rettilinea di beam, spostabile/scalabile con continuità grazie alle due RF tone axes indipendenti. Un 'AOD move segment' = spostamento simultaneo di ≥1 atomo di un singolo sito (anche diagonale); mosse multi-sito = sequenze di segmenti consecutivi. Questa parallelizzabilità intrinseca è ciò che rende gli AOD superiori, in throughput, a schemi single-tweezer."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché due AOD incrociati sono così utili per il riordino, e quale vincolo impongono?",
+          "it-expert": "Qual è il modello di movimento dei crossed-AOD e il suo vincolo strutturale?"
+        },
+        "a": {
+          "it-intermediate": "Creano una griglia di trappole mobili che si possono spostare, espandere o comprimere insieme: si muovono molti atomi in un colpo solo. Ma solo \"a griglia\": righe e colonne attive si muovono tutte insieme.",
+          "it-expert": "Griglia rettilinea di tweezer, prodotto dei toni RF di riga e colonna: mosse parallele di molti atomi, vincolate alla struttura riga×colonna e alla legalità (niente collisioni, niente tweezer carichi su siti occupati)."
+        }
+      }
+    ]
   },
   {
     "id": "p0026",
@@ -543,7 +595,20 @@
     "explanations": {
       "it-intermediate": "Algoritmi esistenti: ci sono due approcci principali. Il primo si basa sul metodo 'ungherese' (Hungarian) per risolvere il problema di assegnamento lineare (LSAP — trovare l'abbinamento ottimale tra atomi in eccesso e siti vuoti minimizzando la distanza totale percorsa); gli algoritmi di questo tipo muovono un solo tweezer mobile alla volta, ma sono ottimali rispetto alla distanza totale di trasporto.",
       "it-expert": "Approccio 1: Hungarian/LSAP [16,26-29] — single-moving-tweezer, ottimo in distanza totale trasportata (non in tempo/parallelismo)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quali sono i due approcci classici agli algoritmi di riordino?",
+          "it-expert": "Confronta l'approccio Hungarian/LSAP e quello parallelo in termini di cosa ottimizzano."
+        },
+        "a": {
+          "it-intermediate": "Il metodo \"Hungarian\", che abbina posti vuoti e atomi minimizzando la distanza totale e poi li muove uno alla volta; e gli algoritmi paralleli, che minimizzano il tempo muovendo molti atomi insieme con gli AOD.",
+          "it-expert": "Hungarian: LSAP su distanze euclidee, distance-optimal ma sequenziale. Paralleli (Tetris, Balance&Compact): minimizzano il tempo sfruttando mosse AOD multi-atomo, a costo di più distanza e transfer."
+        }
+      }
+    ]
   },
   {
     "id": "p0030",
@@ -831,7 +896,20 @@
     "explanations": {
       "it-intermediate": "...il problema del collo di bottiglia (MBMP), che nella letteratura dei grafi assomiglia molto al LSAP. La differenza chiave è che invece di minimizzare la distanza totale percorsa da tutti gli atomi, la soluzione minimizza la distanza massima percorsa da un singolo atomo — questo dà proprio il limite di tempo teorico, perché il tempo totale è dominato dall'atomo che deve percorrere la strada più lunga (dato che gli spostamenti sono paralleli).",
       "it-expert": "MBMP ≈ LSAP ma con obiettivo min-max anziché min-sum: minimizza la distanza massima di trasporto anziché la somma, dando esattamente il lower bound rilevante quando le mosse sono eseguite in parallelo (il collo di bottiglia è l'atomo più lontano dal suo target)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come si ottiene un limite inferiore al tempo di riordino?",
+          "it-expert": "Da dove viene il lower bound Z* e come scala?"
+        },
+        "a": {
+          "it-intermediate": "Risolvendo un problema di abbinamento che minimizza la distanza più lunga percorsa da un singolo atomo (non la somma): se tutti si muovessero insieme, quella distanza fisserebbe il tempo minimo possibile.",
+          "it-expert": "Dal LBAP/MBMP: d_minmax · s / |v_tweezer| limita dal basso ogni protocollo pienamente parallelo. Z* scala come √N (coefficiente 0.45(6)), come anche Z*(grid)."
+        }
+      }
+    ]
   },
   {
     "id": "p0038",
@@ -1043,7 +1121,20 @@
     "explanations": {
       "it-intermediate": "...e osservano inoltre che aggiungere ingenuamente la parallelizzazione all'algoritmo Hungarian (cioè ParHungarian) migliora lo scaling rispetto alla versione sequenziale, pur non raggiungendo le prestazioni dei migliori algoritmi paralleli purpose-built come Tetris.",
       "it-expert": "Risultato chiave: parallelizzare naively l'Hungarian (ParHungarian) migliora l'esponente di scaling (Table 1: 1.45→1.26) ma resta lontano dagli algoritmi progettati ad hoc per il parallelismo (Tetris 1.03, BalanceCompact 0.84)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa si ottiene aggiungendo in modo ingenuo il parallelismo all'algoritmo Hungarian (ParHungarian)?",
+          "it-expert": "Cosa mostra ParHungarian sul valore della parallelizzazione aggiunta a posteriori?"
+        },
+        "a": {
+          "it-intermediate": "Lo scaling migliora (da N^1.45 a N^1.26), ma resta lontano dagli algoritmi pensati fin dall'inizio per muovere molti atomi insieme.",
+          "it-expert": "Parallelizzazione greedy dei cammini LSAP: 1.45 → 1.26, ma lontano da BalanceCompact (0.84). Il parallelismo va progettato nell'algoritmo, non aggiunto dopo; la strategia è anche sub-ottima (il brute force costa O(2^M))."
+        }
+      }
+    ]
   },
   {
     "id": "p0047",
@@ -1081,7 +1172,20 @@
     "explanations": {
       "it-intermediate": "Dati della tabella: limite Z*=0.45(6) (questo lavoro), Z*(grid)=0.45(6) (questo lavoro), Balance and Compact=0.84(2) (questo lavoro), Tetris=1.03(7) (da [34]), ParHungarian=1.26(1) (questo lavoro), Hungarian=1.45(1) (questo lavoro) e 1.6(1) (da [34]). Si nota come gli algoritmi paralleli purpose-built (Tetris, Balance&Compact) si avvicinino molto di più al limite teorico √N (b≈0.45) rispetto agli approcci basati su Hungarian.",
       "it-expert": "Valori: Z*=0.45(6), Z*(grid)=0.45(6), BalanceCompact=0.84(2), Tetris=1.03(7)[34], ParHungarian=1.26(1), Hungarian=1.45(1)/1.6(1)[34]. Gap evidente tra bound (~0.45) e gli algoritmi single-tweezer-based (~1.3-1.6) vs quelli row/column-parallel (~0.84-1.03)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come si confrontano i coefficienti di scaling degli algoritmi con il limite teorico?",
+          "it-expert": "Riporta i coefficienti di scaling della Tab. 1 e cosa indicano."
+        },
+        "a": {
+          "it-intermediate": "Il limite teorico cresce come N^0.45, cioè circa √N. Gli algoritmi reali: Balance and Compact N^0.84, Tetris N^1.03, ParHungarian N^1.26, Hungarian N^1.45. C'è ancora molto margine rispetto al limite.",
+          "it-expert": "Z* 0.45(6), Z*(grid) 0.45(6), BalanceCompact 0.84(2), Tetris 1.03(7) [34], ParHungarian 1.26(1), Hungarian 1.45(1) (1.6(1) in [34]); tutto a p_load = 0.5. Grande gap tra le euristiche e il bound."
+        }
+      }
+    ]
   },
   {
     "id": "p0051",
@@ -1119,7 +1223,20 @@
     "explanations": {
       "it-intermediate": "Si trova che l'Hungarian è vantaggioso quando la fonte dominante di perdita di atomi sono gli errori dei tweezer (ad es. durante i trasferimenti): poiché l'Hungarian minimizza la distanza totale di trasporto muovendo un atomo alla volta...",
       "it-expert": "Risultato: Hungarian vince quando domina il tweezer/transfer-error (dipendente dal numero di trasferimenti, non dal tempo), perché il min-distance transport riduce il numero totale di eventi di trasferimento per atomo."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quando conviene l'Hungarian e quando Balance and Compact?",
+          "it-expert": "Descrivi il crossover Hungarian contro BalanceCompact sotto error model realistici."
+        },
+        "a": {
+          "it-intermediate": "Hungarian quando la perdita principale sono gli errori delle trappole, perché fa meno strada e meno trasferimenti; Balance and Compact quando la perdita principale è la vita limitata nel vuoto, perché è molto più veloce.",
+          "it-expert": "Tweezer-error dominated: vince Hungarian (distance-optimal, meno transfer). Vacuum-limited: vince BalanceCompact (tempo sub-lineare, contro il super-lineare di Hungarian). Fig. 4 mappa il crossover in (τ_vac, tweezer error)."
+        }
+      }
+    ]
   },
   {
     "id": "p0053",
@@ -1195,7 +1312,20 @@
     "explanations": {
       "it-intermediate": "Tuttavia, il riordino a due specie è intrinsecamente più complesso del caso a singola specie: mentre nel caso singola specie scambiare due atomi qualsiasi non cambia lo stato del sistema (sono indistinguibili ai fini della configurazione)...",
       "it-expert": "Complessità aggiuntiva: nel single-species, atomi sono interscambiabili (qualunque permutazione tra atomi 'eccesso' è equivalente), mentre nel dual-species lo scambio tra specie diverse altera la configurazione — questo introduce vincoli combinatori che generano le 'blocked configurations'."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché il riordino con due specie di atomi è più difficile?",
+          "it-expert": "Quali difficoltà strutturali introduce il dual-species rearrangement?"
+        },
+        "a": {
+          "it-intermediate": "Perché gli atomi non sono più intercambiabili: scambiare un rubidio con un cesio cambia la configurazione. Un atomo del tipo sbagliato può occupare il posto destinato all'altro o sbarrargli la strada, creando configurazioni bloccate.",
+          "it-expert": "Abbinamento species-selective, gli scambi cambiano lo stato, compaiono blocked configurations (un atomo della specie sbagliata su un target o su ogni cammino legale); forte dipendenza del success rate da densità e p_load."
+        }
+      }
+    ]
   },
   {
     "id": "p0058",
@@ -1464,7 +1594,20 @@
     "explanations": {
       "it-intermediate": "Progettare un algoritmo efficiente per due specie: gli autori sviluppano e testano un algoritmo euristico, InsideOut, capace di preparare configurazioni target arbitrarie con un tasso di successo quasi perfetto...",
       "it-expert": "Design di InsideOut: euristica dual-species con success rate near-unity per target arbitrari — l'idea centrale (layer-by-layer, spiegata nel blocco successivo) è preannunciata qui."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come funziona InsideOut e perché evita i blocchi?",
+          "it-expert": "Qual è la strategia di InsideOut e il suo trade-off rispetto a ParHungarian dual-species?"
+        },
+        "a": {
+          "it-intermediate": "Costruisce il target dal centro verso l'esterno, strato per strato: per ogni anello prima toglie gli atomi sbagliati, poi lo riempie con quelli giusti presi dall'esterno. Gli strati finiti non vengono più toccati, quindi non si creano blocchi e il tasso di successo resta al 100%.",
+          "it-expert": "Layer-by-layer dal centro: push-out dei misplaced, poi LSAP species-selective con atomi da layer ≥ k. Monotono sui layer interni, quindi niente blocked state e success rate unitario a ogni p_load; ParHungarian degrada ad alto p_load, ma negli array sparsi può essere più veloce."
+        }
+      }
+    ]
   },
   {
     "id": "p0063",
@@ -1834,7 +1977,20 @@
     "explanations": {
       "it-intermediate": "Tweezer mobili con SLM o AOD olografici: gli SLM, tipicamente usati per generare una griglia di tweezer 'statici', possono anche essere usati per spostare atomi tra siti, eliminando così la necessità di un set separato di tweezer mobili...",
       "it-expert": "Alternativa architetturale 1: SLM (o AOD olografici) per moving tweezers, eliminando la necessità di un layer AOD separato per le mosse..."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Si possono spostare gli atomi con gli SLM invece che con gli AOD? Con quali pro e contro?",
+          "it-expert": "Quali trade-off ha il rearrangement con SLM o AOD olografici?"
+        },
+        "a": {
+          "it-intermediate": "Sì: gli SLM permettono combinazioni di mosse arbitrarie, senza il vincolo della griglia, ma sono lenti (circa 1 ms per aggiornare l'immagine), il che limita la velocità del riordino.",
+          "it-expert": "Mosse arbitrarie senza il vincolo rettilineo degli AOD, ma frame rate ~1 kHz intrinsecamente limitato dal materiale, quindi più lento; approccio complementare."
+        }
+      }
+    ]
   },
   {
     "id": "p0074",
@@ -1929,7 +2085,20 @@
     "explanations": {
       "it-intermediate": "Metodi di machine learning non euristici: recentemente i progressi nel machine learning hanno permesso notevoli avanzamenti in certi compiti computazionali. In particolare, il reinforcement learning è stato usato in modo rilevante...",
       "it-expert": "Direzione futura: reinforcement learning come alternativa alle euristiche greedy attuali, richiamando i successi di RL in giochi combinatori (AlphaGo/AlphaZero, refs [50-53])."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quale direzione futura propongono gli autori per trovare algoritmi migliori?",
+          "it-expert": "Perché il reinforcement learning è una direzione promettente per il dual-species rearrangement?"
+        },
+        "a": {
+          "it-intermediate": "Il reinforcement learning, cioè programmi che imparano giocando molte partite come AlphaGo: un array a due specie assomiglia a una scacchiera di Go, e atommovr potrebbe fare da \"ambiente di gioco\".",
+          "it-expert": "Isomorfismo strutturale tra board di Go e array dual-species: policy apprese alla AlphaZero come alternativa non euristica, con atommovr come environment."
+        }
+      }
+    ]
   },
   {
     "id": "p0079",

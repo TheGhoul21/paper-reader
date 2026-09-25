@@ -60,7 +60,20 @@
     "explanations": {
       "it-intermediate": "In questo lavoro si propone il formalismo del flusso di parità, un metodo che traccia efficientemente le componenti dell'informazione di ciascun qubit individuale tramite etichette di parità generalizzate. In questo formalismo, l'effetto dei gate Clifford è interpretato come una ricodifica dell'informazione tramite l'aggiornamento di queste etichette con un semplice insieme di regole. È importante notare che il tracking del flusso rimane classicamente efficiente quando il circuito viene esteso, ed è quindi adatto a comprendere e progettare circuiti quantistici e...",
       "it-expert": "Enunciazione del contributo: 'generalized parity labels' per-qubit, update rule locale (costo O(1) per gate, come chiarito più avanti) — proprietà di efficienza classica preservata all'estensione del circuito, cruciale per uso pratico in compilazione iterativa."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa fa il formalismo del flusso di parità, in poche parole?",
+          "it-expert": "Qual è l'idea del parity flow formalism e perché resta efficiente estendendo il circuito?"
+        },
+        "a": {
+          "it-intermediate": "Annota ogni qubit di un circuito con etichette che dicono quale informazione logica porta in quel momento. I gate Clifford diventano semplici aggiornamenti delle etichette (una \"ricodifica\"), e da queste si legge subito l'effetto logico di una rotazione applicata in un punto qualsiasi.",
+          "it-expert": "Tracking con label di parità generalizzate: i Clifford sono recoding, cioè update delle label con regole locali. Gli update dipendono solo dal gate aggiunto, quindi il costo per gate appeso è costante in O(n), senza backtracking."
+        }
+      }
+    ]
   },
   {
     "id": "p0012",
@@ -123,7 +136,20 @@
     "explanations": {
       "it-intermediate": "...dove a1,a2∈{0,1} e ⊕ denota l'addizione modulo 2. Dopo l'applicazione del gate CNOT, nessuna informazione viene persa, ma viene codificata con una mappa lineare: cioè i due qubit fisici ora contengono l'informazione logica dello stato a1 e la parità di a1 e a2. Quindi, per qualsiasi stato quantistico, applicare una rotazione Z2 dopo il gate CNOT1,2 ha lo stesso effetto di una rotazione Z1Z2...",
       "it-expert": "Interpretazione 'no information loss, but re-encoded via linear map' — il CNOT trasforma l'encoding senza distruggere informazione: Z2 post-CNOT ≡ Z1Z2 pre-CNOT — questo è ESATTAMENTE l'osservazione elementare che genera l'intero formalismo delle label."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa succede all'informazione dopo una CNOT, e come lo si traccia?",
+          "it-expert": "Descrivi l'effetto di una CNOT sulla codifica e la label Z che ne risulta."
+        },
+        "a": {
+          "it-intermediate": "Nessuna informazione si perde, ma viene ricodificata: il secondo qubit ora porta la parità (XOR) dei due valori. Quindi una rotazione Z sul secondo qubit dopo la CNOT equivale a una rotazione Z₁Z₂ sui qubit logici: gli si assegna l'etichetta Z {1,2}.",
+          "it-expert": "|a₁,a₂⟩ ↦ |a₁, a₁⊕a₂⟩: codifica lineare, senza perdita. Una R_Z sul qubit 2 dopo CNOT₁,₂ equivale a R_{Z₁Z₂}, quindi ℓ_Z2 = {1,2}; analogamente per gli autostati X sul controllo."
+        }
+      }
+    ]
   },
   {
     "id": "p0016",
@@ -161,7 +187,20 @@
     "explanations": {
       "it-intermediate": "Quando si tracciano solo gate CNOT, le etichette Z corrispondono direttamente alle etichette di parità introdotte in un lavoro precedente, e le etichette X sono univocamente definite dalle etichette Z (vedi Corollario B14). In questo caso, tracciare l'evoluzione degli autostati di Pauli è equivalente a tracciare la trasformazione (unitaria) degli operatori di Pauli stessi. Come esempio, le trasformazioni CNOT†...",
       "it-expert": "Caso CNOT-only: Z-label ≡ parity label preesistenti [33]; X-label determinata dalle Z-label (Cor. B14, dimostrata in Appendice) — equivalenza tra 'tracciare stati' e 'tracciare operatori' in questo caso ristretto."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Che relazione c'è tra le etichette di questo paper e le \"etichette di parità\" della Parity Architecture?",
+          "it-expert": "Nel caso CNOT-only, a cosa si riducono le flow label?"
+        },
+        "a": {
+          "it-intermediate": "Se nel circuito ci sono solo CNOT, le etichette Z coincidono esattamente con le etichette di parità già usate in precedenza, e quelle X si ricavano da esse. Il flusso di parità le generalizza a tutti i gate Clifford.",
+          "it-expert": "ℓ_Z coincide con le parity label di [33], ℓ_X è determinata da ℓ_Z (Cor. B14), e tracciare gli autostati equivale a tracciare la trasformazione unitaria degli operatori."
+        }
+      }
+    ]
   },
   {
     "id": "p0018",
@@ -254,7 +293,20 @@
     "explanations": {
       "it-intermediate": "...P) = C†PC. Si noti che di solito si omette l'apice che indica il circuito Clifford precedente sull'etichetta, tranne quando strettamente necessario. Per tracciare in modo efficiente e iterativo l'intero gruppo di Pauli P su n qubit, bisogna scegliere un insieme indipendente di 2n+1 generatori e tracciare le etichette per quelli. Nel caso in esame, si sceglie di tracciare le etichette di tutti gli operatori X e Z a singolo qubit (e iI, su cui ogni trasformazione Clifford agisce trivialmente), e ogni operatore di Pauli che compare sarà descritto in termini di questi generatori g_m∈{iI,Xj,Zj|j=1,...,n}. Altri insiemi generatori sono anch'essi una scelta valida... ...per esempio, tutti gli operatori X, Y, e Z a singolo qubit. Tuttavia, la scelta di generatori indipendenti fatta qui, usata anche ad esempio in lavori precedenti, permette di scrivere univocamente ogni operatore di Pauli come un vettore tale che la rappresentazione vettoriale sia isomorfa al gruppo di Pauli (Proposizione A2). Con questa scelta di generatori, un'etichetta ℓ_P consiste in una fase i^κ con κ∈{0,1,2,3} e due insiemi di indici per gli operatori X e Z che compaiono. Si scrive un'etichetta come ℓ_P=i^κ⟨X̄ indici⟩Z̄ indici, e l'operatore di Pauli logico P̄ corrispondente all'etichetta ℓ_P è dato dall'Equazione (2): P̄(ℓ_P)=i^κ ∏X̄j∏Z̄k.",
       "it-expert": "Scelta dei generatori tracciati: {iI, Xj, Zj}_{j=1..n} (2n+1 generatori, il minimo indipendente per il gruppo di Pauli su n qubit [27]) — scelta specifica motivata nel blocco successivo (isomorfismo univoco con rappresentazione vettoriale, Prop. A2), alternativa ad es. a {X,Y,Z}_j [26]. Vantaggio della scelta di generatori: isomorfismo univoco Pauli-group↔vettore (Prop. A2, dimostrata in App. A) — struttura formale della label: fase i^κ (κ∈Z4) + due set di indici ⟨X-indices⟩, Z-indices. Eq. (2): P̄(ℓ_P)=i^κ∏_{⟨j⟩∈ℓ}X̄j·∏_{k∈ℓ}Z̄k — formula di ricostruzione dell'operatore dalla label."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quali etichette bisogna tracciare per conoscere l'effetto di qualsiasi operatore di Pauli?",
+          "it-expert": "Quale insieme di generatori si traccia e perché bastano?"
+        },
+        "a": {
+          "it-intermediate": "Basta tracciare le etichette delle X e delle Z di ogni qubit (più la fase): ogni altro operatore di Pauli è un prodotto di questi, quindi la sua etichetta si ottiene moltiplicando.",
+          "it-expert": "Un insieme indipendente di 2n+1 generatori: iI, X̄_j, Z̄_j. Con la forma standard ogni Pauli ha rappresentazione unica come prodotto, quindi le label dei generatori determinano tutte le altre."
+        }
+      }
+    ]
   },
   {
     "id": "p0021",
@@ -495,7 +547,20 @@
     "explanations": {
       "it-intermediate": "...ℓ'_gj) in ordine standard. È importante notare che la regola di aggiornamento per l'etichetta di ciascun generatore è calcolata tramite l'Equazione (3) e dipende solo dal gate applicato C2, non dalle etichette precedenti ℓ^C1_gj. È quindi facile applicare le regole di aggiornamento iterativamente, poiché la trasformazione delle etichette definita da C2 viene applicata alle etichette risultanti dal circuito C1 tracciato in precedenza (vedi Proposizione B6). Applicando queste regole ai gate Hadamard e S, si trova che le trasformazioni non banali sono...",
       "it-expert": "Punto cruciale di efficienza: l'update-rule per un generatore dipende SOLO dal gate applicato (C2), non dallo storico (ℓ^C1) — questo garantisce che il costo per gate sia costante indipendentemente dalla lunghezza del circuito già tracciato (Prop. B6), la proprietà di scalabilità menzionata nell'introduzione."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché aggiornare le etichette gate per gate è facile ed efficiente?",
+          "it-expert": "Da cosa dipende la regola di update di una label, e che conseguenza ha?"
+        },
+        "a": {
+          "it-intermediate": "Perché la regola di aggiornamento dipende solo dal gate appena aggiunto, non da tutto ciò che è successo prima: si applicano sempre le stesse poche regole (ad esempio Hadamard scambia X e Z) alle etichette correnti.",
+          "it-expert": "Solo dal gate appeso C₂ (Eq. 3), non dalle label ℓ^{C₁}: l'update è iterabile (Prop. B6). Per H: Z ↔ X; per S: X ↦ −Ȳ = i³X̄Z̄."
+        }
+      }
+    ]
   },
   {
     "id": "p0028",
@@ -609,7 +674,20 @@
     "explanations": {
       "it-intermediate": "Di conseguenza, le etichette permettono di interpretare e progettare efficientemente circuiti quantistici quando scritti nella forma dell'Equazione (5), anche quando si continuano ad aggiungere rotazioni di Pauli o gate Clifford. Inoltre, i prodotti di operatori fisici hanno l'effetto logico del prodotto degli operatori di Pauli rappresentati dalle etichette corrispondenti. Quindi, anche le rotazioni fisiche multi-qubit possono essere incorporate. Un punto di forza importante di questa rappresentazione circuitale è che evita il bisogno di sintetizzare separatamente ogni operatore di rotazione multi-corpo coniugando completamente un operatore a singolo corpo con un circuito Clifford...",
       "it-expert": "Vantaggio pratico chiave: (1) le label si estendono naturalmente a prodotti (composizionalità), abilitando rotazioni multi-qubit senza gestione speciale; (2) evita la sintesi standard 'encode-rotate-decode' (conjugare esplicitamente ogni operatore multi-body con un circuito C̃j dedicato) — anticipa il vantaggio del 'recoding' spiegato nel blocco successivo."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "A cosa servono le etichette quando si progetta un circuito fatto di Clifford e rotazioni?",
+          "it-expert": "Qual è il vantaggio della rappresentazione U = C_{d+1}R_d…C₁ con le label?"
+        },
+        "a": {
+          "it-intermediate": "Dicono subito quale rotazione logica, anche su molti qubit, si ottiene ruotando un solo qubit fisico in un certo punto. Così non serve costruire ogni rotazione a più qubit da zero con codifica e decodifica: si sfrutta la codifica in cui ci si trova.",
+          "it-expert": "Ogni R_j fisica ha significato logico R̄_j leggibile dalle label, e i prodotti di Pauli fisici hanno come effetto il prodotto dei logici. Si evita la sintesi encode–rotate–decode di ogni rotazione multi-body e si sfrutta il recoding."
+        }
+      }
+    ]
   },
   {
     "id": "p0034",
@@ -884,7 +962,20 @@
     "explanations": {
       "it-intermediate": "...=P. Sebbene la restrizione ai soli generatori renda il tracking computazionalmente efficiente, questo oscura anche l'informazione necessaria per la mappa inversa, cioè mappare operatori fisici a operatori logici.",
       "it-expert": "Limite chiave del tracking covariante-solo-generatori: efficiente per logico→fisico, ma NON dà accesso diretto a fisico→logico — questo è ESATTAMENTE il gap che il parity flow formalism (tracking controvariante) colma, motivando l'intera Sezione III."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa vuol dire tracking \"covariante\" e qual è il suo limite?",
+          "it-expert": "Perché il tracking covariante sui soli generatori rende difficile la mappa fisico→logico?"
+        },
+        "a": {
+          "it-intermediate": "È il modo classico (tableau di Clifford): segue dove va a finire ogni operatore logico, cioè in quale operatore fisico si trasforma. È facile andare da logico a fisico, ma difficile rispondere alla domanda inversa: \"cosa fa logicamente questo operatore fisico?\".",
+          "it-expert": "Traccia C·ḡ·C† per i generatori, quindi logico→fisico per prodotto. L'inversa richiede di decomporre un Pauli fisico nelle immagini dei generatori, cioè di invertire il tableau: informazione oscurata dalla restrizione ai generatori."
+        }
+      }
+    ]
   },
   {
     "id": "p0046",
@@ -971,7 +1062,20 @@
     "explanations": {
       "it-intermediate": "Di conseguenza, quando si tracciano solo i generatori, la facilità di mappare operatori logici a fisici e la difficoltà di mappare operatori fisici a logici sono invertite rispetto al caso covariante — cioè il tracking controvariante è 'facile' esattamente dove quello covariante è 'difficile', e viceversa.",
       "it-expert": "Simmetria esplicita: covariante = facile logico→fisico, difficile fisico→logico; controvariante = facile fisico→logico, difficile logico→fisico — questa dualità è il punto concettuale centrale dell'intera Sezione III, e motiva il metodo 'combinato' proposto più avanti (p0060 in poi)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "In cosa il tracking controvariante (quello del flusso di parità) è l'opposto di quello covariante?",
+          "it-expert": "Confronta co- e contravariante per direzione della mappa e tipo di coniugazione efficiente."
+        },
+        "a": {
+          "it-intermediate": "Facile e difficile si invertono: il controvariante dice subito cosa fa logicamente un operatore fisico (quello che serve per interpretare le rotazioni), mentre ricavare dove va un operatore logico diventa difficile.",
+          "it-expert": "Covariante: C P̄ C†, logico→fisico, efficiente con coniugazione outward. Contravariante: C† P C, fisico→logico, efficiente con coniugazione inward (flow label). Usare la coniugazione non preferita richiede un insieme generatore simplettico minimale."
+        }
+      }
+    ]
   },
   {
     "id": "p0049",
@@ -1393,7 +1497,20 @@
     "explanations": {
       "it-intermediate": "Qui ⊕ è la somma modulo 4. La CNOT non cambia le fasi Clifford. Il costo resta basso: tracciare le etichette costa O(n) per ogni gate Clifford elementare, e le fasi aggiungono solo un fattore costante e 4n bit di memoria, evitando le O(n³) operazioni necessarie per invertire un tableau. Avere entrambe le direzioni (covariante e controvariante) è particolarmente utile per progettare circuiti che usano stabilizzatori.",
       "it-expert": "⊕ mod 4; la CNOT non aggiorna le fasi. Costo O(n) per gate elementare, e le fasi cambiano solo la costante; +4n bit contro l'inversione O(n³) del tableau. Avere co- e contravariante insieme è il presupposto dell'uso con stabilizzatori (§IV)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come si ottengono entrambe le direzioni (covariante e controvariante) senza raddoppiare i costi?",
+          "it-expert": "Quanto costa aggiungere le fasi Clifford al flow tracking, e cosa evita?"
+        },
+        "a": {
+          "it-intermediate": "Tracciando insieme alle etichette 2n piccole \"fasi Clifford\", aggiornate solo da Hadamard ed S. Il costo resta O(n) per gate con 4n bit di memoria in più, invece delle O(n³) operazioni per invertire un tableau.",
+          "it-expert": "2n fasi η in Z₄: H dà +2, S dà +1, la CNOT non le cambia; +4n bit, stesso ordine O(n) per gate. Evitano l'inversione O(n³) del tableau o un secondo tableau, e danno la trasformazione covariante direttamente dalle label (Eq. 12–13)."
+        }
+      }
+    ]
   },
   {
     "id": "p0064",
@@ -1431,7 +1548,20 @@
     "explanations": {
       "it-intermediate": "Si parte dal caso più semplice, dove il circuito di codifica di un codice stabilizer consiste solo di gate CNOT e qubit ausiliari inizializzati nello stato |0⟩. Poiché un qubit ausiliario inizializzato nello stato |0⟩ è indifferente a una rotazione di Pauli Z, si può assegnare un'etichetta Z vuota a tale qubit ausiliario all'inizio del circuito quantistico. Allora, qualsiasi gate CNOT che ha come target il qubit ausiliario può cambiare la sua etichetta Z per ottenere un effetto logico che coinvolge altri qubit. Per esempio, l'operatore Z di un qubit ausiliario a può ottenere l'effetto logico dell'operatore a due qubit Z̄1Z̄2 attraverso la codifica mostrata in Fig. 2(a). Si noti che l'etichetta X iniziale del qubit ausiliario non è vuota, poiché l'operazione corrispondente X̄a ha un effetto non banale sullo stato quantistico, ed è quindi importante seguirne la presenza lungo tutte le etichette. Si possono descrivere i qubit ausiliari inizializzati come parte di un codice stabilizer banale, dove gli stabilizzatori sono gli operatori corrispondenti a etichette vuote.",
       "it-expert": "Caso base CNOT-only + ausiliari in |0⟩: label Z vuota iniziale (poiché |0⟩ è autostato +1 di Z) — man mano che CNOT bersagliano l'ausiliario, la sua label Z si popola con effetti logici multi-qubit (es. Z̄1Z̄2 via Fig. 2a). Codice stabilizer banale = etichette vuote ≡ generatori dello stabilizer del sottospazio codificato."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come si usa un qubit ausiliario inizializzato a |0⟩ con le etichette?",
+          "it-expert": "Perché un'ancilla in |0⟩ ha label Z vuota, e come ottiene poi un effetto logico?"
+        },
+        "a": {
+          "it-intermediate": "Una rotazione Z su |0⟩ non fa nulla, quindi all'inizio la sua etichetta Z è vuota. Le CNOT che lo hanno come bersaglio gli \"scrivono\" sopra parità di altri qubit: una rotazione su di lui realizza allora un'operazione logica su più qubit.",
+          "it-expert": "|0⟩ è autostato +1 di Z, quindi R_Z è banale e ℓ_Z = ∅. Le CNOT con target l'ancilla aggiornano ℓ_Z (es. Z̄₁Z̄₂), rendendo disponibile una rotazione multi-qubit logica come rotazione singola sull'ancilla."
+        }
+      }
+    ]
   },
   {
     "id": "p0066",
@@ -1488,7 +1618,20 @@
     "explanations": {
       "it-intermediate": "...in uno stato al di fuori dello spazio del codice, il che invaliderebbe l'azione banale dell'etichetta ausiliaria omessa. I codici ottenuti da circuiti di codifica consistenti solo di gate CNOT e qubit inizializzati nello stato |0⟩ risultano in codici di parità in cui gli stabilizzatori, le etichette, e gli indici delle etichette sono dello stesso tipo di Pauli. Tracciare le etichette (vuote) durante il circuito di codifica di tali codici può rivelare un ampio insieme di operazioni logiche multi-qubit localmente implementabili. Come esempio prominente, il layout Lechner-Hauke-Zoller codifica k qubit logici in n=k(k+1)/2 qubit fisici, tale che ogni possibile coppia di indici di qubit logici è rappresentata su una delle etichette dei qubit fisici. Questo permette di implementare tutte le rotazioni logiche RZZ a coppie tramite rotazioni RZ fisiche a singolo qubit in un unico passo temporale.",
       "it-expert": "Caso CNOT-only ⟹ 'parity code' (stabilizer/label/indici tutti dello stesso tipo Pauli) — esempio di punta: architettura Lechner-Hauke-Zoller (LHZ, l'architettura 'parity' su cui si basa l'azienda co-fondata da Lechner stesso, coautore) con n=k(k+1)/2 qubit fisici per k logici, che rende OGNI coppia RZZ logica implementabile in UN solo timestep via RZ fisiche — il caso d'uso di punta dell'intero formalismo, direttamente collegato al lavoro precedente del gruppo [45,46]."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa sono i codici di parità e perché le etichette sono utili per usarli?",
+          "it-expert": "Cosa caratterizza i parity code e cosa rivela il tracking delle label durante l'encoding?"
+        },
+        "a": {
+          "it-intermediate": "Sono i codici ottenuti con sole CNOT e qubit ausiliari a |0⟩: stabilizzatori ed etichette sono tutti fatti di Z. Seguire le etichette durante la codifica rivela molte operazioni logiche su più qubit che si possono fare con rotazioni locali.",
+          "it-expert": "Encoding CNOT-only più ancille |0⟩: stabilizzatori, label e indici dello stesso tipo di Pauli. Il tracking rivela un ampio insieme di operazioni logiche multi-qubit implementabili localmente (es. il layout LHZ)."
+        }
+      }
+    ]
   },
   {
     "id": "p0069",
@@ -1507,7 +1650,20 @@
     "explanations": {
       "it-intermediate": "Le etichette Z dei codici di parità sono sempre ristrette a soli prodotti di operatori Z. Tuttavia, con le etichette di flusso si possono generalizzare i codici di parità estendendo l'effetto logico delle rotazioni a singolo qubit da soli prodotti di operatori Z a prodotti di operatori di Pauli arbitrari a singolo qubit e una fase. Invece di impostare le etichette iniziali dei qubit ausiliari a vuote, si marcano gli indici corrispondenti a un generatore stabilizzato con un punto, e quelli corrispondenti a un generatore anticommutante con una croce. Di conseguenza, finché non viene applicato un operatore non-Clifford che contiene una croce nella sua etichetta, tutti gli indici con punti possono essere omessi. Questo ha lo stesso effetto di impostare le etichette a vuote, ma permette in aggiunta di tracciare correttamente le fasi lungo tutto il circuito. Un esempio di qubit ausiliari marcati è mostrato in Fig. 2(b). Lì, gli operatori logici X̄1X̄2, Ȳ1Ȳ2, e Z̄1Z̄2 sono codificati su operatori fisici a singolo qubit che possono essere applicati solo in parallelo grazie all'uso di uno stabilizzatore. Si noti che le etichette marcate gestiscono il caso specifico in cui i qubit ausiliari sono inizializzati nell'autostato +1 dei generatori a singolo qubit X o Z all'inizio del circuito quantistico. Tuttavia, sono possibili anche casi più generali in cui gli stabilizzatori sono definiti a metà circuito o come prodotti di generatori, per esempio tramite misure multi-qubit durante il circuito quantistico (vedi Proposizione C2). Per vedere come l'equivalenza allo stabilizzatore in Fig. 2(b) induce la codifica simultanea...",
       "it-expert": "Generalizzazione oltre i parity code puri: notazione punto/croce (stabilizzato/anticommutante) sostituisce 'etichetta vuota', estendendo da soli-Z a Pauli ARBITRARI — permette di tracciare correttamente anche le FASI (non solo la struttura), abilitando l'esempio Heisenberg di Fig. 2(b) dove X̄1X̄2, Ȳ1Ȳ2, Z̄1Z̄2 diventano tutti parallelizzabili. Generalizzazione ulteriore (rimandata a App. C, Prop. C2): stabilizzatori mid-circuit o definiti da misure multi-qubit — il caso trattato nel testo principale (init state) è il caso semplice; il caso generale è coperto formalmente in Appendice C."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come le etichette di flusso generalizzano i codici di parità?",
+          "it-expert": "Come si estendono i parity code con le flow label, e cosa indicano punto e croce?"
+        },
+        "a": {
+          "it-intermediate": "Nei codici di parità le rotazioni singole possono realizzare solo prodotti di Z. Con le etichette di flusso si possono ottenere prodotti di X, Y e Z qualsiasi. Gli ausiliari non partono con etichetta vuota: si marcano con un punto i generatori stabilizzati e con una croce quelli che anticommutano.",
+          "it-expert": "Le rotazioni singole acquisiscono effetti logici con prodotti di Pauli arbitrari più una fase. Le label delle ancille marcano con • i generatori stabilizzati e con × quelli anticommutanti con lo stabilizzatore."
+        }
+      }
+    ]
   },
   {
     "id": "p0070",
@@ -1564,7 +1720,20 @@
     "explanations": {
       "it-intermediate": "Questo metodo si applica a qualsiasi operatore di Pauli stabilizzato P̄+ con stato quantistico |ψ⟩ per cui si sa che P̄+|ψ⟩=|ψ⟩. Dalle trasformazioni covarianti nelle Eq. (12) e (13), applicate allo stabilizzatore in termini dei suoi generatori, si trova l'operatore di Pauli fisico P+=CP̄+C†. Questo operatore induce un'equivalenza nell'effetto logico di due operatori di Pauli commutanti qualsiasi per cui vale P1P2=P2P1=P+. Poi, dal tracking controvariante nelle etichette di flusso, si trova l'effetto logico di questi operatori di Pauli fisici come P̄=C†P1C=C†P2P+C, risultando in P1C|ψ⟩=P2C|ψ⟩=CP̄|ψ⟩. Di conseguenza, si può scegliere di applicare una rotazione logica di P̄ tramite la rotazione fisica di P1 oppure la rotazione fisica di P2. In aggiunta a fornire decomposizioni diverse [come nell'Eq. (5)] di una data unitaria scegliendo tra rotazioni di Pauli con lo stesso effetto logico, il tracking combinato rivela anche come eseguire più operazioni in parallelo, potenzialmente riducendo la profondità del circuito, come dimostrato in lavori precedenti.",
       "it-expert": "Generalizzazione formale del metodo: dato uno stabilizer generico P̄+ (P̄+|ψ⟩=|ψ⟩), si deriva P+=CP̄+C† (covariante) e poi si mostra P1C|ψ⟩=P2C|ψ⟩=CP̄|ψ⟩ per QUALSIASI coppia P1,P2 con P1P2=P+ — dimostra rigorosamente che due operazioni fisiche DIVERSE (P1 o P2) implementano la STESSA rotazione logica P̄, dando libertà di scelta nell'implementazione. Sintesi del vantaggio pratico: libertà di scelta (P1 vs P2) ⟹ libertà di PARALLELIZZAZIONE (se P1 e P2 agiscono su qubit disgiunti/commutanti, si può eseguire la rotazione logica scegliendo l'implementazione più comoda per il parallelismo) — chiude §IV collegandosi direttamente ai lavori applicativi del gruppo [33,46]."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come aiutano gli stabilizzatori a trovare modi diversi (e paralleli) di fare la stessa operazione logica?",
+          "it-expert": "Come si sfrutta uno stabilizzatore P̄⁺ per trovare implementazioni equivalenti?"
+        },
+        "a": {
+          "it-intermediate": "Se lo stato è stabilizzato da un operatore, due operatori fisici il cui prodotto è quello stabilizzatore hanno lo stesso effetto logico. Le etichette mostrano quali sono: si può scegliere l'implementazione più comoda, anche per eseguire più operazioni in parallelo e ridurre la profondità.",
+          "it-expert": "Con P̄⁺|ψ⟩ = |ψ⟩, la trasformazione covariante dà P⁺ = C P̄⁺ C†. Due Pauli commutanti con P₁P₂ = P⁺ sono logicamente equivalenti, e le label contravarianti ne leggono l'effetto: scelta dell'implementazione e parallelizzazione (depth ridotta)."
+        }
+      }
+    ]
   },
   {
     "id": "p0074",
@@ -5154,7 +5323,20 @@
     "explanations": {
       "it-intermediate": "Il prodotto simplettico di ϱ̃(P) e ϱ̃(Q) per due operatori di Pauli P̄,Q̄ conta esattamente il numero di fattori a singolo-qubit anticommutanti tra P̄ e Q̄; quindi si ha P̄Q̄=(−1)^ν Q̄P̄ se e solo se...",
       "it-expert": "Risultato chiave: ω(ϱ̃(P̄),ϱ̃(Q̄)) = parità del numero di anticommutazioni locali = ν, e P̄Q̄=(−1)^ν Q̄P̄ — il prodotto simplettico DECIDE algebricamente se due Pauli commutano (ω=0) o anticommutano (ω=1), collegando la Proprietà (1) a una formula chiusa."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come si capisce dalla forma vettoriale se due operatori di Pauli commutano?",
+          "it-expert": "Enuncia il criterio di commutazione tramite il prodotto simplettico."
+        },
+        "a": {
+          "it-intermediate": "Con il prodotto simplettico: conta quante volte, qubit per qubit, una X dell'uno incontra una Z dell'altro. Se il conteggio è pari commutano, se è dispari anticommutano.",
+          "it-expert": "P̄Q̄ = (−1)^ν Q̄P̄ ⟺ ω(ρ̃(P̄), ρ̃(Q̄)) = ν, con ω(ξ₁|ζ₁, ξ₂|ζ₂) = ξ₁ζ₂ᵀ ⊕ ζ₁ξ₂ᵀ."
+        }
+      }
+    ]
   },
   {
     "id": "p0202",
@@ -8104,7 +8286,20 @@
     "explanations": {
       "it-intermediate": "Corollario B4: per un'unitaria Clifford arbitraria C, il tableau di flusso dell'inverso C† è F(C†)=T(C), e il suo tableau di Clifford è T(C†)=F(C) — cioè invertire il circuito scambia semplicemente i due tipi di tableau tra loro.",
       "it-expert": "Cor. B4: F(C†)=T(C), T(C†)=F(C) — dualità pulita tra i due tableau sotto inversione del circuito, risultato strutturale chiave."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Che relazione c'è tra il tableau di flusso e il tableau di Clifford?",
+          "it-expert": "Enuncia il Corollario B4 e la sua lettura rispetto alla letteratura."
+        },
+        "a": {
+          "it-intermediate": "Sono uno l'inverso dell'altro: il tableau di flusso di un circuito è il tableau di Clifford del circuito inverso. Per questo il tableau di flusso corrisponde al \"tableau di Clifford inverso\" già usato in letteratura.",
+          "it-expert": "F(C†) = T(C) e T(C†) = F(C): il flow tableau è l'inverse Clifford tableau di [29], e la distinzione serve a classificare le varianti co- e contravarianti (Rem. B14)."
+        }
+      }
+    ]
   },
   {
     "id": "p0311",
@@ -15166,7 +15361,20 @@
     "explanations": {
       "it-intermediate": "Poiché si sa che il tableau Clifford di un circuito è l'inverso del suo tableau di flusso, si potrebbe tracciare solo uno dei due e calcolare l'inverso ogni volta che serve, ma questo sarebbe costoso in tempo di esecuzione. Perciò...",
       "it-expert": "Motivazione ingegneristica: T(C) e F(C) sono l'uno l'inverso dell'altro (risultato di App. B), quindi in linea di principio basterebbe tracciarne uno solo — ma l'inversione a runtime è costosa, da cui la scelta di tracciare un oggetto combinato invece di invertire on-demand."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché serve un \"tableau di flusso combinato\"?",
+          "it-expert": "Quali alternative ha il combined flow tableau e perché è preferibile?"
+        },
+        "a": {
+          "it-intermediate": "Per avere entrambe le direzioni senza costi alti: invertire un tableau ogni volta sarebbe lento, tracciarne due costerebbe il doppio di memoria. Il tableau combinato aggiunge solo le fasi Clifford e dà entrambe le informazioni.",
+          "it-expert": "Alternative: tracciarne uno e invertirlo a richiesta (costo di runtime) o tracciare flow e Clifford tableau (memoria ×2). Il combined flow tableau aggiunge solo il vettore di fasi Clifford e dà entrambe le mappe, utile con stabilizzatori e ancille."
+        }
+      }
+    ]
   },
   {
     "id": "p0509",

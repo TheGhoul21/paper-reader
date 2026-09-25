@@ -33,7 +33,18 @@
     "sourceText": "Current quantum cloud infrastructures face resource inefficiencies: small algorithms under-utilize available QPU capacity [6–8], while large algorithms experience long queue times due to limited access to high-qubit devices [9]. To mitigate this imbalance, researchers are exploring multiprogramming – concurrent execution of small quantum algorithms on a single QPU [6–8] – and Distributed Quantum Computing (DQC) techniques, such as circuit cutting, to execute large algorithms across multiple smaller NISQ (Noisy Intermediate-Scale Quantum) devices [10–18].",
     "explanations": {
       "it-beginner": "I data center quantistici di oggi sprecano risorse: gli algoritmi piccoli non sfruttano tutta la capacità del processore quantistico (QPU) disponibile, mentre quelli grandi aspettano in coda a lungo perché ci sono pochi dispositivi con abbastanza qubit. Per risolvere il problema si esplorano due strade: far girare più algoritmi piccoli insieme sullo stesso QPU, oppure \"spezzare\" un algoritmo grande e farlo girare su più dispositivi piccoli collegati (calcolo quantistico distribuito)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Quali sono le due strade per usare meglio i processori quantistici nel cloud, e quale sceglie il paper?"
+        },
+        "a": {
+          "it-beginner": "Far girare più algoritmi piccoli insieme sullo stesso processore (multiprogrammazione), oppure spezzare un algoritmo grande su più processori (calcolo distribuito). Il paper lavora sulla seconda, tagliando i circuiti in pezzi."
+        }
+      }
+    ]
   },
   {
     "id": "p0008",
@@ -69,7 +80,18 @@
     "sourceText": "Existing circuit cutting methods often lead to high reconstruction and classical post-processing overheads. Also, variations in qubit quality, connectivity, and error rates across devices coupled with dispatch of sub-circuits to suboptimal QPUs can drastically affect quantum fidelity, utility, qubit idle time and overall Makespan [6–8]. Current approaches thus face three critical challenges: 1. Cut determination and partition quality, 2. Device spatial heterogeneity and noise, and 3. Resource contention and scheduling inefficiency. Addressing these challenges requires a framework that jointly considers application structure, hardware characteristics, and scheduling constraints when executing circuits in a distributed quantum environment.",
     "explanations": {
       "it-beginner": "I metodi attuali per tagliare i circuiti comportano costi alti di ricostruzione ed elaborazione classica. Inoltre dispositivi diversi hanno qubit di qualità diversa, connessioni diverse e tassi di errore diversi: se un pezzo di circuito finisce sul dispositivo sbagliato, la qualità del risultato, l'utilità e i tempi peggiorano. I tre problemi principali: 1) come decidere dove tagliare e quanto è buona la suddivisione, 2) le differenze tra dispositivi e il loro rumore, 3) l'inefficienza nel decidere chi esegue cosa e quando."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Quali problemi hanno i metodi attuali di taglio dei circuiti?"
+        },
+        "a": {
+          "it-beginner": "Costano molto nel ricomporre i risultati con il computer classico, e se un pezzo finisce sul processore sbagliato (qubit peggiori, collegamenti diversi, più rumore) la qualità del risultato e i tempi peggiorano."
+        }
+      }
+    ]
   },
   {
     "id": "p0013",
@@ -122,7 +144,18 @@
     "sourceText": "●Characterization of pair-wise qubit interactions within quantum circuit structures for informed partitioning decisions. ●Structure-aware sub-circuit reuse via sub-circuit isomorphism analysis, which eliminates redundant executions post-cutting, thereby reducing classical post-processing overhead and improving Makespan and throughput. ●Joint scheduling scheme integrating circuit characteristics, sub-circuit properties, device capabilities, and execution fidelity to optimize execution schedules across heterogeneous NISQ resources.",
     "explanations": {
       "it-beginner": "I tre contributi principali: 1) un modo per capire come interagiscono le coppie di qubit in un circuito, utile per decidere dove tagliarlo; 2) il riconoscimento di sotto-circuiti strutturalmente identici (isomorfi) per evitare di rieseguire più volte la stessa cosa, risparmiando tempo di calcolo; 3) un sistema di pianificazione che tiene conto insieme di circuito, sotto-circuiti, capacità dei dispositivi e affidabilità dell'esecuzione."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Quali sono i tre contributi principali di DAScut?"
+        },
+        "a": {
+          "it-beginner": "1) Studiare come interagiscono le coppie di qubit per decidere dove tagliare; 2) riconoscere i pezzi identici (isomorfi) ed eseguirli una volta sola; 3) pianificare insieme circuito, pezzi e caratteristiche dei processori per decidere cosa eseguire dove."
+        }
+      }
+    ]
   },
   {
     "id": "p0017",
@@ -212,7 +245,18 @@
     "sourceText": "Quantum circuit transpilation transforms an abstract, ideal circuit into an equivalent circuit compatible with a target device [20] (Fig. 1). Transpilation typically involves three steps: (1) Gate decomposition: all non-native gates are rewritten into the device's basis gate set. For superconducting devices with basis {rz, sx, x, cx}, arbitrary single-qubit unitaries are synthesized using Euler decompositions, while multi-qubit gates are expressed as compositions of cx and single-qubit rotations. (2) Qubit mapping: logical qubits are assigned to physical qubits with the goal of minimizing error accumulation; and (3) Routing: when two-qubit gates operate on non-adjacent qubits in the device coupling graph G = (V, E), the compiler must insert SWAP operations to establish connectivity. Each SWAP gate, typically decomposed into three cx gates, increases circuit depth and error accumulation (Fig. 1c).",
     "explanations": {
       "it-beginner": "La \"transpilazione\" trasforma un circuito ideale in uno equivalente compatibile col dispositivo scelto, in tre passi: 1) si riscrivono le operazioni non native usando quelle disponibili; 2) si assegnano i qubit logici del circuito ai qubit fisici cercando di minimizzare gli errori; 3) quando due qubit devono interagire ma non sono fisicamente collegati, si inseriscono operazioni SWAP per \"avvicinarli\" — ma ogni SWAP (che vale tre operazioni CX) allunga il circuito e aggiunge errore."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Quali sono i tre passi della transpilazione, e perché possono peggiorare il risultato?"
+        },
+        "a": {
+          "it-beginner": "Riscrivere le operazioni con quelle native del chip, scegliere quali qubit fisici usare, e aggiungere SWAP dove i qubit non sono collegati. Ogni passo può allungare il circuito e quindi aggiungere errori, soprattutto su chip poco connessi."
+        }
+      }
+    ]
   },
   {
     "id": "p0023",
@@ -248,7 +292,18 @@
     "sourceText": "Quantum fidelity quantifies how closely a noisy quantum computation approximates its ideal execution. Distribution-based fidelity metrics compare measurement outcome probabilities between ideal (noiseless) and noisy executions. A widely used metric is the Hellinger fidelity [7, 21] in Equation 1:",
     "explanations": {
       "it-beginner": "La \"fedeltà\" quantistica misura quanto un'esecuzione reale (rumorosa) somiglia a quella ideale (senza rumore), confrontando le probabilità dei risultati misurati nei due casi. Una misura comune è la \"fedeltà di Hellinger\" (Equazione 1)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Cosa misura la fedeltà di Hellinger?"
+        },
+        "a": {
+          "it-beginner": "Quanto i risultati di un'esecuzione reale (rumorosa) somigliano a quelli ideali, confrontando le probabilità di ogni risultato possibile. Vale 1 se sono identici."
+        }
+      }
+    ]
   },
   {
     "id": "p0025",
@@ -393,7 +448,18 @@
     "sourceText": "From Fig. 2 the following key observations are made: First, device errors dominate fidelity, with noise and error rates constituting the primary source of degradation. This is particularly observed in Effi_full circuit which is known for its large two-qubit operations. Algorithmic sensitivity also varies as highly entangled circuits such as QAOA, Effi_full, and Random experience greater fidelity loss compared to shallower or more structured circuits like BV. For instance though FakeAuckland and FakeMumbai have similar topologies and capacities(qubits = 27), fidelity for Effi_full (14 qubits) falls to 0.57 on FakeMumbai compared to 0.74 on FakeAuckland. These observations",
     "explanations": {
       "it-beginner": "Osservazioni principali: 1) il rumore del dispositivo è la causa principale di perdita di fedeltà, specialmente per il circuito 'Effi_full' che usa molte operazioni a due qubit; 2) circuiti molto 'intrecciati' (entangled) come QAOA, Effi_full e Random perdono più fedeltà di circuiti più semplici come BV; 3) anche con topologie e capacità simili (27 qubit), Effi_full ottiene fedeltà 0.57 su FakeMumbai contro 0.74 su FakeAuckland — conta quindi molto anche il dispositivo specifico, non solo il numero di qubit."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Cosa mostrano gli esperimenti di fedeltà sui tre dispositivi simulati?"
+        },
+        "a": {
+          "it-beginner": "Che il rumore del dispositivo è la causa principale di perdita di qualità, che i circuiti molto \"intrecciati\" (QAOA, Effi_full) ne perdono di più di quelli semplici (BV), e che anche dispositivi simili danno risultati diversi: conta scegliere bene dove eseguire."
+        }
+      }
+    ]
   },
   {
     "id": "p0032",
@@ -447,7 +513,18 @@
     "sourceText": "As an approach in DQC [10], Circuit cutting applies gate cuts or wire cuts to decompose a large circuit into smaller sub-circuits which are executed independently and then classically reconstructed. However, the method incurs (i) a sampling overhead that grows exponentially with the number and type of cuts of the chosen quasi-probability decomposition [12–15] and (ii) classical post-processing overhead from reconstructing sub-circuit observables [16–18] which ultimately impacts on execution time.",
     "explanations": {
       "it-beginner": "Il \"circuit cutting\" (taglio di circuiti) taglia un circuito grande in pezzi più piccoli che vengono eseguiti separatamente e poi ricombinati via calcolo classico. Il problema è che comporta: 1) un costo di campionamento che cresce esponenzialmente col numero e tipo di tagli usati, e 2) un costo di elaborazione classica per ricostruire i risultati, che allunga i tempi totali."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Quali sono i due costi del circuit cutting?"
+        },
+        "a": {
+          "it-beginner": "Il costo di campionamento, cioè quante esecuzioni in più servono, che cresce esponenzialmente con il numero e il tipo di tagli; e il costo di ricostruzione, cioè il calcolo classico per rimettere insieme i risultati, che allunga il tempo totale."
+        }
+      }
+    ]
   },
   {
     "id": "p0036",
@@ -555,7 +632,18 @@
     "sourceText": "●First, cuts decrease as circuit width increases. BV requires no cuts at width ≥8 qubits while Effi_full decreases from 98 cuts (width 2) to 56 (width 8) and 50 (width 10), though some widths yield suboptimal partitions. ●Secondly, the sampling overhead scales exponentially with entanglement: At width 2, overhead equals 5.31×10^5 (BV), 4.30×10^7 (Effi_circ), and 3.28×10^93 for Effi_full. Even at width 10, Effi_full remains at 5.15×10^47, rendering it impractical for sampling cost or cut-minimization strategies. ●Thirdly, reconstruction time correlates with cut count. For instance, BV reconstruction time drops from ∼378 s (width 2) to ∼0.15 s (width ≥8). Effi_circ shows similar trends while Effi_full remains in the multi-thousand-second range due to extreme sampling overhead. ●Fourthly, fidelity improves as cuts decrease. BV fidelity increases from 0.5765 →0.9993 (width 2 →5); Effi_circ fidelity reaches ≈1.0 by width 8. However, Effi_full fidelity remains 0 throughout due to high entanglement causing reconstructed circuits to diverge from the original. Takeaway: Circuit partitioning must be applied judiciously, as cut count rises sharply with decreasing device capacity and increasing global entanglement, driving total runtime exponentially.",
     "explanations": {
       "it-beginner": "Risultati principali: 1) i tagli necessari diminuiscono all'aumentare della larghezza disponibile (BV non ne richiede più da 8 qubit in su; Effi_full scende da 98 a 50-56 tagli); 2) il costo di campionamento cresce esponenzialmente con quanto è 'intrecciato' il circuito — per Effi_full resta impraticabile anche a larghezza 10; 3) il tempo di ricostruzione segue il numero di tagli: per BV scende da ~378 a ~0.15 secondi, mentre per Effi_full resta nell'ordine delle migliaia di secondi; 4) la fedeltà migliora con meno tagli, tranne per Effi_full che resta a fedeltà zero. Messaggio chiave: bisogna tagliare i circuiti con criterio, perché il numero di tagli necessari esplode rapidamente quando il dispositivo è piccolo o il circuito molto intrecciato."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "Come cambiano numero di tagli e costo di campionamento con la larghezza disponibile e con il tipo di circuito?"
+        },
+        "a": {
+          "it-beginner": "Più qubit sono disponibili, meno tagli servono (BV non ne ha più bisogno da 8 qubit in su). Il costo di campionamento esplode con l'entanglement: per Effi_full resta impraticabile anche a larghezza 10, mentre per BV è gestibile."
+        }
+      }
+    ]
   },
   {
     "id": "p0043",
@@ -573,7 +661,18 @@
     "sourceText": "Different quantum algorithms generate distinct interaction patterns or entanglement between qubits, which directly influence the cost of partitioning and reconstruction (Section 2.1). To visualize these structural differences, Fig. 4 shows the interaction graphs of representative sparse (BV) and dense circuits(Effi_full). The nodes represent",
     "explanations": {
       "it-beginner": "Algoritmi quantistici diversi producono schemi diversi di interazione (entanglement) tra i qubit, e questo influenza direttamente quanto costa tagliarli e poi ricostruirli. Per mostrare visivamente queste differenze, la Figura 4 disegna i 'grafi di interazione' di un circuito semplice (BV) e di uno denso (Effi_full): i nodi del grafo rappresentano i qubit."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-beginner": "A cosa serve il grafo di interazione di un circuito?"
+        },
+        "a": {
+          "it-beginner": "Mostra quali qubit fanno operazioni insieme (i punti sono qubit, le linee le interazioni). Un circuito sparso come BV ha poche linee e si taglia facilmente, uno denso come Effi_full ne ha tantissime: guardarlo aiuta a decidere dove tagliare."
+        }
+      }
+    ]
   },
   {
     "id": "p0044",

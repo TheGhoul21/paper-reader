@@ -105,7 +105,18 @@
     "section": "1. Introduction",
     "explanations": {
       "it-intermediate": "Come mostrato in Fig. 1a, il tempo di compilazione dei solver SOTA a ottimizzazione congiunta (es. Enola) cresce esponenzialmente, colpendo un timeout di 10⁴ secondi già a soli N=25 qubit — una latenza di ore incompatibile con un uso pratico. Gli approcci euristici (es. DasAtom), che potano lo spazio di ricerca per restare trattabili, soffrono invece un degrado di fedeltà severo: in Fig. 1b la fedeltà di DasAtom scende a 10⁻³⁷ a N=30 qubit, un risultato fisicamente inutilizzabile. Questo rivela il dilemma centrale: risolvere insieme interferenza geometrica statica e instradamento a tempo di compilazione impone un compromesso tra latenza eccessiva e perdita di fedeltà."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Qual è il problema di scalabilità dei compilatori attuali per atomi neutri mostrato in Fig. 1?"
+        },
+        "a": {
+          "it-intermediate": "I solver che ottimizzano tutto insieme (come Enola) hanno un tempo di compilazione che cresce esponenzialmente: già a 25 qubit raggiungono il limite di 10⁴ secondi, cioè ore di attesa, mentre le euristiche veloci perdono fedeltà."
+        }
+      }
+    ]
   },
   {
     "id": "p0013",
@@ -141,7 +152,18 @@
     "section": "1. Introduction",
     "explanations": {
       "it-intermediate": "Per superare questo limite strutturale di scalabilità, propongono ARGON: invece di ottimizzare congiuntamente fattibilità fisica ed evoluzione topologica durante la compilazione, ARGON isola la verifica spaziale statica dall'instradamento temporale, gestendo le due dimensioni indipendentemente per poi ricomporle in una soluzione eseguibile — realizzato in tre fasi complementari."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Qual è l'idea centrale di ARGON per superare questo limite?"
+        },
+        "a": {
+          "it-intermediate": "Separare (disaccoppiare) i vincoli spaziali, che dipendono solo dall'hardware, da quelli temporali, che dipendono dal circuito: i primi si risolvono una volta sola offline, i secondi vengono stimati da una rete neurale veloce invece che con una ricerca costosa."
+        }
+      }
+    ]
   },
   {
     "id": "p0015",
@@ -177,7 +199,18 @@
     "section": "1. Introduction",
     "explanations": {
       "it-intermediate": "Le tre fasi di ARGON: (1) Costruzione offline di una libreria di layout spaziali — le regole di interferenza hardware sono statiche e indipendenti dal circuito, quindi si precalcolano offline gli stage di Rydberg richiesti, filtrando strutturalmente la combinatorial explosion mentre si garantisce il parallelismo dei gate; (2) Posizionamento predittivo guidato da GNN — con i vincoli spaziali già risolti, una Graph Neural Network cattura sia la topologia hardware sia le dipendenze logiche future, fornendo previsione a lungo raggio con inferenza a tempo costante; (3) Instradamento parallelo euristico — un router leggero traduce i layout scelti in sequenze di trasporto AOD coordinate e senza collisioni, con risoluzione leggera dei deadlock."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quali sono le tre fasi di ARGON?"
+        },
+        "a": {
+          "it-intermediate": "1) Costruzione offline di una libreria di layout spaziali validi; 2) posizionamento predittivo guidato da una GNN, che sceglie il layout che darà meno problemi di movimento; 3) instradamento euristico parallelo, che traduce le scelte in movimenti AOD."
+        }
+      }
+    ]
   },
   {
     "id": "p0017",
@@ -327,7 +360,18 @@
     "section": "2.2 Spatiotemporal Scheduling Constraints",
     "explanations": {
       "it-intermediate": "La prima dimensione riguarda i vincoli spaziali statici, che fissano i limiti fisici del parallelismo a livello di istruzione (ILP) sul processore: abilitare l'entanglement a due qubit richiede che gli atomi coinvolti siano entro un raggio di interazione massimo (Rint). Inoltre, per sopprimere il crosstalk hardware durante l'esecuzione parallela, ogni gate attivo genera una zona di esclusione spaziale definita da un raggio di restrizione (Rr, tipicamente ≥Rint): in termini microarchitetturali queste zone agiscono come 'hazard' strutturali — una sovrapposizione tra zone di esclusione di gate concorrenti implica un conflitto di risorse, forzando lo scheduler a serializzarne l'esecuzione."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa limita il numero di porte a due qubit che si possono eseguire in parallelo?"
+        },
+        "a": {
+          "it-intermediate": "Ogni porta ha una zona di esclusione (raggio di restrizione Rr): se le zone di due porte si sovrappongono, i laser interferiscono e le porte non possono avvenire nello stesso momento. Inoltre i due atomi di una porta devono stare entro il raggio di interazione Rint."
+        }
+      }
+    ]
   },
   {
     "id": "p0024",
@@ -417,7 +461,18 @@
     "section": "2.2 Spatiotemporal Scheduling Constraints",
     "explanations": {
       "it-intermediate": "Oltre a massimizzare il parallelismo statico, il compilatore deve gestire vincoli cinematici dinamici che governano il trasporto fisico dei qubit: le trappole AOD seguono regole rigide di mobilità — gli atomi che condividono una riga o colonna AOD devono muoversi insieme, e righe/colonne attive non possono mai incrociarsi durante il transito (per evitare interferenza ottica e perdita di atomi). Questi limiti fisici si manifestano come 'hazard' di instradamento cinematico durante il movimento dei dati on-chip."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa sono i vincoli cinematici dell'AOD e perché complicano la compilazione?"
+        },
+        "a": {
+          "it-intermediate": "Le righe e colonne di trappole mobili dell'AOD non possono incrociarsi né sovrapporsi, quindi non tutti gli spostamenti voluti si possono fare insieme. Un posizionamento scelto senza guardare avanti può bloccare gli atomi in posizioni che creano conflitti nei passi successivi."
+        }
+      }
+    ]
   },
   {
     "id": "p0031",
@@ -543,7 +598,18 @@
     "section": "2.4 Architectural Insights for ARGON",
     "explanations": {
       "it-intermediate": "Per aggirare questo muro computazionale, framework euristici alternativi (es. DasAtom) adottano una politica di scheduling 'spatial-first' guidata da algoritmi esatti di isomorfismo di grafi. Efficace nel risolvere rapidamente i limiti spaziali statici su piccola scala, ma opera con un deficit critico di previsione topologica: valutando i posizionamenti spaziali in isolamento, senza integrare informazioni di instradamento temporale profonde o dipendenze dei gate successivi, queste politiche non riescono a sostenere..."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché gli approcci \"spatial-first\" come DasAtom perdono fedeltà sui circuiti grandi?"
+        },
+        "a": {
+          "it-intermediate": "Decidono il posizionamento layer per layer in modo miope: sono veloci e fanno pochi movimenti, ma costringono a eseguire molte porte in serie, aumentando gli stage di Rydberg, che sono una fonte di errore."
+        }
+      }
+    ]
   },
   {
     "id": "p0040",
@@ -615,7 +681,18 @@
     "section": "3. The ARGON Framework",
     "explanations": {
       "it-intermediate": "Poiché parametri come i raggi di interazione e restrizione sono proprietà fisiche fisse dell'hardware ottico, l'insieme teorico dei posizionamenti spaziali validi è del tutto indipendente dal circuito specifico eseguito. ARGON disaccoppia quindi rigidamente la risoluzione ILP spaziale offloadandola a una fase offline: precalcolando una libreria discreta di layout certificati a massima densità, elimina completamente l'overhead di verifica geometrica offline e garantisce matematicamente il massimo parallelismo dei gate — minimizzando gli stage di Rydberg soggetti a errore e assicurando il primo pilastro della fedeltà fisica."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché i layout spaziali si possono precalcolare una volta sola?"
+        },
+        "a": {
+          "it-intermediate": "Perché dipendono solo da parametri fisici fissi dell'hardware (raggi di interazione e di restrizione), non dal circuito: l'insieme dei posizionamenti validi è lo stesso per qualunque algoritmo."
+        }
+      }
+    ]
   },
   {
     "id": "p0045",
@@ -711,7 +788,18 @@
     "section": "3.1 Offline Spatial Layout Library Construction",
     "explanations": {
       "it-intermediate": "Invece di navigare esplicitamente lo spazio geometrico continuo a tempo di compilazione, mappano l'interferenza geometrica su un problema di Massimo Insieme Indipendente (MIS): definiscono l'insieme di tutte le coppie di gate fisicamente eseguibili G_valid = {(u,v)∈V×V | 0<‖u−v‖₂≤Rint}, e costruiscono un grafo di conflitto con un arco tra due gate se le loro coordinate spaziali violano il raggio di restrizione (distanza minima tra i loro atomi < Rr)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come viene formulato il problema di trovare il layout con più porte parallele?"
+        },
+        "a": {
+          "it-intermediate": "Come un Massimo Insieme Indipendente: ogni porta possibile è un nodo, due nodi sono collegati se le porte sono in conflitto, e si cerca il massimo numero di porte senza conflitti. Lo risolve offline un solver esatto (SMT)."
+        }
+      }
+    ]
   },
   {
     "id": "p0050",
@@ -951,7 +1039,18 @@
     "section": "3.2 GNN-Guided Predictive Placement",
     "explanations": {
       "it-intermediate": "Perché una GNN e non euristiche di ricerca tradizionali: (1) le GNN codificano nativamente sia la geometria fisica dell'array sia la topologia logica evolutiva, dando la consapevolezza strutturale necessaria per previsioni di instradamento a lungo raggio; (2) il modello end-to-end sposta l'overhead computazionale della valutazione di topologie di instradamento profonde interamente nella fase offline di costruzione del dataset (continua a pagina successiva)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché usare una GNN invece di euristiche di ricerca tradizionali per scegliere il layout?"
+        },
+        "a": {
+          "it-intermediate": "Perché una GNN lavora direttamente sui grafi e rappresenta insieme la geometria dell'array e le interazioni del circuito, anche future; e perché, una volta addestrata, valutare un layout costa un solo passaggio della rete, a tempo costante."
+        }
+      }
+    ]
   },
   {
     "id": "p0063",
@@ -1161,7 +1260,18 @@
     "section": "3.2 GNN-Guided Predictive Placement",
     "explanations": {
       "it-intermediate": "Il sum-pooling è scelto deliberatamente perché le penalità di instradamento microarchitetturale (distanze di transito cumulative, ritardi di traiettoria localizzati) sono per natura additive attraverso il processore."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Perché la GNN combina gli stati dei nodi con una somma (sum-pooling)?"
+        },
+        "a": {
+          "it-intermediate": "Perché i costi che deve predire, come le distanze percorse dagli atomi e i ritardi, sono additivi su tutto il processore."
+        }
+      }
+    ]
   },
   {
     "id": "p0069",
@@ -1310,7 +1420,18 @@
     "section": "3.2.2 Offline Rollout Training",
     "explanations": {
       "it-intermediate": "Per generare segnali di supervisione ad alta fedeltà senza ricerca esaustiva, usano una strategia di rollout spaziotemporale computazionalmente intensiva: per un dato layer di circuito L_t e un layout candidato, il simulatore istanzia lo stato fisico S_t e calcola il costo di transizione immediato c_local(S_t) (penalizzando le distanze di transito AOD massime e le violazioni di movimento). Il simulatore esegue poi un rollout euristico deterministico su una finestra di lookahead di K layer, confrontando ad ogni passo lo spazio dei layout template successivi validi e selezionando quello che minimizza l'overhead immediato, per ottenere una traiettoria simulata altamente ottimizzata."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Come vengono prodotti i dati per addestrare la GNN?"
+        },
+        "a": {
+          "it-intermediate": "Con un rollout: per un layer e un layout candidato si simula davvero, in modo lento, il routing dei passi successivi e se ne misura il costo. Le coppie (situazione, costo reale) sono gli esempi con cui la rete impara a stimare il costo senza simulare."
+        }
+      }
+    ]
   },
   {
     "id": "p0077",
@@ -1454,7 +1575,18 @@
     "section": "3.3 Heuristic Parallel Routing",
     "explanations": {
       "it-intermediate": "Primo: il router rileva e risolve i deadlock cinematici causati da dipendenze cicliche. Quando incontra un ciclo, un qubit della catena viene temporaneamente assegnato a una posizione di parcheggio intermedia, convertendo la dipendenza ciclica in movimenti aciclici — rompendo il deadlock con un piccolo costo di movimento aggiuntivo, evitando un ri-instradamento globale costoso. Vengono inoltre generati percorsi di evasione sicuri per i qubit inattivi, per evitare interferenze con i movimenti AOD attivi."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Cosa fa il router finale con i deadlock e con i movimenti compatibili?"
+        },
+        "a": {
+          "it-intermediate": "Rompe i cicli di atomi che si bloccano a vicenda parcheggiando temporaneamente uno di loro in una posizione intermedia; poi raggruppa i movimenti compatibili in passi paralleli colorando un grafo dei conflitti tra traiettorie."
+        }
+      }
+    ]
   },
   {
     "id": "p0083",
@@ -1604,7 +1736,18 @@
     "section": "4.1 Experimental settings",
     "explanations": {
       "it-intermediate": "Equazione (7): il modello di fedeltà fisica complessiva F combina, come prodotto, la fedeltà dei gate a due qubit e delle eccitazioni idle ('Gate & Idle Penalty'), la fedeltà del trasferimento degli atomi ('Transfer Penalty') e un fattore di decadimento esponenziale della coerenza trasversale ('Decoherence Limit', F_dec) legato al tempo totale di parete T_q di ciascun qubit lungo l'intero schedule (periodi di inattività, trasporto attivo, esecuzione dei gate)."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quali fattori entrano nel modello di fedeltà usato per valutare i compilatori?"
+        },
+        "a": {
+          "it-intermediate": "Le fedeltà delle porte a due qubit, il disturbo sugli atomi inattivi a ogni stage di Rydberg, i trasferimenti tra trappole e la decoerenza dovuta al tempo totale di ogni qubit."
+        }
+      }
+    ]
   },
   {
     "id": "p0087",
@@ -1760,7 +1903,18 @@
     "section": "4.2 Compilation System-Level Performance",
     "explanations": {
       "it-intermediate": "Efficienza e scalabilità della compilazione: ARGON ottiene un tempo medio di esecuzione di 0.68 secondi, completando tutti i task entro 10 secondi, con latenza sub-secondo su W-state, 3-regular e QASMBench. Su circuiti più densi (Random gates, Quantum Volume) mantiene efficienza, con speedup medio oltre 600× rispetto alle baseline. DasAtom ed Enola scattano frequentemente il timeout di 10⁴ secondi su questi carichi densi; PowerMove evita i timeout ma la sua latenza su Random/QV di grandi dimensioni si avvicina ai 2000 secondi. Questo conferma la motivazione centrale: la compilazione scalabile richiede di disaccoppiare strutturalmente il parallelismo spaziale statico dall'instradamento."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Quanto è veloce ARGON rispetto agli altri compilatori?"
+        },
+        "a": {
+          "it-intermediate": "Tempo medio di 0.68 secondi, tutti i task entro 10 secondi, con latenza sotto il secondo su W-state, 3-regular e QASMBench; i baseline richiedono da decine a migliaia di secondi, o vanno in timeout."
+        }
+      }
+    ]
   },
   {
     "id": "p0097",
@@ -1826,7 +1980,18 @@
     "section": "4.2 Compilation System-Level Performance",
     "explanations": {
       "it-intermediate": "Riduzione degli stage di Rydberg e fedeltà: ARGON mantiene una fedeltà elevata al crescere della scala. In Fig. 7, ottiene un miglioramento di fedeltà di circa due ordini di grandezza sui baseline nel circuito W-state a 50 qubit; su Random gates a 25 qubit, oltre 8 ordini di grandezza rispetto a PowerMove e oltre 10 rispetto a Enola/DasAtom. Su QASMBench, fedeltà media 0.575 contro 0.559 (PowerMove), 0.562 (DasAtom), 0.568 (Enola). Su QV, ARGON supera costantemente DasAtom ed Enola; per un piccolo sottoinsieme di circuiti QV più grandi dove PowerMove mostra fedeltà maggiore, la discrepanza deriva da assunzioni microarchitetturali diverse — PowerMove non impone un limite superiore rigido al parallelismo spaziale hardware, mentre ARGON applica vincoli hardware fisici realistici."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "Da dove viene il miglioramento di fedeltà di ARGON?"
+        },
+        "a": {
+          "it-intermediate": "Dalla riduzione degli stage di Rydberg: i layout precalcolati massimizzano le porte parallele, quindi servono meno stage e gli atomi inattivi vengono disturbati meno. Il guadagno è di circa due ordini di grandezza sul W-state a 50 qubit, e sui Random gates a 25 qubit di oltre 8 ordini contro PowerMove e oltre 10 contro Enola e DasAtom. Su QASMBench, circuiti reali più piccoli, il vantaggio è modesto (0.575 contro 0.559–0.568)."
+        }
+      }
+    ]
   },
   {
     "id": "p0100",
@@ -2060,7 +2225,18 @@
     "section": "4.5 Compilation Ablation and Generalization Study",
     "explanations": {
       "it-intermediate": "Per valutare la robustezza strutturale su dimensioni hardware diverse, distribuiscono il modello predittivo — addestrato esclusivamente su un array 16×16 — direttamente su topologie più grandi 20×20 e 28×28. In Fig. 11, il modello pre-addestrato supera costantemente la baseline a selezione casuale su tutte le scale hardware espanse, con un divario di fedeltà che si allarga visibilmente al crescere della dimensione del circuito — confermando l'efficacia sostenuta della politica di instradamento predittivo anche sotto vincoli topologici estesi."
-    }
+    },
+    "recall": [
+      {
+        "id": "r1",
+        "q": {
+          "it-intermediate": "La GNN addestrata su un array 16×16 funziona su array più grandi?"
+        },
+        "a": {
+          "it-intermediate": "Sì: applicata senza riaddestramento (zero-shot) a griglie 20×20 e 28×28 mantiene le prestazioni, perché i layout offline funzionano come primitive valide a ogni scala."
+        }
+      }
+    ]
   },
   {
     "id": "p0116",
