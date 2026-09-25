@@ -13,6 +13,8 @@ interface Props {
   onActivate: (paragraph: Paragraph) => void;
   onHover: (id: string | null) => void;
   onJumpToPage: (page: number) => void;
+  /** Narrow screens: the pane is a bottom sheet that collapses to a bar. */
+  sheet?: { expanded: boolean; onToggle: () => void };
 }
 
 /**
@@ -21,7 +23,7 @@ interface Props {
  * click-to-reveal and the connector line, not by scroll position).
  */
 const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
-  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, onActivate, onHover, onJumpToPage },
+  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, onActivate, onHover, onJumpToPage, sheet },
   ref,
 ) {
   const pages = useMemo(() => {
@@ -35,7 +37,24 @@ const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
   }, [paragraphs]);
 
   return (
-    <aside ref={ref} className="notes-pane" aria-label="Commenti">
+    <aside
+      ref={ref}
+      className={`notes-pane${sheet ? " is-sheet" : ""}${sheet && !sheet.expanded ? " is-collapsed" : ""}`}
+      aria-label="Commenti"
+    >
+      {sheet && (
+        <button className="notes-sheet-bar" onClick={sheet.onToggle} aria-expanded={sheet.expanded}>
+          <span className="notes-sheet-handle" />
+          <span>
+            {sheet.expanded
+              ? "Commenti"
+              : activeId
+                ? `Commento ${numbers.get(activeId)} · tocca per aprire`
+                : "Commenti · tocca un paragrafo del PDF"}
+          </span>
+          <span className="notes-sheet-chevron">{sheet.expanded ? "▾" : "▴"}</span>
+        </button>
+      )}
       {pages.map(([page, list]) => (
         <section key={page} className="notes-page">
           <button className="notes-page-label" onClick={() => onJumpToPage(page + 1)}>

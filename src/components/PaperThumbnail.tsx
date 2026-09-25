@@ -7,7 +7,8 @@ interface Props {
   label: string;
 }
 
-const TARGET_WIDTH = 220;
+// Render width in CSS px; the canvas is then fitted to its card by CSS (object-fit: contain).
+const TARGET_WIDTH = 320;
 
 /** Renders the PDF's first page as a small cover image, loaded lazily and only once in view. */
 export default function PaperThumbnail({ pdfUrl, label }: Props) {
@@ -45,8 +46,6 @@ export default function PaperThumbnail({ pdfUrl, label }: Props) {
         const viewport = page.getViewport({ scale });
         canvas.width = Math.floor(viewport.width * outputScale);
         canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = `${viewport.width}px`;
-        canvas.style.height = `${viewport.height}px`;
         const context = canvas.getContext("2d");
         if (!context) return null;
         return page.render({

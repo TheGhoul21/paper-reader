@@ -96,7 +96,7 @@ export default function Toolbar({
       <Link to="/" className="toolbar-icon-btn toolbar-home" aria-label="Torna alla libreria" title="Torna alla libreria">
         <LibraryIcon />
       </Link>
-      <div className="toolbar-title" title={authors.length ? `${title} — ${authors.join(", ")}` : title}>
+      <div className="toolbar-title toolbar-optional" title={authors.length ? `${title} — ${authors.join(", ")}` : title}>
         {title}
       </div>
 
@@ -123,9 +123,9 @@ export default function Toolbar({
             </button>
           </div>
 
-          <div className="toolbar-sep" />
+          <div className="toolbar-sep toolbar-optional" />
 
-          <div className="toolbar-cluster">
+          <div className="toolbar-cluster toolbar-optional">
             <button className="toolbar-icon-btn" onClick={() => onZoom(-0.1)} aria-label="Riduci zoom">
               <MinusIcon />
             </button>
@@ -135,11 +135,11 @@ export default function Toolbar({
             </button>
           </div>
 
-          <div className="toolbar-sep" />
+          <div className="toolbar-sep toolbar-optional" />
 
           <div className="toolbar-cluster">
             <button
-              className={`toolbar-icon-btn${fitMode === "width" ? " is-active" : ""}`}
+              className={`toolbar-icon-btn toolbar-optional${fitMode === "width" ? " is-active" : ""}`}
               onClick={() => onFit(fitMode === "width" ? "none" : "width")}
               aria-label="Adatta larghezza"
               title="Adatta larghezza"
@@ -147,7 +147,7 @@ export default function Toolbar({
               <FitWidthIcon />
             </button>
             <button
-              className={`toolbar-icon-btn${fitMode === "page" ? " is-active" : ""}`}
+              className={`toolbar-icon-btn toolbar-optional${fitMode === "page" ? " is-active" : ""}`}
               onClick={() => onFit(fitMode === "page" ? "none" : "page")}
               aria-label="Adatta pagina"
               title="Adatta pagina"
@@ -190,7 +190,7 @@ export default function Toolbar({
       )}
 
       <div className="toolbar-right">
-        <div className="toolbar-cluster">
+        <div className="toolbar-cluster toolbar-optional">
           {(["none", "text", "draw", "erase"] as const).map((t) => (
             <button
               key={t}
@@ -220,7 +220,7 @@ export default function Toolbar({
           )}
         </div>
 
-        <div className="toolbar-sep" />
+        <div className="toolbar-sep toolbar-optional" />
 
         <button
           className={`toolbar-icon-btn${notesOpen ? " is-active" : ""}`}
@@ -241,7 +241,7 @@ export default function Toolbar({
           </select>
         </label>
 
-        <a className="toolbar-icon-btn" href={pdfUrl} download aria-label="Scarica PDF" title="Scarica PDF">
+        <a className="toolbar-icon-btn toolbar-optional" href={pdfUrl} download aria-label="Scarica PDF" title="Scarica PDF">
           <DownloadIcon />
         </a>
       </div>

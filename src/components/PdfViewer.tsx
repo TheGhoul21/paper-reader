@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import { pdfjsLib } from "../lib/pdfjs";
 import { findMatches, highlightMatchInDom, type SearchMatch } from "../lib/search";
+import { useNarrow } from "../lib/useNarrow";
 import PageCanvas from "./PageCanvas";
 import NotesPane from "./NotesPane";
 import NoteConnector from "./NoteConnector";
@@ -45,10 +46,14 @@ export default function PdfViewer({
   const [error, setError] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hoverId, setHoverId] = useState<string | null>(null);
-  const [notesOpen, setNotesOpen] = useState(true);
+  const narrow = useNarrow();
+  // Desktop: the comments column is shown or hidden. Narrow screens: it's a bottom sheet,
+  // always present, and this says whether it's expanded (it starts collapsed to a bar).
+  const [notesOpen, setNotesOpen] = useState(!narrow);
   const [citation, setCitation] = useState<{ text: string; pageNumber: number; anchor: { x: number; y: number } } | null>(null);
   const [scale, setScale] = useState(DEFAULT_SCALE);
-  const [fitMode, setFitMode] = useState<FitMode>("none");
+  // A phone can't show a page at 100% — start fitted to the width there.
+  const [fitMode, setFitMode] = useState<FitMode>(narrow ? "width" : "none");
   const [nativeSize, setNativeSize] = useState<{ width: number; height: number } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [tool, setTool] = useState<AnnotationTool>("none");
@@ -90,7 +95,8 @@ export default function PdfViewer({
     if (fitMode === "none" || !nativeSize) return;
     function apply() {
       if (!nativeSize) return;
-      const containerWidth = (pdfPane?.clientWidth ?? window.innerWidth) - 32; // minus the pane's side padding
+      const padding = pdfPane ? parseFloat(getComputedStyle(pdfPane).paddingLeft) * 2 : 32;
+      const containerWidth = (pdfPane?.clientWidth ?? window.innerWidth) - padding;
       if (fitMode === "width") {
         setScale(containerWidth / nativeSize.width);
       } else {
@@ -308,7 +314,7 @@ export default function PdfViewer({
             />
           ))}
         </div>
-        {notesOpen && (
+        {(notesOpen || narrow) && (
           <NotesPane
             ref={setNotesPane}
             paperTitle={title}
@@ -321,13 +327,14 @@ export default function PdfViewer({
             onActivate={handleActivateNote}
             onHover={setHoverId}
             onJumpToPage={handleJumpToPage}
+            sheet={narrow ? { expanded: notesOpen, onToggle: () => setNotesOpen((o) => !o) } : undefined}
           />
         )}
       </div>
-      {notesOpen && connectorParagraphs.hover && (
+      {notesOpen && !narrow && connectorParagraphs.hover && (
         <NoteConnector paragraph={connectorParagraphs.hover} pdfPane={pdfPane} notesPane={notesPane} variant="hover" />
       )}
-      {notesOpen && connectorParagraphs.active && (
+      {notesOpen && !narrow && connectorParagraphs.active && (
         <NoteConnector paragraph={connectorParagraphs.active} pdfPane={pdfPane} notesPane={notesPane} variant="active" />
       )}
       {citation && (
