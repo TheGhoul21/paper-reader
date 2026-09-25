@@ -87,6 +87,49 @@ Assemble the final `papers/<slug>/paragraphs.json`: array of
 ```
 `section` comes pre-filled from the extraction (nearest preceding heading) — fix it where a heading was misdetected, and drop the `kind` field (it's scratch info, not part of `paragraphs.json`).
 
+## 4b. Write the glossary (`concepts.json`)
+
+With the whole paper still in context, write `papers/<slug>/concepts.json`: the 15–30 terms, symbols and acronyms a reader at the requested level(s) would stumble on and need again later. The reader underlines the first mention of each concept in every explanation; clicking it shows the definition, related concepts, the same concept in other papers of the library, a jump to the paragraph that introduces it, and a button that highlights every occurrence in the PDF.
+
+```json
+[
+  {
+    "id": "phase-gadget",
+    "term": "phase gadget",
+    "aliases": ["phase gadgets", "Z-phase gadget"],
+    "pdfTerms": ["phase gadget", "phase gadgets", "Z-phase gadget"],
+    "kind": "term",
+    "definedIn": "p0029",
+    "definitions": { "it-intermediate": "...", "it-expert": "..." },
+    "related": ["pauli-gadget", "zx-calculus"]
+  }
+]
+```
+
+- **Pick what the paper relies on**, not every noun: its own constructions (defined terms, named lemmas' objects), notation it reuses (`∧X`, `P(α,s)`), and field vocabulary the target level may not know. Skip generic words ("circuito", "qubit" for an intermediate reader) — too many underlines make every note noisy.
+- **`term` and `aliases` are matched against the explanation text, not the PDF** — so they must be spelled the way *your explanations* spell them, in the explanation language: include plurals and inflections (`trotterizzato`, `trotterizzati`), the English form if explanations keep it (`zx-calculus` next to `calcolo ZX`), and common variants (`∧X-ladder`). Matching is case-insensitive and whole-word (a letter or digit right before/after blocks a match), longest spelling first. Avoid aliases that are ordinary words in the language (e.g. `passata`).
+- **`id` is shared across the library**: an English kebab-case name for the concept itself (`cz-gate`, `rydberg-blockade`, `zx-calculus`), not for this paper's spelling. Before inventing one, check `papers/concepts-index.json` — if another paper already defines the same concept, **reuse its id exactly**; that's what links the two papers in the reader ("Anche in: …"). Conversely, don't reuse an id for a different concept that happens to share a name (e.g. "qubit mapping" as fermion→qubit encoding vs. as layout placement get different ids).
+- **`pdfTerms`** are the spellings to highlight *in the PDF* (the paper's own language, usually English), used by "Evidenzia nel PDF". Same matching rules as `aliases`; a space also matches a line break, and a hyphenated line break can be written as `"mul- tiprogramming"`. Math and symbols often come out of pdf.js differently from how they look (e.g. `t|ket〉` with U+3009, `r4(M )` with a space) — find the real spelling with the checker's `--grep`. Keep them specific: `"fidelity"` alone would highlight every mention of the word, not the concept. If omitted, `term` + `aliases` are used, which rarely match an English PDF.
+- **`definedIn`** is the `id` of the paragraph where the paper introduces or first properly explains the concept (not just its first passing mention). It must exist in `paragraphs.json`.
+- **`definitions`** has one entry per variant, same keys as `explanations`, same level discipline: a definition *in this paper's sense* (its notation, its role in the argument), not a generic encyclopedia entry — that's what makes it better than asking a chatbot. 2–4 sentences.
+- **`related`** lists other concept ids from the same file (2–4, the ones a confused reader would want next).
+- `kind` is `term`, `symbol`, or `acronym` (informational for now).
+
+Then validate it with the checker, which uses the reader's own matching code and pdf.js text:
+
+```
+node --experimental-strip-types --no-warnings .claude/skills/import-paper/scripts/check_concepts.mjs <slug>
+node --experimental-strip-types --no-warnings .claude/skills/import-paper/scripts/check_concepts.mjs <slug> --grep '<regex>'   # find a term's PDF spelling
+```
+
+It must end with `OK`: every `definedIn`/`related` resolves, every variant has a definition, every concept is underlined in at least one note and found at least once in the PDF. Also skim the per-concept counts for the opposite problem — a concept underlined in most notes usually has an alias that's an ordinary word (drop it).
+
+Finally regenerate the library-wide index (the build also does this, but dev reads the committed file):
+
+```
+npm run concepts-index
+```
+
 ## 5. Write meta.json and update the library index
 
 `papers/<slug>/meta.json`:
@@ -119,7 +162,13 @@ Given a slug that already exists and a new (language, level) not yet in its `met
 3. Append the new variant to `meta.json`'s `variants` array. Leave `language`/`background` (the default/first variant) and everything else unchanged.
 4. Append the same new variant to this paper's entry in `papers/index.json` (its `variants` array must mirror `meta.json`'s) — everything else in that entry is unchanged.
 
+5. If the paper has a `concepts.json`, add the new variant's key to every concept's `definitions` too (same level discipline as step 4b), and add aliases in the new language if the variant is in a different language — otherwise terms won't be matched in the new explanations.
+
 This is the cheap path — never regenerate `rects`/`page`/`order`/`sourceText` when only adding a variant.
+
+## Adding a glossary to an already-imported paper
+
+Papers imported before step 4b existed have no `concepts.json` (the reader works fine without one — just no underlined terms). To add it: read `paragraphs.json` (`sourceText` for the paper's argument, `explanations` for the spellings to match), then write `concepts.json` as in step 4b, for every variant in `meta.json` — including the checker and `npm run concepts-index`. Nothing else changes — `meta.json`, `index.json` and `paragraphs.json` stay as they are.
 
 ## Do NOT
 

@@ -8,7 +8,8 @@
     "prebuild": "node scripts/sync-papers-data.mjs",
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/spa-fallback.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "concepts-index": "node scripts/build-concepts-index.mjs"
   },
   "dependencies": {
     "pdfjs-dist": "^4.7.76",

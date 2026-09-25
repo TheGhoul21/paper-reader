@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import PdfViewer from "../components/PdfViewer";
 import { useAnnotations } from "../lib/annotations";
 import { papersUrl } from "../lib/paths";
-import type { PaperMeta, Paragraph } from "../types";
+import type { Concept, ConceptsIndex, PaperMeta, Paragraph } from "../types";
 
 export default function Reader() {
   const { slug } = useParams<{ slug: string }>();
   const [meta, setMeta] = useState<PaperMeta | null>(null);
   const [paragraphs, setParagraphs] = useState<Paragraph[] | null>(null);
+  const [concepts, setConcepts] = useState<Concept[]>([]);
+  const [conceptsIndex, setConceptsIndex] = useState<ConceptsIndex>({});
+  const [searchParams] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [variant, setVariant] = useState<string | null>(null);
   const { annotations, addAnnotation, updateAnnotation, deleteAnnotation } = useAnnotations(slug ?? "");
@@ -17,6 +20,7 @@ export default function Reader() {
     if (!slug) return;
     setMeta(null);
     setParagraphs(null);
+    setConcepts([]);
     setError(null);
     setVariant(null);
     Promise.all([
@@ -28,10 +32,20 @@ export default function Reader() {
         if (!r.ok) throw new Error(`paragraphs.json: ${r.status}`);
         return r.json();
       }),
+      // Optional: papers imported before the glossary existed have no concepts.json (and the
+      // dev server answers a missing file with the SPA's index.html, hence the catch).
+      fetch(papersUrl(`${slug}/concepts.json`))
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => []),
+      fetch(papersUrl("concepts-index.json"))
+        .then((r) => (r.ok ? r.json() : {}))
+        .catch(() => ({})),
     ])
-      .then(([m, p]: [PaperMeta, Paragraph[]]) => {
+      .then(([m, p, c, ci]: [PaperMeta, Paragraph[], Concept[], ConceptsIndex]) => {
         setMeta(m);
         setParagraphs(p);
+        setConcepts(Array.isArray(c) ? c : []);
+        setConceptsIndex(ci && typeof ci === "object" && !Array.isArray(ci) ? ci : {});
         setVariant(m.variants[0]?.key ?? null);
       })
       .catch((err) => setError(String(err)));
@@ -47,6 +61,10 @@ export default function Reader() {
         authors={meta.authors}
         pdfUrl={papersUrl(`${slug}/source/paper.pdf`)}
         paragraphs={paragraphs}
+        concepts={concepts}
+        conceptsIndex={conceptsIndex}
+        slug={slug ?? ""}
+        initialParagraphId={searchParams.get("p")}
         variants={meta.variants}
         variant={variant}
         onVariantChange={setVariant}

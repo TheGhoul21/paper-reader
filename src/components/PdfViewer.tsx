@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import { pdfjsLib } from "../lib/pdfjs";
 import { findMatches, highlightMatchInDom, type SearchMatch } from "../lib/search";
@@ -7,14 +7,24 @@ import PageCanvas from "./PageCanvas";
 import NotesPane from "./NotesPane";
 import NoteConnector from "./NoteConnector";
 import CitationPopover from "./CitationPopover";
+import ConceptPopover from "./ConceptPopover";
+import ConceptHighlightBar from "./ConceptHighlightBar";
+import { buildConceptMatcher, pdfSpellings, spellingPattern } from "../lib/concepts";
+import { findOccurrences, markTextLayers, scrollToOccurrence, unmarkTextLayers, type Occurrence } from "../lib/conceptHighlight";
 import Toolbar, { type FitMode } from "./Toolbar";
-import type { Annotation, AnnotationTool, Paragraph, Variant } from "../types";
+import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, Variant } from "../types";
 
 interface Props {
   title: string;
   authors: string[];
   pdfUrl: string;
   paragraphs: Paragraph[];
+  concepts: Concept[];
+  /** Library-wide concept index, for "also in other papers" links. */
+  conceptsIndex: ConceptsIndex;
+  slug: string;
+  /** Paragraph to open on load (the reader's `?p=` link, e.g. from another paper's glossary). */
+  initialParagraphId: string | null;
   variants: Variant[];
   variant: string;
   onVariantChange: (key: string) => void;
@@ -34,6 +44,10 @@ export default function PdfViewer({
   authors,
   pdfUrl,
   paragraphs,
+  concepts,
+  conceptsIndex,
+  slug,
+  initialParagraphId,
   variants,
   variant,
   onVariantChange,
@@ -51,6 +65,11 @@ export default function PdfViewer({
   // always present, and this says whether it's expanded (it starts collapsed to a bar).
   const [notesOpen, setNotesOpen] = useState(!narrow);
   const [citation, setCitation] = useState<{ text: string; pageNumber: number; anchor: { x: number; y: number } } | null>(null);
+  const [openConcept, setOpenConcept] = useState<{ id: string; fromParagraphId: string | null; anchor: { x: number; y: number } } | null>(
+    null,
+  );
+  // The glossary concept currently highlighted in the PDF, with its occurrences (null while counting).
+  const [highlight, setHighlight] = useState<{ conceptId: string; occurrences: Occurrence[] | null; index: number } | null>(null);
   const [scale, setScale] = useState(DEFAULT_SCALE);
   // A phone can't show a page at 100% — start fitted to the width there.
   const [fitMode, setFitMode] = useState<FitMode>(narrow ? "width" : "none");
@@ -155,6 +174,53 @@ export default function PdfViewer({
     return { numbers, sectionStarts };
   }, [paragraphs]);
 
+  const conceptMatcher = useMemo(() => buildConceptMatcher(concepts), [concepts]);
+
+  const highlightConcept = highlight ? conceptMatcher.byId.get(highlight.conceptId) ?? null : null;
+  const highlightPattern = useMemo(() => (highlightConcept ? spellingPattern(pdfSpellings(highlightConcept)) : null), [highlightConcept]);
+
+  // Count the highlighted concept's occurrences over the whole document, then jump to the first.
+  useEffect(() => {
+    if (!doc || !highlightPattern) return;
+    let cancelled = false;
+    findOccurrences(doc, highlightPattern).then((occurrences) => {
+      if (cancelled) return;
+      setHighlight((h) => (h ? { ...h, occurrences, index: 0 } : h));
+      if (occurrences.length > 0) scrollToOccurrence(occurrences[0]);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [doc, highlightPattern]);
+
+  // Mark it in every text layer — including ones rendered later (lazy pages) or rebuilt (zoom).
+  useEffect(() => {
+    if (!pdfPane || !highlightPattern) return;
+    const pane = pdfPane;
+    let raf = 0;
+    const apply = () => markTextLayers(pane, highlightPattern);
+    apply();
+    // Marking is idempotent, so the mutations it causes itself settle after one extra pass.
+    const observer = new MutationObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(apply);
+    });
+    observer.observe(pane, { childList: true, subtree: true });
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(raf);
+      unmarkTextLayers(pane);
+    };
+  }, [pdfPane, highlightPattern]);
+
+  function goToOccurrence(delta: number) {
+    if (!highlight?.occurrences?.length) return;
+    const count = highlight.occurrences.length;
+    const index = (highlight.index + delta + count) % count;
+    setHighlight({ ...highlight, index });
+    scrollToOccurrence(highlight.occurrences[index]);
+  }
+
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") setActiveId(null);
@@ -187,6 +253,30 @@ export default function PdfViewer({
     if (top >= paneBox.top && bottom <= paneBox.bottom) return;
     pdfPane.scrollBy({ top: top - paneBox.top - paneBox.height * 0.25, behavior: "smooth" });
   }
+
+  // From the glossary: bring a paragraph into view in both panes and make it the active one.
+  function handleGoToParagraph(paragraph: Paragraph) {
+    setNotesOpen(true);
+    handleActivateNote(paragraph);
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        document.getElementById(`note-${paragraph.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }),
+      ),
+    );
+  }
+
+  // A `?p=` link: once page sizes are known, bring that paragraph up. The short delay lets every
+  // page placeholder take its real height first, so the scroll target doesn't move under us.
+  const initialJumpDone = useRef(false);
+  useEffect(() => {
+    if (!doc || !nativeSize || !initialParagraphId || initialJumpDone.current) return;
+    const paragraph = paragraphs.find((p) => p.id === initialParagraphId);
+    if (!paragraph) return;
+    initialJumpDone.current = true;
+    const timer = setTimeout(() => handleGoToParagraph(paragraph), 400);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [doc, nativeSize, initialParagraphId, paragraphs]);
 
   const annotationsByPage = useMemo(() => {
     const map = new Map<number, Annotation[]>();
@@ -288,6 +378,16 @@ export default function PdfViewer({
         onToggleNotes={() => setNotesOpen((o) => !o)}
       />
       <div className="reader-body">
+        {highlight && highlightConcept && (
+          <ConceptHighlightBar
+            term={highlightConcept.term}
+            count={highlight.occurrences?.length ?? null}
+            index={highlight.index}
+            onPrev={() => goToOccurrence(-1)}
+            onNext={() => goToOccurrence(1)}
+            onClose={() => setHighlight(null)}
+          />
+        )}
         <div className="pdf-viewer" ref={setPdfPane}>
           {Array.from({ length: doc.numPages }, (_, i) => i + 1).map((pageNumber) => (
             <PageCanvas
@@ -324,7 +424,12 @@ export default function PdfViewer({
             variant={variant}
             activeId={activeId}
             hoverId={hoverId}
+            conceptMatcher={conceptMatcher}
             onActivate={handleActivateNote}
+            onConcept={(id, fromParagraphId, anchor) => {
+              setCitation(null);
+              setOpenConcept({ id, fromParagraphId, anchor });
+            }}
             onHover={setHoverId}
             onJumpToPage={handleJumpToPage}
             sheet={narrow ? { expanded: notesOpen, onToggle: () => setNotesOpen((o) => !o) } : undefined}
@@ -346,6 +451,26 @@ export default function PdfViewer({
           onClose={() => setCitation(null)}
         />
       )}
+      {openConcept && conceptMatcher.byId.has(openConcept.id) && (() => {
+        const concept = conceptMatcher.byId.get(openConcept.id)!;
+        const definedIn = paragraphs.find((p) => p.id === concept.definedIn) ?? null;
+        return (
+          <ConceptPopover
+            concept={concept}
+            variant={variant}
+            definedIn={definedIn}
+            definedInNumber={definedIn ? numbers.get(definedIn.id) : undefined}
+            fromParagraphId={openConcept.fromParagraphId}
+            related={concept.related.flatMap((id) => conceptMatcher.byId.get(id) ?? [])}
+            elsewhere={(conceptsIndex[concept.id] ?? []).filter((e) => e.slug !== slug)}
+            anchor={openConcept.anchor}
+            onGoToParagraph={handleGoToParagraph}
+            onSelectConcept={(id) => setOpenConcept((c) => (c ? { ...c, id } : c))}
+            onHighlight={() => setHighlight({ conceptId: concept.id, occurrences: null, index: 0 })}
+            onClose={() => setOpenConcept(null)}
+          />
+        );
+      })()}
     </div>
   );
 }

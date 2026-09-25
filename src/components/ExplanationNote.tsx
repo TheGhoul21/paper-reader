@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { segmentText, type ConceptMatcher } from "../lib/concepts";
 import type { Paragraph } from "../types";
 import { ExternalLinkIcon } from "./icons";
 
@@ -10,8 +11,10 @@ interface Props {
   variant: string;
   active: boolean;
   highlighted: boolean;
+  conceptMatcher: ConceptMatcher;
   onActivate: () => void;
   onHover: (hovering: boolean) => void;
+  onConcept: (conceptId: string, clientPos: { x: number; y: number }) => void;
 }
 
 type AskTarget = "claude" | "chatgpt";
@@ -35,13 +38,16 @@ export default function ExplanationNote({
   variant,
   active,
   highlighted,
+  conceptMatcher,
   onActivate,
   onHover,
+  onConcept,
 }: Props) {
   const explanation = paragraph.explanations[variant];
   const fallbackKey = Object.keys(paragraph.explanations)[0];
   const shownExplanation = explanation ?? paragraph.explanations[fallbackKey];
   const [copied, setCopied] = useState<AskTarget | null>(null);
+  const segments = useMemo(() => segmentText(shownExplanation, conceptMatcher), [shownExplanation, conceptMatcher]);
 
   async function handleAsk(target: AskTarget) {
     const sectionLine = paragraph.section ? ` (sezione "${paragraph.section}")` : "";
@@ -83,7 +89,26 @@ export default function ExplanationNote({
           {!explanation && (
             <p className="explanation-fallback-note">Non disponibile in questa combinazione — mostrata quella predefinita.</p>
           )}
-          <p>{shownExplanation}</p>
+          <p>
+            {segments.map((seg, i) =>
+              typeof seg === "string" ? (
+                seg
+              ) : (
+                <button
+                  key={i}
+                  type="button"
+                  className="concept-term"
+                  onClick={(e) => {
+                    // Not onActivate: that scrolls the PDF pane, and the popover closes on scroll.
+                    e.stopPropagation();
+                    onConcept(seg.conceptId, { x: e.clientX, y: e.clientY + 12 });
+                  }}
+                >
+                  {seg.text}
+                </button>
+              ),
+            )}
+          </p>
           {paragraph.notebookSuggestion && <p className="explanation-notebook-hint">💡 {paragraph.notebookSuggestion}</p>}
         </div>
       </div>

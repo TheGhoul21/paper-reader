@@ -1,5 +1,6 @@
 import { forwardRef, useMemo } from "react";
 import ExplanationNote from "./ExplanationNote";
+import type { ConceptMatcher } from "../lib/concepts";
 import type { Paragraph } from "../types";
 
 interface Props {
@@ -10,7 +11,9 @@ interface Props {
   variant: string;
   activeId: string | null;
   hoverId: string | null;
+  conceptMatcher: ConceptMatcher;
   onActivate: (paragraph: Paragraph) => void;
+  onConcept: (conceptId: string, fromParagraphId: string, clientPos: { x: number; y: number }) => void;
   onHover: (id: string | null) => void;
   onJumpToPage: (page: number) => void;
   /** Narrow screens: the pane is a bottom sheet that collapses to a bar. */
@@ -23,7 +26,7 @@ interface Props {
  * click-to-reveal and the connector line, not by scroll position).
  */
 const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
-  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, onActivate, onHover, onJumpToPage, sheet },
+  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, onActivate, onConcept, onHover, onJumpToPage, sheet },
   ref,
 ) {
   const pages = useMemo(() => {
@@ -70,7 +73,9 @@ const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
               variant={variant}
               active={p.id === activeId}
               highlighted={p.id === hoverId}
+              conceptMatcher={conceptMatcher}
               onActivate={() => onActivate(p)}
+              onConcept={(conceptId, pos) => onConcept(conceptId, p.id, pos)}
               onHover={(h) => onHover(h ? p.id : null)}
             />
           ))}
