@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Come funzionano le richieste di paper
+    url: https://github.com/TheGhoul21/paper-reader/blob/main/docs/paper-requests.md
+    about: Il protocollo completo — cosa succede dopo la richiesta, licenze, tempi.

@@ -201,6 +201,21 @@ For an already-imported paper, write it on its own from `paragraphs.json` (whole
 
 Then update `papers/index.json` (array of `{slug, title, authors, importedAt, language, background, pageCount, variants}`, mirroring the corresponding fields from `meta.json`) — append a new entry, or replace the existing one if this slug was already there (re-import). The library homepage reads `pageCount`/`variants` straight off this file, so keep them byte-for-byte in sync with `meta.json`.
 
+## Importing from a GitHub issue (paper requests)
+
+Readers request papers through GitHub issues (form `.github/ISSUE_TEMPLATE/paper-request.yml`, label `paper-request`; the reader's citation popover opens it prefilled). The protocol for requesters is `docs/paper-requests.md`; this is the importer's side.
+
+1. **Read it**: `gh issue view <N>` (list open ones with `gh issue list --label paper-request`). The form gives *Riferimento* (required), *Link*, *Livello*, *Lingua*, *Citato in*. Level and language are the interview answers of step 1 — don't ask again.
+2. **Identify the paper**:
+   ```
+   uv run .claude/skills/import-paper/scripts/find_paper.py "<link, or the reference text>"
+   ```
+   It tries an arXiv id/URL in the text, then a DOI, then an arXiv title search (quoted title, or the text after "Authors (Year):"), and prints candidates with a title-similarity score, the arXiv licence, and whether the paper is already in the library. Below 0.8, confirm authors and year by hand. No arXiv hit: try the DOI / publisher page, then a web search (Google Scholar has no API); still nothing → comment asking for a link, add label `needs-link`, stop.
+3. **Duplicates**: already in the library at the requested level → comment with its link, label `duplicate`, close. Already there but not at that level/language → do **Adding a variant** below instead of a new import.
+4. **Licence** — the library republishes the PDF verbatim, so it must be redistributable: CC BY / CC BY-SA / CC0 (the arXiv abs page, or the publisher for open-access journals). arXiv's default `nonexclusive-distrib` licence is **not** enough: look for an open-access publisher version (e.g. Quantum, PRX/PR Research, EPTCS are CC BY) and import that URL instead; if none, comment explaining why, label `license-blocked`, close. Record the licence you relied on in the issue comment.
+5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py`, `check_concepts.mjs`).
+6. **Close the loop**: commit with `Closes #<N>` in the message; comment on the issue with `https://theghoul21.github.io/paper-reader/paper/<slug>` (live after the deploy).
+
 ## Adding a variant to an already-imported paper
 
 Given a slug that already exists and a new (language, level) not yet in its `meta.json` `variants`:

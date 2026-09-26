@@ -541,6 +541,8 @@ export default function PdfViewer({
         <CitationPopover
           text={citation.text}
           pageNumber={citation.pageNumber}
+          sourceSlug={slug}
+          variant={variants.find((v) => v.key === variant)}
           anchor={citation.anchor}
           onJumpToPage={handleJumpToPage}
           onClose={() => setCitation(null)}

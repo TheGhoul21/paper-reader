@@ -1726,3 +1726,28 @@ body {
   margin: -8px -12px 12px;
   padding: 8px 12px;
 }
+
+/* Paper requests: search links and request button in the citation popover, header link. */
+.citation-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+.citation-search a {
+  color: var(--accent);
+}
+
+a.citation-request {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Only the first header link takes the auto margin that pushes the group right. */
+.app-nav-review {
+  margin-left: 0;
+}

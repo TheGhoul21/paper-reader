@@ -1,0 +1,57 @@
+name: Richiesta di un paper
+description: Chiedi di aggiungere un paper alla libreria di paper reader, con spiegazioni al livello che ti serve.
+title: "[Paper] "
+labels: ["paper-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie! Più il riferimento è preciso, più l'import è veloce. Come funziona e cosa succede dopo: [docs/paper-requests.md](https://github.com/TheGhoul21/paper-reader/blob/main/docs/paper-requests.md).
+        Se arrivi da una citazione nel reader, il riferimento qui sotto è già compilato: aggiungi un link se lo trovi.
+  - type: textarea
+    id: reference
+    attributes:
+      label: Riferimento
+      description: Titolo, autori, anno — o la voce di bibliografia così com'è.
+      placeholder: "D. Bluvstein et al., “A quantum processor based on coherent transport of entangled atom arrays,” Nature 604, 2022."
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link (facoltativo ma utile)
+      description: arXiv (preferito), DOI o pagina dell'editore. Cercalo su arXiv o Google Scholar se puoi.
+      placeholder: "https://arxiv.org/abs/2112.03923"
+  - type: dropdown
+    id: level
+    attributes:
+      label: Livello delle spiegazioni
+      description: Quanto background hai in quest'area?
+      options:
+        - Nessun background (beginner)
+        - Laurea in un campo affine (intermediate)
+        - Esperto del sottocampo (expert)
+      default: 1
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Lingua delle spiegazioni
+      options:
+        - Italiano
+        - English
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Citato in (facoltativo)
+      description: Se l'hai trovato tra le citazioni di un paper della libreria. Compilato automaticamente dal reader.
+      placeholder: "phase-gadget-synthesis, riferimento [24]"
+  - type: textarea
+    id: why
+    attributes:
+      label: Perché ti interessa (facoltativo)
+      description: Aiuta a scegliere cosa spiegare meglio e in che ordine importare.

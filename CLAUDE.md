@@ -13,6 +13,7 @@ The project previously worked very differently (a Quarto site of hand-restructur
 - `npm run build` — production build to `dist/` (copies `papers/` → `public/papers/` first, via `scripts/sync-papers-data.mjs`; adds `404.html` as SPA fallback after)
 - Deploy: push to `main` — `.github/workflows/deploy.yml` builds and publishes to GitHub Pages at https://theghoul21.github.io/paper-reader/. Production builds use the `/paper-reader/` base path (`vite.config.ts`), so URLs to `papers/` go through `lib/paths.ts`'s `papersUrl()`, never a hard-coded `/papers/...`.
 - Import a paper: invoke the `import-paper` skill with a link (arXiv, direct PDF URL) or a local PDF path
+- Paper requests: readers open GitHub issues with the `paper-request` form (the reader's citation popover and header link prefill it — `lib/requests.ts`). Protocol in `docs/paper-requests.md`; work them with the skill's "Importing from a GitHub issue" section (`find_paper.py` finds the paper, checks duplicates and licence). Only papers whose licence allows redistribution (CC BY/BY-SA/CC0) may be imported — the PDF is published verbatim.
 
 ## Structure
 
