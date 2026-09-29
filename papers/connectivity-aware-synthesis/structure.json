@@ -1,0 +1,193 @@
+{
+  "thesis": {
+    "it-intermediate": "Sfruttando la connettività del dispositivo, le Parity Twine chain e le etichette di parità permettono di costruire circuiti che implementano tutti gli operatori a molti corpi con molte meno CNOT e profondità non peggiore dei metodi noti: il costo medio per interazione scende da 2 sulla catena lineare fino all'ottimo 1 con connettività completa. Il vantaggio si traduce in QAOA, QFT e simulazione hamiltoniana più efficienti e in fedeltà nettamente migliori su hardware rumoroso, anche in esperimenti reali."
+  },
+  "claims": [
+    {
+      "id": "tracking",
+      "title": {
+        "it-intermediate": "Tracciando le etichette di parità, implementare operatori a molti corpi si riduce a progettare circuiti di CNOT che generino le etichette giuste, misurati da µ e ν."
+      },
+      "summary": {
+        "it-intermediate": "Una rotazione Z su un qubit che porta l'etichetta ℓ agisce su tutti i qubit di ℓ; tracciando le etichette si passa da una all'altra senza decodificare ogni volta. µ conta le CNOT per etichetta (sempre ≥ 1), ν la profondità rispetto al minimo ideale."
+      },
+      "statedIn": [
+        "p0036",
+        "p0041"
+      ],
+      "evidence": [
+        "p0014",
+        "p0016",
+        "p0025",
+        "p0042",
+        "p0046",
+        "p0048"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "lnn-generators",
+      "title": {
+        "it-intermediate": "Sulla catena lineare le Parity Twine chain generano tutti gli operatori a k corpi, per ogni k, con µ = 2 e ν = k."
+      },
+      "summary": {
+        "it-intermediate": "La DCNOT crea un'etichetta e sposta informazione con due CNOT; catene e reti di DCNOT danno i due corpi, un'etichetta speciale aggiunta ricorsivamente dà tre, quattro e k corpi. La concatenazione sfalsata tiene bassa la profondità."
+      },
+      "statedIn": [
+        "p0139"
+      ],
+      "evidence": [
+        "p0061",
+        "p0063",
+        "p0068",
+        "p0072",
+        "p0074",
+        "p0086",
+        "p0091",
+        "p0097",
+        "p0100",
+        "p0129",
+        "p0141"
+      ],
+      "dependsOn": [
+        "tracking"
+      ]
+    },
+    {
+      "id": "lower-bound",
+      "title": {
+        "it-intermediate": "Sulla catena lineare esiste un limite non banale: per molti insiemi di etichette µ ≥ 1 + 1/9."
+      },
+      "summary": {
+        "it-intermediate": "Se µ fosse vicino a 1 quasi tutte le CNOT dovrebbero essere 'tipiche', ma su una catena non possono susseguirsi indefinitamente. Scendere sotto 2 sembra molto difficile già per n ≈ 10."
+      },
+      "statedIn": [
+        "p0050"
+      ],
+      "evidence": [
+        "p0100",
+        "p0586",
+        "p0620"
+      ],
+      "dependsOn": [
+        "tracking"
+      ]
+    },
+    {
+      "id": "all-to-all-optimal",
+      "title": {
+        "it-intermediate": "Con connettività completa i generatori raggiungono l'ottimo teorico µ = 1, con ν = k/2."
+      },
+      "summary": {
+        "it-intermediate": "Gli SWAP dentro le DCNOT diventano virtuali, cioè si rinominano i qubit in software: ogni DCNOT si riduce a una CNOT e porte e profondità si dimezzano."
+      },
+      "statedIn": [
+        "p0152"
+      ],
+      "evidence": [
+        "p0146",
+        "p0147",
+        "p0555"
+      ],
+      "dependsOn": [
+        "lnn-generators"
+      ]
+    },
+    {
+      "id": "hgp",
+      "title": {
+        "it-intermediate": "Con gli Hamiltonian grid path i collegamenti in più diventano porte in meno: µ = 4/3 sulla griglia, 5/3 sull'heavy hexagon, ma con profondità maggiore."
+      },
+      "summary": {
+        "it-intermediate": "Le Parity Twine chain scorrono lungo il cammino e raggiungono i vicini con una sola CNOT. La ricetta vale per qualunque grafo con un HGP; il prezzo è uno sfasamento maggiore tra catene e quindi più profondità."
+      },
+      "statedIn": [
+        "p0199",
+        "p0204"
+      ],
+      "evidence": [
+        "p0160",
+        "p0163",
+        "p0175",
+        "p0192",
+        "p0530",
+        "p0550"
+      ],
+      "dependsOn": [
+        "lnn-generators"
+      ]
+    },
+    {
+      "id": "ladder-depth",
+      "title": {
+        "it-intermediate": "Usando più HGP in parallelo, sulla scala, si migliorano insieme porte e profondità rispetto alla catena lineare."
+      },
+      "summary": {
+        "it-intermediate": "Due HGP intrecciati riducono lo sfasamento tra catene da 4 a 3 CNOT: circa 3n²/4 porte e profondità 3n per i due corpi. Per estendere il guadagno ai k corpi servirebbe una connettività a scacchiera."
+      },
+      "statedIn": [
+        "p0214"
+      ],
+      "evidence": [
+        "p0206",
+        "p0213",
+        "p0216",
+        "p0217"
+      ],
+      "dependsOn": [
+        "hgp"
+      ]
+    },
+    {
+      "id": "applications",
+      "title": {
+        "it-intermediate": "In QAOA, QFT e simulazione hamiltoniana i circuiti usano meno porte dei migliori noti con profondità mai peggiore, e sopra una certa densità battono anche i transpiler."
+      },
+      "summary": {
+        "it-intermediate": "Alternare generatori e loro rovesciati o aggiunti rovesciati dimezza la profondità per ciclo QAOA; la QFT funziona perché le PTC lasciano intatte le etichette x; su problemi abbastanza densi le soluzioni esatte battono Qiskit e TKET senza tempo di compilazione."
+      },
+      "statedIn": [
+        "p0009",
+        "p0241"
+      ],
+      "evidence": [
+        "p0015",
+        "p0033",
+        "p0227",
+        "p0231",
+        "p0246",
+        "p0251",
+        "p0258",
+        "p0265"
+      ],
+      "dependsOn": [
+        "lnn-generators",
+        "hgp",
+        "all-to-all-optimal",
+        "ladder-depth"
+      ]
+    },
+    {
+      "id": "noise",
+      "title": {
+        "it-intermediate": "Su hardware rumoroso i circuiti adattati alla connettività danno fedeltà più alte, fino a ordini di grandezza negli esperimenti."
+      },
+      "summary": {
+        "it-intermediate": "Il modello di fedeltà mostra un compromesso: con idle rumoroso vince la scala, altrimenti la griglia. Le simulazioni confermano la transizione prevista, e sui chip IQM la QFT su griglia a 18 qubit ha ancora fedeltà ~10⁻³ quando gli altri metodi sono a zero."
+      },
+      "statedIn": [
+        "p0273",
+        "p0306"
+      ],
+      "evidence": [
+        "p0267",
+        "p0291",
+        "p0292",
+        "p0305"
+      ],
+      "dependsOn": [
+        "applications"
+      ]
+    }
+  ]
+}

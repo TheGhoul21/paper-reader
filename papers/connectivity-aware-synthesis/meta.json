@@ -1,0 +1,28 @@
+{
+  "slug": "connectivity-aware-synthesis",
+  "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+  "authors": [
+    "Florian Dreier",
+    "Christoph Fleckenstein",
+    "Gregor Aigner",
+    "Michael Fellner",
+    "Philipp Aumann",
+    "Reinhard Stahn",
+    "Martin Lanthaler",
+    "Wolfgang Lechner"
+  ],
+  "importedAt": "2026-09-29T04:26:17Z",
+  "language": "it",
+  "background": "adjacent-field grad level",
+  "sourceType": "arxiv",
+  "sourceRef": "2501.14020",
+  "pageCount": 46,
+  "variants": [
+    {
+      "key": "it-intermediate",
+      "language": "it",
+      "level": "intermediate",
+      "label": "Italiano · Laurea in campo affine"
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+[
+  {
+    "id": "parity-label",
+    "term": "etichetta di parità",
+    "aliases": ["etichette di parità", "etichetta di parità logica", "etichette di parità logiche"],
+    "pdfTerms": ["parity label", "parity labels", "logical parity label", "logical parity labels"],
+    "kind": "term",
+    "definedIn": "p0014",
+    "definitions": {
+      "it-intermediate": "L'insieme dei qubit logici la cui parità (XOR) è codificata su un qubit fisico in un dato momento. Una CNOT con controllo c e bersaglio t sostituisce l'etichetta del bersaglio con la differenza simmetrica ℓcℓt. Se un qubit porta l'etichetta ℓ, una rotazione Z su di lui realizza la rotazione logica a molti corpi su tutti i qubit di ℓ: per questo tutto il paper si riduce a progettare circuiti di CNOT che facciano comparire le etichette giuste."
+    },
+    "related": ["generator-circuit", "k-body-operator", "dcnot"]
+  },
+  {
+    "id": "k-body-operator",
+    "term": "operatori a molti corpi",
+    "aliases": ["operatore a molti corpi", "operatori logici a molti corpi", "a molti corpi", "a k corpi"],
+    "pdfTerms": ["many-body operators", "many-body operator", "k-body labels", "k-body operators"],
+    "kind": "term",
+    "definedIn": "p0006",
+    "definitions": {
+      "it-intermediate": "Operatori che coinvolgono k qubit logici insieme, come le rotazioni exp(−iα Zi Zj) (due corpi) o exp(−iα Zi Zj Zk) (tre corpi). Compaiono nel QAOA (termini ZZ di QUBO, termini a tre corpi di HUBO), nella QFT e nella simulazione hamiltoniana. Nel paper corrispondono a etichette di parità con k elementi: implementare tutti gli operatori a k corpi significa generare tutte le etichette a k corpi."
+    },
+    "related": ["parity-label", "generator-circuit", "qubo-hubo"]
+  },
+  {
+    "id": "generator-circuit",
+    "term": "generatore",
+    "aliases": ["generatori", "generatore a k corpi", "generatori a k corpi", "generatore a due corpi", "generatore a tre corpi", "generatori a due corpi"],
+    "pdfTerms": ["generator circuit", "generator circuits", "k-body generator", "k-body generators", "two-body generator", "three-body generator"],
+    "kind": "term",
+    "definedIn": "p0042",
+    "definitions": {
+      "it-intermediate": "Un circuito di sole CNOT che, partendo da etichette singole, fa comparire ogni etichetta di un insieme L almeno una volta su qualche qubit. Nei momenti giusti si inseriscono poi le rotazioni Z: così un generatore di tutte le etichette a k corpi (Gk) implementa tutti gli operatori a k corpi. La qualità si misura con µ (CNOT per etichetta) e ν (profondità normalizzata)."
+    },
+    "related": ["clean-generator", "special-generator", "average-cnot-count"]
+  },
+  {
+    "id": "clean-generator",
+    "term": "generatore pulito",
+    "aliases": ["generatori puliti", "generatore speciale pulito", "generatori speciali puliti"],
+    "pdfTerms": ["clean generator", "clean generator circuit", "clean generator circuits", "clean two-body generator", "clean special"],
+    "kind": "term",
+    "definedIn": "p0072",
+    "definitions": {
+      "it-intermediate": "Un generatore che, dopo aver prodotto tutte le etichette volute, restituisce etichette singole (al più permutate). È comodo perché si può concatenare con altri blocchi o ripetere in cicli successivi senza circuiti di ripristino. Per il Lemma A.16 anche l'aggiunto di un generatore pulito lo è: è il trucco che permette di sovrapporre meglio i cicli QAOA sulla griglia."
+    },
+    "related": ["generator-circuit", "special-generator", "shifted-concatenation"]
+  },
+  {
+    "id": "special-generator",
+    "term": "generatore speciale",
+    "aliases": ["generatori speciali", "etichetta speciale", "etichette speciali", "generatore speciale a tre corpi", "generatori speciali a tre corpi"],
+    "pdfTerms": ["special three-body generator", "special three-body generators", "special four-body generator", "special k-body generator", "special label"],
+    "kind": "term",
+    "definedIn": "p0078",
+    "definitions": {
+      "it-intermediate": "Un circuito che genera solo le etichette a k corpi contenenti una certa etichetta fissa ℓs, detta speciale. Si ottiene da quello a k−1 corpi aggiungendo ℓs con una CNOT prima di ogni Parity Twine chain. Concatenando generatori speciali con etichette speciali diverse, su insiemi di qubit decrescenti e alternando versioni dritte e rovesciate, si costruisce il generatore completo Gk."
+    },
+    "related": ["generator-circuit", "clean-generator", "twine-chain"]
+  },
+  {
+    "id": "dcnot",
+    "term": "DCNOT",
+    "aliases": ["DCNOTs", "doppia CNOT"],
+    "pdfTerms": ["DCNOT", "DC-NOT"],
+    "kind": "term",
+    "definedIn": "p0056",
+    "definitions": {
+      "it-intermediate": "Due CNOT consecutive tra gli stessi qubit in versi opposti, DXc,t = CXt,c ⊙ CXc,t, equivalente a una CNOT seguita da uno SWAP. Sulle etichette fa due cose: scrive la parità combinata ℓcℓt sul qubit c e sposta ℓc sul qubit t. È il mattone delle Parity Twine chain: su catena lineare costa due porte per ogni etichetta nuova, da cui µ = 2."
+    },
+    "related": ["twine-chain", "virtual-swap", "parity-label"]
+  },
+  {
+    "id": "twine-chain",
+    "term": "Parity Twine chain",
+    "aliases": ["Parity Twine chains", "PTC", "PTCgrid", "Twine chain"],
+    "pdfTerms": ["Parity Twine chain", "Parity Twine chains"],
+    "kind": "term",
+    "definedIn": "p0061",
+    "definitions": {
+      "it-intermediate": "Una sequenza di DCNOT tra qubit vicini, dal primo all'ultimo: l'etichetta del primo qubit viaggia lungo la catena e si combina con tutte le altre, generando tutte le coppie che la contengono. Il paper la adatta a ogni connettività: sul grafo completo diventa una sequenza di CNOT semplici, sulla griglia (PTCgrid) usa un HGP e CNOT verso i vicini, risparmiando circa 1/3 delle porte."
+    },
+    "related": ["dcnot", "parity-twine-network", "hgp"]
+  },
+  {
+    "id": "parity-twine-network",
+    "term": "Parity Twine network",
+    "aliases": ["Parity Twine networks", "PTN", "PTNgrid", "Parity Twine"],
+    "pdfTerms": ["Parity Twine network", "Parity Twine networks", "Parity Twine"],
+    "kind": "term",
+    "definedIn": "p0068",
+    "definitions": {
+      "it-intermediate": "Parity Twine chain applicate su insiemi di qubit sempre più piccoli (n, n−1, …, 2), che insieme generano tutte le coppie ℓiℓj. Con la concatenazione sfalsata ogni catena parte quattro momenti dopo la precedente, per una profondità 4n + O(1) su catena lineare. Il paper ne definisce tre tipi: I (due corpi), II (generatore speciale a tre corpi riutilizzabile) e III (base dei quattro corpi)."
+    },
+    "related": ["twine-chain", "generator-circuit", "shifted-concatenation"]
+  },
+  {
+    "id": "average-cnot-count",
+    "term": "µ",
+    "aliases": ["costo medio", "numero medio di CNOT", "CNOT medie per etichetta"],
+    "pdfTerms": ["average CNOT count", "average gate count", "average asymptotic gate count"],
+    "kind": "symbol",
+    "definedIn": "p0042",
+    "definitions": {
+      "it-intermediate": "Il numero di CNOT di un generatore diviso per il numero di etichette che genera, nel limite di molti qubit: quante porte a due qubit servono in media per ogni interazione. Vale sempre µ ≥ 1. I valori ottenuti: 2 su catena lineare, 5/3 su heavy hexagon, 3/2 sulla scala, 4/3 sulla griglia quadrata, 1 (ottimo) con connettività completa."
+    },
+    "related": ["normalized-depth", "mu-lower-bound", "generator-circuit"]
+  },
+  {
+    "id": "normalized-depth",
+    "term": "ν",
+    "aliases": ["profondità normalizzata"],
+    "pdfTerms": ["normalized depth", "normalized asymptotic depth", "asymptotic normalized depth"],
+    "kind": "symbol",
+    "definedIn": "p0046",
+    "definitions": {
+      "it-intermediate": "La profondità del circuito divisa per la profondità minima ideale |L|/(n/2), cioè quella che si avrebbe facendo sempre n/2 CNOT in parallelo e creando un'etichetta con ciascuna. Per i generatori a k corpi vale k su catena lineare, k/2 con connettività completa e 7k/3 sulla griglia: gli HGP riducono le porte ma pagano in profondità."
+    },
+    "related": ["average-cnot-count", "shifted-concatenation"]
+  },
+  {
+    "id": "mu-lower-bound",
+    "term": "limite inferiore",
+    "aliases": ["limiti inferiori"],
+    "pdfTerms": ["lower bound", "lower bounds"],
+    "kind": "term",
+    "definedIn": "p0050",
+    "definitions": {
+      "it-intermediate": "Due limiti su µ. Quello banale: ogni CNOT crea al più un'etichetta nuova, quindi µ ≥ 1, raggiunto con connettività completa. Quello non banale (Teorema I.1): su catena lineare, per insiemi di etichette in cui combinando due etichette non se ne ottiene un'altra (per esempio tutte le terne), vale µ ≥ 1 + 1/9. Il valore 2 dei circuiti del paper resta quindi lontano da quel limite, ma gli autori ritengono molto difficile scendere sotto 2."
+    },
+    "related": ["average-cnot-count", "typical-gate"]
+  },
+  {
+    "id": "typical-gate",
+    "term": "CNOT tipiche",
+    "aliases": ["porte tipiche", "porta tipica", "super-tipiche", "non tipiche", "porte non tipiche"],
+    "pdfTerms": ["typical CNOT gates", "typical gates", "typical gate", "super-typical", "untypical"],
+    "kind": "term",
+    "definedIn": "p0050",
+    "definitions": {
+      "it-intermediate": "Nella prova del limite inferiore su catena lineare, una CNOT è tipica se trasforma un'etichetta utile, appena creata, in un'altra etichetta utile mai vista prima. Se µ è vicino a 1 quasi tutte le CNOT devono essere tipiche; ma su una catena le porte tipiche non possono susseguirsi indefinitamente, e ogni porta non tipica 'serve' al più quattro porte tipiche. Da qui γ ≥ 1/9."
+    },
+    "related": ["mu-lower-bound", "lnn"]
+  },
+  {
+    "id": "shifted-concatenation",
+    "term": "concatenazione sfalsata",
+    "aliases": ["concatenazioni sfalsate", "concatenati in modo sfalsato", "concatenandoli sfalsati"],
+    "pdfTerms": ["shifted concatenation", "shifted concatenations"],
+    "kind": "term",
+    "definedIn": "p0097",
+    "definitions": {
+      "it-intermediate": "Mettere un circuito dopo un altro facendoli sovrapporre nel tempo di s momenti, quando non ci sono porte in conflitto (Def. A.6). È lo strumento principale per ridurre la profondità: nel PTN ogni Parity Twine chain parte quattro momenti dopo la precedente invece di aspettarne la fine, e nel QAOA cicli successivi si incastrano alternando un generatore e il suo rovesciato (o aggiunto rovesciato)."
+    },
+    "related": ["parity-twine-network", "normalized-depth", "clean-generator"]
+  },
+  {
+    "id": "virtual-swap",
+    "term": "SWAP virtuale",
+    "aliases": ["SWAP virtuali"],
+    "pdfTerms": ["virtual SWAP", "virtual SWAP gates", "virtual SWAP gate"],
+    "kind": "term",
+    "definedIn": "p0146",
+    "definitions": {
+      "it-intermediate": "Uno SWAP che non si esegue: si aggiorna solo, in software classico, quale qubit fisico porta quale etichetta. Sul grafo completo la posizione delle etichette non conta, quindi lo SWAP dentro ogni DCNOT si rende virtuale e la DCNOT diventa una sola CNOT: porte e profondità si dimezzano e si arriva a µ = 1."
+    },
+    "related": ["dcnot", "all-to-all", "swap-gate"]
+  },
+  {
+    "id": "swap-gate",
+    "term": "SWAP",
+    "aliases": ["reti di SWAP", "rete di SWAP"],
+    "pdfTerms": ["SWAP networks", "SWAP network", "SWAP gates", "SWAP gate"],
+    "kind": "term",
+    "definedIn": "p0004",
+    "definitions": {
+      "it-intermediate": "La porta che scambia lo stato di due qubit collegati, pari a tre CNOT. Le reti di SWAP sono il modo classico per far interagire qubit lontani su hardware con connettività limitata, e sono il riferimento con cui il paper si confronta: le Parity Twine chain spostano l'informazione e creano etichette nello stesso tempo, risparmiando porte (per esempio 9/4 volte meno CNOT nel QAOA su griglia)."
+    },
+    "related": ["dcnot", "virtual-swap", "transpilation"]
+  },
+  {
+    "id": "lnn",
+    "term": "LNN",
+    "aliases": ["catena lineare", "catene lineari"],
+    "pdfTerms": ["LNN", "linear nearest-neighbor", "linear nearest neighbor"],
+    "kind": "acronym",
+    "definedIn": "p0006",
+    "definitions": {
+      "it-intermediate": "Linear nearest neighbor: qubit in fila, ognuno collegato solo ai due vicini. È la connettività minima e il caso in cui il paper costruisce tutti i mattoni (Sez. IV), con µ = 2 e ν = k per i generatori a k corpi. Qualunque layout con un cammino hamiltoniano può essere usato come una catena lineare, ma così spreca i collegamenti in più."
+    },
+    "related": ["hamiltonian-path", "square-grid", "all-to-all"]
+  },
+  {
+    "id": "all-to-all",
+    "term": "tutti-con-tutti",
+    "aliases": ["connettività completa", "grafo completo", "grafi completi"],
+    "pdfTerms": ["all-to-all", "all−to−all", "complete graphs", "complete graph"],
+    "kind": "term",
+    "definedIn": "p0145",
+    "definitions": {
+      "it-intermediate": "Connettività in cui ogni qubit interagisce direttamente con ogni altro (per esempio ioni intrappolati, di solito limitati a poche decine di qubit). Qui la posizione delle etichette non conta: con gli SWAP virtuali ogni DCNOT diventa una CNOT e i generatori raggiungono µ = 1, l'ottimo teorico, con ν = k/2."
+    },
+    "related": ["virtual-swap", "lnn", "average-cnot-count"]
+  },
+  {
+    "id": "square-grid",
+    "term": "griglia quadrata",
+    "aliases": ["griglie quadrate", "griglia", "griglie"],
+    "pdfTerms": ["square grid", "square grids"],
+    "kind": "term",
+    "definedIn": "p0156",
+    "definitions": {
+      "it-intermediate": "Qubit disposti su un reticolo 2D, ciascuno collegato ai vicini sopra, sotto, a destra e a sinistra, come in molti chip superconduttivi (per esempio IQM). Con un HGP minimale circa un terzo dei qubit sta sul cammino e il resto sono vicini, da cui µ = 4/3; la profondità però sale (6n per il PTN, ν = 7k/3 per k ≥ 4). Negli esperimenti è l'implementazione che dà i risultati migliori."
+    },
+    "related": ["hgp", "ladder-layout", "heavy-hexagon"]
+  },
+  {
+    "id": "hamiltonian-path",
+    "term": "cammino hamiltoniano",
+    "aliases": ["cammini hamiltoniani"],
+    "pdfTerms": ["Hamiltonian path", "Hamiltonian paths"],
+    "kind": "term",
+    "definedIn": "p0157",
+    "definitions": {
+      "it-intermediate": "Un percorso nel grafo di connettività che tocca ogni qubit esattamente una volta. Permette di trattare qualunque layout come una catena lineare (µ = 2) e di decodificare con una semplice catena di CNOT. L'heavy hexagon non ne ha uno che copra tutto il chip, e lì la decodifica costa di più."
+    },
+    "related": ["hgp", "lnn"]
+  },
+  {
+    "id": "hgp",
+    "term": "HGP",
+    "aliases": ["Hamiltonian grid path", "Hamiltonian grid paths", "vicini HGP", "vicino HGP"],
+    "pdfTerms": ["HGP", "HGPs", "Hamiltonian grid paths", "Hamiltonian grid path"],
+    "kind": "acronym",
+    "definedIn": "p0160",
+    "definitions": {
+      "it-intermediate": "Hamiltonian grid path: un cammino tale che ogni qubit o sta sul cammino o è vicino diretto di un suo nodo (vicino HGP). La Parity Twine chain scorre con DCNOT lungo il cammino e raggiunge i vicini con una sola CNOT, invece di due. È minimale se contiene il minor numero di qubit possibile: più vicini ci sono, più porte si risparmiano. È la ricetta generale per adattare i circuiti a qualunque grafo."
+    },
+    "related": ["twine-chain", "square-grid", "hamiltonian-path"]
+  },
+  {
+    "id": "heavy-hexagon",
+    "term": "heavy hexagon",
+    "aliases": ["heavy hex", "heavy-hex", "heavy-hexagon"],
+    "pdfTerms": ["heavy hexagon", "heavy-hexagon", "heavy hexagons", "heavy-hex"],
+    "kind": "term",
+    "definedIn": "p0530",
+    "definitions": {
+      "it-intermediate": "Il layout dei chip IBM: esagoni con un qubit in più su ogni lato, per cui un qubit su due ha tre vicini e gli altri due. Non ha un cammino hamiltoniano che copra tutto, quindi sia il paper sia i riferimenti usano un sottografo. Con un HGP si ottiene µ = 5/3 e ν = 5k/3 per k ≥ 3 (App. F e G)."
+    },
+    "related": ["hgp", "square-grid", "hamiltonian-path"]
+  },
+  {
+    "id": "ladder-layout",
+    "term": "scala",
+    "aliases": ["ladder", "scale"],
+    "pdfTerms": ["ladder", "ladders"],
+    "kind": "term",
+    "definedIn": "p0214",
+    "definitions": {
+      "it-intermediate": "Due file parallele di qubit collegate a pioli, come una scala a pioli. Qui si usano due HGP in parallelo, ciascuno formato dai vicini dell'altro: lo sfasamento tra Parity Twine chain scende da 4 a 3 CNOT, per cui il PTN ha circa 3n²/4 porte e profondità 3n, meglio della catena lineare in entrambe (µ = 3/2). Con qubit dalla vita breve è il design più fedele, perché il più compatto."
+    },
+    "related": ["hgp", "square-grid", "normalized-depth"]
+  },
+  {
+    "id": "lhz-architecture",
+    "term": "LHZ",
+    "aliases": ["architettura LHZ", "codifica LHZ"],
+    "pdfTerms": ["LHZ", "Lechner-Hauke-Zoller"],
+    "kind": "acronym",
+    "definedIn": "p0004",
+    "definitions": {
+      "it-intermediate": "L'architettura Lechner-Hauke-Zoller: codifica ogni interazione a due corpi di un problema su un qubit fisico che ne rappresenta la parità, trasformando interazioni a lungo raggio in campi locali. È all'origine delle etichette di parità; il paper osserva che il PTN è una versione spazio-temporale della codifica LHZ, in cui le etichette compaiono su qubit diversi in momenti diversi."
+    },
+    "related": ["parity-label", "parity-twine-network"]
+  },
+  {
+    "id": "qft",
+    "term": "QFT",
+    "aliases": ["trasformata di Fourier quantistica", "QFT approssimata"],
+    "pdfTerms": ["QFT", "quantum Fourier transform", "quan-tum Fourier transform"],
+    "kind": "acronym",
+    "definedIn": "p0248",
+    "definitions": {
+      "it-intermediate": "La trasformata di Fourier quantistica, alla base di stima di fase, Shor e aritmetica quantistica. Richiede interazioni tra tutte le coppie in un ordine preciso. Nel paper è una successione di Parity Twine chain con rotazioni X in mezzo: funziona perché le etichette x restano quasi intatte sotto una PTC. Sostituendo le PTC con le versioni per ogni connettività si ottiene la QFT per quel layout; è anche l'algoritmo usato in simulazioni ed esperimenti."
+    },
+    "related": ["twine-chain", "process-fidelity", "all-to-all"]
+  },
+  {
+    "id": "qaoa",
+    "term": "QAOA",
+    "aliases": ["ciclo QAOA", "cicli QAOA"],
+    "pdfTerms": ["QAOA"],
+    "kind": "acronym",
+    "definedIn": "p0218",
+    "definitions": {
+      "it-intermediate": "Quantum Approximate Optimization Algorithm: alterna p volte un unitario di problema (rotazioni ZZ, o ZZZ, pesate dal problema) e un driver di rotazioni X, ottimizzando classicamente gli angoli. Nel paper ogni unitario di problema è un generatore pulito; alternando generatore e rovesciato (o aggiunto rovesciato) e sovrapponendo i cicli, la profondità per ciclo si dimezza circa (2n(1+1/p) su catena lineare)."
+    },
+    "related": ["qubo-hubo", "clean-generator", "shifted-concatenation"]
+  },
+  {
+    "id": "qubo-hubo",
+    "term": "QUBO",
+    "aliases": ["HUBO"],
+    "pdfTerms": ["QUBO", "HUBO"],
+    "kind": "acronym",
+    "definedIn": "p0222",
+    "definitions": {
+      "it-intermediate": "Problemi di ottimizzazione binaria: QUBO con termini fino a due variabili (hamiltoniana di Ising con ZiZj), HUBO con termini di ordine superiore (ZiZjZk). Il QAOA per un QUBO completamente connesso richiede tutte le rotazioni a due corpi, quindi G2; un HUBO a tre corpi richiede G3. Su problemi sparsi i generatori completi sprecano etichette, ma sopra una densità di archi di circa 0.25–0.55 battono comunque i transpiler."
+    },
+    "related": ["qaoa", "k-body-operator", "transpilation"]
+  },
+  {
+    "id": "trotterisation",
+    "term": "Trotter",
+    "aliases": ["Trotter-Suzuki", "decomposizione di Trotter", "passi di Trotter", "formula di Suzuki"],
+    "pdfTerms": ["Trotter-Suzuki", "Trotterization", "Trotter", "Suzuki"],
+    "kind": "term",
+    "definedIn": "p0260",
+    "definitions": {
+      "it-intermediate": "Approssimare l'evoluzione sotto un'hamiltoniana somma di termini con un prodotto di evoluzioni sotto i singoli termini, ripetuto in piccoli passi. Nel paper si usa la formula di Suzuki al secondo ordine per un Ising a campo misto con interazioni a lungo raggio: mezzo passo di X, tutte le ZZ con un PTN, di nuovo mezzo passo di X, con errore O(τ³) per passo."
+    },
+    "related": ["k-body-operator", "parity-twine-network"]
+  },
+  {
+    "id": "fidelity-model",
+    "term": "fedeltà attesa",
+    "aliases": ["fedeltà di idle", "Fidle", "F2q"],
+    "pdfTerms": ["idling fidelity", "total expected fidelity", "expected performance"],
+    "kind": "term",
+    "definedIn": "p0267",
+    "definitions": {
+      "it-intermediate": "Il modello semplice dell'equazione (21): la fedeltà del circuito è F2q elevato al numero di porte a due qubit per Fidle elevato al numero di slot in cui un qubit resta fermo. Fidle si stima da T1, T2 e dal tempo di porta. Mostra il compromesso tra porte e profondità: con idle molto rumoroso conta la profondità (vince la scala), altrimenti il numero di porte (vince la griglia)."
+    },
+    "related": ["process-fidelity", "ladder-layout", "square-grid"]
+  },
+  {
+    "id": "process-fidelity",
+    "term": "fedeltà di processo",
+    "aliases": ["fedeltà di processo Fproc"],
+    "pdfTerms": ["process fidelity", "process fidelities"],
+    "kind": "term",
+    "definedIn": "p0283",
+    "definitions": {
+      "it-intermediate": "La misura di qualità della QFT usata in simulazioni ed esperimenti (eq. 23): si preparano stati che dopo una QFT ideale darebbero una stringa di bit nota, si esegue la QFT rumorosa e si misura quanto spesso esce la stringa giusta, su 20 stati iniziali casuali da 2000 misure. Negli esperimenti IQM la QFT su griglia ha ancora ~10⁻³ a 18 qubit, quando le altre sono a zero."
+    },
+    "related": ["qft", "fidelity-model"]
+  },
+  {
+    "id": "transpilation",
+    "term": "transpiler",
+    "aliases": ["compilatori", "transpilazione", "Qiskit AI"],
+    "pdfTerms": ["transpilation", "transpiler", "transpilers", "compilation tools"],
+    "kind": "term",
+    "definedIn": "p0246",
+    "definitions": {
+      "it-intermediate": "Software che adatta un circuito generico a un dispositivo (porte native, connettività), come Qiskit, Qiskit AI e TKET. Il paper confronta con loro le sue soluzioni esatte: sotto una certa densità di archi del problema vincono i transpiler, sopra (circa 0.25–0.55) vince Parity Twine in porte e profondità. In più le soluzioni esatte non richiedono tempo di compilazione, che invece per i transpiler esplode con la dimensione."
+    },
+    "related": ["qubo-hubo", "swap-gate"]
+  }
+]

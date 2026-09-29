@@ -17,6 +17,15 @@
       "definition": "Allineati: la coppia sta nella stessa riga (o colonna), e lo scheduling si riduce a colorazione di intervalli più eliminazione gaussiana per gruppo. Non allineati: righe e colonne diverse, servono due trasporti per coppia di righe, e lo scheduling si riduce alla partizione in sottosequenze strettamente crescenti. Lo scheduling generale fa prima i non allineati, poi i residui allineati."
     }
   ],
+  "all-to-all": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "tutti-con-tutti",
+      "definedIn": "p0145",
+      "definition": "Connettività in cui ogni qubit interagisce direttamente con ogni altro (per esempio ioni intrappolati, di solito limitati a poche decine di qubit). Qui la posizione delle etichette non conta: con gli SWAP virtuali ogni DCNOT diventa una CNOT e i generatori raggiungono µ = 1, l'ottimo teorico, con ν = k/2."
+    }
+  ],
   "ancilla": [
     {
       "slug": "directional-transport-remote-cz",
@@ -122,6 +131,15 @@
       "term": "qubit ausiliari",
       "definedIn": "p0065",
       "definition": "Qubit extra che non portano informazione iniziale, preparati in uno stato noto (es. |0⟩). Poiché una rotazione Z su |0⟩ non fa nulla, l'etichetta del qubit ausiliario si può trattare come \"vuota\". Aggiungendoli con CNOT si ottiene una codifica ridondante che permette di eseguire più operazioni logiche in parallelo."
+    }
+  ],
+  "average-cnot-count": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "µ",
+      "definedIn": "p0042",
+      "definition": "Il numero di CNOT di un generatore diviso per il numero di etichette che genera, nel limite di molti qubit: quante porte a due qubit servono in media per ogni interazione. Vale sempre µ ≥ 1. I valori ottenuti: 2 su catena lineare, 5/3 su heavy hexagon, 3/2 sulla scala, 4/3 sulla griglia quadrata, 1 (ottimo) con connettività completa."
     }
   ],
   "backbone-legs": [
@@ -273,6 +291,15 @@
       "term": "circuit-like",
       "definedIn": "p0128",
       "definition": "Un diagramma semplice con lo stesso numero di ingressi e uscite che ammette un flusso causale. La Proposizione 6.5 dice che ogni diagramma di questo tipo corrisponde davvero a un circuito, e l'ottimizzatore applica solo riscritture che mantengono questa proprietà."
+    }
+  ],
+  "clean-generator": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "generatore pulito",
+      "definedIn": "p0072",
+      "definition": "Un generatore che, dopo aver prodotto tutte le etichette volute, restituisce etichette singole (al più permutate). È comodo perché si può concatenare con altri blocchi o ripetere in cicli successivi senza circuiti di ripristino. Per il Lemma A.16 anche l'aggiunto di un generatore pulito lo è: è il trucco che permette di sovrapporre meglio i cicli QAOA sulla griglia."
     }
   ],
   "cliff-prop": [
@@ -502,6 +529,13 @@
       "term": "DCNOT",
       "definedIn": "p0030",
       "definition": "Una \"doppia CNOT\": due CNOT di fila tra gli stessi due qubit, in versi opposti. È il blocco base del backbone, ma non è nativa sugli atomi neutri e va scomposta: in due CZ, in una iSWAP o, meglio per questa architettura, in una CZSWAP (CZ più scambio di posizione)."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "DCNOT",
+      "definedIn": "p0056",
+      "definition": "Due CNOT consecutive tra gli stessi qubit in versi opposti, DXc,t = CXt,c ⊙ CXc,t, equivalente a una CNOT seguita da uno SWAP. Sulle etichette fa due cose: scrive la parità combinata ℓcℓt sul qubit c e sposta ℓc sul qubit t. È il mattone delle Parity Twine chain: su catena lineare costa due porte per ogni etichetta nuova, da cui µ = 2."
     }
   ],
   "deadlock": [
@@ -708,6 +742,13 @@
       "term": "modello di fedeltà",
       "definedIn": "p0074",
       "definition": "La formula (Eq. 3) con cui si stima la probabilità di successo di un circuito compilato: il prodotto delle fedeltà delle rotazioni globali, delle CZ, del disturbo di Rydberg sugli atomi inattivi, dei trasferimenti tra trappole e della decoerenza durante i tempi di attesa (idling). Gli errori dello spostamento sono inclusi nell'idling."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "fedeltà attesa",
+      "definedIn": "p0267",
+      "definition": "Il modello semplice dell'equazione (21): la fedeltà del circuito è F2q elevato al numero di porte a due qubit per Fidle elevato al numero di slot in cui un qubit resta fermo. Fidle si stima da T1, T2 e dal tempo di porta. Mostra il compromesso tra porte e profondità: con idle molto rumoroso conta la profondità (vince la scala), altrimenti il numero di porte (vince la griglia)."
     }
   ],
   "flow-label": [
@@ -773,6 +814,15 @@
       "definition": "Riduzione a scala per righe su GF(2): TᵣM = Σ eₜvₜᵀ, da cui uₜ = Tᵣ⁻¹eₜ dà una decomposizione con k = rango termini. È ottima perché GF(2) è un campo; su Z4/Z8, che sono anelli, non basta, da cui gli algoritmi a due stadi."
     }
   ],
+  "generator-circuit": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "generatore",
+      "definedIn": "p0042",
+      "definition": "Un circuito di sole CNOT che, partendo da etichette singole, fa comparire ogni etichetta di un insieme L almeno una volta su qualche qubit. Nei momenti giusti si inseriscono poi le rotazioni Z: così un generatore di tutte le etichette a k corpi (Gk) implementa tutti gli operatori a k corpi. La qualità si misura con µ (CNOT per etichetta) e ν (profondità normalizzata)."
+    }
+  ],
   "generators": [
     {
       "slug": "prresearch-6xlb-l92j",
@@ -827,6 +877,15 @@
       "definition": "Metodo per C-Z allineati su m righe: la matrice binaria m×n(n−1)/2 viene divisa in gruppi di colonne a intervalli disgiunti (colorazione), e ogni gruppo si realizza con rango-GF(2)-molti trasporti. Riga-per-riga (mᵢ=1) e raggruppa-ed-elimina (k=1) sono i due estremi della prospettiva unificata dell'Oss. II.4; in Fig. 9 hanno prestazioni quasi identiche."
     }
   ],
+  "hamiltonian-path": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "cammino hamiltoniano",
+      "definedIn": "p0157",
+      "definition": "Un percorso nel grafo di connettività che tocca ogni qubit esattamente una volta. Permette di trattare qualunque layout come una catena lineare (µ = 2) e di decodificare con una semplice catena di CNOT. L'heavy hexagon non ne ha uno che copra tutto il chip, e lì la decodifica costa di più."
+    }
+  ],
   "handover": [
     {
       "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
@@ -834,6 +893,15 @@
       "term": "handover",
       "definedIn": "p0084",
       "definition": "Il passaggio di un atomo dalla trappola fissa (SLM) a quella mobile (AOD) e ritorno. Ogni spostamento ne richiede due, e ognuno ha una probabilità di errore non trascurabile: è la parte più costosa di un piccolo spostamento, e il motivo per cui i compilatori che muovono atomi a ogni porta accumulano tanti errori."
+    }
+  ],
+  "heavy-hexagon": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "heavy hexagon",
+      "definedIn": "p0530",
+      "definition": "Il layout dei chip IBM: esagoni con un qubit in più su ogni lato, per cui un qubit su due ha tre vicini e gli altri due. Non ha un cammino hamiltoniano che copra tutto, quindi sia il paper sia i riferimenti usano un sottografo. Con un HGP si ottiene µ = 5/3 e ν = 5k/3 per k ≥ 3 (App. F e G)."
     }
   ],
   "heisenberg-model": [
@@ -861,6 +929,15 @@
       "term": "instradamento euristico",
       "definedIn": "p0081",
       "definition": "La fase finale di ARGON: traduce i layout scelti in movimenti AOD concreti. Rompe i cicli di dipendenza parcheggiando temporaneamente un qubit (deadlock), poi raggruppa i movimenti compatibili in \"slice\" parallele colorando un grafo dei conflitti tra traiettorie."
+    }
+  ],
+  "hgp": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "HGP",
+      "definedIn": "p0160",
+      "definition": "Hamiltonian grid path: un cammino tale che ogni qubit o sta sul cammino o è vicino diretto di un suo nodo (vicino HGP). La Parity Twine chain scorre con DCNOT lungo il cammino e raggiunge i vicini con una sola CNOT, invece di due. È minimale se contiene il minor numero di qubit possibile: più vicini ci sono, più porte si risparmiano. È la ricetta generale per adattare i circuiti a qualunque grafo."
     }
   ],
   "hop": [
@@ -969,6 +1046,15 @@
       "definition": "Una porta a due qubit che scambia i qubit aggiungendo una fase. La DCNOT si può scrivere come una sola iSWAP più rotazioni locali, ed è equivalente alla CZSWAP a meno di rotazioni S†: per questo il paper usa direttamente la CZSWAP."
     }
   ],
+  "k-body-operator": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "operatori a molti corpi",
+      "definedIn": "p0006",
+      "definition": "Operatori che coinvolgono k qubit logici insieme, come le rotazioni exp(−iα Zi Zj) (due corpi) o exp(−iα Zi Zj Zk) (tre corpi). Compaiono nel QAOA (termini ZZ di QUBO, termini a tre corpi di HUBO), nella QFT e nella simulazione hamiltoniana. Nel paper corrispondono a etichette di parità con k elementi: implementare tutti gli operatori a k corpi significa generare tutte le etichette a k corpi."
+    }
+  ],
   "kak": [
     {
       "slug": "phase-gadget-synthesis",
@@ -996,6 +1082,15 @@
       "definition": "Il modo \"ingenuo\" di costruire un phase gadget: una catena di ∧X in sequenza, ognuna dal qubit successivo verso l'ultimo, poi la rotazione, poi la catena al contrario. Usa 2(n−1) porte ∧X in profondità 2(n−1), cioè cresce linearmente col numero di qubit. È la forma generata, ad esempio, da Qiskit Aqua per i circuiti UCC."
     }
   ],
+  "ladder-layout": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "scala",
+      "definedIn": "p0214",
+      "definition": "Due file parallele di qubit collegate a pioli, come una scala a pioli. Qui si usano due HGP in parallelo, ciascuno formato dai vicini dell'altro: lo sfasamento tra Parity Twine chain scende da 4 a 3 CNOT, per cui il PTN ha circa 3n²/4 porte e profondità 3n, meglio della catena lineare in entrambe (µ = 3/2). Con qubit dalla vita breve è il design più fedele, perché il più compatto."
+    }
+  ],
   "lazy-move": [
     {
       "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
@@ -1014,6 +1109,15 @@
       "definition": "Linear Bottleneck Assignment Problem (o, nel linguaggio dei grafi, minimum bottleneck matching): come LSAP, ma minimizza la distanza più lunga che un singolo atomo deve fare invece della somma. Se tutti gli atomi si muovessero insieme, quella distanza massima fisserebbe il tempo minimo possibile, da cui il limite inferiore Z*."
     }
   ],
+  "lhz-architecture": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "LHZ",
+      "definedIn": "p0004",
+      "definition": "L'architettura Lechner-Hauke-Zoller: codifica ogni interazione a due corpi di un problema su un qubit fisico che ne rappresenta la parità, trasformando interazioni a lungo raggio in campi locali. È all'origine delle etichette di parità; il paper osserva che il PTN è una versione spazio-temporale della codifica LHZ, in cui le etichette compaiono su qubit diversi in momenti diversi."
+    }
+  ],
   "line-graph": [
     {
       "slug": "optimising-clifford-circuits-with-quantomatic",
@@ -1021,6 +1125,15 @@
       "term": "grafo lineare",
       "definedIn": "p0072",
       "definition": "Un diagramma con un solo ingresso e una sola uscita in cui i nodi formano una catena, ciascuno con due collegamenti: è la forma di ogni circuito a un qubit tradotto in ZX."
+    }
+  ],
+  "lnn": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "LNN",
+      "definedIn": "p0006",
+      "definition": "Linear nearest neighbor: qubit in fila, ognuno collegato solo ai due vicini. È la connettività minima e il caso in cui il paper costruisce tutti i mattoni (Sez. IV), con µ = 2 e ν = k per i generatori a k corpi. Qualunque layout con un cammino hamiltoniano può essere usato come una catena lineare, ma così spreca i collegamenti in più."
     }
   ],
   "logical-physical-operator": [
@@ -1129,6 +1242,15 @@
       "definition": "L'unità elementare di movimento: un singolo comando agli AOD che sposta contemporaneamente tutti i tweezer attivi di al massimo un sito (in orizzontale, in verticale o in diagonale). Un riordino è una sequenza di questi segmenti, e il suo tempo totale è la somma delle loro durate."
     }
   ],
+  "mu-lower-bound": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "limite inferiore",
+      "definedIn": "p0050",
+      "definition": "Due limiti su µ. Quello banale: ogni CNOT crea al più un'etichetta nuova, quindi µ ≥ 1, raggiunto con connettività completa. Quello non banale (Teorema I.1): su catena lineare, per insiemi di etichette in cui combinando due etichette non se ne ottiene un'altra (per esempio tutte le terne), vale µ ≥ 1 + 1/9. Il valore 2 dei circuiti del paper resta quindi lontano da quel limite, ma gli autori ritengono molto difficile scendere sotto 2."
+    }
+  ],
   "multiprogramming": [
     {
       "slug": "dascut",
@@ -1204,6 +1326,15 @@
       "term": "mappe non planari",
       "definedIn": "p0022",
       "definition": "La struttura dati con cui t|ket⟩ rappresenta un circuito: un grafo diretto in cui gli archi entranti in ogni nodo sono ordinati (per distinguere, ad esempio, controllo e target di una ∧X). Conserva solo chi è collegato a chi, non la posizione dei qubit né la temporizzazione."
+    }
+  ],
+  "normalized-depth": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "ν",
+      "definedIn": "p0046",
+      "definition": "La profondità del circuito divisa per la profondità minima ideale |L|/(n/2), cioè quella che si avrebbe facendo sempre n/2 CNOT in parallelo e creando un'etichetta con ciascuna. Per i generatori a k corpi vale k su catena lineare, k/2 con connettività completa e 7k/3 sulla griglia: gli HGP riducono le porte ma pagano in profondità."
     }
   ],
   "offline-layout-library": [
@@ -1324,6 +1455,13 @@
       "term": "etichetta di parità",
       "definedIn": "p0019",
       "definition": "Un'annotazione che dice quale combinazione (parità, cioè XOR) di qubit logici è codificata in ogni qubit fisico in un certo momento. Una CNOT cambia queste etichette in modo prevedibile. Se un qubit porta l'etichetta \"i⊕j\", una semplice rotazione Z su di lui equivale a un'interazione tra i qubit logici i e j."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "etichetta di parità",
+      "definedIn": "p0014",
+      "definition": "L'insieme dei qubit logici la cui parità (XOR) è codificata su un qubit fisico in un dato momento. Una CNOT con controllo c e bersaglio t sostituisce l'etichetta del bersaglio con la differenza simmetrica ℓcℓt. Se un qubit porta l'etichetta ℓ, una rotazione Z su di lui realizza la rotazione logica a molti corpi su tutti i qubit di ℓ: per questo tutto il paper si riduce a progettare circuiti di CNOT che facciano comparire le etichette giuste."
     }
   ],
   "parity-twine-network": [
@@ -1333,6 +1471,13 @@
       "term": "PTN",
       "definedIn": "p0010",
       "definition": "Parity Twine Network: un modo sistematico di costruire circuiti in cui ogni qubit deve interagire con tutti gli altri (come nella QFT) usando solo porte tra vicini. È una cascata di \"Twine chain\" di porte CNOT: facendo scorrere le parità dei qubit lungo la catena, ogni coppia logica si ritrova prima o poi su un qubit fisico, dove basta una rotazione singola. Si adatta a layout lineari, a scala o quadrati."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "Parity Twine network",
+      "definedIn": "p0068",
+      "definition": "Parity Twine chain applicate su insiemi di qubit sempre più piccoli (n, n−1, …, 2), che insieme generano tutte le coppie ℓiℓj. Con la concatenazione sfalsata ogni catena parte quattro momenti dopo la precedente, per una profondità 4n + O(1) su catena lineare. Il paper ne definisce tre tipi: I (due corpi), II (generatore speciale a tre corpi riutilizzabile) e III (base dei quattro corpi)."
     }
   ],
   "path-cover": [
@@ -1477,6 +1622,24 @@
       "definition": "Qubit del calcolo che entreranno in gioco solo più avanti nel circuito. Invece di lasciarli nella zona di stoccaggio e spostarli dopo, vengono caricati subito nella zona di entanglement e, finché non servono, fanno da atomi di passaggio per i canali DT."
     }
   ],
+  "process-fidelity": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "fedeltà di processo",
+      "definedIn": "p0283",
+      "definition": "La misura di qualità della QFT usata in simulazioni ed esperimenti (eq. 23): si preparano stati che dopo una QFT ideale darebbero una stringa di bit nota, si esegue la QFT rumorosa e si misura quanto spesso esce la stringa giusta, su 20 stati iniziali casuali da 2000 misure. Negli esperimenti IQM la QFT su griglia ha ancora ~10⁻³ a 18 qubit, quando le altre sono a zero."
+    }
+  ],
+  "qaoa": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "QAOA",
+      "definedIn": "p0218",
+      "definition": "Quantum Approximate Optimization Algorithm: alterna p volte un unitario di problema (rotazioni ZZ, o ZZZ, pesate dal problema) e un driver di rotazioni X, ottimizzando classicamente gli angoli. Nel paper ogni unitario di problema è un generatore pulito; alternando generatore e rovesciato (o aggiunto rovesciato) e sovrapponendo i cicli, la profondità per ciclo si dimezza circa (2n(1+1/p) su catena lineare)."
+    }
+  ],
   "qaoa-maxcut": [
     {
       "slug": "neutral-atom-compilation",
@@ -1500,6 +1663,13 @@
       "term": "QFT",
       "definedIn": "p0017",
       "definition": "La trasformata di Fourier quantistica, un blocco base di molti algoritmi (Shor, stima di fase, aritmetica). Richiede che ogni qubit interagisca con tutti gli altri (n(n−1)/2 rotazioni controllate), quindi è il caso ideale per le PTN. Il paper la usa come banco di prova principale (fino a QFT30)."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "QFT",
+      "definedIn": "p0248",
+      "definition": "La trasformata di Fourier quantistica, alla base di stima di fase, Shor e aritmetica quantistica. Richiede interazioni tra tutte le coppie in un ordine preciso. Nel paper è una successione di Parity Twine chain con rotazioni X in mezzo: funziona perché le etichette x restano quasi intatte sotto una PTC. Sostituendo le PTC con le versioni per ogni connettività si ottiene la QFT per quel layout; è anche l'algoritmo usato in simulazioni ed esperimenti."
     }
   ],
   "qpu": [
@@ -1536,6 +1706,15 @@
       "term": "layout",
       "definedIn": "p0022",
       "definition": "La scelta di quale qubit fisico del chip ospita ciascun qubit \"logico\" del circuito. Una buona scelta mette vicini i qubit che interagiscono spesso e usa i qubit fisici più affidabili, riducendo SWAP ed errori."
+    }
+  ],
+  "qubo-hubo": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "QUBO",
+      "definedIn": "p0222",
+      "definition": "Problemi di ottimizzazione binaria: QUBO con termini fino a due variabili (hamiltoniana di Ising con ZiZj), HUBO con termini di ordine superiore (ZiZjZk). Il QAOA per un QUBO completamente connesso richiede tutte le rotazioni a due corpi, quindi G2; un HUBO a tre corpi richiede G3. Su problemi sparsi i generatori completi sprecano etichette, ma sopra una densità di archi di circa 0.25–0.55 battono comunque i transpiler."
     }
   ],
   "rank-one-decomposition": [
@@ -1739,6 +1918,15 @@
       "definition": "Gate con X² = I (Pauli, Hadamard, e a due qubit il C-Z). G={I,X} ≅ GF(2), quindi la compilazione è ottima via rango GF(2). La self-inversione è anche ciò che rende applicabile l'eliminazione gaussiana ai gruppi di C-Z allineati."
     }
   ],
+  "shifted-concatenation": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "concatenazione sfalsata",
+      "definedIn": "p0097",
+      "definition": "Mettere un circuito dopo un altro facendoli sovrapporre nel tempo di s momenti, quando non ci sono porte in conflitto (Def. A.6). È lo strumento principale per ridurre la profondità: nel PTN ogni Parity Twine chain parte quattro momenti dopo la precedente invece di aspettarne la fine, e nel QAOA cicli successivi si incastrano alternando un generatore e il suo rovesciato (o aggiunto rovesciato)."
+    }
+  ],
   "shuttle-infidelity": [
     {
       "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
@@ -1807,6 +1995,15 @@
       "definition": "L'idea centrale di ARGON: invece di risolvere insieme \"dove mettere i gate\" (vincoli spaziali, fissi per un dato hardware) e \"come muovere gli atomi nel tempo\" (vincoli dinamici, dipendenti dal circuito), li separa. La parte spaziale si precalcola una volta sola offline, la parte temporale si affida a una rete neurale veloce. Così la compilazione passa da esponenziale a quasi istantanea."
     }
   ],
+  "special-generator": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "generatore speciale",
+      "definedIn": "p0078",
+      "definition": "Un circuito che genera solo le etichette a k corpi contenenti una certa etichetta fissa ℓs, detta speciale. Si ottiene da quello a k−1 corpi aggiungendo ℓs con una CNOT prima di ogni Parity Twine chain. Concatenando generatori speciali con etichette speciali diverse, su insiemi di qubit decrescenti e alternando versioni dritte e rovesciate, si costruisce il generatore completo Gk."
+    }
+  ],
   "species-selective": [
     {
       "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
@@ -1830,6 +2027,15 @@
       "term": "spider",
       "definedIn": "p0498",
       "definition": "I nodi dei diagrammi del calcolo ZX: gli spider verdi (Z) e rossi (X), ognuno con una fase. La regola principale (\"fusione degli spider\") dice che due spider dello stesso colore collegati si fondono in uno solo sommando le fasi, ed è quella che fa \"passare\" le porte attraverso i gadget."
+    }
+  ],
+  "square-grid": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "griglia quadrata",
+      "definedIn": "p0156",
+      "definition": "Qubit disposti su un reticolo 2D, ciascuno collegato ai vicini sopra, sotto, a destra e a sinistra, come in molti chip superconduttivi (per esempio IQM). Con un HGP minimale circa un terzo dei qubit sta sul cammino e il resto sono vicini, da cui µ = 4/3; la profondità però sale (6n per il PTN, ν = 7k/3 per k ≥ 4). Negli esperimenti è l'implementazione che dà i risultati migliori."
     }
   ],
   "stabilizer-code": [
@@ -1938,6 +2144,13 @@
       "term": "SWAP",
       "definedIn": "p0022",
       "definition": "Un'operazione che scambia lo stato di due qubit collegati. Serve a \"spostare\" l'informazione verso un qubit vicino quando due qubit che devono interagire non sono collegati sul chip. Ogni SWAP costa tre operazioni a due qubit, quindi allunga il circuito e aggiunge rumore."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "SWAP",
+      "definedIn": "p0004",
+      "definition": "La porta che scambia lo stato di due qubit collegati, pari a tre CNOT. Le reti di SWAP sono il modo classico per far interagire qubit lontani su hardware con connettività limitata, e sono il riferimento con cui il paper si confronta: le Parity Twine chain spostano l'informazione e creano etichette nello stesso tempo, risparmiando porte (per esempio 9/4 volte meno CNOT nel QAOA su griglia)."
     }
   ],
   "symplectic": [
@@ -2046,6 +2259,13 @@
       "term": "transpilazione",
       "definedIn": "p0022",
       "definition": "La \"traduzione\" di un circuito scritto in modo astratto in uno che un dispositivo specifico sa eseguire. Tre passi: riscrivere le operazioni con quelle native del dispositivo, scegliere quali qubit fisici usare (layout) e aggiungere operazioni SWAP dove due qubit che devono interagire non sono collegati. Ogni passo può allungare il circuito e aggiungere errori."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "transpiler",
+      "definedIn": "p0246",
+      "definition": "Software che adatta un circuito generico a un dispositivo (porte native, connettività), come Qiskit, Qiskit AI e TKET. Il paper confronta con loro le sue soluzioni esatte: sotto una certa densità di archi del problema vincono i transpiler, sopra (circa 0.25–0.55) vince Parity Twine in porte e profondità. In più le soluzioni esatte non richiedono tempo di compilazione, che invece per i transpiler esplode con la dimensione."
     }
   ],
   "trap-transfer": [
@@ -2071,6 +2291,13 @@
       "term": "trotterizzazione",
       "definedIn": "p0019",
       "definition": "Una tecnica per simulare l'evoluzione nel tempo e^(-iHt) di un sistema, quando l'Hamiltoniano H è una somma di termini di Pauli: invece di esponenziare tutto insieme, si applicano in sequenza gli esponenziali dei singoli termini, a piccoli passi. Ogni esponenziale è un Pauli gadget, ed è per questo che i circuiti di chimica quantistica ne sono pieni."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "Trotter",
+      "definedIn": "p0260",
+      "definition": "Approssimare l'evoluzione sotto un'hamiltoniana somma di termini con un prodotto di evoluzioni sotto i singoli termini, ripetuto in piccoli passi. Nel paper si usa la formula di Suzuki al secondo ordine per un Ising a campo misto con interazioni a lungo raggio: mezzo passo di X, tutte le ZZ con un PTN, di nuovo mezzo passo di X, con errore O(τ³) per passo."
     }
   ],
   "twine-chain": [
@@ -2080,6 +2307,22 @@
       "term": "Twine chain",
       "definedIn": "p0019",
       "definition": "Il mattone delle PTN: una sequenza di porte CNOT lungo una \"spina dorsale\" (backbone) di qubit, con eventuali \"rami\" (legs) laterali. Mentre le porte si susseguono, le informazioni di parità dei qubit si mescolano e si spostano, così che coppie diverse compaiono su qubit diversi. Più catene in cascata coprono tutte le coppie."
+    },
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "Parity Twine chain",
+      "definedIn": "p0061",
+      "definition": "Una sequenza di DCNOT tra qubit vicini, dal primo all'ultimo: l'etichetta del primo qubit viaggia lungo la catena e si combina con tutte le altre, generando tutte le coppie che la contengono. Il paper la adatta a ogni connettività: sul grafo completo diventa una sequenza di CNOT semplici, sulla griglia (PTCgrid) usa un HGP e CNOT verso i vicini, risparmiando circa 1/3 delle porte."
+    }
+  ],
+  "typical-gate": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "CNOT tipiche",
+      "definedIn": "p0050",
+      "definition": "Nella prova del limite inferiore su catena lineare, una CNOT è tipica se trasforma un'etichetta utile, appena creata, in un'altra etichetta utile mai vista prima. Se µ è vicino a 1 quasi tutte le CNOT devono essere tipiche; ma su una catena le porte tipiche non possono susseguirsi indefinitamente, e ogni porta non tipica 'serve' al più quattro porte tipiche. Da qui γ ≥ 1/9."
     }
   ],
   "ucc": [
@@ -2098,6 +2341,15 @@
       "term": "forma vettoriale",
       "definedIn": "p0091",
       "definition": "La traduzione di un'etichetta in numeri: (κ | ξ | ζ), dove κ è l'esponente della fase i e ξ, ζ sono vettori di 0 e 1 che dicono su quali qubit c'è una X o una Z. Permette di fare i calcoli con l'algebra lineare binaria."
+    }
+  ],
+  "virtual-swap": [
+    {
+      "slug": "connectivity-aware-synthesis",
+      "title": "Connectivity-aware Synthesis of Quantum Algorithms",
+      "term": "SWAP virtuale",
+      "definedIn": "p0146",
+      "definition": "Uno SWAP che non si esegue: si aggiorna solo, in software classico, quale qubit fisico porta quale etichetta. Sul grafo completo la posizione delle etichette non conta, quindi lo SWAP dentro ogni DCNOT si rende virtuale e la DCNOT diventa una sola CNOT: porte e profondità si dimezzano e si arriva a µ = 1."
     }
   ],
   "xyz-mapping": [
