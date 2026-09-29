@@ -24,5 +24,13 @@
       "level": "intermediate",
       "label": "Italiano · Laurea in campo affine"
     }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Molti algoritmi quantistici richiedono di far interagire gruppi di qubit anche lontani tra loro, ma sul chip ogni qubit è collegato solo ad alcuni vicini. I metodi di oggi pagano questa distanza con molte operazioni in più, ognuna delle quali aggiunge errori.",
+      "idea": "Si tiene traccia di quale combinazione di dati porta ogni qubit (le \"etichette di parità\") e si costruiscono catene di operazioni (Parity Twine) disegnate apposta sulla forma dei collegamenti del chip: una fila, una griglia, un reticolo a esagoni. Più collegamenti ci sono, più operazioni si risparmiano.",
+      "result": "Servono molte meno operazioni dei metodi migliori noti, fino al minimo teorico quando tutti i qubit sono collegati, e i programmi non diventano più lunghi. Su chip reali (IQM) il programma QFT a 18 qubit dà ancora un risultato utile quando gli altri metodi danno solo rumore.",
+      "why": "Vale per algoritmi importanti come QAOA, QFT e simulazione di sistemi fisici. Sui chip a fila unica resta un limite: scendere sotto un certo numero di operazioni sembra molto difficile."
+    }
+  }
 }

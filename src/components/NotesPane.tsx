@@ -2,9 +2,10 @@ import { forwardRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 import ExplanationNote from "./ExplanationNote";
 import ArgumentMap from "./ArgumentMap";
+import TldrCard from "./TldrCard";
 import type { StructureIndex } from "../lib/structure";
 import type { ConceptMatcher } from "../lib/concepts";
-import type { Paragraph, PaperStructure } from "../types";
+import type { Paragraph, PaperStructure, Tldr } from "../types";
 
 interface Props {
   paperTitle: string;
@@ -15,6 +16,8 @@ interface Props {
   activeId: string | null;
   hoverId: string | null;
   conceptMatcher: ConceptMatcher;
+  /** The paper in brief, shown first in the notes tab. */
+  tldr: Tldr | null;
   /** Present when the paper has an argument map: adds the "Mappa" tab, role chips, and the thread filter. */
   argument?: {
     structure: PaperStructure;
@@ -44,7 +47,7 @@ interface Props {
  * click-to-reveal and the connector line, not by scroll position).
  */
 const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
-  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, argument, isInReview, recallSummary, onToggleReview, onActivate, onConcept, onHover, onJumpToPage, sheet },
+  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, tldr, argument, isInReview, recallSummary, onToggleReview, onActivate, onConcept, onHover, onJumpToPage, sheet },
   ref,
 ) {
   const thread = argument?.threadOnly ? argument.index.thread : null;
@@ -102,6 +105,7 @@ const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
           onGoToParagraph={argument.onGoToParagraph}
         />
       )}
+      {!showMap && tldr && <TldrCard tldr={tldr} />}
       {!showMap && thread && <p className="notes-thread-hint">Il filo: {thread.size} paragrafi su {paragraphs.length} — solo quelli che enunciano o provano le tesi del paper.</p>}
       {!showMap && recallSummary && (
         <div className="recall-summary">

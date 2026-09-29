@@ -11,5 +11,13 @@
   "variants": [
     { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
     { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Gli ottimizzatori di programmi quantistici di solito guardano poche operazioni alla volta, come chi corregge un testo parola per parola senza mai rileggere la frase intera. Così perdono le semplificazioni grandi.",
+      "idea": "Gli autori individuano un \"mattone\" ricorrente nei programmi, il phase gadget (e la sua versione generale, il Pauli gadget), e mostrano come ricostruirlo in una forma più compatta: ad albero invece che a scala, e affiancando due mattoni che condividono dei pezzi per risparmiare operazioni.",
+      "result": "Sui programmi di chimica quantistica il loro strumento (t|ket⟩) dimezza circa le operazioni più costose (-54,5%) e accorcia i programmi del 57,7%, molto più degli ottimizzatori concorrenti.",
+      "why": "La chimica è una delle applicazioni più attese dei computer quantistici, e i suoi programmi sono pieni di questi mattoni. Il vantaggio cresce con la dimensione del programma."
+    }
+  }
 }

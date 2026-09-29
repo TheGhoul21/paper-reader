@@ -5,6 +5,7 @@ import { findMatches, highlightMatchInDom, type SearchMatch } from "../lib/searc
 import { useNarrow } from "../lib/useNarrow";
 import PageCanvas from "./PageCanvas";
 import NotesPane from "./NotesPane";
+import { pickTldr } from "./TldrCard";
 import NoteConnector from "./NoteConnector";
 import CitationPopover from "./CitationPopover";
 import ConceptPopover from "./ConceptPopover";
@@ -14,7 +15,7 @@ import { findOccurrences, markTextLayers, scrollToOccurrence, unmarkTextLayers, 
 import { cardId, useReview } from "../lib/review";
 import { indexStructure } from "../lib/structure";
 import Toolbar, { type FitMode } from "./Toolbar";
-import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, PaperStructure, Variant } from "../types";
+import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, PaperStructure, Tldr, Variant } from "../types";
 
 interface Props {
   title: string;
@@ -26,6 +27,8 @@ interface Props {
   conceptsIndex: ConceptsIndex;
   /** The paper's argument map, if it has one. */
   structure: PaperStructure | null;
+  /** Plain-language summary per language, if the paper has one. */
+  tldr?: Record<string, Tldr>;
   slug: string;
   /** Paragraph to open on load (the reader's `?p=` link, e.g. from another paper's glossary). */
   initialParagraphId: string | null;
@@ -51,6 +54,7 @@ export default function PdfViewer({
   concepts,
   conceptsIndex,
   structure,
+  tldr,
   slug,
   initialParagraphId,
   variants,
@@ -488,6 +492,7 @@ export default function PdfViewer({
             activeId={activeId}
             hoverId={hoverId}
             conceptMatcher={conceptMatcher}
+            tldr={pickTldr(tldr, variants.find((v) => v.key === variant)?.language)}
             argument={
               structure && structureIndex
                 ? {

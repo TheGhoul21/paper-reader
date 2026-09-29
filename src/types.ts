@@ -16,6 +16,20 @@ export interface LibraryEntry {
   background: string;
   pageCount: number;
   variants: Variant[];
+  /** Plain-language summary of the whole paper, keyed by language ("it", "en"): always written for a reader with no background, whatever the variants' levels. */
+  tldr?: Record<string, Tldr>;
+}
+
+/** The paper in brief: fixed fields so every paper's summary reads the same way. */
+export interface Tldr {
+  /** What doesn't work today, with an everyday analogy rather than jargon. */
+  problem: string;
+  /** What the authors propose. */
+  idea: string;
+  /** What they get, numbers made tangible. */
+  result: string;
+  /** Who it matters to, and what it leaves open. */
+  why?: string;
 }
 
 export interface PaperMeta extends LibraryEntry {

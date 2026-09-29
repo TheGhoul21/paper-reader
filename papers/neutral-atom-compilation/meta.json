@@ -21,5 +21,13 @@
       "level": "expert",
       "label": "Italiano · Esperto nel sottocampo"
     }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "In un tipo di computer quantistico i \"qubit\" sono singoli atomi disposti a griglia, comandati da laser che accendono intere righe e colonne alla volta, come un'insegna luminosa dove non puoi accendere una lampadina sola. Tradurre un programma in questi comandi con pochi passaggi è difficile.",
+      "idea": "Gli autori trasformano il problema in un rompicapo matematico ben noto (scomporre una tabella nel minor numero di \"incroci riga-colonna\") e, per ogni tipo di operazione, danno un metodo con una garanzia di quanto si avvicina al migliore possibile. Fanno lo stesso per gli spostamenti di atomi necessari a farli interagire.",
+      "result": "Fino alla metà dei passaggi di comando, circa la metà degli spostamenti di atomi, oltre il 30% di risparmio su un algoritmo di ottimizzazione molto usato (QAOA), e tutto calcolato in meno di un secondo anche su griglie da 200×200.",
+      "why": "Meno passaggi vuol dire meno tempo e meno errori sulla macchina vera. Alcune garanzie valgono solo sotto una congettura matematica non ancora dimostrata."
+    }
+  }
 }

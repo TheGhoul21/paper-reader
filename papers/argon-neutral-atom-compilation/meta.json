@@ -22,5 +22,13 @@
       "level": "intermediate",
       "label": "Italiano · Laurea in campo affine"
     }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Nei computer quantistici ad atomi, per far \"parlare\" due atomi bisogna spostarli uno vicino all'altro con pinzette di luce. Decidere dove mettere gli atomi e come spostarli è un rompicapo: i metodi precisi ci mettono ore, quelli veloci fanno scelte miopi e il risultato è pieno di errori.",
+      "idea": "ARGON divide il lavoro in due. Prima, una volta per tutte, calcola le disposizioni di atomi più compatte possibili, come uno schema di posti a sedere preparato in anticipo. Poi una piccola intelligenza artificiale sceglie, per ogni programma, la disposizione che darà meno problemi di spostamento in seguito.",
+      "result": "Il programma viene tradotto in meno di un secondo in media (contro minuti o ore), e sui programmi grandi il risultato è molto più affidabile: fino a cento volte in certi casi.",
+      "why": "Spostare offline il lavoro pesante rende la compilazione praticamente istantanea anche per macchine grandi. Il vantaggio è modesto sui programmi di prova più tradizionali."
+    }
+  }
 }

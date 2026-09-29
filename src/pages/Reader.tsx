@@ -70,6 +70,7 @@ export default function Reader() {
         concepts={concepts}
         conceptsIndex={conceptsIndex}
         structure={structure}
+        tldr={meta.tldr}
         slug={slug ?? ""}
         initialParagraphId={searchParams.get("p")}
         variants={meta.variants}

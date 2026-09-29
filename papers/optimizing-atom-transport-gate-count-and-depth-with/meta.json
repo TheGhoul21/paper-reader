@@ -11,5 +11,13 @@
   "variants": [
     { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
     { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Molti algoritmi quantistici, come la QFT, richiedono che ogni qubit interagisca con tutti gli altri. Sulle macchine ad atomi questo vuol dire spostare continuamente gli atomi avanti e indietro, e ogni spostamento costa tempo ed errori.",
+      "idea": "Si usa uno schema (le Parity Twine) in cui ogni qubit interagisce solo con i vicini ma porta con sé una \"combinazione\" di dati, così tutti finiscono per incontrarsi. In più, visto che gli atomi vanno comunque avvicinati e riportati indietro, li si riporta scambiati di posto: lo spostamento diventa parte del calcolo invece di essere solo un costo.",
+      "result": "Sulla QFT a 30 qubit servono meno operazioni, meno spostamenti e meno fasi laser, con un'affidabilità stimata fino a mille volte più alta dei metodi precedenti.",
+      "why": "La QFT è alla base di molti algoritmi, anche di aritmetica quantistica. Il vantaggio dipende dall'hardware: con certe caratteristiche della macchina conviene la versione senza spostamenti."
+    }
+  }
 }

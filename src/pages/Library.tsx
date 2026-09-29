@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PaperThumbnail from "../components/PaperThumbnail";
+import { pickTldr } from "../components/TldrCard";
 import { SearchIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
 import type { LibraryEntry, Variant } from "../types";
 import { papersUrl } from "../lib/paths";
@@ -40,6 +41,12 @@ function languageLabel(code: string): string {
 function formatAuthors(authors: string[]): string {
   if (authors.length <= 3) return authors.join(", ");
   return `${authors.slice(0, 3).join(", ")} et al.`;
+}
+
+/** Problem + idea from the paper's plain-language summary: enough to choose what to read. */
+function tldrTeaser(p: LibraryEntry): string {
+  const tldr = pickTldr(p.tldr, p.language);
+  return tldr ? `${tldr.problem} ${tldr.idea}` : "";
 }
 
 const dateFormatter = new Intl.DateTimeFormat("it-IT", { day: "numeric", month: "short", year: "numeric" });
@@ -203,6 +210,7 @@ export default function Library() {
                       </span>
                     ))}
                   </div>
+                  {p.tldr && <p className="library-tldr">{tldrTeaser(p)}</p>}
                   <p className="library-background">{p.background}</p>
                   <p className="library-meta">Importato il {formatImportedAt(p.importedAt)}</p>
                 </div>

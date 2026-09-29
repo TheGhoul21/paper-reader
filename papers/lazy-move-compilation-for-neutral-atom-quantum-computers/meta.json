@@ -20,5 +20,13 @@
   "variants": [
     { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
     { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Nei computer quantistici ad atomi, due atomi possono interagire solo se sono vicini, e i compilatori di oggi li avvicinano a ogni operazione. Ogni spostamento è lento, scalda gli atomi e rischia di perderli.",
+      "idea": "Si lasciano gli atomi con i dati fermi e si mettono in mezzo atomi \"di servizio\" di un altro tipo, disposti a scacchiera, che passano le interazioni da un atomo all'altro come una staffetta. Un atomo con i dati si sposta solo nei rari casi in cui conviene davvero (\"lazy move\", spostamento pigro).",
+      "result": "Su 22 programmi di prova, il compilatore BRIDGE è 10–16 volte più affidabile e centinaia di volte più veloce dei metodi basati sugli spostamenti, senza spostare nessun atomo con i dati.",
+      "why": "Mostra che per la maggior parte dei programmi il movimento non serve. Il prezzo è un hardware più complesso: circa il doppio delle trappole e due tipi di atomi da controllare."
+    }
+  }
 }

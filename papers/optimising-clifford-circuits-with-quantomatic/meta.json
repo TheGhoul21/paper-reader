@@ -11,5 +11,13 @@
   "variants": [
     { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
     { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "I programmi quantistici sono sequenze di operazioni, e più sono corte meno errori si accumulano. Accorciarle a mano è lento e rischioso: basta un passaggio sbagliato perché il programma accorciato non faccia più la stessa cosa.",
+      "idea": "Gli autori usano un linguaggio a diagrammi (lo ZX-calculus) in cui semplificare un programma è come semplificare un disegno con regole precise, dentro un software (Quantomatic) che controlla ogni passaggio. Catalogano le forme più corte possibili per i programmi a uno e due qubit e insegnano al software dove e quando applicare le regole.",
+      "result": "L'ottimizzatore funziona in modo automatico e ogni accorciamento è anche una prova che il programma è rimasto equivalente. Per uno e due qubit trova sempre la forma più corta.",
+      "why": "Unisce ottimizzazione e verifica. Riguarda però solo una famiglia di operazioni (i Clifford), e sui programmi più grandi non trova sempre il minimo ed è lento, per limiti del software più che del metodo."
+    }
+  }
 }

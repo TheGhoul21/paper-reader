@@ -349,6 +349,16 @@ body {
   -webkit-box-orient: vertical;
 }
 
+.library-tldr {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .library-meta {
   margin: auto 0 0;
   padding-top: 6px;
@@ -1567,6 +1577,65 @@ body {
 .notes-tab.is-active {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.tldr-card {
+  margin-bottom: 12px;
+  padding: 8px 12px 10px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--level-beginner);
+  border-radius: 8px;
+  background: var(--card-bg);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.tldr-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tldr-head .explanation-section {
+  margin: 0;
+}
+
+.tldr-chevron {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.tldr-teaser {
+  margin: 4px 0 0;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tldr-fields {
+  margin: 6px 0 0;
+}
+
+.tldr-field + .tldr-field {
+  margin-top: 6px;
+}
+
+.tldr-field dt {
+  font-weight: 600;
+  font-size: 0.74rem;
+  color: var(--level-beginner);
+}
+
+.tldr-field dd {
+  margin: 1px 0 0;
 }
 
 .notes-thread-hint {

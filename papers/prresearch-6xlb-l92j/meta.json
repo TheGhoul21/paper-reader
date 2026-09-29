@@ -11,5 +11,13 @@
   "variants": [
     { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
     { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Dentro un programma quantistico l'informazione si rimescola: dopo certe operazioni, un qubit non porta più il \"suo\" dato ma una combinazione di più dati. Per capire cosa fa un'operazione in un certo punto bisogna ricostruire tutto quello che è successo prima.",
+      "idea": "Si attacca a ogni filo del programma un'etichetta che dice quale combinazione di dati porta in quel momento, come le etichette sui cavi in un quadro elettrico. Ogni operazione aggiorna le etichette con regole semplicissime, e leggendole si sa subito l'effetto di qualunque operazione successiva.",
+      "result": "Il metodo è veloce, mette sotto lo stesso tetto i modi esistenti di tenere traccia di queste operazioni, e aiuta a progettare programmi più corti: in un esempio, tre operazioni diventano eseguibili contemporaneamente.",
+      "why": "È uno strumento di ragionamento che semplifica la progettazione di programmi quantistici, anche di quelli protetti dagli errori. È un paper teorico: il guadagno concreto dipende da come lo si usa."
+    }
+  }
 }

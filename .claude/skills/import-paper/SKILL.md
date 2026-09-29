@@ -178,6 +178,29 @@ Write `papers/<slug>/structure.json`: the paper's thesis and the 5–8 claims th
 
 For an already-imported paper, write it on its own from `paragraphs.json` (whole-paper read first); nothing else changes.
 
+## 4e. Write the TL;DR ("In breve")
+
+After the whole paper is read (and the argument map written — its thesis and claims are the best raw material), write `tldr` for `meta.json`: the paper in brief, shown as the "In breve" card at the top of the notes pane and, as problem + idea, on the library card.
+
+```json
+"tldr": {
+  "it": {
+    "problem": "…",
+    "idea": "…",
+    "result": "…",
+    "why": "…"
+  }
+}
+```
+
+- **Always plain language, whatever the variants' levels** — even an expert-level import gets a TL;DR a reader with no background can follow. It's the way in, not the map; the thesis in `structure.json` is where the technical summary goes.
+- Keyed by **language** (not variant): one entry per language among `meta.json`'s `variants`.
+- Fixed fields, 1–2 sentences each: `problem` (what doesn't work today — an everyday analogy instead of jargon), `idea` (what the authors propose), `result` (what they get, with numbers made tangible: "cento volte più affidabile", not "fidelity 1.2e-2 vs 1.1e-4"), `why` (optional: who it matters to and what it leaves open — be honest about limits).
+- Any unavoidable technical word (qubit, QFT…) gets a few-word gloss or is left as a name, never as the thing the sentence hinges on.
+- `check_paper.py` checks every language has the three required fields.
+
+For an already-imported paper, write it on its own from `structure.json` + `paragraphs.json` and add it to both `meta.json` and the paper's `index.json` entry.
+
 ## 5. Write meta.json and update the library index
 
 `papers/<slug>/meta.json`:
@@ -194,12 +217,13 @@ For an already-imported paper, write it on its own from `paragraphs.json` (whole
   "pageCount": N,
   "variants": [
     { "key": "it-beginner", "language": "it", "level": "beginner", "label": "Italiano · Nessun background" }
-  ]
+  ],
+  "tldr": { "it": { "problem": "…", "idea": "…", "result": "…", "why": "…" } }
 }
 ```
 `language`/`background` at the top level mirror the *first* generated variant (used by the library card); `variants` lists every combination actually present in `paragraphs.json`, in the order they should appear in the reader's selector. Label format: `"<Language name> · <level phrase>"` — level phrases: beginner → "Nessun background" / "No background", intermediate → "Laurea in campo affine" / "Adjacent-field grad level", expert → "Esperto nel sottocampo" / "Expert in this subfield" (match the label's own language to that variant's language).
 
-Then update `papers/index.json` (array of `{slug, title, authors, importedAt, language, background, pageCount, variants}`, mirroring the corresponding fields from `meta.json`) — append a new entry, or replace the existing one if this slug was already there (re-import). The library homepage reads `pageCount`/`variants` straight off this file, so keep them byte-for-byte in sync with `meta.json`.
+Then update `papers/index.json` (array of `{slug, title, authors, importedAt, language, background, pageCount, variants, tldr}`, mirroring the corresponding fields from `meta.json`) — append a new entry, or replace the existing one if this slug was already there (re-import). The library homepage reads `pageCount`/`variants`/`tldr` straight off this file, so keep them byte-for-byte in sync with `meta.json`.
 
 ## Importing from a GitHub issue (paper requests)
 
@@ -213,7 +237,7 @@ Readers request papers through GitHub issues (form `.github/ISSUE_TEMPLATE/paper
    It tries an arXiv id/URL in the text, then a DOI, then an arXiv title search (quoted title, or the text after "Authors (Year):"), and prints candidates with a title-similarity score, the arXiv licence, and whether the paper is already in the library. Below 0.8, confirm authors and year by hand. No arXiv hit: try the DOI / publisher page, then a web search (Google Scholar has no API); still nothing → comment asking for a link, add label `needs-link`, stop.
 3. **Duplicates**: already in the library at the requested level → comment with its link, label `duplicate`, close. Already there but not at that level/language → do **Adding a variant** below instead of a new import.
 4. **Licence** — the library republishes the PDF verbatim, so it must be redistributable: CC BY / CC BY-SA / CC0 (the arXiv abs page, or the publisher for open-access journals). arXiv's default `nonexclusive-distrib` licence is **not** enough: look for an open-access publisher version (e.g. Quantum, PRX/PR Research, EPTCS are CC BY) and import that URL instead; if none, comment explaining why, label `license-blocked`, close. Record the licence you relied on in the issue comment.
-5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py`, `check_concepts.mjs`).
+5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py`, `check_concepts.mjs`).
 6. **Close the loop**: commit with `Closes #<N>` in the message; comment on the issue with `https://theghoul21.github.io/paper-reader/paper/<slug>` (live after the deploy).
 
 ## Adding a variant to an already-imported paper

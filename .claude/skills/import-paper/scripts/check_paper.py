@@ -4,7 +4,9 @@
 #   2. recall questions — ids unique within a paragraph, question and answer for every variant;
 #   3. structure.json (argument map), if present — thesis/titles/summaries for every variant,
 #      unique claim ids, statedIn/evidence pointing at existing paragraphs, dependsOn at existing
-#      claims, no dependency cycles.
+#      claims, no dependency cycles;
+#   4. tldr in meta.json, if present — problem/idea/result for every variant's language, and the
+#      same tldr in the paper's papers/index.json entry.
 #
 #   python3 .claude/skills/import-paper/scripts/check_paper.py <slug>
 #
@@ -100,5 +102,19 @@ if os.path.exists(structure_path):
     for msg in problems:
         found = True
         print(f"structure: {msg}")
+meta = json.load(open(f"papers/{slug}/meta.json"))
+if "tldr" in meta:
+    tldr = meta["tldr"]
+    for lang in sorted({v["language"] for v in meta["variants"]}):
+        for field in ("problem", "idea", "result"):
+            if not tldr.get(lang, {}).get(field):
+                found = True
+                print(f"tldr: {lang} missing {field}")
+    entry = next((e for e in json.load(open("papers/index.json")) if e["slug"] == slug), None)
+    if entry is None or entry.get("tldr") != tldr:
+        found = True
+        print("tldr: papers/index.json entry doesn't match meta.json")
+    else:
+        print(f"tldr: {', '.join(sorted(tldr))} OK")
 print("problems found — see above" if found else "OK")
 sys.exit(1 if found else 0)

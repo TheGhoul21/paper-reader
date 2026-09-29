@@ -18,5 +18,13 @@
       "level": "beginner",
       "label": "Italiano · Nessun background"
     }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "I computer quantistici di oggi sono piccoli e rumorosi: un programma troppo grande non ci sta. Si può tagliarlo in pezzi ed eseguirli separatamente, ma ogni taglio va pagato con moltissime ripetizioni in più, come un puzzle che per essere ricomposto richiede di stampare ogni tessera cento volte.",
+      "idea": "DAScut guarda com'è fatto il programma prima di tagliarlo: taglia solo dove i pezzi sono poco collegati tra loro, riconosce i pezzi identici per eseguirli una volta sola, e manda ogni pezzo sulla macchina più adatta.",
+      "result": "Meno tempo complessivo, meno perdita di qualità e più lavori portati a termine rispetto al taglio \"alla cieca\". Gli esperimenti mostrano anche che la scelta della macchina conta quasi quanto il taglio.",
+      "why": "Finché le macchine restano piccole, spezzare i programmi è uno dei pochi modi per far girare problemi più grandi. Resta però costoso per i programmi molto \"intrecciati\", dove ogni taglio fa esplodere il numero di ripetizioni."
+    }
+  }
 }

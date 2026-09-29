@@ -11,5 +11,13 @@
   "variants": [
     { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
     { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
-  ]
+  ],
+  "tldr": {
+    "it": {
+      "problem": "Nei computer quantistici ad atomi divisi in \"zone\" (una per memorizzare, una per far interagire), ogni volta che due atomi lontani devono interagire vanno trasportati fisicamente e poi riportati indietro. L'operazione in sé dura un attimo; il viaggio dura cento volte di più.",
+      "idea": "Invece di spostare gli atomi, si fa viaggiare solo il \"messaggio\": un'eccitazione salta di atomo in atomo lungo una fila di atomi di supporto, come un passamano in una catena di persone. Un compilatore prepara queste file all'inizio, così dopo nessun atomo deve più muoversi.",
+      "result": "Programmi molto più brevi e più affidabili rispetto ai metodi esistenti, con un vantaggio che cresce con la dimensione: sui programmi grandi l'affidabilità arriva a 15 volte quella del miglior concorrente.",
+      "why": "Toglie il collo di bottiglia principale delle macchine ad atomi a zone. Serve però preparare le file di atomi di supporto, e per alcuni algoritmi (come la QFT) queste vanno ricostruite strada facendo."
+    }
+  }
 }
