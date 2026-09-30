@@ -34,6 +34,7 @@ interface Props {
   onConcept: (conceptId: string, fromParagraphId: string, clientPos: { x: number; y: number }) => void;
   onHover: (id: string | null) => void;
   onJumpToPage: (page: number) => void;
+  onGoToParagraph: (paragraphId: string) => void;
   /** Narrow screens: the pane is a bottom sheet that collapses to a bar. */
   sheet?: { expanded: boolean; onToggle: () => void };
 }
@@ -44,7 +45,7 @@ interface Props {
  * click-to-reveal and the connector line, not by scroll position).
  */
 const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
-  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, argument, isInReview, recallSummary, onToggleReview, onActivate, onConcept, onHover, onJumpToPage, sheet },
+  { paperTitle, paragraphs, numbers, sectionStarts, variant, activeId, hoverId, conceptMatcher, argument, isInReview, recallSummary, onToggleReview, onActivate, onConcept, onHover, onJumpToPage, onGoToParagraph, sheet },
   ref,
 ) {
   const thread = argument?.threadOnly ? argument.index.thread : null;
@@ -143,6 +144,7 @@ const NotesPane = forwardRef<HTMLElement, Props>(function NotesPane(
               onActivate={() => onActivate(p)}
               onConcept={(conceptId, pos) => onConcept(conceptId, p.id, pos)}
               onHover={(h) => onHover(h ? p.id : null)}
+              onGoToParagraph={onGoToParagraph}
             />
           ))}
         </section>

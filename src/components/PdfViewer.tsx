@@ -534,6 +534,10 @@ export default function PdfViewer({
             }}
             onHover={setHoverId}
             onJumpToPage={handleJumpToPage}
+            onGoToParagraph={(id) => {
+              const paragraph = paragraphs.find((p) => p.id === id);
+              if (paragraph) handleGoToParagraph(paragraph);
+            }}
             sheet={narrow ? { expanded: notesOpen, onToggle: () => setNotesOpen((o) => !o) } : undefined}
           />
         )}

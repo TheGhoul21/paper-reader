@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { segmentText, type ConceptMatcher } from "../lib/concepts";
 import type { Paragraph } from "../types";
 import type { ParagraphRole } from "../lib/structure";
 import { ExternalLinkIcon } from "./icons";
+
+const DeepDive = lazy(() => import("./DeepDive"));
 
 interface Props {
   paperTitle: string;
@@ -22,6 +24,7 @@ interface Props {
   onActivate: () => void;
   onHover: (hovering: boolean) => void;
   onConcept: (conceptId: string, clientPos: { x: number; y: number }) => void;
+  onGoToParagraph: (paragraphId: string) => void;
 }
 
 type AskTarget = "claude" | "chatgpt";
@@ -53,10 +56,14 @@ export default function ExplanationNote({
   onActivate,
   onHover,
   onConcept,
+  onGoToParagraph,
 }: Props) {
   const explanation = paragraph.explanations[variant];
   const fallbackKey = Object.keys(paragraph.explanations)[0];
   const shownExplanation = explanation ?? paragraph.explanations[fallbackKey];
+  // Same variant as the note, else none: a deep dive in another level would read oddly under this note.
+  const deepDive = paragraph.deepDive?.[explanation ? variant : fallbackKey];
+  const [deepDiveOpen, setDeepDiveOpen] = useState(false);
   const [copied, setCopied] = useState<AskTarget | null>(null);
   const segments = useMemo(() => segmentText(shownExplanation, conceptMatcher), [shownExplanation, conceptMatcher]);
 
@@ -70,6 +77,7 @@ export default function ExplanationNote({
       "",
       "Spiegazione che ho già:",
       shownExplanation,
+      ...(deepDive ? ["", "Approfondimento che ho già:", deepDive] : []),
       "",
       "Puoi aiutarmi ad approfondire o rispondere a domande su questo passaggio?",
     ].join("\n");
@@ -137,6 +145,21 @@ export default function ExplanationNote({
               ),
             )}
           </p>
+          {deepDive && (
+            <button
+              type="button"
+              className="deep-dive-toggle"
+              aria-expanded={deepDiveOpen}
+              onClick={() => setDeepDiveOpen((o) => !o)}
+            >
+              {deepDiveOpen ? "Chiudi approfondimento ▾" : "Approfondisci ▸"}
+            </button>
+          )}
+          {deepDive && deepDiveOpen && (
+            <Suspense fallback={<p className="deep-dive-loading">Caricamento…</p>}>
+              <DeepDive markdown={deepDive} onGoToParagraph={onGoToParagraph} />
+            </Suspense>
+          )}
           {paragraph.notebookSuggestion && <p className="explanation-notebook-hint">💡 {paragraph.notebookSuggestion}</p>}
           {active && paragraph.recall && paragraph.recall.length > 0 && (
             <p className="recall-hint">

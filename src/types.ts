@@ -48,6 +48,12 @@ export interface Paragraph {
   /** Keyed by Variant.key ("<language>-<level>"). */
   explanations: Record<string, string>;
   notebookSuggestion?: string;
+  /**
+   * Optional long-form explanation for dense paragraphs, keyed by Variant.key: markdown with
+   * `$…$`/`$$…$$` math and `[text](#<paragraphId>)` links to other paragraphs. Shown collapsed
+   * under the note ("Approfondisci").
+   */
+  deepDive?: Record<string, string>;
   /** Recall questions about this paragraph, written at import; question and answer keyed by Variant.key. */
   recall?: RecallQuestion[];
 }

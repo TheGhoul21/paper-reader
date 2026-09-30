@@ -201,6 +201,27 @@ After the whole paper is read (and the argument map written — its thesis and c
 
 For an already-imported paper, write it on its own from `structure.json` + `paragraphs.json` and add it to both `meta.json` and the paper's `index.json` entry.
 
+## 4f. Write deep dives (`deepDive`)
+
+Some paragraphs need more than a 2–4 sentence note: definitions of notation, equations, derivations, algorithm steps, passages that lean on a reference or an earlier section. For these, add a `deepDive` — a long-form explanation shown collapsed under the note ("Approfondisci ▸"), rendered as markdown with KaTeX math.
+
+```json
+"deepDive": { "it-intermediate": "### Titolo\nTesto con $\\ell_t\\triangle\\ell_c$ e\n$$C\\odot R_Z\\odot C^\\dagger$$\n… vedi [par. 17](#p0025).\n\n> **Da portarti dietro:** …" }
+```
+
+- **Which paragraphs**: roughly 15–25% of the paper, never all. Good signals: dense math in `sourceText`, paragraphs that introduce notation or definitions (`definedIn` in `concepts.json`), paragraphs where a claim is stated or proved (`statedIn`/`evidence` in `structure.json`), equations the rest of the paper keeps using, anything that says "see Ref. [n]" for something the reader needs. Skip captions, related work, prose that the short note already covers. A foundational section can have a much higher share than the average.
+- **Self-contained**: resolve every reference instead of pointing at it — say what Eq. (3) states, what the cited result is, what the earlier definition was. External prerequisites the paper takes for granted (a formalism, a standard identity, a convention like $R_Z(\alpha)=e^{-i\alpha Z}$ vs Qiskit's $e^{-i\theta Z/2}$) get a short "Cosa ti serve sapere" part. Link paragraphs of the same paper as `[par. N](#<id>)` — N is the reader's badge number (1-based reading order); the link scrolls both panes there.
+- **Shape** (what made chat-assistant explanations useful, with the whole-paper context they lack): 2–4 `###` sections; a **worked example with small concrete numbers** you actually computed (label sequences, bit strings, a 3-qubit circuit — verify with a quick script when it involves search or counting); where the idea is used later in the paper and why it matters there; end with one `> **Da portarti dietro:** …` line. Don't re-teach what a variant's level already knows, and don't restate the short note.
+- **Length**: 150–400 words per variant. Same level discipline as explanations; one entry per variant in `meta.json` (a missing key just means no deep dive for that variant).
+- Math: `$…$` inline (no space just inside the dollars), `$$…$$` display. Markdown tables are fine (they scroll horizontally in the narrow notes column); don't put `|` inside math in a table cell.
+- Validate with:
+  ```
+  node --experimental-strip-types --no-warnings .claude/skills/import-paper/scripts/check_deep_dives.mjs <slug>
+  ```
+  It must end with `OK` (unknown variant keys, KaTeX errors, links to missing paragraphs, a "par. N" text that doesn't match its target's number, unbalanced `$`); it also prints word counts.
+
+For an already-imported paper, add deep dives on their own, section by section: read the whole `paragraphs.json` first (forward links need it), write `deepDive` into the chosen paragraphs, run the checker. Nothing else changes.
+
 ## 5. Write meta.json and update the library index
 
 `papers/<slug>/meta.json`:
@@ -237,7 +258,7 @@ Readers request papers through GitHub issues (form `.github/ISSUE_TEMPLATE/paper
    It tries an arXiv id/URL in the text, then a DOI, then an arXiv title search (quoted title, or the text after "Authors (Year):"), and prints candidates with a title-similarity score, the arXiv licence, and whether the paper is already in the library. Below 0.8, confirm authors and year by hand. No arXiv hit: try the DOI / publisher page, then a web search (Google Scholar has no API); still nothing → comment asking for a link, add label `needs-link`, stop.
 3. **Duplicates**: already in the library at the requested level → comment with its link, label `duplicate`, close. Already there but not at that level/language → do **Adding a variant** below instead of a new import.
 4. **Licence** — the library republishes the PDF verbatim, so it must be redistributable: CC BY / CC BY-SA / CC0 (the arXiv abs page, or the publisher for open-access journals). arXiv's default `nonexclusive-distrib` licence is **not** enough: look for an open-access publisher version (e.g. Quantum, PRX/PR Research, EPTCS are CC BY) and import that URL instead; if none, comment explaining why, label `license-blocked`, close. Record the licence you relied on in the issue comment.
-5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py`, `check_concepts.mjs`).
+5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, deep dives, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py`, `check_concepts.mjs`).
 6. **Close the loop**: commit with `Closes #<N>` in the message; comment on the issue with `https://theghoul21.github.io/paper-reader/paper/<slug>` (live after the deploy).
 
 ## Adding a variant to an already-imported paper

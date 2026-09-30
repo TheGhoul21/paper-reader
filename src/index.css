@@ -906,6 +906,12 @@ body {
   align-items: flex-start;
 }
 
+/* Let wide deep-dive content (tables, display math) scroll inside the note instead of widening it. */
+.explanation-note-body > div {
+  flex: 1;
+  min-width: 0;
+}
+
 .explanation-note p {
   margin: 0 0 6px;
 }
@@ -1881,4 +1887,107 @@ a.citation-request {
 /* Only the first header link takes the auto margin that pushes the group right. */
 .app-nav-review {
   margin-left: 0;
+}
+
+/* Deep dive: the optional long-form explanation under a note (DeepDive.tsx). */
+.deep-dive-toggle {
+  margin: 2px 0 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.deep-dive-toggle:hover {
+  text-decoration: underline;
+}
+
+.deep-dive-loading {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.deep-dive {
+  margin: 4px 0 8px;
+  padding: 8px 0 2px;
+  border-top: 1px dashed var(--border);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  cursor: auto;
+}
+
+.deep-dive h3,
+.deep-dive h4 {
+  margin: 12px 0 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.deep-dive h3:first-child,
+.deep-dive h4:first-child {
+  margin-top: 0;
+}
+
+.deep-dive ul,
+.deep-dive ol {
+  margin: 0 0 6px;
+  padding-left: 18px;
+}
+
+.deep-dive li {
+  margin-bottom: 2px;
+}
+
+.deep-dive blockquote {
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  background: var(--chip-bg);
+}
+
+.deep-dive blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.deep-dive table {
+  display: block;
+  overflow-x: auto;
+  margin: 6px 0 8px;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+}
+
+.deep-dive th,
+.deep-dive td {
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.deep-dive code {
+  font-size: 0.74rem;
+  background: var(--chip-bg);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
+.deep-dive a {
+  color: var(--accent);
+}
+
+.deep-dive .katex {
+  font-size: 1.05em;
+}
+
+.deep-dive .katex-display {
+  margin: 6px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
 }
