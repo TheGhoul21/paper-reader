@@ -5,7 +5,7 @@ import { findMatches, highlightMatchInDom, type SearchMatch } from "../lib/searc
 import { useNarrow } from "../lib/useNarrow";
 import PageCanvas from "./PageCanvas";
 import NotesPane from "./NotesPane";
-import { pickTldr } from "./TldrCard";
+import TldrStrip, { pickTldr } from "./TldrStrip";
 import NoteConnector from "./NoteConnector";
 import CitationPopover from "./CitationPopover";
 import ConceptPopover from "./ConceptPopover";
@@ -45,6 +45,7 @@ const DEFAULT_SCALE = 1.5;
 const MIN_SCALE = 0.75;
 const MAX_SCALE = 5.25;
 const HEADER_TOOLBAR_ALLOWANCE = 100; // rough space taken by the toolbar + margins, for "fit page" (no app header/heading above it anymore)
+const TLDR_STRIP_HEIGHT = 35; // the "In breve" strip under the toolbar, when the paper has a summary
 
 export default function PdfViewer({
   title,
@@ -128,14 +129,14 @@ export default function PdfViewer({
       if (fitMode === "width") {
         setScale(containerWidth / nativeSize.width);
       } else {
-        const availableHeight = window.innerHeight - HEADER_TOOLBAR_ALLOWANCE;
+        const availableHeight = window.innerHeight - HEADER_TOOLBAR_ALLOWANCE - (tldr ? TLDR_STRIP_HEIGHT : 0);
         setScale(Math.min(containerWidth / nativeSize.width, availableHeight / nativeSize.height));
       }
     }
     apply();
     window.addEventListener("resize", apply);
     return () => window.removeEventListener("resize", apply);
-  }, [fitMode, nativeSize, notesOpen, pdfPane]);
+  }, [fitMode, nativeSize, notesOpen, pdfPane, tldr]);
 
   useEffect(() => {
     if (!doc || !searchQuery.trim()) {
@@ -186,6 +187,7 @@ export default function PdfViewer({
   const conceptMatcher = useMemo(() => buildConceptMatcher(concepts), [concepts]);
 
   // Argument map: "Il filo" (dim everything off the thread) and the claim focused in the map.
+  const summary = pickTldr(tldr, variants.find((v) => v.key === variant)?.language);
   const structureIndex = useMemo(() => indexStructure(structure, paragraphs), [structure, paragraphs]);
   const [threadOnly, setThreadOnly] = useState(false);
   const [focusClaim, setFocusClaim] = useState<string | null>(null);
@@ -442,6 +444,7 @@ export default function PdfViewer({
         onToggleNotes={() => setNotesOpen((o) => !o)}
         thread={structureIndex ? { on: threadOnly, onToggle: () => setThreadOnly((t) => !t) } : undefined}
       />
+      {summary && <TldrStrip tldr={summary} />}
       <div className="reader-body">
         {highlight && highlightConcept && (
           <ConceptHighlightBar
@@ -492,7 +495,6 @@ export default function PdfViewer({
             activeId={activeId}
             hoverId={hoverId}
             conceptMatcher={conceptMatcher}
-            tldr={pickTldr(tldr, variants.find((v) => v.key === variant)?.language)}
             argument={
               structure && structureIndex
                 ? {

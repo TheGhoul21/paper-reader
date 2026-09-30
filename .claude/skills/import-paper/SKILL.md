@@ -180,7 +180,7 @@ For an already-imported paper, write it on its own from `paragraphs.json` (whole
 
 ## 4e. Write the TL;DR ("In breve")
 
-After the whole paper is read (and the argument map written — its thesis and claims are the best raw material), write `tldr` for `meta.json`: the paper in brief, shown as the "In breve" card at the top of the notes pane and, as problem + idea, on the library card.
+After the whole paper is read (and the argument map written — its thesis and claims are the best raw material), write `tldr` for `meta.json`: the paper in brief, shown as the "In breve" strip under the reader's toolbar (the `idea` alone on one line, every field in its drop-down) and, as problem + idea, on the library card.
 
 ```json
 "tldr": {

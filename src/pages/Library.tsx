@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PaperThumbnail from "../components/PaperThumbnail";
-import { pickTldr } from "../components/TldrCard";
+import { pickTldr } from "../components/TldrStrip";
 import { SearchIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
 import type { LibraryEntry, Variant } from "../types";
 import { papersUrl } from "../lib/paths";
