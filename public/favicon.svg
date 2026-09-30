@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 44 44">
+  <style>
+    .fg { stroke: #1a1a1a; }
+    .ac { fill: #b5451b; }
+    .acs { stroke: #b5451b; }
+    .bg { stroke: #fafaf8; }
+    @media (prefers-color-scheme: dark) {
+      .fg { stroke: #ececec; }
+      .ac { fill: #e8916a; }
+      .acs { stroke: #e8916a; }
+      .bg { stroke: #16161a; }
+    }
+  </style>
+  <g class="fg" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 3H20L26 9V31Q26 33 24 33H6Q4 33 4 31V5Q4 3 6 3Z"/>
+    <path d="M20 3V8Q20 9 21 9H26"/>
+  </g>
+  <rect class="ac" x="6.5" y="16.6" width="17" height="4.8" rx="1.4" opacity="0.2"/>
+  <g stroke-width="1.8" stroke-linecap="round">
+    <path class="fg" d="M8.5 13.5H17" opacity="0.45"/>
+    <path class="acs" d="M8.5 19H21.5"/>
+    <path class="fg" d="M8.5 24.5H21" opacity="0.45"/>
+    <path class="fg" d="M8.5 28.5H15" opacity="0.45"/>
+  </g>
+  <path class="ac" d="M32 11H38.5Q42 11 42 14.5V21.5Q42 25 38.5 25H32Q29 25 29 22V21L27 19L29 17V14Q29 11 32 11Z"/>
+  <g class="bg" stroke-width="1.6" stroke-linecap="round">
+    <path d="M32.2 16H38.8"/>
+    <path d="M32.2 20H36.2"/>
+  </g>
+</svg>

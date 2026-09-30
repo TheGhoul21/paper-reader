@@ -78,10 +78,25 @@ body {
 }
 
 .app-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   color: var(--fg);
   text-decoration: none;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.app-logo {
+  width: 40px;
+  height: auto;
+  flex: none;
+}
+
+.app-title-accent {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .app-main {

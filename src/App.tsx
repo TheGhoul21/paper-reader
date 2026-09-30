@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useDueCount } from "./lib/review";
 import { paperRequestUrl } from "./lib/requests";
+import Logo from "./components/Logo";
 
 export default function App() {
   const location = useLocation();
@@ -12,7 +13,10 @@ export default function App() {
       {!isReader && (
         <header className="app-header">
           <Link to="/" className="app-title">
-            paper reader
+            <Logo className="app-logo" />
+            <span>
+              paper <span className="app-title-accent">reader</span>
+            </span>
           </Link>
           <a className="app-nav-link app-nav-request" href={paperRequestUrl()} target="_blank" rel="noopener noreferrer">
             Richiedi un paper
