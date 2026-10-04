@@ -130,5 +130,638 @@
       "evidence": ["p0170", "p0171", "p0172"],
       "dependsOn": ["bridge-f"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "bridge-overview",
+      "title": {
+        "it-intermediate": "I · La proposta BRIDGE",
+        "it-expert": "I · La proposta BRIDGE"
+      },
+      "goal": {
+        "it-intermediate": "Capire come un’infrastruttura di buffer può sostituire molti movimenti degli atomi dati.",
+        "it-expert": "Capire come un’infrastruttura di buffer può sostituire molti movimenti degli atomi dati."
+      },
+      "steps": [
+        {
+          "id": "bridge-overview-1",
+          "title": {
+            "it-intermediate": "Dati fermi, interazioni instradate",
+            "it-expert": "Dati fermi, interazioni instradate"
+          },
+          "paragraphs": [
+            "p0005",
+            "p0006",
+            "p0007",
+            "p0008",
+            "p0010",
+            "p0011",
+            "p0012",
+            "p0013",
+            "p0014",
+            "p0015",
+            "p0016",
+            "p0018",
+            "p0019"
+          ],
+          "meaning": {
+            "it-intermediate": "Gli atomi dati conservano lo stato logico; gli atomi buffer mediano interazioni a distanza e ritornano allo stato iniziale. BRIDGE-F mantiene i dati fermi; BRIDGE-H ammette un movimento se il risparmio sui relay futuri lo giustifica. Il confronto cambia anche l’architettura, introducendo buffer e doppia specie.",
+            "it-expert": "Il co-design Rb/Cs espone un fabric BAM statico; F/H sono punti della stessa pipeline, e i confronti con ZAP/Enola includono un cambio di substrate."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce insieme il compilatore e l’infrastruttura fisica che ne rende possibili i risultati.",
+            "it-expert": "Fissa il livello architetturale del confronto e il principio lazy-move."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0021",
+        "why": {
+          "it-intermediate": "Capire che cosa propaga lungo la catena e perché la sua lunghezza ha un costo.",
+          "it-expert": "Capire che cosa propaga lungo la catena e perché la sua lunghezza ha un costo."
+        }
+      }
+    },
+    {
+      "id": "bridge-physics",
+      "title": {
+        "it-intermediate": "II · Da blockade a relay",
+        "it-expert": "II · Da blockade a relay"
+      },
+      "goal": {
+        "it-intermediate": "Capire che cosa propaga lungo la catena e perché la sua lunghezza ha un costo.",
+        "it-expert": "Capire che cosa propaga lungo la catena e perché la sua lunghezza ha un costo."
+      },
+      "steps": [
+        {
+          "id": "bridge-physics-1",
+          "title": {
+            "it-intermediate": "Il limite del gate diretto",
+            "it-expert": "Il limite del gate diretto"
+          },
+          "paragraphs": [
+            "p0021",
+            "p0022",
+            "p0023",
+            "p0024",
+            "p0025",
+            "p0026"
+          ],
+          "meaning": {
+            "it-intermediate": "L’interazione Rydberg decresce rapidamente con la distanza. Il gate nativo richiede atomi sufficientemente vicini, mentre distanza e controllo devono limitare interazioni indesiderate.",
+            "it-expert": "Il raggio di blockade traduce V(R)∝R⁻⁶ in un vincolo operativo sui CZ diretti."
+          },
+          "purpose": {
+            "it-intermediate": "Motiva l’introduzione di intermediari anziché assumere un CZ gratuito fra qualunque coppia.",
+            "it-expert": "Stabilisce il limite fisico che il fabric relay deve aggirare."
+          }
+        },
+        {
+          "id": "bridge-physics-2",
+          "title": {
+            "it-intermediate": "Il costo del percorso e le due specie",
+            "it-expert": "Il costo del percorso e le due specie"
+          },
+          "paragraphs": [
+            "p0029",
+            "p0030",
+            "p0031",
+            "p0032",
+            "p0033",
+            "p0034",
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038",
+            "p0041",
+            "p0042"
+          ],
+          "meaning": {
+            "it-intermediate": "I buffer partecipano a un’escursione Rydberg e vengono ripristinati; non trasportano lo stato logico come una catena di SWAP. Il modello assegna 2L−1 pulse a un relay con L buffer. Rb/Cs permette di differenziare accoppiamenti dati–buffer, buffer–buffer e dati–dati.",
+            "it-expert": "L’astrazione BAM usa Frelay^(2L−1) e latenza proporzionale ai pulse, con un canale CZ effettivo sugli endpoint e uncomputation dei mediatori."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce sia il modello di costo sia i requisiti di controllo necessari al routing statico.",
+            "it-expert": "Giustifica il costo di lunghezza e la separazione dei canali nella geometria dual-species."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0044",
+        "why": {
+          "it-intermediate": "Distinguere il reticolo hardware dal grafo delle interazioni richieste dal circuito.",
+          "it-expert": "Distinguere il reticolo hardware dal grafo delle interazioni richieste dal circuito."
+        }
+      }
+    },
+    {
+      "id": "bridge-fabric",
+      "title": {
+        "it-intermediate": "III · La geometria del fabric",
+        "it-expert": "III · La geometria del fabric"
+      },
+      "goal": {
+        "it-intermediate": "Distinguere il reticolo hardware dal grafo delle interazioni richieste dal circuito.",
+        "it-expert": "Distinguere il reticolo hardware dal grafo delle interazioni richieste dal circuito."
+      },
+      "steps": [
+        {
+          "id": "bridge-fabric-1",
+          "title": {
+            "it-intermediate": "Siti dati e siti buffer",
+            "it-expert": "Siti dati e siti buffer"
+          },
+          "paragraphs": [
+            "p0044",
+            "p0045",
+            "p0046",
+            "p0048",
+            "p0049",
+            "p0050",
+            "p0052",
+            "p0053"
+          ],
+          "meaning": {
+            "it-intermediate": "I buffer Cs formano una griglia; i dati Rb si trovano al centro delle sue celle. Questa è una disposizione fisica con distanze e raggi di accoppiamento specifici. Il frontend traduce poi il programma in gate locali e CZ: il suo grafo logico indica quali dati devono interagire.",
+            "it-expert": "Il reticolo staggered soddisfa gerarchie dDB/dBB/dDD e rende uniformi i first-hop; il lowering a {1Q,CZ} produce il grafo logico pesato."
+          },
+          "purpose": {
+            "it-intermediate": "Collega la geometria fissa all’oggetto logico che il placement deve assegnarle.",
+            "it-expert": "Prepara il mapping circuito→siti e il routing sul grafo dei buffer."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0055",
+        "why": {
+          "it-intermediate": "Seguire le scelte del compilatore prima di introdurre mobilità.",
+          "it-expert": "Seguire le scelte del compilatore prima di introdurre mobilità."
+        }
+      }
+    },
+    {
+      "id": "bridge-placement",
+      "title": {
+        "it-intermediate": "IV · Placement e baseline statica",
+        "it-expert": "IV · Placement e baseline statica"
+      },
+      "goal": {
+        "it-intermediate": "Seguire le scelte del compilatore prima di introdurre mobilità.",
+        "it-expert": "Seguire le scelte del compilatore prima di introdurre mobilità."
+      },
+      "steps": [
+        {
+          "id": "bridge-placement-1",
+          "title": {
+            "it-intermediate": "Assegnare i qubit ai siti",
+            "it-expert": "Assegnare i qubit ai siti"
+          },
+          "paragraphs": [
+            "p0055",
+            "p0056",
+            "p0057",
+            "p0058",
+            "p0059",
+            "p0060",
+            "p0061",
+            "p0062",
+            "p0063",
+            "p0064",
+            "p0065",
+            "p0066"
+          ],
+          "meaning": {
+            "it-intermediate": "Interazioni frequenti e distanti costano relay lunghi. CBO cerca una mappa migliore, con penalità di distanza e vincoli di spaziatura; un budget mobile può attenuare alcune penalità. La legalità finale viene verificata prima del routing.",
+            "it-expert": "LK combina frequenze, distanze superlineari, discount top-K e penalità soft di spacing; CBO usa elite, consensus e mutation con verifica finale."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega come il compilatore ricava un layout dal circuito, anziché usare semplicemente la griglia in ordine.",
+            "it-expert": "Definisce objective euristico e controllo di ammissibilità del placement."
+          }
+        },
+        {
+          "id": "bridge-placement-2",
+          "title": {
+            "it-intermediate": "Instradare, schedulare e preparare gli hotspot",
+            "it-expert": "Instradare, schedulare e preparare gli hotspot"
+          },
+          "paragraphs": [
+            "p0067",
+            "p0068",
+            "p0069",
+            "p0071",
+            "p0072",
+            "p0073",
+            "p0074",
+            "p0075",
+            "p0077",
+            "p0078"
+          ],
+          "meaning": {
+            "it-intermediate": "Routing e scheduling risolvono la competizione per i buffer. La baseline serializza prudentemente i relay a lungo raggio; il profiling trova catene costose. Il modello ML propone una mappa iniziale e non sostituisce la ricerca o i controlli.",
+            "it-expert": "Shortest paths e Dijkstra congestion-aware usano feedback dallo schedule; ML warm-start è un seed cached, e il profiling alimenta H."
+          },
+          "purpose": {
+            "it-intermediate": "Produce un programma statico completo e le informazioni per valutare movimenti selettivi.",
+            "it-expert": "Distingue seed del placement, schedule eseguibile e analisi dei bottleneck."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0079",
+        "why": {
+          "it-intermediate": "Leggere il test come confronto fra un costo immediato e risparmi su interazioni future.",
+          "it-expert": "Leggere il test come confronto fra un costo immediato e risparmi su interazioni future."
+        }
+      }
+    },
+    {
+      "id": "bridge-break-even",
+      "title": {
+        "it-intermediate": "IV · Quando un movimento si ripaga",
+        "it-expert": "IV · Quando un movimento si ripaga"
+      },
+      "goal": {
+        "it-intermediate": "Leggere il test come confronto fra un costo immediato e risparmi su interazioni future.",
+        "it-expert": "Leggere il test come confronto fra un costo immediato e risparmi su interazioni future."
+      },
+      "steps": [
+        {
+          "id": "bridge-break-even-1",
+          "title": {
+            "it-intermediate": "Scaldare, trasferire o pagare relay lunghi",
+            "it-expert": "Scaldare, trasferire o pagare relay lunghi"
+          },
+          "paragraphs": [
+            "p0079",
+            "p0080",
+            "p0081",
+            "p0082",
+            "p0083",
+            "p0084",
+            "p0085",
+            "p0086",
+            "p0087",
+            "p0089",
+            "p0090",
+            "p0091",
+            "p0092",
+            "p0093"
+          ],
+          "meaning": {
+            "it-intermediate": "Un movimento costa handoff, riscaldamento e decoerenza; può però accorciare molti relay nel nuovo vicinato. BRIDGE-H confronta il prodotto delle fidelity dei relay futuri prima e dopo il movimento. τ=1 rappresenta il break-even del modello; τ modifica l’aggressività.",
+            "it-expert": "La sopravvivenza (1−Eshuttle) moltiplica il costo BAM post-move; il test usa la somma delle riduzioni Lstatic−Lmove nella finestra, con modello geometrico di Eshuttle."
+          },
+          "purpose": {
+            "it-intermediate": "Dà significato fisico alla disuguaglianza, ai limiti della finestra futura e alla scelta del sito.",
+            "it-expert": "Evita di leggere il criterio come un confronto del solo gate successivo o una garanzia globale."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0094",
+        "why": {
+          "it-intermediate": "Capire quali esperimenti confrontano architetture e quali isolano un meccanismo del compilatore.",
+          "it-expert": "Capire quali esperimenti confrontano architetture e quali isolano un meccanismo del compilatore."
+        }
+      }
+    },
+    {
+      "id": "bridge-evaluation-design",
+      "title": {
+        "it-intermediate": "V · Come viene valutato BRIDGE",
+        "it-expert": "V · Come viene valutato BRIDGE"
+      },
+      "goal": {
+        "it-intermediate": "Capire quali esperimenti confrontano architetture e quali isolano un meccanismo del compilatore.",
+        "it-expert": "Capire quali esperimenti confrontano architetture e quali isolano un meccanismo del compilatore."
+      },
+      "steps": [
+        {
+          "id": "bridge-evaluation-design-1",
+          "title": {
+            "it-intermediate": "Domande, suite e parametri",
+            "it-expert": "Domande, suite e parametri"
+          },
+          "paragraphs": [
+            "p0094",
+            "p0095",
+            "p0097",
+            "p0098",
+            "p0100",
+            "p0101",
+            "p0102",
+            "p0103",
+            "p0104",
+            "p0105",
+            "p0106",
+            "p0107",
+            "p0108",
+            "p0109",
+            "p0110",
+            "p0111",
+            "p0112",
+            "p0113",
+            "p0114",
+            "p0115",
+            "p0116",
+            "p0117"
+          ],
+          "meaning": {
+            "it-intermediate": "I benchmark esterni verificano l’esecuzione complessiva; quelli sintetici isolano località temporale e phase shift. Le sei domande separano baseline, mobilità, budget, confronto esterno, parallelismo e sensibilità. Tutto viene stimato entro il modello hardware dichiarato.",
+            "it-expert": "Le RQ separano feasibility, mobility, budget, cross-architecture comparison, concurrency e sensitivity; seed condivisi isolano gli sweep."
+          },
+          "purpose": {
+            "it-intermediate": "Definisce il significato delle prove prima delle curve.",
+            "it-expert": "Fissa popolazione, parametri e modello per leggere i risultati."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0118",
+        "why": {
+          "it-intermediate": "Mettere in relazione errori, densità delle interazioni e utilità della mobilità.",
+          "it-expert": "Mettere in relazione errori, densità delle interazioni e utilità della mobilità."
+        }
+      }
+    },
+    {
+      "id": "bridge-static-results",
+      "title": {
+        "it-intermediate": "V.B–C · Dove la baseline funziona",
+        "it-expert": "V.B–C · Dove la baseline funziona"
+      },
+      "goal": {
+        "it-intermediate": "Mettere in relazione errori, densità delle interazioni e utilità della mobilità.",
+        "it-expert": "Mettere in relazione errori, densità delle interazioni e utilità della mobilità."
+      },
+      "steps": [
+        {
+          "id": "bridge-static-results-1",
+          "title": {
+            "it-intermediate": "La lunghezza dei relay domina gli errori",
+            "it-expert": "La lunghezza dei relay domina gli errori"
+          },
+          "paragraphs": [
+            "p0118",
+            "p0119",
+            "p0120",
+            "p0121",
+            "p0122",
+            "p0123",
+            "p0124",
+            "p0125",
+            "p0126",
+            "p0127",
+            "p0128",
+            "p0129",
+            "p0130",
+            "p0131",
+            "p0132"
+          ],
+          "meaning": {
+            "it-intermediate": "I circuiti locali possono funzionare bene anche se grandi; interazioni dense e lunghe possono accumulare moltissimi errori BAM. Le ipotesi sul ripristino e sui termini di errore evitano duplicazioni nel modello. I risultati della mobilità sono specifici del circuito.",
+            "it-expert": "Il prodotto Frelay^(2L−1) governa il carico aggregato; leakage/reset e correlazioni sono parametri opzionali con calibrazione distinta."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra perché numero di qubit e profondità da soli non spiegano il successo della baseline.",
+            "it-expert": "Attribuisce il decadimento ai relay e delimita i workload movement-responsive."
+          }
+        },
+        {
+          "id": "bridge-static-results-2",
+          "title": {
+            "it-intermediate": "Budget e aggressività sono leve diverse",
+            "it-expert": "Budget e aggressività sono leve diverse"
+          },
+          "paragraphs": [
+            "p0134",
+            "p0135",
+            "p0137",
+            "p0138"
+          ],
+          "meaning": {
+            "it-intermediate": "τ decide quali candidati superano il test; K limita quanti movimenti approvati possono essere eseguiti. La maggioranza della suite non guadagna fidelity dalla mobilità selettiva, mentre eccessiva aggressività può peggiorarla.",
+            "it-expert": "La mediana dei gain conserva la neutralità della maggioranza; i casi relay-dominated e temporally clustered mostrano il meccanismo di ammortamento."
+          },
+          "purpose": {
+            "it-intermediate": "Evita di interpretare un budget più grande come un obbligo o un vantaggio automatico.",
+            "it-expert": "Distingue qualificazione dei candidati e cap sul footprint mobile."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0139",
+        "why": {
+          "it-intermediate": "Separare risparmi del compilatore ibrido e benefici del diverso hardware.",
+          "it-expert": "Separare risparmi del compilatore ibrido e benefici del diverso hardware."
+        }
+      }
+    },
+    {
+      "id": "bridge-budget-comparison",
+      "title": {
+        "it-intermediate": "V.D–E · Budget e confronto esterno",
+        "it-expert": "V.D–E · Budget e confronto esterno"
+      },
+      "goal": {
+        "it-intermediate": "Separare risparmi del compilatore ibrido e benefici del diverso hardware.",
+        "it-expert": "Separare risparmi del compilatore ibrido e benefici del diverso hardware."
+      },
+      "steps": [
+        {
+          "id": "bridge-budget-comparison-1",
+          "title": {
+            "it-intermediate": "Il beneficio satura; il substrate costa",
+            "it-expert": "Il beneficio satura; il substrate costa"
+          },
+          "paragraphs": [
+            "p0139",
+            "p0141",
+            "p0142",
+            "p0143",
+            "p0144",
+            "p0145",
+            "p0146",
+            "p0147"
+          ],
+          "meaning": {
+            "it-intermediate": "Il budget viene studiato su workload che possono sfruttarlo e mostra rendimenti decrescenti. Nel confronto con ZAP ed Enola gli schedule sono rivalutati con un modello comune, ma BRIDGE dispone del reticolo buffer e del controllo dual-species.",
+            "it-expert": "Gli sweep budget-responsive e la matched suite rispondono a domande diverse; la re-estimation comune normalizza il modello di errore, non il substrate."
+          },
+          "purpose": {
+            "it-intermediate": "Ricollega i numeri di speedup alle risorse e alla popolazione effettivamente confrontate.",
+            "it-expert": "Delimita l’attribuzione di risultati interni e architetturali."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0149",
+        "why": {
+          "it-intermediate": "Capire perché più relay paralleli o più movimenti possono consumare il margine di fidelity.",
+          "it-expert": "Capire perché più relay paralleli o più movimenti possono consumare il margine di fidelity."
+        }
+      }
+    },
+    {
+      "id": "bridge-parallel-sensitivity",
+      "title": {
+        "it-intermediate": "V.F–G · Parallelismo e sensibilità",
+        "it-expert": "V.F–G · Parallelismo e sensibilità"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché più relay paralleli o più movimenti possono consumare il margine di fidelity.",
+        "it-expert": "Capire perché più relay paralleli o più movimenti possono consumare il margine di fidelity."
+      },
+      "steps": [
+        {
+          "id": "bridge-parallel-sensitivity-1",
+          "title": {
+            "it-intermediate": "Il costo del parallelismo",
+            "it-expert": "Il costo del parallelismo"
+          },
+          "paragraphs": [
+            "p0149",
+            "p0150",
+            "p0151",
+            "p0152",
+            "p0153",
+            "p0154",
+            "p0155"
+          ],
+          "meaning": {
+            "it-intermediate": "Relay disgiunti possono accorciare il makespan, ma le catene attive insieme possono produrre crosstalk. BRIDGE paga inoltre siti e controllo extra per avere buffer permanenti.",
+            "it-expert": "Il concurrency cap cambia schedule e penalità vdW fra relay co-schedulati; l’overhead comprende circa un buffer per dato e controllo dual-species."
+          },
+          "purpose": {
+            "it-intermediate": "Esplicita i costi della velocità e il compromesso fra investimento statico e trasporto dinamico.",
+            "it-expert": "Rende comparabili risorse di substrate, latenza e rischio di errore."
+          }
+        },
+        {
+          "id": "bridge-parallel-sensitivity-2",
+          "title": {
+            "it-intermediate": "Quale hardware rende utile BRIDGE-H",
+            "it-expert": "Quale hardware rende utile BRIDGE-H"
+          },
+          "paragraphs": [
+            "p0156",
+            "p0157",
+            "p0158",
+            "p0159",
+            "p0161"
+          ],
+          "meaning": {
+            "it-intermediate": "La convenienza dipende da fidelity dei pulse relay, costo dei trasferimenti e ripetizione temporale delle interazioni distanti. Aumentare la profondità senza creare località riutilizzabile non basta.",
+            "it-expert": "Le regime maps variano Frelay, Eshuttle e timing; la phase-shift locality determina l’ammortamento meglio della sola depth."
+          },
+          "purpose": {
+            "it-intermediate": "Riporta il test break-even a condizioni sperimentali e workload specifici.",
+            "it-expert": "Identifica i parametri che possono spostare il punto operativo F/H."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0163",
+        "why": {
+          "it-intermediate": "Usare confronti sullo stesso fabric per isolare placement, ricerca e scheduling.",
+          "it-expert": "Usare confronti sullo stesso fabric per isolare placement, ricerca e scheduling."
+        }
+      }
+    },
+    {
+      "id": "bridge-ablations",
+      "title": {
+        "it-intermediate": "V.H · Da dove vengono i miglioramenti",
+        "it-expert": "V.H · Da dove vengono i miglioramenti"
+      },
+      "goal": {
+        "it-intermediate": "Usare confronti sullo stesso fabric per isolare placement, ricerca e scheduling.",
+        "it-expert": "Usare confronti sullo stesso fabric per isolare placement, ricerca e scheduling."
+      },
+      "steps": [
+        {
+          "id": "bridge-ablations-1",
+          "title": {
+            "it-intermediate": "Layout migliore o ricerca più veloce?",
+            "it-expert": "Layout migliore o ricerca più veloce?"
+          },
+          "paragraphs": [
+            "p0163",
+            "p0164",
+            "p0166",
+            "p0167",
+            "p0168",
+            "p0169",
+            "p0170",
+            "p0171",
+            "p0172",
+            "p0173",
+            "p0174",
+            "p0175",
+            "p0176",
+            "p0178",
+            "p0179"
+          ],
+          "meaning": {
+            "it-intermediate": "Static-Naive usa lo stesso hardware con scelte semplici. Le ablazioni mostrano il ruolo del placement che accorcia i relay; warm-start cached riduce il tempo di mapping senza cambiare il meccanismo di legalità. I casi di fidelity quasi nulla restano limiti del carico di interazioni.",
+            "it-expert": "Row-major/CBO e cold/cached ML controllano leve differenti; scheduling disjoint-buffer incide sulla latenza nel modello di concurrency rilassata."
+          },
+          "purpose": {
+            "it-intermediate": "Attribuisce i miglioramenti ai singoli meccanismi evitando di confonderli con il cambio di architettura.",
+            "it-expert": "Separa qualità del layout, costo di ricerca e parallelizzazione."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0180",
+        "why": {
+          "it-intermediate": "Ricollegare BRIDGE alle altre strategie di connettività e ai suoi limiti ancora da esplorare.",
+          "it-expert": "Ricollegare BRIDGE alle altre strategie di connettività e ai suoi limiti ancora da esplorare."
+        }
+      }
+    },
+    {
+      "id": "bridge-outlook",
+      "title": {
+        "it-intermediate": "VI–VII · Collocazione e sviluppi futuri",
+        "it-expert": "VI–VII · Collocazione e sviluppi futuri"
+      },
+      "goal": {
+        "it-intermediate": "Ricollegare BRIDGE alle altre strategie di connettività e ai suoi limiti ancora da esplorare.",
+        "it-expert": "Ricollegare BRIDGE alle altre strategie di connettività e ai suoi limiti ancora da esplorare."
+      },
+      "steps": [
+        {
+          "id": "bridge-outlook-1",
+          "title": {
+            "it-intermediate": "Relay, zone e movimento",
+            "it-expert": "Relay, zone e movimento"
+          },
+          "paragraphs": [
+            "p0180",
+            "p0182",
+            "p0183",
+            "p0184",
+            "p0185",
+            "p0187",
+            "p0188",
+            "p0189",
+            "p0190",
+            "p0196",
+            "p0199",
+            "p0206"
+          ],
+          "meaning": {
+            "it-intermediate": "Il confronto con lavori precedenti distingue SWAP di stati, trasporto di dati, ancilla mobili e propagazione su relay. Erasure-aware routing, scale maggiori e uso nella correzione degli errori sono prospettive; seguono i finanziamenti.",
+            "it-expert": "Related work colloca il fabric dual-species fra fixed-topology routing, reconfiguration, zoned compilation e ancilla-assisted channels; FT/QEC e scaling sono outlook."
+          },
+          "purpose": {
+            "it-intermediate": "Chiude l’argomento e separa le prestazioni valutate dalle future applicazioni.",
+            "it-expert": "Delimita novità, assunzioni e portata delle conclusioni."
+          }
+        }
+      ]
+    }
   ]
 }

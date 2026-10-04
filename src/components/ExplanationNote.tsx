@@ -2,7 +2,10 @@ import { lazy, Suspense, useMemo, useState } from "react";
 import { segmentText, type ConceptMatcher } from "../lib/concepts";
 import type { Paragraph } from "../types";
 import type { ParagraphRole } from "../lib/structure";
+import { pickVariant } from "../lib/structure";
+import type { ReadingContext } from "../lib/readingGuide";
 import { ExternalLinkIcon } from "./icons";
+import ReadingDiagram from "./ReadingDiagram";
 
 const DeepDive = lazy(() => import("./DeepDive"));
 
@@ -18,6 +21,10 @@ interface Props {
   /** This paragraph's place in the argument map: which claims it states or supports. */
   roles?: ParagraphRole[];
   onRoleClick?: (claimId: string) => void;
+  readingContext?: ReadingContext;
+  onOpenGuide?: () => void;
+  /** Later paragraphs this one sets up ("Servirà più avanti"), resolved with their badge numbers. */
+  leadsTo?: { target: Paragraph; number: number; why: Record<string, string> }[];
   /** Whether this paragraph is in the review deck (marked as "to review" by the reader). */
   inReview: boolean;
   onToggleReview: () => void;
@@ -51,6 +58,9 @@ export default function ExplanationNote({
   conceptMatcher,
   roles,
   onRoleClick,
+  readingContext,
+  onOpenGuide,
+  leadsTo,
   inReview,
   onToggleReview,
   onActivate,
@@ -65,7 +75,11 @@ export default function ExplanationNote({
   const deepDive = paragraph.deepDive?.[explanation ? variant : fallbackKey];
   const [deepDiveOpen, setDeepDiveOpen] = useState(false);
   const [copied, setCopied] = useState<AskTarget | null>(null);
-  const segments = useMemo(() => segmentText(shownExplanation, conceptMatcher), [shownExplanation, conceptMatcher]);
+  const [manualPrompt, setManualPrompt] = useState<string | null>(null);
+  const segments = useMemo(
+    () => segmentText(shownExplanation, conceptMatcher),
+    [shownExplanation, conceptMatcher],
+  );
 
   async function handleAsk(target: AskTarget) {
     const sectionLine = paragraph.section ? ` (sezione "${paragraph.section}")` : "";
@@ -83,23 +97,26 @@ export default function ExplanationNote({
     ].join("\n");
     try {
       await navigator.clipboard.writeText(prompt);
+      setCopied(target);
+      setManualPrompt(null);
     } catch {
-      // Clipboard permission denied — the tab still opens, the user can copy the text manually.
+      setCopied(null);
+      setManualPrompt(prompt);
     }
-    window.open(ASK_URLS[target], "_blank", "noopener,noreferrer");
-    setCopied(target);
-    window.setTimeout(() => setCopied((c) => (c === target ? null : c)), 2000);
   }
 
   return (
     <div
       id={`note-${paragraph.id}`}
       className={`explanation-note${active ? " is-active" : ""}${highlighted ? " is-highlighted" : ""}${inReview ? " is-in-review" : ""}`}
-      onClick={onActivate}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
+      onFocus={() => onHover(true)}
+      onBlur={() => onHover(false)}
     >
-      {showSection && paragraph.section && <div className="explanation-section">{paragraph.section}</div>}
+      {showSection && paragraph.section && (
+        <div className="explanation-section">{paragraph.section}</div>
+      )}
       {roles && roles.length > 0 && (
         <div className="note-roles">
           {roles.map((r) => (
@@ -118,12 +135,21 @@ export default function ExplanationNote({
         </div>
       )}
       <div className="explanation-note-body">
-        <span className="paragraph-badge" aria-label={`Paragrafo ${number}`} title={inReview ? "Da ripassare" : undefined}>
+        <button
+          type="button"
+          className="paragraph-badge"
+          onClick={onActivate}
+          aria-pressed={active}
+          aria-label={`Mostra passaggio ${number} nel PDF`}
+          title={inReview ? "Da ripassare" : undefined}
+        >
           {number}
-        </span>
+        </button>
         <div>
           {!explanation && (
-            <p className="explanation-fallback-note">Non disponibile in questa combinazione — mostrata quella predefinita.</p>
+            <p className="explanation-fallback-note">
+              Non disponibile in questa combinazione — mostrata quella predefinita.
+            </p>
           )}
           <p>
             {segments.map((seg, i) =>
@@ -137,7 +163,8 @@ export default function ExplanationNote({
                   onClick={(e) => {
                     // Not onActivate: that scrolls the PDF pane, and the popover closes on scroll.
                     e.stopPropagation();
-                    onConcept(seg.conceptId, { x: e.clientX, y: e.clientY + 12 });
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    onConcept(seg.conceptId, { x: rect.left, y: rect.bottom + 8 });
                   }}
                 >
                   {seg.text}
@@ -145,6 +172,32 @@ export default function ExplanationNote({
               ),
             )}
           </p>
+          {active && readingContext && (
+            <details className="reading-context">
+              <summary>Contesto e percorso della sezione</summary>
+              <div className="reading-context-label">In concreto</div>
+              <p>{pickVariant(readingContext.step.meaning, variant)}</p>
+              {readingContext.step.diagram && (
+                <ReadingDiagram diagram={readingContext.step.diagram} variant={variant} />
+              )}
+              <div className="reading-context-label">Perché questo passaggio</div>
+              <p>{pickVariant(readingContext.step.purpose, variant)}</p>
+              <button
+                type="button"
+                className="reading-guide-jump"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenGuide?.();
+                }}
+              >
+                Il percorso della sezione · {readingContext.stepIndex + 1}/
+                {readingContext.section.steps.length} →
+              </button>
+            </details>
+          )}
+          {leadsTo && leadsTo.length > 0 && (
+            <ForwardLinks links={leadsTo} variant={variant} onGoToParagraph={onGoToParagraph} />
+          )}
           {deepDive && (
             <button
               type="button"
@@ -160,10 +213,15 @@ export default function ExplanationNote({
               <DeepDive markdown={deepDive} onGoToParagraph={onGoToParagraph} />
             </Suspense>
           )}
-          {paragraph.notebookSuggestion && <p className="explanation-notebook-hint">💡 {paragraph.notebookSuggestion}</p>}
+          {paragraph.notebookSuggestion && (
+            <p className="explanation-notebook-hint">💡 {paragraph.notebookSuggestion}</p>
+          )}
           {active && paragraph.recall && paragraph.recall.length > 0 && (
             <p className="recall-hint">
-              {paragraph.recall.length === 1 ? "1 domanda di ripasso" : `${paragraph.recall.length} domande di ripasso`} su questo paragrafo
+              {paragraph.recall.length === 1
+                ? "1 domanda di ripasso"
+                : `${paragraph.recall.length} domande di ripasso`}{" "}
+              su questo paragrafo
             </p>
           )}
         </div>
@@ -182,16 +240,84 @@ export default function ExplanationNote({
             >
               {inReview ? "Da ripassare ✓" : "Da ripassare"}
             </button>
-            {(["claude", "chatgpt"] as const).map((target) => (
-              <button key={target} className="explanation-ask-btn" onClick={() => handleAsk(target)}>
-                {copied === target ? "Copiato ✓" : ASK_LABELS[target]}
-                <ExternalLinkIcon width={13} height={13} />
-              </button>
-            ))}
+            <details className="ask-menu">
+              <summary>Chiedi un aiuto esterno</summary>
+              <p>Copia il passaggio, poi apri la chat e incollalo.</p>
+              {(["claude", "chatgpt"] as const).map((target) => (
+                <div key={target}>
+                  <button className="explanation-ask-btn" onClick={() => handleAsk(target)}>
+                    {copied === target
+                      ? "Copiato ✓"
+                      : `Copia per ${target === "claude" ? "Claude" : "ChatGPT"}`}
+                  </button>
+                  <a href={ASK_URLS[target]} target="_blank" rel="noopener noreferrer">
+                    {ASK_LABELS[target]} <ExternalLinkIcon width={13} height={13} />
+                  </a>
+                </div>
+              ))}
+              {manualPrompt && (
+                <label className="manual-copy" role="status">
+                  Copia automatica non riuscita. Seleziona e copia questo testo:
+                  <textarea readOnly value={manualPrompt} onFocus={(e) => e.target.select()} />
+                </label>
+              )}
+            </details>
           </div>
-          <p className="explanation-ask-hint">Il testo del passaggio viene copiato negli appunti: incollalo nella chat che si apre.</p>
         </>
       )}
+    </div>
+  );
+}
+
+/**
+ * "Servirà più avanti": the later paragraphs this one is setting up, each with what it contributes
+ * there. Hovering one previews that paragraph's note; clicking goes to it.
+ */
+function ForwardLinks({
+  links,
+  variant,
+  onGoToParagraph,
+}: {
+  links: { target: Paragraph; number: number; why: Record<string, string> }[];
+  variant: string;
+  onGoToParagraph: (paragraphId: string) => void;
+}) {
+  const [peek, setPeek] = useState<string | null>(null);
+  return (
+    <div className="forward-links">
+      <div className="forward-links-label">Servirà più avanti</div>
+      <ul>
+        {links.map(({ target, number, why }) => (
+          <li
+            key={target.id}
+            onMouseEnter={() => setPeek(target.id)}
+            onMouseLeave={() => setPeek(null)}
+          >
+            <button
+              type="button"
+              className="forward-link"
+              onClick={(e) => {
+                e.stopPropagation();
+                onGoToParagraph(target.id);
+              }}
+              onFocus={() => setPeek(target.id)}
+              onBlur={() => setPeek(null)}
+            >
+              <span className="paragraph-badge">{number}</span>
+              <span>{why[variant] ?? Object.values(why)[0]}</span>
+            </button>
+            {peek === target.id && (
+              <div className="forward-link-preview" role="tooltip">
+                <div className="forward-link-preview-head">
+                  Paragrafo {number}
+                  {target.section && <> · {target.section}</>}
+                </div>
+                <p>{target.explanations[variant] ?? Object.values(target.explanations)[0]}</p>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -35,5 +35,246 @@
       "evidence": ["p0009"],
       "dependsOn": ["device-matters", "cutting-cost", "structure-aware"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "abstract",
+      "title": {
+        "it-beginner": "Abstract · Il problema che DAScut risolve"
+      },
+      "goal": {
+        "it-beginner": "Capire perché dividere un circuito grande richiede anche scegliere i processori e riconoscere i pezzi ripetuti."
+      },
+      "steps": [
+        {
+          "id": "abstract-1",
+          "title": {
+            "it-beginner": "Tagliare, assegnare, riutilizzare"
+          },
+          "paragraphs": [
+            "p0004"
+          ],
+          "meaning": {
+            "it-beginner": "Un circuito è il programma quantistico. DAScut lo divide in programmi più piccoli, li assegna a processori disponibili e riusa i risultati dei pezzi equivalenti."
+          },
+          "purpose": {
+            "it-beginner": "Anticipa le tre leve del metodo e i benefici dichiarati nell’abstract, che il testo dovrà motivare."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0007",
+        "why": {
+          "it-beginner": "Collegare il limite di capacità dei processori ai costi del taglio e alla scelta del dispositivo."
+        }
+      }
+    },
+    {
+      "id": "introduction",
+      "title": {
+        "it-beginner": "1 · Perché serve una pianificazione congiunta"
+      },
+      "goal": {
+        "it-beginner": "Collegare il limite di capacità dei processori ai costi del taglio e alla scelta del dispositivo."
+      },
+      "steps": [
+        {
+          "id": "introduction-1",
+          "title": {
+            "it-beginner": "Programmi e processori hanno capacità diverse"
+          },
+          "paragraphs": [
+            "p0007",
+            "p0008",
+            "p0009"
+          ],
+          "meaning": {
+            "it-beginner": "Le QPU sono i processori fisici. Il circuito è il lavoro da eseguire; la coda, la qualità dei qubit e i collegamenti fra qubit variano da una QPU all’altra."
+          },
+          "purpose": {
+            "it-beginner": "Mostra perché dividere il lavoro senza considerarne la destinazione può peggiorare tempi e risultati."
+          }
+        },
+        {
+          "id": "introduction-2",
+          "title": {
+            "it-beginner": "Le scelte che DAScut combina"
+          },
+          "paragraphs": [
+            "p0013",
+            "p0015",
+            "p0016",
+            "p0017"
+          ],
+          "meaning": {
+            "it-beginner": "Partizionamento sceglie i pezzi; scheduling decide dove e quando eseguirli. Due sotto-circuiti isomorfi hanno la stessa struttura dopo una rinomina dei qubit."
+          },
+          "purpose": {
+            "it-beginner": "Introduce struttura, riuso e assegnazione come parti di un unico sistema, preparando la motivazione sperimentale."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0019",
+        "why": {
+          "it-beginner": "Capire cosa cambia quando un circuito viene adattato a una macchina e come si misura la perdita di qualità."
+        }
+      }
+    },
+    {
+      "id": "background",
+      "title": {
+        "it-beginner": "2 · Dal programma ideale al dispositivo rumoroso"
+      },
+      "goal": {
+        "it-beginner": "Capire cosa cambia quando un circuito viene adattato a una macchina e come si misura la perdita di qualità."
+      },
+      "steps": [
+        {
+          "id": "background-1",
+          "title": {
+            "it-beginner": "Tradurre il circuito per la macchina"
+          },
+          "paragraphs": [
+            "p0019",
+            "p0020",
+            "p0021",
+            "p0022",
+            "p0023"
+          ],
+          "meaning": {
+            "it-beginner": "Il grafo di accoppiamento descrive le coppie di qubit fisici che possono interagire. La traduzione sceglie porte native, assegna i qubit logici e aggiunge spostamenti dell’informazione quando servono."
+          },
+          "purpose": {
+            "it-beginner": "Spiega da dove arrivano operazioni aggiuntive ed errori prima ancora di tagliare il circuito."
+          }
+        },
+        {
+          "id": "background-2",
+          "title": {
+            "it-beginner": "Confrontare le distribuzioni dei risultati"
+          },
+          "paragraphs": [
+            "p0024",
+            "p0025",
+            "p0026",
+            "p0027"
+          ],
+          "meaning": {
+            "it-beginner": "La fedeltà qui confronta le probabilità degli esiti di misura ideali e rumorosi. La formula di Hellinger assegna un valore maggiore alle distribuzioni più simili."
+          },
+          "purpose": {
+            "it-beginner": "Definisce il metro usato per confrontare processori e circuiti negli esperimenti successivi."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0029",
+        "why": {
+          "it-beginner": "Leggere gli esperimenti come prova che la qualità dipende insieme dal circuito, dal rumore e dal dispositivo."
+        }
+      }
+    },
+    {
+      "id": "sensitivity",
+      "title": {
+        "it-beginner": "2.1 · Perché la scelta della QPU conta"
+      },
+      "goal": {
+        "it-beginner": "Leggere gli esperimenti come prova che la qualità dipende insieme dal circuito, dal rumore e dal dispositivo."
+      },
+      "steps": [
+        {
+          "id": "sensitivity-1",
+          "title": {
+            "it-beginner": "Stesso circuito, risultati diversi"
+          },
+          "paragraphs": [
+            "p0029",
+            "p0030",
+            "p0031",
+            "p0032",
+            "p0033"
+          ],
+          "meaning": {
+            "it-beginner": "I backend Fake sono modelli di dispositivi IBM simulati, con connettività e rumore propri. Il limite di memoria descritto riguarda la simulazione classica degli stati rumorosi."
+          },
+          "purpose": {
+            "it-beginner": "Motiva l’assegnazione consapevole del dispositivo e la necessità di mantenere contenuta la dimensione dei pezzi."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0035",
+        "why": {
+          "it-beginner": "Capire che eseguire pezzi più piccoli trasferisce lavoro alle ripetizioni e alla ricostruzione classica."
+        }
+      }
+    },
+    {
+      "id": "cutting",
+      "title": {
+        "it-beginner": "2.2 · Perché tagliare indiscriminatamente costa troppo"
+      },
+      "goal": {
+        "it-beginner": "Capire che eseguire pezzi più piccoli trasferisce lavoro alle ripetizioni e alla ricostruzione classica."
+      },
+      "steps": [
+        {
+          "id": "cutting-1",
+          "title": {
+            "it-beginner": "Il costo nascosto dei tagli"
+          },
+          "paragraphs": [
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038",
+            "p0039",
+            "p0040"
+          ],
+          "meaning": {
+            "it-beginner": "Un taglio sostituisce una connessione quantistica con più esecuzioni dei sotto-circuiti e una combinazione classica dei risultati. Il costo cresce con quanti collegamenti si interrompono."
+          },
+          "purpose": {
+            "it-beginner": "Gli esempi mostrano perché la dimensione del pezzo da sola non basta: bisogna guardare la densità delle interazioni."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0043",
+        "why": {
+          "it-beginner": "Passare dalle misure di costo ai grafi con cui individuare tagli utili e parti riutilizzabili."
+        }
+      }
+    },
+    {
+      "id": "characterization",
+      "title": {
+        "it-beginner": "3.1 · Leggere la struttura prima di dividere"
+      },
+      "goal": {
+        "it-beginner": "Passare dalle misure di costo ai grafi con cui individuare tagli utili e parti riutilizzabili."
+      },
+      "steps": [
+        {
+          "id": "characterization-1",
+          "title": {
+            "it-beginner": "Il grafo descrive le interazioni del programma"
+          },
+          "paragraphs": [
+            "p0043",
+            "p0044",
+            "p0045"
+          ],
+          "meaning": {
+            "it-beginner": "Nei grafi dei circuiti i nodi rappresentano qubit logici e gli archi le loro interazioni. Le figure confrontano un programma sparso con uno denso e mostrano strutture ripetute."
+          },
+          "purpose": {
+            "it-beginner": "Avvia la caratterizzazione usata dal metodo. La guida segue i paragrafi effettivamente presenti nell’importazione."
+          }
+        }
+      ]
+    }
   ]
 }

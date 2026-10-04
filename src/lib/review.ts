@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { userDataStore, useUserData } from "./storage.ts";
 
 // Spaced-repetition review across the whole library. Cards are created by the reader while
 // reading (a glossary concept, or a paragraph marked as unclear) and live only in this browser's
@@ -15,6 +16,8 @@ export interface ReviewCard {
   /** The explanation variant being read when the card was added — the answer is shown in it. */
   variant: string;
   addedAt: string;
+  /** Last scheduling change; reps resets after a failed recall and cannot order backups. */
+  updatedAt?: string;
   /** When the card is next due (ISO). */
   due: string;
   /** Current interval in days (0 = still learning). */
@@ -26,11 +29,6 @@ export interface ReviewCard {
 
 export type Grade = "again" | "hard" | "good" | "easy";
 
-export const REVIEW_STORAGE_KEY = "paper-reader:review";
-/** Fired on window whenever the deck changes in this tab (the storage event only reaches other tabs). */
-export const REVIEW_CHANGED_EVENT = "paper-reader:review-changed";
-const STORAGE_KEY = REVIEW_STORAGE_KEY;
-const CHANGE_EVENT = REVIEW_CHANGED_EVENT;
 const DAY = 24 * 60 * 60 * 1000;
 const RELEARN_DELAY = 10 * 60 * 1000; // a forgotten card comes back in the same session
 const HARD_FIRST_DELAY = 6 * 60 * 60 * 1000; // "hard" on a card not yet learned: later today, not tomorrow
@@ -40,35 +38,18 @@ export function cardId(slug: string, kind: CardKind, refId: string): string {
   return `${slug}:${kind}:${refId}`;
 }
 
-function load(): Record<string, ReviewCard> {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Record<string, ReviewCard>) : {};
-  } catch {
-    return {};
-  }
-}
-
-function persist(cards: Record<string, ReviewCard>) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
-  } catch {
-    // localStorage unavailable — review state just won't survive a reload.
-  }
-  // Other hook instances in this tab (the storage event only fires in *other* tabs).
-  window.dispatchEvent(new Event(CHANGE_EVENT));
-}
-
 /**
  * Next scheduling state after grading a card (simplified SM-2): "again" relearns it within
  * minutes and lowers ease; "hard" on a card still being learned brings it back in a few hours;
  * otherwise the interval grows (1 day, then 3, then × ease).
  */
 export function schedule(card: ReviewCard, grade: Grade, now = new Date()): ReviewCard {
-  let { interval, ease, reps, lapses } = card;
+  let { interval, ease } = card;
+  const { reps, lapses } = card;
   if (grade === "again") {
     return {
       ...card,
+      updatedAt: now.toISOString(),
       interval: 0,
       ease: Math.max(MIN_EASE, ease - 0.2),
       reps: 0,
@@ -77,7 +58,12 @@ export function schedule(card: ReviewCard, grade: Grade, now = new Date()): Revi
     };
   }
   if (grade === "hard" && reps === 0) {
-    return { ...card, ease: Math.max(MIN_EASE, ease - 0.15), due: new Date(now.getTime() + HARD_FIRST_DELAY).toISOString() };
+    return {
+      ...card,
+      updatedAt: now.toISOString(),
+      ease: Math.max(MIN_EASE, ease - 0.15),
+      due: new Date(now.getTime() + HARD_FIRST_DELAY).toISOString(),
+    };
   }
   const base = reps === 0 ? 1 : reps === 1 ? 3 : Math.round(interval * ease);
   if (grade === "hard") {
@@ -89,7 +75,14 @@ export function schedule(card: ReviewCard, grade: Grade, now = new Date()): Revi
     interval = Math.round(base * 1.3) + 1;
     ease = ease + 0.15;
   }
-  return { ...card, interval, ease, reps: reps + 1, due: new Date(now.getTime() + interval * DAY).toISOString() };
+  return {
+    ...card,
+    updatedAt: now.toISOString(),
+    interval,
+    ease,
+    reps: reps + 1,
+    due: new Date(now.getTime() + interval * DAY).toISOString(),
+  };
 }
 
 /** Human label for the interval a grade would give, e.g. "10 min", "3 g". */
@@ -119,23 +112,16 @@ export function useDueCount(): number {
 
 /** The review deck: all cards, plus add/remove/grade. Instances stay in sync across the tab and other tabs. */
 export function useReview() {
-  const [cards, setCards] = useState<Record<string, ReviewCard>>(load);
+  const {
+    data: { review: cards },
+  } = useUserData();
 
-  useEffect(() => {
-    const reload = () => setCards(load());
-    window.addEventListener(CHANGE_EVENT, reload);
-    window.addEventListener("storage", reload);
-    return () => {
-      window.removeEventListener(CHANGE_EVENT, reload);
-      window.removeEventListener("storage", reload);
-    };
-  }, []);
-
-  const update = useCallback((fn: (prev: Record<string, ReviewCard>) => Record<string, ReviewCard>) => {
-    const next = fn(load());
-    persist(next);
-    setCards(next);
-  }, []);
+  const update = useCallback(
+    (fn: (prev: Record<string, ReviewCard>) => Record<string, ReviewCard>) => {
+      userDataStore.update((data) => ({ ...data, review: fn(data.review) }));
+    },
+    [],
+  );
 
   /** Adds cards (skipping ones already in the deck, which keep their schedule). */
   const addCards = useCallback(
@@ -146,7 +132,21 @@ export function useReview() {
         for (const { slug, kind, refId, variant } of items) {
           const id = cardId(slug, kind, refId);
           // Due immediately: the first review is the first recall attempt.
-          if (!next[id]) next[id] = { id, kind, slug, refId, variant, addedAt: now, due: now, interval: 0, ease: 2.5, reps: 0, lapses: 0 };
+          if (!next[id])
+            next[id] = {
+              id,
+              kind,
+              slug,
+              refId,
+              variant,
+              addedAt: now,
+              updatedAt: now,
+              due: now,
+              interval: 0,
+              ease: 2.5,
+              reps: 0,
+              lapses: 0,
+            };
         }
         return next;
       });
@@ -155,7 +155,8 @@ export function useReview() {
   );
 
   const addCard = useCallback(
-    (slug: string, kind: CardKind, refId: string, variant: string) => addCards([{ slug, kind, refId, variant }]),
+    (slug: string, kind: CardKind, refId: string, variant: string) =>
+      addCards([{ slug, kind, refId, variant }]),
     [addCards],
   );
 
@@ -177,5 +178,10 @@ export function useReview() {
     [update],
   );
 
-  return { cards, addCard, addCards, removeCard, removeCards, gradeCard };
+  const restoreCard = useCallback(
+    (card: ReviewCard) =>
+      update((prev) => ({ ...prev, [card.id]: { ...card, updatedAt: new Date().toISOString() } })),
+    [update],
+  );
+  return { cards, addCard, addCards, removeCard, removeCards, gradeCard, restoreCard };
 }

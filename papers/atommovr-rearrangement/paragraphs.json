@@ -428,8 +428,8 @@
     ],
     "sourceText": "In this work, we introduce a simulation platform forbenchmarking rearrangement algorithms under various",
     "explanations": {
-      "it-intermediate": "In questo lavoro presentiamo una piattaforma di simulazione per fare benchmark degli algoritmi di riordino sotto vari modelli di errore e di tempistica...",
-      "it-expert": "Preannuncio della struttura: piattaforma di benchmark multi-modello di errore e timing..."
+      "it-intermediate": "atommovr è una piattaforma per confrontare algoritmi di riordino degli atomi usando gli stessi modelli di tempo ed errore. Il confronto considera sia il limite ideale di velocità sia le perdite realistiche, e viene esteso ad array con due specie atomiche.",
+      "it-expert": "La piattaforma separa algoritmo di rearrangement, timing model ed error model per rendere confrontabili i benchmark. Il lavoro confronta lower bound temporali, euristiche in regimi di rumore diversi e riordino dual-species con InsideOut."
     }
   },
   {
@@ -485,8 +485,8 @@
     ],
     "sourceText": "The crossed-AOD device transforms a single incident",
     "explanations": {
-      "it-intermediate": "Il dispositivo AOD incrociato trasforma un singolo fascio incidente...",
-      "it-expert": "Descrizione fisica del crossed-AOD: trasforma un singolo fascio in..."
+      "it-intermediate": "Due deflettori acusto-ottici incrociati trasformano un fascio di luce in una griglia di trappole mobili. Spostando o dilatando righe e colonne della griglia si possono trasportare più atomi contemporaneamente, rispettando però i vincoli geometrici degli AOD.",
+      "it-expert": "Il crossed-AOD genera una griglia rettilinea di beam a partire da un fascio incidente. Traslazioni e variazioni delle spaziature consentono più displacements per AOD move segment, con accoppiamento dei movimenti dovuto alla struttura di righe e colonne."
     }
   },
   {
@@ -682,8 +682,8 @@
     ],
     "sourceText": "Lower bounds for time-optimal scaling. We make useof atommovr to numerically extract lower bounds fortime-optimal rearrangement algorithms and comparethe scaling behavior of algorithms recently proposedin the literature (Fig. 3, Table 1).To extract lowerbounds, we solve the linear bottleneck assignment prob-lem (LBAP) [35], also known as the maximum bot-",
     "explanations": {
-      "it-intermediate": "Limiti inferiori per lo scaling ottimale: usando atommovr si estraggono numericamente dei limiti inferiori teorici per gli algoritmi di riordino ottimali nel tempo, e si confronta il loro comportamento di scaling con quello degli algoritmi recenti proposti in letteratura (Fig. 3, Tabella 1). Per estrarre questi limiti, si risolve il problema di assegnamento a collo di bottiglia lineare (LBAP)...",
-      "it-expert": "Estrazione numerica di lower bound risolvendo il Linear Bottleneck Assignment Problem (LBAP) — noto anche come maximum bottleneck matching problem (MBMP) nella letteratura di teoria dei grafi..."
+      "it-intermediate": "Per avere un riferimento ideale, gli autori assegnano gli atomi ai siti da riempire minimizzando il viaggio più lungo, anziché la somma di tutti i viaggi. A velocità fissata, questo problema di assegnazione a collo di bottiglia fornisce un limite inferiore sul tempo necessario al riordino.",
+      "it-expert": "Il lower bound temporale viene estratto dal LBAP, equivalente al maximum bottleneck matching problem. L'obiettivo min–max sulla distanza, anziché quello min–sum del LSAP, corrisponde al makespan ideale per trasporti paralleli a velocità fissata."
     }
   },
   {
@@ -926,7 +926,7 @@
     ],
     "sourceText": "where s is the spacing between adjacent sites, dminmaxis the solution to the LBAP/MBMP and |vtweezer| isthe tweezer speed. We use the protocol and repositorydeveloped in [35] to solve the LBAP/MBMP, which werefer to as ‘Z⋆’.",
     "explanations": {
-      "it-intermediate": "...dove s è la spaziatura tra siti adiacenti, dminmax è la soluzione del LBAP/MBMP e |vtweezer| è la velocità del tweezer. Si usa il protocollo e il repository sviluppati in un lavoro precedente per risolvere il LBAP/MBMP...",
+      "it-intermediate": "Il limite temporale è tLB=s·dminmax/|vtweezer|: la distanza minima del viaggio più lungo, espressa in passi di reticolo, viene convertita in una distanza fisica e divisa per la velocità della trappola. Gli autori chiamano Z⋆ l'implementazione usata per risolvere questo problema; è un riferimento ideale, non un algoritmo completo di riordino con tutti i vincoli hardware.",
       "it-expert": "Formula del lower bound tLB = s·dminmax/|vtweezer| (Eq. 1); LBAP/MBMP risolto con l'implementazione di [35]."
     }
   },
@@ -951,8 +951,8 @@
     ],
     "sourceText": "Extracting scaling coefficients for heuristic algo-rithms. Our benchmarking results are shown in Fig. 3and we present extracted scaling coefficients in Table 1.Notably, for a 50% loading probability, the lower boundscales as just under √",
     "explanations": {
-      "it-intermediate": "Estrazione dei coefficienti di scaling per gli algoritmi euristici: i risultati del benchmark sono in Fig. 3 e i coefficienti estratti in Tabella 1. In particolare, con una probabilità di caricamento del 50%...",
-      "it-expert": "Estrazione empirica degli esponenti di scaling t(N)=cN^b via fit sui dati di Fig. 3, tabulati in Table 1 per loading probability 50%..."
+      "it-intermediate": "La Figura 3 e la Tabella 1 misurano come aumenta il tempo di riordino al crescere di N, il numero di siti da riempire. Con caricamento iniziale al 50%, il limite inferiore cresce con un esponente poco sotto 1/2: molto meno rapidamente di vari algoritmi pratici confrontati.",
+      "it-expert": "I fit t(N)=cN^b su configurazioni caricate al 50% producono gli esponenti della Tabella 1. Il lower bound ha b=0.45(6), compatibile con una crescita circa √N; il divario rispetto alle euristiche misura margine di ottimizzazione del rearrangement."
     }
   },
   {
@@ -970,8 +970,8 @@
     ],
     "sourceText": "N, while one of the leading algo-rithms (Tetris [34]) scales as just over N (where N isthe number of target sites in a square grid with unitfilling). While our implementation of the Balance andCompact for tweezer arrays is able to achieve sublinearscaling (N 0.84(2)), there is still a sizable gap.",
     "explanations": {
-      "it-intermediate": "...il limite teorico scala come √N, mentre uno degli algoritmi più avanzati (Tetris) scala di poco sopra N (dove N è il numero di siti target in una griglia quadrata a riempimento unitario). L'implementazione degli autori di Balance and Compact...",
-      "it-expert": "Confronto empirico: lower bound Z*~√N, Tetris~N^1.03 (quasi lineare, vicino all'ottimo pratico), mentre Balance and Compact ottenuto dagli autori mostra..."
+      "it-intermediate": "Il limite ideale cresce circa come √N, mentre Tetris cresce poco più che linearmente con N. Balance and Compact raggiunge una crescita sublineare N^0.84(2), ma resta sensibilmente più lontano dal limite: fare mosse parallele aiuta senza rendere automaticamente ottimo il riordino.",
+      "it-expert": "A loading probability 50%, Z⋆ presenta esponente 0.45(6), Tetris 1.03(7) e l'implementazione Balance and Compact 0.84(2). L'andamento sublineare di quest'ultima non chiude il gap con il lower bound; il confronto riguarda il timing ideale del benchmark."
     }
   },
   {
@@ -995,7 +995,7 @@
     ],
     "sourceText": "Moreover, we develop a variation of the Hungarian al-gorithm with move parallelization (ParHungarian), and 102",
     "explanations": {
-      "it-intermediate": "Gli autori sviluppano anche una variante dell'algoritmo Hungarian con parallelizzazione delle mosse (ParHungarian, descritto in dettaglio nell'Appendice B.1), e la confrontano...",
+      "it-intermediate": "ParHungarian conserva l'assegnazione atomo–destinazione dell'algoritmo Hungarian e cerca poi gruppi di mosse eseguibili insieme. Il benchmark verifica quanto questa parallelizzazione riduca il tempo rispetto alla versione che sposta gli atomi uno alla volta.",
       "it-expert": "Introduzione di ParHungarian (dettagli in App. B.1): estensione naive-parallel dell'Hungarian standard, benchmark comparativo in Fig. 3."
     }
   },
@@ -1050,7 +1050,7 @@
     ],
     "sourceText": "Rearrangement time [ms] 101 100 10-1 1022 ×1024 ×102 Number of atoms Fig. 3: Algorithmic scaling and comparison to fundamentallower bounds in a noiseless setting. Scaling behavior of twofoundational rearrangement algorithms, Balance and Compact(gray squares), and the Hungarian (green triangles), as wellas a variation of the Hungarian utilizing move parallelization(ParHungarian) (orange triangles). This behavior is contrastedwith extracted lower bounds for the optimal rearrangement timefor both unconstrained moves ‘Z⋆’ (blue circles) and moves re-stricted to a grid ‘Z⋆’ (grid) (purple diamonds). Each datapoint is averaged over 100 randomly loaded initial configura-tions, and the error bars represent shot noise. All target con-figurations are unit filling square grids. Scaling coefficients arepresented in Table 1.",
     "explanations": {
-      "it-intermediate": "Figura 3 (didascalia): scaling algoritmico e confronto con i limiti teorici fondamentali in un contesto senza rumore. Comportamento di scaling di due algoritmi fondamentali di riordino...",
+      "it-intermediate": "La Figura 3 confronta il tempo di riordino di Hungarian, ParHungarian e Balance and Compact con due limiti inferiori ideali, per mosse libere o limitate alla griglia. Ogni punto media 100 caricamenti casuali, senza rumore, verso una griglia quadrata completamente piena. La distanza dalle curve dei limiti mostra quanto margine rimane negli algoritmi pratici.",
       "it-expert": "Fig. 3 caption: scaling comparativo (tempo di riordino in ms vs numero di atomi, scala log-log) tra algoritmi fondamentali e i lower bound Z*/Z*(grid), setting noiseless."
     }
   },
@@ -1075,8 +1075,8 @@
     ],
     "sourceText": "compare its scaling to our implementation of the naiveHungarian, which we expect to be roughly O(N √",
     "explanations": {
-      "it-intermediate": "...confrontano il suo scaling con la loro implementazione dell'algoritmo Hungarian ingenuo (naive), che ci si aspetta scali come O(N√N)...",
-      "it-expert": "Confronto con naive Hungarian, atteso O(N√N)..."
+      "it-intermediate": "La versione sequenziale di Hungarian deve spostare un numero di atomi proporzionale a N, con viaggi lunghi fino a circa √N siti. Per questo ci si attende un tempo dell'ordine di N√N; ParHungarian viene confrontato con questa base per isolare il beneficio delle mosse parallele.",
+      "it-expert": "La baseline naive Hungarian esegue O(N) trasporti sequenziali con distanza caratteristica O(√N). Ne segue lo scaling temporale atteso O(N^1.5), contro cui viene valutata la parallelizzazione di ParHungarian."
     }
   },
   {
@@ -1100,7 +1100,7 @@
     ],
     "sourceText": "N)(as this entails moving O(N) atoms sequentially, eachwith a maximum distance of √",
     "explanations": {
-      "it-intermediate": "...(√N) (poiché comporta lo spostamento sequenziale di O(N) atomi, ciascuno con una distanza massima di √N). Gli autori trovano che il loro scaling estratto concorda, entro le barre d'errore, con quello trovato in un lavoro precedente...",
+      "it-intermediate": "Il fattore √N deriva dalla dimensione lineare di una griglia quadrata con N siti. Se O(N) atomi percorrono queste distanze uno dopo l'altro, i tempi si sommano e danno la crescita N√N. Parallelizzare i viaggi può ridurre questa somma senza cambiare l'assegnazione delle destinazioni.",
       "it-expert": "...giustificazione: O(N) mosse sequenziali × distanza max O(√N) per atomo = O(N^1.5); risultato empirico concorda con [34] entro errore."
     }
   },
@@ -1202,7 +1202,7 @@
     ],
     "sourceText": "Subsequently, we extend our analysis to realistic ex-perimental conditions.We compare two algorithms:the single-tweezer Hungarian algorithm (which mini-mizes transport distance) and the parallelized Balanceand Compact algorithm (which aims to minimize rear-rangement time), which we implement for tweezer ar-rays (Fig. 4). We simultaneously sweep over a range oftypical values for vacuum-limited lifetimes (2 −200 s)and probabilities of losing an atom in a tweezer handoff(0.05 −0.5%), and compare the success probability ofpreparing a 12×12 fully filled configuration in a 16×16array of tweezers with 60% loading probability.",
     "explanations": {
-      "it-intermediate": "Successivamente, l'analisi viene estesa a condizioni sperimentali realistiche. Si confrontano due algoritmi: l'Hungarian a singolo tweezer (che minimizza la distanza di trasporto) e la versione parallelizzata Balance and Compact...",
+      "it-intermediate": "Il confronto realistico oppone Hungarian, che limita il trasporto, a Balance and Compact, che privilegia mosse parallele e tempi brevi. Si misura la probabilità di riempire una griglia 12×12 dentro un array 16×16 caricato al 60%, variando vita degli atomi tra 2 e 200 secondi ed errore di trasferimento tra 0.05% e 0.5%. Questo distingue il costo del tempo trascorso dal costo del numero di trasferimenti.",
       "it-expert": "Setup §5: confronto testa-a-testa Hungarian (single-tweezer, min-distance) vs Balance and Compact (row/column-parallel) sotto error model realistico (vacuum loss + transfer/tweezer error, App. A.2)."
     }
   },
@@ -1221,7 +1221,7 @@
     ],
     "sourceText": "We find that the Hungarian is advantageous when thedominant sources of atom loss are tweezer errors. Sincethe Hungarian method minimizes the total transportdistance by moving atoms one at a time, the numberof pickup and putdown operations should be roughlyN. In contrast, the multi-step structure of Balance andCompact may cause individual atoms to be picked upand moved many times.This extra overhead in thenumber of trap transfers makes the success rate decayfaster with growing trap transfer error.",
     "explanations": {
-      "it-intermediate": "Si trova che l'Hungarian è vantaggioso quando la fonte dominante di perdita di atomi sono gli errori dei tweezer (ad es. durante i trasferimenti): poiché l'Hungarian minimizza la distanza totale di trasporto muovendo un atomo alla volta...",
+      "it-intermediate": "Quando il rischio principale è perdere un atomo nel passaggio tra trappole, Hungarian risulta vantaggioso nel confronto. Muovendo gli atomi uno alla volta verso le destinazioni assegnate richiede circa N prelievi e depositi, mentre Balance and Compact può trasferire lo stesso atomo più volte. Ogni trasferimento aggiuntivo introduce un'altra occasione di perdita.",
       "it-expert": "Risultato: Hungarian vince quando domina il tweezer/transfer-error (dipendente dal numero di trasferimenti, non dal tempo), perché il min-distance transport riduce il numero totale di eventi di trasferimento per atomo."
     },
     "recall": [
@@ -1253,8 +1253,8 @@
     ],
     "sourceText": "Conversely, we see that Balance and Compact isadvantageous when vacuum-limited loss dominates",
     "explanations": {
-      "it-intermediate": "Al contrario, Balance and Compact è vantaggioso quando domina la perdita per vita limitata nel vuoto (collisioni col gas residuo)...",
-      "it-expert": "Risultato complementare: Balance and Compact vince quando domina il vacuum-limited loss (dipendente dal tempo totale, non dal numero di trasferimenti)..."
+      "it-intermediate": "Se prevalgono invece le perdite dovute alla vita finita degli atomi nel vuoto, diventa decisivo terminare prima. Balance and Compact sposta molti atomi insieme e riduce il tempo complessivo, ottenendo nel benchmark un vantaggio sul metodo Hungarian sequenziale.",
+      "it-expert": "Nel regime dominato dal vacuum-limited loss, Balance and Compact beneficia del maggiore parallelismo e dello scaling temporale sublineare. Il vantaggio è complementare a quello di Hungarian nel regime transfer-error: dipende dal processo di perdita dominante."
     }
   },
   {
@@ -1310,7 +1310,7 @@
     ],
     "sourceText": "However, the task of dual-species rearrangement isfundamentally more complex than the single-speciesproblem: whereas in single-species rearrangement theexchange of any two atoms does not change the stateof the array nor the minimum number of moves to pre-pare some target configuration, in dual-species such anexchange may be nontrivial, and pairs of exchange op-erations do not necessarily commute. While this obser-vation may appear obvious, it follows that there existdetrimental configurations in which an atom is effec-tively ‘blocked’ by neighboring atoms of the oppositespecies (Fig. 5a,b). Navigating such obstacles withoutejecting atoms can introduce large time overheads.",
     "explanations": {
-      "it-intermediate": "Tuttavia, il riordino a due specie è intrinsecamente più complesso del caso a singola specie: mentre nel caso singola specie scambiare due atomi qualsiasi non cambia lo stato del sistema (sono indistinguibili ai fini della configurazione)...",
+      "it-intermediate": "Con due specie gli atomi non sono tutti intercambiabili: portare un atomo del tipo sbagliato nel sito richiesto non risolve il problema. Atomi di una specie possono quindi ostruire le mosse dell'altra, e l'ordine degli scambi può cambiare il risultato. Aggirare questi blocchi senza espellere atomi può richiedere percorsi e tempi molto maggiori.",
       "it-expert": "Complessità aggiuntiva: nel single-species, atomi sono interscambiabili (qualunque permutazione tra atomi 'eccesso' è equivalente), mentre nel dual-species lo scambio tra specie diverse altera la configurazione — questo introduce vincoli combinatori che generano le 'blocked configurations'."
     },
     "recall": [
@@ -1342,7 +1342,7 @@
     ],
     "sourceText": "Moreover, the existence of blocked configurations alsoraises the question of what the optimal experimentalconditions are for dual-species rearrangement. In thesingle-species setting, an advantageous strategy is to in-crease the stochastic loading probability through exper-imental techniques including λ-enhanced gray molassesand dark-state enhanced loading [43, 44]. Whereas herehigher loading probability reduces the number of emptytarget sites and subsequently the number of moves re-quired to fill the remaining target sites, in the dual-species setting the likelihood of developing blocked con-figurations also increases.This tradeoff naturally in-vites the question of whether there exists an optimalloading probability, and if so, whether it is consistentacross all dual-species algorithms or varies with thechoice of algorithm and/or target configuration.",
     "explanations": {
-      "it-intermediate": "Inoltre, l'esistenza di configurazioni bloccate solleva la domanda di quali siano le condizioni sperimentali ottimali per il riordino a due specie. Nel caso a singola specie, una strategia vantaggiosa...",
+      "it-intermediate": "Caricare più atomi lascia meno buchi da riempire, ma con due specie aumenta anche la probabilità di ostacoli reciproci. Esiste quindi un compromesso tra disponibilità di atomi e libertà di movimento. Gli autori chiedono se la densità iniziale migliore dipenda dall'algoritmo e dal disegno finale da preparare.",
       "it-expert": "L'esistenza di blocked configurations (un atomo di specie A ostruisce il path verso il target di un atomo di specie B, o occupa il sito target stesso — vedi Fig. 5a,b) pone la domanda su loading probability/density ottimali, diversamente dal single-species."
     }
   },
@@ -1361,7 +1361,7 @@
     ],
     "sourceText": "While some initial algorithms have been proposedand realized experimentally to mitigate the challengesof dual-species rearrangement [25, 42, 45, 46], to thebest of our knowledge, no algorithm has demonstratedthe ability to prepare an arbitrary target configurationfrom any random initial configuration (with sufficient",
     "explanations": {
-      "it-intermediate": "Sono già stati proposti e realizzati sperimentalmente alcuni algoritmi iniziali per mitigare queste sfide, ma per quanto ne sanno gli autori nessun algoritmo ha ancora dimostrato...",
+      "it-intermediate": "Gli autori individuano una lacuna nei metodi precedenti: non era stata mostrata una preparazione generale di target arbitrari da configurazioni casuali, pur con abbastanza atomi e un grande serbatoio, restando sulle righe e colonne del reticolo. Questa è la motivazione per progettare InsideOut, non una dimostrazione che qualsiasi metodo precedente fallisca sempre.",
       "it-expert": "Stato dell'arte [25,42,45,46]: algoritmi iniziali esistono ma, secondo gli autori, nessuno dimostra ancora (presumibilmente: un success rate quasi-unitario generale) — gap che InsideOut colma."
     }
   },
@@ -1573,7 +1573,7 @@
     ],
     "sourceText": "atom numbers and in the limit of large system size, i.e.an arbitrarily large reservoir) without moving atoms inthe space between rows or columns. This constraint be-comes important to minimize atom loss in dense arrays,as tweezers which move very close to each other may ex-perience beating due to the small frequency shifts im-parted by the AODs and risk being heated out of theirtraps.",
     "explanations": {
-      "it-intermediate": "...(numero di atomi e, nel limite di sistema grande, cioè con un serbatoio arbitrariamente grande) senza spostare atomi nello spazio tra righe o colonne. Questo vincolo diventa importante per minimizzare la perdita di atomi...",
+      "it-intermediate": "Il vincolo discusso è spostare le trappole lungo il reticolo, evitando passaggi ravvicinati nello spazio tra righe o colonne. Trappole con frequenze AOD molto vicine possono produrre battimenti e riscaldare gli atomi fino a perderli. Il requisito riguarda dunque la compatibilità fisica dei percorsi, oltre alla disponibilità di abbastanza atomi delle due specie.",
       "it-expert": "Vincolo architetturale: le mosse restano confinate a righe/colonne (no diagonal-only paths tra loro), rilevante per minimizzare atom loss in regime di large-N/large-reservoir."
     }
   },
@@ -1592,7 +1592,7 @@
     ],
     "sourceText": "Designing an efficient dual-species algorithm. We de-velop and benchmark a simple heuristic algorithm, In-sideOut, which is able to prepare arbitrary target con-figurations with a near-unity success rate.InsideOutis designed to circumvent such ‘blocked’ configurations,and operates on a simple, layer-by-layer principle: first,it prepares the middle 2 × 2 sites of the target config-uration, pushing outward any misplaced atoms in theprocess. Then, it prepares the next ‘layer’ (in this case,the loop of twelve sites enclosing the middle 2 × 2), anditeratively repeats until the target configuration is real-ized. If at any point an atom of one species is blockingthe path of an atom of opposite species, it is simplypushed away from the target configuration in a ‘clear-ing’ operation.",
     "explanations": {
-      "it-intermediate": "Progettare un algoritmo efficiente per due specie: gli autori sviluppano e testano un algoritmo euristico, InsideOut, capace di preparare configurazioni target arbitrarie con un tasso di successo quasi perfetto...",
+      "it-intermediate": "InsideOut riempie prima i siti centrali e poi gli anelli successivi verso l'esterno. Prima di completare un anello spinge fuori gli atomi della specie sbagliata, e usa un passo di sgombero se una specie blocca il cammino dell'altra. La costruzione mira a preservare la parte già sistemata e nel benchmark raggiunge un successo vicino all'unità.",
       "it-expert": "Design di InsideOut: euristica dual-species con success rate near-unity per target arbitrari — l'idea centrale (layer-by-layer, spiegata nel blocco successivo) è preannunciata qui."
     },
     "recall": [
@@ -1624,8 +1624,8 @@
     ],
     "sourceText": "Such a layer-by-layer approach reduces the chance tocreate ‘blocked’ configurations and ensures that previ-ous layers will not be disturbed by such ‘clearing’ opera-tions, thus preventing the emergence of ‘blocked’ config-urations (see Appendix B.3 for a detailed description).",
     "explanations": {
-      "it-intermediate": "Questo approccio 'strato per strato' (layer-by-layer) riduce la probabilità di creare configurazioni 'bloccate' e garantisce che gli strati già sistemati non vengano disturbati dalle operazioni successive di 'pulizia', prevenendo così l'emergere di...",
-      "it-expert": "Meccanismo chiave di InsideOut: procedendo layer-by-layer dall'esterno verso l'interno (o viceversa, vedi App. B.3), si preserva l'invarianza dei layer già completati durante le clearing operations successive, eliminando (quasi) le blocked configurations per costruzione."
+      "it-intermediate": "Procedere dal centro verso l'esterno permette di sgomberare gli ostacoli senza disfare gli anelli interni già completati. Questa proprietà riduce i blocchi persistenti tra specie e rende ordinato il passo di sgombero. L'algoritmo gestisce gli ostacoli quando compaiono, anziché affidarsi soltanto alla speranza che non si formino.",
+      "it-expert": "L'invariante di InsideOut è la preservazione dei layer interni già completati durante il clearing verso l'esterno. L'ordine centro→periferia limita le blocked configurations e permette di risolverle senza invalidare il lavoro precedente; il successo near-unity riportato è un risultato del benchmark."
     }
   },
   {
@@ -1643,7 +1643,7 @@
     ],
     "sourceText": "Benchmarking. To verify the efficacy of InsideOut,we check its scaling with increasing system size, andbenchmark against a naive dual-species extension of thesingle-species ParHungarian algorithm (See AppendixB.2). We observe that InsideOut maintains a near-unitysuccess rate with increasing system size, while the suc-cess rate of ParHungarian decreases to under 50% inpreparing a 10 × 10 target array (Fig. 5c).",
     "explanations": {
-      "it-intermediate": "Benchmark: per verificare l'efficacia di InsideOut, ne viene controllato lo scaling al crescere della dimensione del sistema, confrontandolo con un'estensione ingenua a due specie del ParHungarian a singola specie (vedi Appendice B.2)...",
+      "it-intermediate": "Il benchmark fa crescere la dimensione del target e confronta InsideOut con una semplice estensione di ParHungarian a due specie. InsideOut mantiene un successo vicino al 100% nei casi testati; ParHungarian scende sotto il 50% per un target 10×10. Il confronto mostra che la gestione dei blocchi diventa più importante aumentando l'array.",
       "it-expert": "Protocollo di benchmark: scaling vs system size, baseline = naive dual-species extension di ParHungarian (App. B.2)."
     }
   },
@@ -1681,7 +1681,7 @@
     ],
     "sourceText": "As expected, the success rate for InsideOut remainsat unity across all loading probabilities while the successrate of ParHungarian decays at high loading probabil-ities (Fig. 5d). Interestingly, for the ‘zebra stripe’ and‘checkerboard’ configurations, ParHungarian appears todisplay clear minima in rearrangement time at loadingprobabilities of around 60%, whereas the correspondingInsideOut times appear to monotonically decrease withincreasing loading probability.",
     "explanations": {
-      "it-intermediate": "Come atteso, il tasso di successo di InsideOut resta pari a 1 (unitario) per tutte le probabilità di caricamento, mentre quello di ParHungarian decade alle alte probabilità di caricamento (Fig. 5d). È interessante notare che, per...",
+      "it-intermediate": "Nei test al variare della probabilità di caricamento, InsideOut mantiene successo unitario, mentre ParHungarian peggiora quando la griglia diventa più piena. Per target a strisce o scacchiera, il tempo di ParHungarian ha un minimo intorno al 60% di caricamento; quello di InsideOut diminuisce con più atomi disponibili. Questi andamenti riguardano le configurazioni e i modelli simulati.",
       "it-expert": "Risultato centrale: success rate InsideOut ≈1 uniformemente su tutto il range di loading probability; ParHungarian degrada a loading probability alte (più atomi → più ostruzioni reciproche → più blocked configs) — Fig. 5d."
     }
   },
@@ -1700,7 +1700,7 @@
     ],
     "sourceText": "However, behavior of both algorithms varies signifi-cantly with the choice of target configuration and den-sity. In sparse arrays with fewer excess atoms, ParHun-garian is able to prepare high-entropy ‘zebra stripe’and ‘checkerboard’ patterns slightly faster than Inside-Out. However, this quickly breaks down in dense arrayswith many excess atoms, or when preparing the low-entropy ‘separate zones’ configuration (where InsideOutis advantageous in both rearrangement time and successrate). In these regimes, the paths for ParHungarian be-come increasingly full of obstacles, resulting in morecircuitous paths and an overall slowdown, whereas theparallelized ‘clearing’ operations of InsideOut removesuch obstacles efficiently.",
     "explanations": {
-      "it-intermediate": "Tuttavia, il comportamento di entrambi gli algoritmi varia significativamente a seconda della configurazione target scelta e della sua densità. In array sparsi con pochi atomi in eccesso, ParHungarian riesce a preparare configurazioni ad alta entropia...",
+      "it-intermediate": "ParHungarian può essere leggermente più rapido su griglie poco dense e target a strisce o scacchiera, perché incontra pochi ostacoli. Con molti atomi in eccesso o con specie separate in zone, i suoi cammini diventano più tortuosi. In questi regimi InsideOut beneficia dello sgombero parallelo e migliora sia il tempo sia la probabilità di successo.",
       "it-expert": "Dipendenza dalla target configuration/densità: in regime sparse (pochi atomi excess), ParHungarian resta competitivo su target ad alta entropia; il vantaggio di InsideOut è più marcato in regime dense/strutturato (vedi Fig. 5 a-c: Zones/Zebra/Checker)."
     }
   },
@@ -1975,8 +1975,8 @@
     ],
     "sourceText": "Moving tweezers with SLMs or holographic AODs.SLMs, while typically used to generate a grid of ‘static’tweezers, can also be used to move atoms between sites,thus eliminating the need for a separate set of mobile",
     "explanations": {
-      "it-intermediate": "Tweezer mobili con SLM o AOD olografici: gli SLM, tipicamente usati per generare una griglia di tweezer 'statici', possono anche essere usati per spostare atomi tra siti, eliminando così la necessità di un set separato di tweezer mobili...",
-      "it-expert": "Alternativa architetturale 1: SLM (o AOD olografici) per moving tweezers, eliminando la necessità di un layer AOD separato per le mosse..."
+      "it-intermediate": "Un'alternativa è muovere direttamente le trappole generate da un modulatore spaziale di luce, senza uno strato distinto di trappole mobili. Gli ologrammi permettono geometrie di movimento più libere rispetto alla griglia rettilinea di un AOD incrociato. Il vantaggio geometrico va però confrontato con i tempi di aggiornamento e calcolo degli ologrammi.",
+      "it-expert": "SLM e AOD olografici offrono una struttura di move diversa dal crossed-AOD, eliminando il requisito di una griglia rettilinea di mobile tweezers. Questa estensione del dominio delle mosse non è modellata nei benchmark principali e introduce vincoli propri di frame rate e generazione dell'ologramma."
     },
     "recall": [
       {
@@ -2007,7 +2007,7 @@
     ],
     "sourceText": "tweezers [4, 24, 47, 48].The key advantage of thismethod is that it avoids the constraint of generatingmoving tweezers on a rectilinear grid, and can executearbitrary combinations of moves in parallel.",
     "explanations": {
-      "it-intermediate": "...(rispetto ai tweezer generati da AOD [4,24,47,48]). Il vantaggio chiave di questo metodo è che evita il vincolo di generare tweezer mobili su una griglia rettilinea, e può eseguire combinazioni arbitrarie di mosse in parallelo...",
+      "it-intermediate": "Muovere le trappole tramite ologrammi consente combinazioni di traiettorie che non devono seguire gli spostamenti accoppiati di righe e colonne degli AOD incrociati. Si possono così parallelizzare mosse geometricamente più generali. Questo descrive una possibilità hardware alternativa, non una prestazione già dimostrata da atommovr.",
       "it-expert": "...vantaggio: libertà geometrica completa (no vincolo rettilineo dell'AOD) e parallelismo arbitrario di mosse, non limitato alla struttura riga/colonna."
     }
   },
@@ -2026,7 +2026,7 @@
     ],
     "sourceText": "However, in practice, this method is hindered by rela-tively slow response times (frame generation rates) typ-ically on the order of 1 ms (1 kHz) intrinsically limitedby physical properties of the SLM [49], the computa-tional cost of calculating the input parameters for thedesired hologram at each frame (typically by solving theGerchberg-Saxton algorithm) and the discretization ofthe moving process. Recent work [23] has proposed us-ing AODs to generate phase- and amplitude-controlledholograms, which would mitigate the frame rate issue.",
     "explanations": {
-      "it-intermediate": "Tuttavia, in pratica questo metodo è limitato da tempi di risposta (frame rate) relativamente lenti, tipicamente dell'ordine di 1 ms (1 kHz), intrinsecamente limitati dalle proprietà fisiche dell'SLM...",
+      "it-intermediate": "Gli SLM offrono libertà di movimento, ma il loro aggiornamento è tipicamente dell'ordine di un millisecondo e ogni frame richiede il calcolo di un ologramma. Questi costi e la discretizzazione del trasporto possono limitare il vantaggio del parallelismo. Gli AOD con controllo di fase e ampiezza sono citati come possibile via per mitigare il limite del frame rate.",
       "it-expert": "Limite pratico: frame rate SLM ~1 kHz, limitato dalle proprietà fisiche del dispositivo, dal costo computazionale del calcolo dell'ologramma per frame (tipicamente via algoritmo di Gerchberg-Saxton) e dalla discretizzazione del moto — lavori recenti [23] propongono AOD a fase/ampiezza controllate per mitigare."
     }
   },
@@ -2045,8 +2045,8 @@
     ],
     "sourceText": "Continuous AOD tone modeling. A current limita-tion of the modeling framework is that time costs fortrap transfers, acceleration, and deceleration are ap-plied uniformly across all moves in a single move round.Such an approximation allows for AOD operations tobe efficiently discretely parametrized, enabling efficientsimulation and collision detection (see Appendix A.1),but at the cost of being conservative in estimating re-arrangement time in certain scenarios.",
     "explanations": {
-      "it-intermediate": "Modellazione continua dei toni AOD: un limite attuale del framework di modellazione è che i costi temporali per trasferimenti, accelerazione e decelerazione sono applicati uniformemente a tutte le mosse in un singolo round...",
-      "it-expert": "Limitazione 2 (interna al modello): i costi di timing (transfer/accel/decel) sono applicati uniformemente per move-round anziché in modo continuo per singola mossa..."
+      "it-intermediate": "Il simulatore assegna costi uniformi di trasferimento, accelerazione e frenata a ogni round di mosse. Questo semplifica la descrizione discreta e il controllo delle collisioni, ma può sovrastimare il tempo in alcuni scenari. Un modello temporale più continuo potrebbe rappresentare meglio traiettorie con durate diverse.",
+      "it-expert": "L'approssimazione di timing applica costi uniformi di transfer e accel/decel per move-round. Facilita parametrizzazione discreta e collision detection, ma può fornire stime conservative del makespan; non descrive profili AOD continui per singola traiettoria."
     }
   },
   {
@@ -2064,7 +2064,7 @@
     ],
     "sourceText": "Modeling AOD operations as continuous functionswould mitigate this issue. Moreover, such a construc-tion could be built upon to enable detailed error mod-eling of heating from atom transport - an especiallyrelevant problem for continuous reloading experiments[20, 21, 22] - via comparison of different ramping pro-files.",
     "explanations": {
-      "it-intermediate": "Modellare le operazioni AOD come funzioni continue mitigherebbe questo problema. Inoltre, tale costruzione potrebbe essere sfruttata per abilitare una modellazione dettagliata del riscaldamento dovuto al trasporto degli atomi — un aspetto particolarmente...",
+      "it-intermediate": "Descrivere le operazioni AOD come funzioni continue permetterebbe di confrontare i profili di accelerazione e frenata, anziché riassumerli in costi fissi. Sarebbe anche una base per modellare il riscaldamento dovuto al trasporto, rilevante quando gli array vengono ricaricati continuamente. È una direzione di sviluppo proposta, non una funzione già validata nel lavoro.",
       "it-expert": "Soluzione proposta: parametrizzazione continua delle operazioni AOD, che abiliterebbe anche modeling dettagliato del motional heating da trasporto (rilevante per fedeltà/coerenza post-rearrangement)."
     }
   },
@@ -2083,7 +2083,7 @@
     ],
     "sourceText": "Non-heuristic machine learning methods. Recently,advances in machine learning have enabled widespreadadvances in certain computational tasks. In particular,reinforcement learning has been notably used to buildengines in the highly complex games of Go and chessthat have defeated top human players [50, 51, 52].",
     "explanations": {
-      "it-intermediate": "Metodi di machine learning non euristici: recentemente i progressi nel machine learning hanno permesso notevoli avanzamenti in certi compiti computazionali. In particolare, il reinforcement learning è stato usato in modo rilevante...",
+      "it-intermediate": "Gli autori propongono l'apprendimento per rinforzo come possibile alternativa alle euristiche di riordino. I successi in Go e scacchi motivano l'idea di apprendere strategie tramite tentativi e feedback. Qui la proposta resta un lavoro futuro: il paper non presenta un algoritmo di riordino addestrato in questo modo.",
       "it-expert": "Direzione futura: reinforcement learning come alternativa alle euristiche greedy attuali, richiamando i successi di RL in giochi combinatori (AlphaGo/AlphaZero, refs [50-53])."
     },
     "recall": [
@@ -2115,7 +2115,7 @@
     ],
     "sourceText": "Considering that the underlying structure of Go isvery similar to the rearrangement problem (any boardposition can be represented in the same manner as adual-species atom array, with each board position hav-ing either a single black piece, a single white piece, orno piece), this could be a promising area for futurestudy.In particular, an implementation of a single-player version of AlphaZero [53] to solve the rearrange-ment problem would be an exciting approach. More-over, learning-driven algorithms might be particularlyfruitful in practice compared to fixed heuristics, as re-inforcement learning models tune their strategies viadirect feedback from their environment.",
     "explanations": {
-      "it-intermediate": "Dato che la struttura sottostante del gioco del Go è molto simile al problema del riordino (ogni posizione sulla scacchiera può essere rappresentata allo stesso modo di un array atomico a due specie, con ogni posizione...",
+      "it-intermediate": "Una configurazione del Go e un array a due specie condividono una rappresentazione con tre stati per sito: vuoto, primo tipo o secondo tipo. Questa analogia suggerisce di esplorare un metodo simile ad AlphaZero per scegliere le mosse di riordino. Le regole fisiche restano diverse, quindi l'analogia motiva una ricerca senza dimostrare già un vantaggio.",
       "it-expert": "Analogia strutturale Go↔dual-species rearrangement: board position ≈ occupazione a due specie (pietre bianche/nere ≈ specie 1/2, vuoto ≈ sito libero) — suggerisce che tecniche AlphaZero-style potrebbero generalizzare bene al problema."
     }
   },
@@ -2172,7 +2172,7 @@
     ],
     "sourceText": "Author Contributions. N.K.H. and B.Y.C. built thecode framework and developed the Parallel Hungarianalgorithm and dual species algorithms. B.B. and H.B.offered crucial insight into the experimental constraintsand simulation features. H.B. supervised the project.All authors read and revised the manuscript.",
     "explanations": {
-      "it-intermediate": "Contributi degli autori: Harle e Chen hanno costruito il framework di codice e sviluppato l'algoritmo Parallel Hungarian e gli algoritmi per due specie; Bao e Bernien hanno fornito indicazioni sperimentali cruciali...",
+      "it-intermediate": "Il paragrafo attribuisce agli autori lo sviluppo del software e degli algoritmi, il contributo sui vincoli sperimentali e la supervisione. È una dichiarazione dei ruoli svolti nel progetto, senza aggiungere risultati scientifici.",
       "it-expert": "CRediT statement: Harle/Chen — implementazione core + ParHungarian + dual-species algorithms; Bao/Bernien — expertise sperimentale."
     }
   },
@@ -2361,7 +2361,7 @@
     ],
     "sourceText": "col̸ = 0.It is important to note that this parametrization includes AOD move segments where tweezers collide withone another (i.e. illegal segments). For example, take the AOD move segment described by crow = [2, 0, 3] andccol = [0, 1, 0]. This describes two tweezers at the intersections of the first and third rows with the second column,that both move to the intersection of the second row with the second column. Since the tweezers converge to thesame spot, any atoms they carry are assumed to be heated out of the traps either due to light-assisted collisions (ifboth tweezers are occupied) or beating between the converging tones (if only one tweezer is occupied).",
     "explanations": {
-      "it-intermediate": "È importante notare che questa parametrizzazione include, in linea di principio, anche segmenti di mossa dove i tweezer collidono tra loro (segmenti 'illegali'). Ad esempio, si consideri un segmento di mossa AOD descritto...",
+      "it-intermediate": "I vettori che descrivono una mossa AOD possono specificare anche movimenti illegali, per esempio due trappole che convergono nello stesso sito. Nel modello, gli atomi trasportati vengono persi in queste collisioni per interazioni o battimenti tra i fasci. Parametrizzare una mossa non basta quindi a renderla eseguibile: serve un controllo di legalità.",
       "it-expert": "Nota cruciale: la parametrizzazione grezza (crow,ccol) non esclude a priori collisioni tra tweezer — serve una definizione esplicita di legalità (segue)."
     }
   },
@@ -2399,7 +2399,7 @@
     ],
     "sourceText": "The error models we use in atommovr track time costs associated with trap transfers (i.e. transferring an atomfrom a static SLM trap to a mobile AOD trap (“pickup”) and vice versa (“putdown”)) and move distance, alongwith additional time costs for gently accelerating and decelerating atoms from/to rest.",
     "explanations": {
-      "it-intermediate": "I modelli di errore usati in atommovr tracciano i costi temporali associati ai trasferimenti di trappola (spostare un atomo da una trappola statica SLM a una mobile AOD, 'pickup', e viceversa, 'putdown') e ai movimenti...",
+      "it-intermediate": "Il tempo di una mossa comprende il prelievo dell'atomo dalla trappola statica, il trasporto, il deposito e l'accelerazione o frenata graduale. Distinguere questi contributi evita di trattare due sequenze con la stessa distanza totale come se avessero necessariamente la stessa durata. I modelli successivi decidono quali di questi costi includere.",
       "it-expert": "Error/timing model: costi temporali per trap-transfer SLM↔AOD (pickup/putdown) e per il movimento vero e proprio — le due componenti che poi appaiono nella formula finale (Eq. S.6/S.7)."
     }
   },
@@ -2418,7 +2418,7 @@
     ],
     "sourceText": "In this work, we use two timing models: a naive model which neglects time costs for trap transfers and accelera-tion/deceleration, and a detailed model which takes into account typical atom transfer trajectories. Here we defines as the array spacing, vavg as the average move velocity, and tavg = s/vavg as the average single-site move time.",
     "explanations": {
-      "it-intermediate": "In questo lavoro si usano due modelli di tempistica: un modello 'naive' che trascura i costi temporali di trasferimento e accelerazione/decelerazione, e un modello 'dettagliato' che tiene conto dei tempi tipici di trasferimento...",
+      "it-intermediate": "Il modello semplice conta soltanto distanza e velocità media; quello dettagliato include anche trasferimenti e profilo di accelerazione o frenata. Con distanza tra siti s e velocità media vavg, tavg=s/vavg fissa il tempo caratteristico di un passo. La scelta del modello cambia il significato del tempo stimato, soprattutto per molte mosse brevi.",
       "it-expert": "Due modelli: naive (ignora transfer/accel/decel, solo distanza/velocità media) vs detailed (include esplicitamente accel/decel e trap-transfer time) — il primo usato per gli estratti di scaling ideale (§4), il secondo per il benchmark realistico (§5)."
     }
   },
@@ -2480,8 +2480,8 @@
     ],
     "sourceText": "where dmax = s if the AOD move segment contains only horizontal or vertical motion and dmax =",
     "explanations": {
-      "it-intermediate": "...dove d_max = s (la spaziatura tra siti) se il segmento di mossa è solo orizzontale o verticale...",
-      "it-expert": "d_max=s per mosse assiali (orizzontali/verticali)..."
+      "it-intermediate": "Un passo orizzontale o verticale percorre la distanza s tra siti adiacenti, mentre un passo diagonale percorre √2·s. Nel modello semplice queste distanze, divise per la velocità media, determinano la durata. Anche un singolo passo diagonale costa quindi più tempo di uno assiale.",
+      "it-expert": "Per un AOD move segment, dmax=s nel caso assiale e dmax=√2·s quando è presente uno spostamento diagonale. Inserire questa distanza in tnaive=dmax/vavg distingue le durate dei due tipi di segmento."
     }
   },
   {
@@ -2499,8 +2499,8 @@
     ],
     "sourceText": "2s if the movesegment involves diagonal displacement.",
     "explanations": {
-      "it-intermediate": "...e d_max = √2·s se il segmento coinvolge uno spostamento diagonale (percorso più lungo per la geometria del reticolo quadrato).",
-      "it-expert": "...d_max=√2 s per mosse diagonali (ipotenusa del passo reticolare)."
+      "it-intermediate": "Un passo diagonale sul reticolo percorre la diagonale di un quadrato di lato s, quindi la distanza è √2·s anziché s. Nel modello ingenuo il tempo del segmento è determinato dall'atomo che viaggia più lontano: a parità di velocità media, un segmento diagonale dura √2 volte un passo orizzontale o verticale.",
+      "it-expert": "Per un segmento diagonale dmax=√2·s; per uno assiale dmax=s. Inserendo questi valori in tnaive=dmax/vavg, il costo temporale ingenuo del segmento diagonale cresce di √2 a velocità media fissata."
     }
   },
   {
@@ -2536,7 +2536,7 @@
     ],
     "sourceText": "In the detailed model, we parametrize the move-distance-dependent time cost and the acceleration/decelerationtime costs through considering the adiabatic sine model for atom transport used in [19]: ξ(u) = 1 2π sin\u0012 2π π sin(πu) + u,u, ξ ∈[−1, 1],(S.2)",
     "explanations": {
-      "it-intermediate": "Nel modello dettagliato, il costo temporale dipendente dalla distanza e i costi di accelerazione/decelerazione vengono parametrizzati considerando il modello 'adiabatic sine' per il trasporto di atomi, usato in un lavoro precedente (Manetsch et al.)...",
+      "it-intermediate": "Il modello dettagliato usa un profilo sinusoidale adiabatico per rendere graduali partenza e arresto dell'atomo. La funzione ξ(u) esprime posizione e tempo normalizzati, poi riscalati alla distanza e alla durata del trasporto. Serve a distinguere il moto fisico da un viaggio idealizzato a velocità costante fin dal primo istante.",
       "it-expert": "Modello dettagliato: adotta il profilo 'adiabatic sine' di trasporto (da [19], Manetsch et al.) — Eq. S.2 definisce la mappa normalizzata posizione-tempo ξ(u)."
     }
   },
@@ -2900,8 +2900,8 @@
     ],
     "sourceText": "Check for collisions among moves in qµ. If acollision occurs, retain one move in qµ and return",
     "explanations": {
-      "it-intermediate": "Fig. S1: si controllano eventuali collisioni tra le mosse in qμ; se si verifica una collisione, si mantiene una sola mossa in qμ e si restituiscono le altre...",
-      "it-expert": "Fig. S1: collision check tra le mosse candidate in qμ — se collisione, retain 1 move, return others..."
+      "it-intermediate": "Le mosse candidate vengono controllate per evitare collisioni durante l'esecuzione simultanea. Se più mosse sono in conflitto, ne viene mantenuta una e le altre tornano nei rispettivi cammini per un round successivo. Una mossa rinviata resta dunque da eseguire, anziché essere eliminata dal piano.",
+      "it-expert": "Il collision check filtra la frontiera qμ dei path. Per un gruppo in conflitto trattiene una mossa e reinserisce le altre nei path di origine, separando la selezione del round dal completamento dei cammini."
     }
   },
   {
@@ -2981,8 +2981,8 @@
     ],
     "sourceText": "ij Xinit ij≥P Detailed description of ParHungarian.First, the algorithm checks if the number of atoms given by the initialrandom loading is sufficient to prepare the target pattern, i.e. P",
     "explanations": {
-      "it-intermediate": "Descrizione dettagliata di ParHungarian: per prima cosa l'algoritmo verifica se il numero di atomi dato dal caricamento iniziale casuale è sufficiente a preparare il pattern target...",
-      "it-expert": "Descrizione testuale dettagliata (complementare al flowchart): step 1, sufficient-atom check Σ X_init_ij ≥ Σ g_ij..."
+      "it-intermediate": "Prima di calcolare assegnazioni e cammini, ParHungarian verifica che il caricamento iniziale contenga almeno tanti atomi quanti ne richiede il target. Se mancano atomi, nessuna sequenza di spostamenti può riempirlo e l'algoritmo si arresta. Il controllo evita di cercare una soluzione impossibile.",
+      "it-expert": "Il controllo preliminare richiede Σij Xinitij≥Σij gij. È una condizione necessaria di fattibilità per il matching tra excess atoms e target vacancies; in caso contrario ParHungarian termina prima di costruire la cost matrix."
     }
   },
   {
@@ -3000,8 +3000,8 @@
     ],
     "sourceText": "ij gij (to keep notations clean, here weuse Xinit to represent X0); if not, the algorithm stops immediately. Similarly to the original Hungarian algorithm,ParHungarian generates a cost matrix C where the rows are target sites to be filled, i.e. site (i, j) is a target siteif Xinit",
     "explanations": {
-      "it-intermediate": "...(qui si usa X_init per indicare X0, per notazione più pulita); se non è sufficiente, l'algoritmo si ferma immediatamente. In modo simile all'algoritmo Hungarian originale, ParHungarian genera una matrice di costo C dove...",
-      "it-expert": "...se check fallisce, stop immediato. Costruzione della cost matrix C, analoga all'Hungarian classico, sulle coppie eccesso-atomo/vacanza-target."
+      "it-intermediate": "ParHungarian si ferma se gli atomi iniziali non bastano a occupare tutti i siti richiesti. Se bastano, costruisce una matrice che associa ogni posto target ancora vuoto agli atomi disponibili fuori dal target. Il costo di ciascuna associazione è la distanza: la fase Hungarian cerca poi l'abbinamento con distanza totale minima.",
+      "it-expert": "Dopo il controllo ΣXinit≥Σg, ParHungarian costruisce C sulle vacanze target e sugli atomi in eccesso. Le righe soddisfano Xinitij=0,gij=1; le colonne Xiniti′j′=1,gi′j′=0. I costi euclidei alimentano il linear sum assignment che minimizza la distanza totale."
     }
   },
   {
@@ -3019,8 +3019,8 @@
     ],
     "sourceText": "ij= 0 and gij = 1, the columns are excess atoms, i.e. site (i′, j′) contains an excess atom if Xinit",
     "explanations": {
-      "it-intermediate": "...le righe rappresentano le vacanze target (siti dove X_init=0 e g=1) e le colonne rappresentano gli atomi in eccesso (siti dove X_init=1 e g=0)...",
-      "it-expert": "Righe C = target vacancies (X_init_ij=0, g_ij=1); colonne C = excess atoms (X_init_i'j'=1, g_i'j'=0)..."
+      "it-intermediate": "La matrice dei costi mette in relazione i siti target ancora vuoti con gli atomi che si trovano fuori dal target. Questi ultimi possono essere spostati senza svuotare siti già corretti. Righe e colonne definiscono così le due popolazioni tra cui l'algoritmo Hungarian sceglie le coppie.",
+      "it-expert": "C ha righe per le vacancies con Xinitij=0 e gij=1 e colonne per gli excess atoms con Xiniti′j′=1 e gi′j′=0. La distinzione esclude dal matching gli atomi già collocati correttamente."
     }
   },
   {
@@ -3038,7 +3038,7 @@
     ],
     "sourceText": "i′j′ = 1 andgi′j′ = 0, and the component Ckl is given by the Euclidean distance between the kth target site and the lth excessatom [29]. By solving the linear sum assignment problem corresponding to the cost matrix C, ParHungarian assignseach target vacancy to an excess atom, denoted as a mapping h : a →t, where a and t represent the set of excessatoms and the set of target vacancies, respectively. According to the mapping relationship, ParHungarian generatesN ′ atom-target pairs, i.e. {aν, tν}N′",
     "explanations": {
-      "it-intermediate": "...e la componente Ckl è data dalla distanza euclidea tra il k-esimo sito target e l'l-esimo atomo in eccesso. Risolvendo il problema di assegnamento lineare corrispondente...",
+      "it-intermediate": "Ogni costo Ckl è la distanza euclidea tra un sito da riempire e un atomo disponibile. Risolvere il problema di assegnazione sceglie le coppie minimizzando la somma delle distanze. Questo ottimizza il trasporto assegnato, ma i cammini reali e la possibilità di eseguirli in parallelo vengono controllati nei passi successivi.",
       "it-expert": "Ckl = distanza euclidea target_k–excess_l; risoluzione del LSAP corrispondente [29] per ottenere il matching ottimo in distanza totale."
     }
   },
@@ -3088,7 +3088,7 @@
     ],
     "sourceText": "According to the assignments, ParHungarian finds the shortest direct path between each pair. If no direct pathexists between aν and tν due to the presence of obstacle atoms, the path is decomposed into a sequence of ‘domino’subpaths. In this scheme, the final obstacle is first relocated to the target position tν, after which each precedingobstacle successively occupies the position vacated by the following obstacle, until aν can be moved to the locationof the first obstacle along the path. By the above process, ParHungarian generates N paths, where N is the sumof the number of direct paths and number of additional segments in the domino paths, denoted as {pµ}N each path pµ := {mµt}Lµ",
     "explanations": {
-      "it-intermediate": "In base agli abbinamenti, ParHungarian trova il cammino diretto più breve tra ogni coppia. Se non esiste un cammino diretto tra a_ν e t_ν a causa di atomi ostacolo, il cammino viene decomposto...",
+      "it-intermediate": "Per ogni coppia atomo–target si cerca un cammino diretto. Se altri atomi lo ostruiscono, il cammino viene realizzato come una catena a domino: l'ultimo ostacolo va nel target, ciascuno dei precedenti occupa il posto appena liberato e infine si muove l'atomo iniziale. Con una sola specie questi scambi mantengono il tipo corretto di atomo nei siti.",
       "it-expert": "Path-finding: shortest direct path per coppia; se ostruito da atomi, decomposizione in sotto-cammini (handling degli ostacoli, dettaglio implementativo non banale del routing)."
     }
   },
@@ -3126,8 +3126,8 @@
     ],
     "sourceText": "Here, we define L as the length of the longest path, i.e. L := maxµ Lµ. Firstly, ParHungarian removes the 1stmoves in every path and adds them to a new list q1 := {mµ1}N",
     "explanations": {
-      "it-intermediate": "Si definisce L come la lunghezza del cammino più lungo tra tutti (L = max_μ L_μ). Per prima cosa, ParHungarian rimuove la prima mossa di ogni cammino e la aggiunge a una nuova lista q1...",
-      "it-expert": "L=maxμ Lμ definisce il numero di round necessari nel caso peggiore. Round 1: q1 = {mμ1} per ogni μ (primo elemento di ogni path)."
+      "it-intermediate": "Il piano contiene cammini di lunghezze diverse; L è la lunghezza del più lungo. Per preparare un round si prende la prossima mossa da ogni cammino non esaurito e la si inserisce in una lista candidata. Questa frontiera deve ancora superare il controllo delle collisioni e dei vincoli AOD.",
+      "it-expert": "L=maxμ Lμ è la massima lunghezza dei path iniziali. La frontiera q1 contiene la prima mossa di ciascun path e viene poi filtrata per collisioni e compatibilità AOD. Le mosse rinviate tornano nei path, quindi L non è un limite superiore al numero effettivo di round."
     }
   },
   {
@@ -3145,7 +3145,7 @@
     ],
     "sourceText": "µ=1. Then, ParHungarian checks if there are twoor more moves in q1 whose simultaneous execution would result in a collision. If such a case or cases are found,ParHungarian only keeps one move in this round of execution and puts the others back in their respective pathlists. The retained moves are subsequently sorted into a set of sequential ‘AOD moves’ (Fig. S2). We repeat thisprocess, constructing subsequent lists q2, q3, . . ., removing the first elements of the modified path lists, until all pathlists pµ are empty. After all moves have been sorted into sets of sequential ‘AOD moves’, the rearrangement processcompletes.",
     "explanations": {
-      "it-intermediate": "...Poi ParHungarian controlla se ci sono due o più mosse in q1 la cui esecuzione simultanea causerebbe una collisione. Se sì, mantiene solo una mossa in questa lista...",
+      "it-intermediate": "La lista candidata viene filtrata: tra mosse che colliderebbero se simultanee se ne mantiene una e si rinviano le altre nei cammini originali. Le mosse ammesse sono poi raggruppate in operazioni AOD compatibili. Si ripete fino a svuotare tutti i cammini, quindi i round possono essere più numerosi della sola lunghezza del cammino iniziale più lungo.",
       "it-expert": "Conflict detection su q1: se collisione, greedy retention di una sola mossa per round, le altre tornano ai rispettivi path per il round successivo."
     }
   },
@@ -3170,7 +3170,7 @@
     ],
     "sourceText": "Move parallelization subroutine.Abstractly, given a sequence of individual atom moves M = {m1, . . . , mM}and an atom array X, we divide M into a set of ‘AOD moves’ {ϵ1, . . . , ϵM ′}. Such parallelization is done followinga greedy approach: the individual moves in M are iteratively added to a temporary parallel move queue ˜ϵ, andsubsequently eliminated from M. After each step, the algorithm checks whether ˜ϵ is a valid AOD move, and haltsif not, removing the most recently added element. Then, a new list is created and the cycle repeats until all themoves in M have been sorted. Par = ˜ϵ(X) and X′",
     "explanations": {
-      "it-intermediate": "Subroutine di parallelizzazione delle mosse: in astratto, data una sequenza di mosse individuali di atomi M={m1,...,mM} e un array atomico X, si divide M in un insieme di 'mosse AOD' {ε1,...,εM'}. Tale parallelizzazione...",
+      "it-intermediate": "La subroutine costruisce gruppi paralleli aggiungendo una mossa alla volta a una coda temporanea. Se l'ultima aggiunta rende il gruppo incompatibile con una mossa AOD valida, viene rimossa e si apre un nuovo gruppo. È una strategia greedy: privilegia un costo di calcolo gestibile senza cercare ogni raggruppamento possibile.",
       "it-expert": "Move-parallelization subroutine (App. B.1, seconda parte): partiziona M in gruppi eseguibili come singoli AOD move segment {εν} — questo è il cuore del guadagno di parallelismo rispetto all'Hungarian sequenziale."
     }
   },
@@ -3195,7 +3195,7 @@
     ],
     "sourceText": "To test if the move segments { ˜mi} in ˜ϵ can be implemented in parallel, the algorithm has to check whetherparallelization of these moves affects the final configuration of the array. If not, ˜ϵ is a valid AOD move and itscomposite move segments can be parallelized. To check whether this is the case, the composite AOD move ˜ϵ isapplied to one copy of the atom array and another set – the AOD moves corresponding to executing each individualmove segment sequentially (i.e. {ϵ1, . . . , ϵk}, where k is defined as the number of move items in { ˜m}) – is appliedto a second copy.More formally, we compare the matrices X′ Par = X′",
     "explanations": {
-      "it-intermediate": "Per verificare se i segmenti di mossa {m̃i} in ε̃ possano essere implementati in parallelo, l'algoritmo deve controllare se la loro parallelizzazione altera la configurazione finale dell'array. Se no, ε̃ è...",
+      "it-intermediate": "Il controllo confronta due copie dello stesso array: su una applica il gruppo di mosse simultaneamente, sull'altra le esegue in sequenza. Se le configurazioni finali coincidono, la parallelizzazione preserva il risultato previsto nel modello. Questo rende esplicito il criterio usato dalla subroutine per accettare un gruppo.",
       "it-expert": "Test di validità della parallelizzazione: verifica che l'esecuzione simultanea di {m̃i} produca la stessa configurazione finale dell'esecuzione sequenziale (commutatività delle mosse rispetto al risultato)."
     }
   },
@@ -3239,8 +3239,8 @@
     ],
     "sourceText": "Advantage and limitation of the parallelization strategy.Since ParHungarian checks whether any arbitraryset of moves can be parallelized, it potentially offers a higher degree of parallelism than algorithms which onlyparallelize moves within the space of a single row or column.",
     "explanations": {
-      "it-intermediate": "Vantaggi e limiti della strategia di parallelizzazione: poiché ParHungarian verifica se un insieme arbitrario di mosse può essere parallelizzato, offre potenzialmente un grado di parallelismo maggiore rispetto ad algoritmi...",
-      "it-expert": "Trade-off: check di parallelizzabilità arbitrario (non ristretto a pattern riga/colonna) dà maggiore flessibilità rispetto ad algoritmi strutturati come Balance&Compact/Tetris..."
+      "it-intermediate": "ParHungarian considera gruppi di mosse più generali rispetto ad algoritmi che parallelizzano soltanto una riga o una colonna. Questa flessibilità può aumentare il parallelismo, ma la scelta greedy dei gruppi non garantisce il raggruppamento ottimo. Il vantaggio va quindi valutato insieme al costo di trovare i gruppi.",
+      "it-expert": "La validazione di set arbitrari di moves amplia il dominio di parallelizzazione rispetto a strategie row/column. L'ordinamento greedy non ottimizza globalmente il grouping: il lavoro sceglie costo O(M²) rispetto alla ricerca combinatoria O(2^M)."
     }
   },
   {
@@ -3387,7 +3387,7 @@
     ],
     "sourceText": "Notations for dual-species atom arrays.The index set {1, . . . , I} is denoted by [I], where I ∈N. Here, weconsider dual-species atom arrays M ∈Rm×n×2 as a stack of the 1st-species M1st ∈Rm×n×1 and the 2nd-speciesM2nd ∈Rm×n×1 arrays, where m and n denote number of rows and columns of the atom arrays and the thirddimension denotes different atomic species/isotopes. Due to the experimental constraints, the dual-species statematrix is subject to ( k=1 Mijk ≤1∀i ∈[m], j ∈[n].(S.8) Mijk ∈{0, 1}∀i ∈[m], j ∈[n], k ∈[2]P2",
     "explanations": {
-      "it-intermediate": "Notazioni per array atomici a due specie: l'insieme di indici {1,...,I} è denotato [I]. Qui si considerano array a due specie M∈ℝ^(m×n×2) come una pila (stack) della 1ª specie M_1st∈ℝ^(m×n×1) e della...",
+      "it-intermediate": "Un array a due specie viene descritto da due matrici sovrapposte, una per ciascun tipo di atomo. Ogni voce è 0 o 1 e, nello stesso sito, la somma delle due voci non può superare 1. Si rappresentano così siti vuoti o occupati da una sola specie, escludendo la doppia occupazione.",
       "it-expert": "Notazione dual-species: M∈ℝ^{m×n×2} = stack di due slice M_1st, M_2nd∈ℝ^{m×n×1} — la terza dimensione codifica la specie, generalizzazione diretta della rappresentazione single-species."
     }
   },
@@ -3406,7 +3406,7 @@
     ],
     "sourceText": "The first constraint affirms that there are only two possible states for single sites, 0 (1) representing a vacancy(trapped atom). The second constraint represents that a single site can only trap a single atom.",
     "explanations": {
-      "it-intermediate": "Il primo vincolo afferma che ci sono solo due stati possibili per un singolo sito: 0 (vacante) o 1 (atomo intrappolato). Il secondo vincolo dice che un singolo sito può intrappolare al massimo un atomo...",
+      "it-intermediate": "Il primo vincolo rende binaria la presenza di ciascuna specie: un atomo c'è oppure non c'è. Il secondo impedisce che entrambe le specie occupino lo stesso sito. Sono i requisiti fisici che ogni configurazione e ogni mossa devono rispettare nel modello.",
       "it-expert": "Vincoli: (1) binarietà per slice (0/1 per specie), (2) mutua esclusione tra specie sullo stesso sito (Σ_k M_ijk ≤1) — impedisce la co-occupazione dello stesso sito da parte di entrambe le specie, vincolo fisico fondamentale."
     }
   },
@@ -3425,7 +3425,7 @@
     ],
     "sourceText": "Detailed description of dual-species ParHungarian.Additionally, we develop a naive extension of ParHun-garian for dual-species rearrangement. Fundamentally, the difference between the single-species and dual-speciesversions is the pairing and searching path processes. The design of the algorithm closely follows the single-speciesversion shown in Fig. S1 with two main differences:",
     "explanations": {
-      "it-intermediate": "Descrizione dettagliata di ParHungarian a due specie: viene sviluppata un'estensione ingenua di ParHungarian per il riordino dual-species. Fondamentalmente, la differenza rispetto al caso a singola specie...",
+      "it-intermediate": "L'estensione di ParHungarian a due specie conserva la struttura del metodo originale, ma deve cambiare sia le assegnazioni sia la ricerca dei cammini. Un sito richiede un atomo della specie corretta, e un ostacolo dell'altra specie non può sempre essere spostato con il semplice domino del caso a specie unica. Questa versione serve da confronto per InsideOut.",
       "it-expert": "Naive dual-species extension di ParHungarian — usato come baseline di confronto per InsideOut in §6. La differenza principale rispetto al single-species è illustrata nel blocco successivo."
     }
   },
@@ -3444,7 +3444,7 @@
     ],
     "sourceText": "• Matching atoms and targets: The pairing process is species-selected. The algorithm needs to categorize theexcess atoms and target vacancies as excess 1st-species and 2nd-species atoms and target vacancies. By repeatingthe cost matrix generation and matching process separately for each species, the dual-species ParHungarianobtains two sets of assignment pairs.• Searching path: The searching path process has to take hetero-species obstacle atoms into consideration. Inthe single-species framework, even if there is no direct path between the source atom and the intended target,the domino segment approach is used as an alternative solution. However, in the dual-species framework, notall obstacles can be resolved with this strategy. For example, if there is a 2nd-species atom located on the pathbetween a 1st-species atom and a 1st-species vacancy, a ‘blocked’ configuration is realized (see Fig. 5a,b), andthe rearrangement fails.",
     "explanations": {
-      "it-intermediate": "• Abbinamento di atomi e target: il processo di associazione è specie-selettivo. L'algoritmo deve categorizzare gli atomi in eccesso e le vacanze target come appartenenti alla 1ª o alla 2ª specie in eccesso/vacanza...",
+      "it-intermediate": "Si esegue un'assegnazione separata per ogni specie, accoppiando i suoi atomi in eccesso ai suoi siti vuoti richiesti. Il problema rimane nei percorsi: un atomo dell'altra specie può bloccare il passaggio e lo scambio a domino può produrre il tipo sbagliato nel target. Per questo la semplice estensione di ParHungarian può fallire pur avendo abbastanza atomi.",
       "it-expert": "Differenza chiave rispetto al single-species: il matching (LSAP) deve essere eseguito separatamente per specie (categorizzazione excess/vacancy per 1st e 2nd species prima del cost-matrix), da cui derivano le blocked configurations quando gli insiemi si intrecciano spazialmente."
     }
   },
@@ -3463,8 +3463,8 @@
     ],
     "sourceText": "To overcome the unique challenges of dual-species rearrangement (discussed in Sec. 6), we develop the InsideOutalgorithm. The cornerstone of InsideOut is its simple and uniform layer-by-layer approach, which effectively preventsthe emergence of ‘blocked cases’ shown in Fig. 5a,b. In case blocked configurations still occur, InsideOut pushesthe obstacle atoms away from the center in a ‘clearing’ step. Visualization of the algorithm is shown in Fig. S3.",
     "explanations": {
-      "it-intermediate": "Per superare le sfide specifiche del riordino a due specie (discusse nella Sezione 6), viene sviluppato l'algoritmo InsideOut. Il fondamento di InsideOut è il suo approccio semplice e uniforme strato-per-strato (layer-by-layer)...",
-      "it-expert": "InsideOut: idea cardine = layer-by-layer processing uniforme, che elimina strutturalmente (non solo euristicamente) la maggior parte delle blocked configurations discusse in §6 — dettaglio implementativo segue."
+      "it-intermediate": "InsideOut riordina l'array una cornice alla volta, così da limitare i casi in cui un atomo della specie sbagliata blocca l'accesso al sito richiesto. Il metodo non presume che ogni blocco sia impossibile: quando ne incontra uno, esegue un passo di sgombero che spinge gli atomi d'ostacolo lontano dal centro.",
+      "it-expert": "InsideOut affronta il riarrangiamento a due specie mediante elaborazione uniforme layer-by-layer. La strategia riduce le configurazioni bloccate; il testo prevede esplicitamente i casi residui, risolti da un clearing step che sposta gli atomi d'ostacolo verso l'esterno."
     }
   },
   {
@@ -3537,8 +3537,8 @@
     ],
     "sourceText": "Then, InsideOut parameterizes the first layer of the atom array and aims to rearrange all sites on this layer.Given layer index k (k = 1 for the first layer), the coordinates on the kth layer can be expressed as",
     "explanations": {
-      "it-intermediate": "Poi InsideOut parametrizza il primo 'strato' (layer) dell'array atomico e cerca di riordinare tutti i siti su questo strato. Dato l'indice di strato k (k=1 per il primo strato), le coordinate sullo strato k-esimo possono essere...",
-      "it-expert": "Parametrizzazione dei layer: dato k (k=1=layer più esterno o più interno, a seconda della convenzione — vedi Eq. S.10-S.11), si definisce l'insieme di coordinate L_k che costituisce l'anello quadrato k-esimo attorno al centro dell'array."
+      "it-intermediate": "InsideOut descrive il target come una successione di anelli quadrati attorno al centro. L'indice k identifica l'anello da preparare, iniziando dalla regione centrale e procedendo verso l'esterno. Le coordinate dei quattro bordi permettono di scegliere siti e direzioni di sgombero senza disturbare gli anelli già completati.",
+      "it-expert": "Lk parametrizza il contorno del layer k attorno al centro del target, con k=1 per il primo layer interno. La successione centro→esterno e i limiti top/left/bottom/right definiscono il dominio del matching e le direzioni di clearing."
     }
   },
   {
@@ -3600,8 +3600,8 @@
     ],
     "sourceText": "∪{ (bottom, j′) | j′ = right −1, . . . , left}",
     "explanations": {
-      "it-intermediate": "...unito al lato inferiore: i siti (bottom, j') con j' che va da right−1 a left.",
-      "it-expert": "Eq. S.10, terzo termine: lato bottom, {(bottom,j') | j'∈[right−1,left]}."
+      "it-intermediate": "Questo termine percorre il bordo inferiore della cornice da destra verso sinistra. Parte da right−1 perché l'angolo in basso a destra è già stato incluso nel lato destro. Insieme agli altri tre termini, descrive il perimetro dello strato senza contare due volte gli angoli.",
+      "it-expert": "Il terzo termine di Lk enumera il lato bottom con j′ decrescente da right−1 a left. L'esclusione iniziale dell'angolo bottom-right evita il doppio conteggio con il secondo termine della parametrizzazione S.10."
     }
   },
   {
@@ -3730,16 +3730,22 @@
     "section": "Appendix B.3: InsideOut algorithm (dual-species)",
     "rects": [
       [
+        0.41138460745219313,
+        0.6175791037203086,
+        0.5789364584131178,
+        0.6236170759104719
+      ],
+      [
         0.39944243586920447,
         0.6247413326995541,
         0.5909084743923612,
         0.6367179022894965
       ]
     ],
-    "sourceText": "path and add the elements to a new list qµ.dA path may be empty because path lengths can differ.",
+    "sourceText": "Remove the first element from each nonempty path and add the elements to a new list qµ. dA path may be empty because path lengths can differ.",
     "explanations": {
-      "it-intermediate": "...e si aggiungono gli elementi rimossi a una nuova lista q_μ (un cammino può essere vuoto perché le lunghezze possono differire).",
-      "it-expert": "...in q_μ, con la stessa nota su path lengths eterogenee vista in ParHungarian."
+      "it-intermediate": "Da ogni cammino ancora non vuoto si prende la prima mossa e la si inserisce nella lista delle candidate per il prossimo passo. I cammini più corti possono essere già terminati e quindi non contribuire. Il controllo successivo verifica le collisioni tra queste mosse: quelle rinviate vengono rimesse nei rispettivi cammini, così da poter essere considerate nei passi seguenti.",
+      "it-expert": "InsideOut estrae la prima mossa da ciascun path non vuoto e forma la lista candidata qμ. Le lunghezze eterogenee spiegano i path già esauriti. La lista non è ancora uno scheduling parallelo valido: il passo successivo risolve le collisioni e reinserisce nei path le mosse non selezionate."
     }
   },
   {
@@ -3930,7 +3936,7 @@
     ],
     "sourceText": "After identifying sites on the kth layer, InsideOut pushes out misplaced atoms on the kth layer, i.e. filled siteswith coordinate of (i, j) satisfying both conditions of Mij1̸ = Tij1 and Mij2̸ = Tij2 to the outer layer. Note thatthe direction in which obstacles are pushed is determined by which edge the atom is located at in the expressionof Eq. S.10. For an obstacle on the top edge, we push the atom upwards. Furthermore, to accelerate the ‘clearing’process, all misplaced atoms on the same edge are pushed away in parallel.",
     "explanations": {
-      "it-intermediate": "Dopo aver identificato i siti sullo strato k, InsideOut spinge fuori gli atomi mal posizionati su quello strato, cioè i siti occupati con coordinate (i,j) che soddisfano entrambe le condizioni M_ij1≠T_ij1 e M_ij2≠T_ij2...",
+      "it-intermediate": "Prima di riempire un anello, InsideOut spinge verso l'esterno gli atomi della specie sbagliata: quelli sul bordo superiore vengono spinti in alto, e analogamente sugli altri bordi. Gli ostacoli sullo stesso bordo possono essere sgomberati in parallelo. La direzione esterna protegge gli anelli interni già corretti.",
       "it-expert": "Dettaglio della push-out operation: target dei siti da 'pulire' = quelli con mismatch su ENTRAMBE le specie (M_ij1≠T_ij1 AND M_ij2≠T_ij2) — condizione precisa per l'operazione di clearing menzionata nel flowchart."
     }
   },
@@ -3949,7 +3955,7 @@
     ],
     "sourceText": "Similar to the ParHungarian algorithm, InsideOut computes two cost matrices C1st and C2nd corresponding totwo species of atoms with the element of Euclidean distance between targets and atoms. By solving two linear sumassignment problems corresponding to C1st and C2nd independently, InsideOut generates N ′ atom-target pairs.Except for the dual-species searching path constraints discussed in Appendix B.2, the searching path and movingatoms process of InsideOut follows those of ParHungarian.",
     "explanations": {
-      "it-intermediate": "In modo simile all'algoritmo ParHungarian, InsideOut calcola due matrici di costo C_1st e C_2nd corrispondenti alle due specie di atomi, con elementi pari alla distanza euclidea tra target e atomi. Risolvendo...",
+      "it-intermediate": "Dopo lo sgombero, InsideOut costruisce una matrice delle distanze per ciascuna specie e risolve separatamente le due assegnazioni atomo–target. I cammini e l'esecuzione seguono poi il metodo di ParHungarian, rispettando i vincoli aggiuntivi delle due specie. La novità risiede quindi nell'organizzazione per anelli e nella gestione degli ostacoli, oltre al matching.",
       "it-expert": "Due cost matrices separate C_1st, C_2nd (distanza euclidea target-atomo per specie) — risoluzione separata del LSAP per specie, coerente con la natura 'species-selective' del matching descritta in App. B.2."
     }
   },

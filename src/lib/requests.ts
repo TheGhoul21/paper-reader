@@ -22,7 +22,9 @@ const DOI = /\b(10\.\d{4,9}\/[^\s"<>]+[^\s"<>.,;])/;
 /** "[24] Daniel Litinski (2019): A Game of…" → marker "[24]" and the entry without it. */
 function splitMarker(reference: string): { marker: string | null; body: string } {
   const m = reference.match(/^\s*(\[\d{1,3}\]|\d{1,3}\.)\s*/);
-  return m ? { marker: m[1], body: reference.slice(m[0].length) } : { marker: null, body: reference };
+  return m
+    ? { marker: m[1], body: reference.slice(m[0].length) }
+    : { marker: null, body: reference };
 }
 
 /**
@@ -47,7 +49,7 @@ export interface CitationLinks {
 
 export function citationLinks(reference: string): CitationLinks {
   const { body } = splitMarker(reference);
-  const arxivId = body.match(/arxiv/i) ? body.match(ARXIV_ID)?.[1] ?? null : null;
+  const arxivId = body.match(/arxiv/i) ? (body.match(ARXIV_ID)?.[1] ?? null) : null;
   const doi = body.match(DOI)?.[1] ?? null;
   const query = body.replace(/\s+/g, " ").trim().slice(0, 300);
   const title = guessTitle(reference);
@@ -63,20 +65,29 @@ export function citationLinks(reference: string): CitationLinks {
 }
 
 /** New-issue URL for the paper-request form, prefilled with whatever is known. */
-export function paperRequestUrl(options: {
-  reference?: string;
-  sourceSlug?: string;
-  variant?: Variant;
-} = {}): string {
+export function paperRequestUrl(
+  options: {
+    reference?: string;
+    sourceSlug?: string;
+    variant?: Variant;
+  } = {},
+): string {
   const params = new URLSearchParams({ template: TEMPLATE });
   if (options.reference) {
     const { marker, body } = splitMarker(options.reference);
     const links = citationLinks(options.reference);
-    params.set("title", `[Paper] ${(guessTitle(options.reference) ?? body.replace(/\s+/g, " ")).slice(0, 120)}`);
+    params.set(
+      "title",
+      `[Paper] ${(guessTitle(options.reference) ?? body.replace(/\s+/g, " ")).slice(0, 120)}`,
+    );
     params.set("reference", options.reference);
     const link = links.arxiv ?? links.doi;
     if (link) params.set("link", link);
-    if (options.sourceSlug) params.set("source", marker ? `${options.sourceSlug}, riferimento ${marker}` : options.sourceSlug);
+    if (options.sourceSlug)
+      params.set(
+        "source",
+        marker ? `${options.sourceSlug}, riferimento ${marker}` : options.sourceSlug,
+      );
   }
   if (options.variant) {
     params.set("level", LEVEL_OPTIONS[options.variant.level]);

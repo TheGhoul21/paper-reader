@@ -5,11 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node --experimental-strip-types --no-warnings --test tests/*.test.mjs",
+    "test:import": "uv run --with requests --with pymupdf python3 tests/import_pipeline_test.py",
+    "thumbnails": "uv run scripts/render-thumbnails.py",
+    "test:reading-guide": "node --experimental-strip-types --no-warnings --test tests/readingGuide.test.mjs",
     "prebuild": "node scripts/sync-papers-data.mjs",
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/spa-fallback.mjs",
     "preview": "vite preview",
-    "concepts-index": "node scripts/build-concepts-index.mjs"
+    "concepts-index": "node scripts/build-concepts-index.mjs",
+    "test:integration": "vitest run",
+    "test:browser": "playwright test",
+    "lint": "eslint src",
+    "format": "prettier --write src tests/integration tests/browser scripts/*.mjs *.ts *.mjs *.json README.md CONTRIBUTING.md docs/development.md .github/workflows/*.yml",
+    "format:check": "prettier --check src tests/integration tests/browser scripts/*.mjs *.ts *.mjs *.json README.md CONTRIBUTING.md docs/development.md .github/workflows/*.yml",
+    "validate:papers": "node scripts/verify-papers.mjs",
+    "verify": "npm run lint && npm run format:check && npm test && npm run test:integration && npm run validate:papers && npm run build"
   },
   "dependencies": {
     "katex": "^0.18.9",
@@ -17,15 +28,31 @@
     "pdfjs-dist": "^4.7.76",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.63.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/katex": "^0.16.8",
     "@types/node": "^26.5.1",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.2",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.9.9",
+    "react-test-renderer": "^18.3.1",
     "typescript": "^5.6.3",
-    "vite": "^5.4.8"
+    "typescript-eslint": "^8.71.0",
+    "vite": "^7.3.6",
+    "vitest": "^4.1.11"
+  },
+  "engines": {
+    "node": ">=22.14.0"
   }
 }

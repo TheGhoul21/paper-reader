@@ -1325,7 +1325,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Teorema 4.10: date due stringhe di Pauli s e t, o i rispettivi gadget commutano (formula nel blocco successivo)...",
+      "it-intermediate": "Il teorema distingue due comportamenti per una coppia di gadget di Pauli. Se le stringhe di Pauli commutano, si può scambiare l'ordine dei gadget senza cambiare il circuito; nell'altro caso si usa la relazione di Eulero enunciata di seguito. È una regola algebrica per riordinare e semplificare questi blocchi, non l'affermazione che tutti i gadget commutino.",
       "it-expert": "Teorema 4.10 — il risultato centrale della Sez. 4: dicotomia netta commutazione/relazione-di-Eulero per coppie arbitrarie di Pauli gadget (formalizza quanto anticipato dalla Proposizione 4.2)."
     },
     "section": "4. Pauli Gadgets",
@@ -1376,8 +1376,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...oppure soddisfano l'equazione di Eulero:",
-      "it-expert": "Alternativa (ii) del Teorema 4.10: relazione di Eulero invece di commutazione diretta."
+      "it-intermediate": "Quando i due Pauli gadget non possono semplicemente scambiarsi di posto, esiste un'altra riscrittura: una sequenza di tre gadget alternati s,t,s può diventare una sequenza t,s,t, cambiando gli angoli. È l'analogo della decomposizione di Eulero per rotazioni attorno ad assi diversi; non significa che i gadget commutino.",
+      "it-expert": "L'alternativa alla commutazione è la relazione di Eulero: per ogni α1,α2,α3 esistono β1,β2,β3 tali che P(α1,s)P(α2,t)P(α3,s)=P(β1,t)P(β2,s)P(β3,t). Cambiano gli angoli e la sequenza degli assi, preservando l'unitaria."
     },
     "section": "4. Pauli Gadgets"
   },

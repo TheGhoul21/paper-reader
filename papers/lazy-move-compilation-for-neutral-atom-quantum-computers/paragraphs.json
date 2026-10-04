@@ -2009,7 +2009,7 @@
     ],
     "sourceText": "After placement is finalized, BRIDGE compiles the circuitunder the constraint that all data atoms remain stationary. Eachlogical two-qubit gate is mapped to a relay path over theavailable buffer atoms. BRIDGE-F serves a dual purpose: it isboth a complete compilation target for strictly static execution",
     "explanations": {
-      "it-intermediate": "Dopo che il placement è finalizzato, BRIDGE compila il circuito sotto il vincolo che tutti gli atomi dato restino stazionari. Ogni gate logico a due qubit viene mappato su un percorso di relay sui buffer disponibili. BRIDGE-F serve un duplice scopo: è sia un target di compilazione completo per l'esecuzione strettamente statica...",
+      "it-intermediate": "BRIDGE-F compila il circuito mantenendo fermi gli atomi che conservano i dati, e realizza le interazioni mediante percorsi di atomi buffer. È sia una soluzione interamente statica sia la base rispetto a cui BRIDGE-H valuta eventuali movimenti selettivi. Una mossa va approvata solo se il risparmio dei relay futuri ne compensa il costo fisico.",
       "it-expert": "BRIDGE-F: compilazione sotto vincolo di stazionarietà totale dei dati; ogni CZ logico → relay path sui buffer disponibili. Duplice ruolo (frase interrotta): target di compilazione autonomo per esecuzione fully-static, e — come si vedrà — baseline di partenza per BRIDGE-H."
     },
     "section": "IV-C. BRIDGE-F"
@@ -2028,7 +2028,7 @@
     ],
     "sourceText": "To illustrate this, consider a typical layered algorithmicprimitive such as Quantum Phase Estimation (QPE) or algo-rithmic state distillation. As depicted in Figure 6, during thefirst execution phase (Phase 1), an ancilla qubit q0 executes a",
     "explanations": {
-      "it-intermediate": "Per illustrare questo, considerano una tipica primitiva algoritmica a strati come la Quantum Phase Estimation (QPE) o la distillazione di stato algoritmica. Come mostrato in Figura 6, durante la prima fase di esecuzione (Fase 1), un qubit ancilla q0 esegue...",
+      "it-intermediate": "L'esempio considera un circuito a fasi in cui cambiano nel tempo i partner di interazione di un qubit ausiliario. Una disposizione fissa può allora richiedere percorsi relay lunghi in una fase successiva. Il punto dell'esempio è motivare uno spostamento mirato quando molte interazioni future ne possono ammortizzare il costo.",
       "it-expert": "Esempio motivante (Fig. 6): primitiva a fasi (QPE / state distillation) — introduce lo scenario concreto usato per illustrare temporal locality e il vantaggio dello shuttling mirato, sviluppato nei paragrafi successivi con l'analisi quantitativa di §IV-D."
     },
     "section": "IV-C. BRIDGE-F"
@@ -2854,7 +2854,7 @@
     ],
     "sourceText": "For the blockade radii used in evaluation, we adopt aspecies-suppressed Rb-Rb (data-data) effective radius of ≲5.0 µm [5], a Rb-Cs (data-buffer) blockade radius of ≈9–10 µm [18], and a Cs-Cs (buffer-buffer) blockade radius of≈9 µm [18], [19]. BRIDGE deliberately uses a conservative8.1 µm compiler link cutoff, so the routing graph only includes",
     "explanations": {
-      "it-intermediate": "Per i raggi di blocco usati nella valutazione, adottano un raggio effettivo Rb-Rb (dato-dato) soppresso per specie di ≲5.0 µm, un raggio di blocco Rb-Cs (dato-buffer) di ≈9-10 µm, e un raggio Cs-Cs (buffer-buffer) di ≈9 µm. BRIDGE usa deliberatamente un cutoff di collegamento del compilatore conservativo di 8.1 µm, così il grafo di routing include solo...",
+      "it-intermediate": "Il modello usa raggi di interazione diversi per coppie Rb–Rb, Rb–Cs e Cs–Cs. Il compilatore accetta collegamenti fino a 8.1 µm, sotto i raggi nominali di circa 9–10 µm per le interazioni con buffer. Questo margine rende il grafo di routing conservativo rispetto ai parametri hardware assunti.",
       "it-expert": "Valori numerici dei raggi di blocco usati nella valutazione (Rb,Rb-Rb≲5.0µm, Rb,Rb-Cs≈9-10µm, Rb,Cs-Cs≈9µm) più un cutoff conservativo di 8.1µm per il grafo di routing del compilatore — un margine di sicurezza esplicito sotto il raggio Rb-Cs nominale."
     },
     "section": "V-A. Evaluation Settings"
@@ -2892,7 +2892,7 @@
     ],
     "sourceText": "• RQ5 (Future hardware). How much circuit executiontime can disjoint relay parallelism reclaim once hardware",
     "explanations": {
-      "it-intermediate": "RQ5 (Hardware futuro): quanto tempo di esecuzione del circuito può essere recuperato dal parallelismo di relay disgiunti una volta che l'hardware...",
+      "it-intermediate": "La quinta domanda di ricerca riguarda quanto tempo si potrebbe recuperare eseguendo in parallelo relay disgiunti con hardware futuro. È una valutazione prospettica delle risorse e del crosstalk necessari, distinta dal modello operativo usato per i risultati principali. Non attribuisce già quel parallelismo all'hardware presente.",
       "it-expert": "RQ5: guadagno recuperabile da parallelismo di relay disgiunti sotto hardware futuro (crosstalk ridotto) — coperta in §V-F."
     },
     "section": "V. Evaluation"
@@ -3681,7 +3681,7 @@
     ],
     "sourceText": "Two results stand out. On standard QASMBench andVeriQBench workloads, selective mobility is fidelity-neutralat best in the suite median—helping only the phase-shift–structured minority (Table III) and harmful if over-driven—so the default is the lazy-move configuration with a small,",
     "explanations": {
-      "it-intermediate": "Due risultati spiccano. Primo, sui workload standard QASMBench e VeriQBench, la mobilità selettiva è al massimo fedeltà-neutra sulla mediana della suite — aiuta solo la minoranza strutturata a cambio di fase (Tabella III) ed è dannosa se sovra-spinta — quindi la configurazione di default è quella lazy-move con un budget piccolo...",
+      "it-intermediate": "Sui workload standard, muovere selettivamente gli atomi non migliora la fedeltà mediana e può peggiorarla se le mosse sono troppo aggressive. Il beneficio è concentrato nei circuiti con interazioni ripetute che cambiano partner tra fasi. Per questo il default è un budget piccolo e conservativo, con ogni mossa sottoposta al test di convenienza.",
       "it-expert": "Primo risultato chiave di RQ2: su workload standard, guadagno mediano ≤0 — beneficio confinato alla minoranza phase-shift-structured, dannoso se over-driven. Motiva la scelta di default: lazy-move con budget piccolo e conservativo (dettaglio nel paragrafo successivo, tagliato dall'estrazione)."
     },
     "section": "V-C. Incremental Value of Selective Mobility (RQ2)",
@@ -4746,7 +4746,7 @@
     ],
     "sourceText": "Figure 13 separates raw size from interaction structure.Local families scale gently: the adder, cat, and ising seriesstay below a few hundred microseconds even at 42–64 qubits(498, 108, 286 µs), keep fidelity above 0.98, and draw no",
     "explanations": {
-      "it-intermediate": "La Figura 13 separa la dimensione grezza dalla struttura di interazione. Le famiglie locali scalano dolcemente: le serie adder, cat e ising restano sotto poche centinaia di microsecondi anche a 42-64 qubit (498, 108, 286 µs), mantengono fedeltà sopra 0.98, e non attirano...",
+      "it-intermediate": "Le famiglie con interazioni locali, come adder, cat e ising, restano nel regime submillisecondo anche con 42–64 qubit e mantengono fedeltà sopra 0.98 nei test. Non vengono approvate mosse, perché i relay sono già brevi. Il vantaggio della mobilità dipende quindi dalla struttura delle interazioni, non soltanto dal numero di qubit.",
       "it-expert": "Risultato di scaling per famiglie locali (adder/cat/ising): sub-ms fino a 42-64 qubit, fedeltà≥0.98, nessuna approvazione di move — contrasto diretto con il QFT all-to-all discusso in p0156."
     },
     "section": "V-H. Ablation Studies"
@@ -4981,8 +4981,8 @@
     ],
     "sourceText": "0.993 3.03.02.82.01.2 qft_n18 qft_n29 qft_n4 knn_n25 qft_10 qaoa_n6 cc_n12 qaoa_10 bv_n14 shor_n5 cat_n22 cat_n35 adder_n64 eff_12 qaoa_6 ghz_n23 ising_n26 adder_n4 wstate_n27 qpe_n9 grover_15 grover_9 multiplier_n15 0.99 3.03.03.02.71.8 0 0.004 0.008 0.016 0.032 0.061 SmallMedLargeVarCombQASMBenchVeriQBench Benchmarks Eshuttle Fig. 14: Hardware-parameter sensitivity: heatmaps over relay-pulse fidelity Frelay and per-move shuttle infidelity Eshuttle,the two knobs in the break-even condition. Left: BRIDGE-Hfidelity gain over BRIDGE-F (%); right: mean approved movesper circuit.",
     "explanations": {
-      "it-intermediate": "Continuazione dei dati numerici della Figura 14, con i nomi dei benchmark usati anche nelle altre figure di valutazione.",
-      "it-expert": "Continuazione dati grezzi Fig. 14 con etichette benchmark condivise con le altre figure di valutazione."
+      "it-intermediate": "La Figura 14 verifica quanto la scelta di spostare gli atomi dipenda dalla qualità dell'hardware. Varia la fedeltà degli impulsi di relay e l'errore introdotto da ogni spostamento: a sinistra mostra il guadagno di fedeltà di BRIDGE-H rispetto a BRIDGE-F, a destra quanti spostamenti vengono approvati in media per circuito. I numeri e i nomi iniziali sono etichette dei grafici.",
+      "it-expert": "Fig. 14 è una sensitivity analysis sui due parametri della condizione di break-even: Frelay ed Eshuttle. Le heatmap riportano il fidelity gain di BRIDGE-H rispetto a BRIDGE-F e il numero medio di mosse approvate per circuito; il prefisso estratto contiene tick ed etichette dei benchmark."
     },
     "section": "V-H. Ablation Studies"
   },
@@ -5183,7 +5183,7 @@
     ],
     "sourceText": "Placement and Warm-Start Ablations.We compareCBO-only search, ML cold-start, and cached ML warm-start, reporting compilation time, fidelity, execution time, andrelay-length distribution to separate the contribution of the",
     "explanations": {
-      "it-intermediate": "Ablation di placement e warm-start: confrontano ricerca CBO-only, ML cold-start, e ML warm-start in cache, riportando tempo di compilazione, fedeltà, tempo di esecuzione e distribuzione della lunghezza di relay per separare il contributo...",
+      "it-intermediate": "Il confronto separa la ricerca CBO senza apprendimento, una partenza ML con cache vuota e una partenza ML con cache disponibile. Misura sia costo della compilazione sia qualità del circuito e lunghezza dei relay. L'obiettivo è capire se un miglior seed produce percorsi migliori e quanto costa ottenerlo.",
       "it-expert": "Design dell'ablation warm-start: CBO-only vs ML cold-start vs ML warm-start cached, su 4 metriche (compile time, fedeltà, exec time, relay-length distribution) — separa il contributo del \"cosa\" (qualità del seed) dal \"quanto costa\" (overhead di calcolo)."
     },
     "section": "V-H. Ablation Studies"
@@ -5539,8 +5539,8 @@
     ],
     "sourceText": "Ancilla-assisted and relay-based execution. Auxiliaryatoms can reduce the cost of long-range interactions. Q-Pilot routes two-qubit gates with movable “flying ancillas”over fixed data qubits [32]; Cesa and Martin entangle non-adjacent atoms by hopping a single Rydberg excitation alonga chain of ancillas without moving either data qubit [33]; andBAM gates mediate a logical gate through an auxiliary bufferatom via off-resonant modulated driving [6]. Closest to us,",
     "explanations": {
-      "it-intermediate": "Esecuzione assistita da ancilla e basata su relay: atomi ausiliari possono ridurre il costo delle interazioni a lungo raggio. Q-Pilot instrada gate a due qubit con \"flying ancillas\" mobili sopra qubit dato fissi; Cesa e Martin entangle atomi non adiacenti facendo saltare una singola eccitazione di Rydberg lungo una catena di ancille senza muovere nessuno dei due qubit dato; i gate BAM mediano un gate logico tramite un atomo buffer ausiliario via pilotaggio modulato fuori risonanza. Il lavoro più vicino al nostro...",
-      "it-expert": "Related work aggiuntivo, ancilla-assisted: Q-Pilot [32] (flying ancillas mobili), Cesa & Martin [33] (single-excitation hopping su catena ancilla, entrambi i dati fermi), BAM [6] (il meccanismo di base di BRIDGE stesso). Frase interrotta (\"Closest to us,\") che introduce presumibilmente DT [34] come lavoro concettualmente più vicino, discusso in dettaglio in p0180/p0184."
+      "it-intermediate": "I lavori collegati usano atomi ausiliari per mediare interazioni lontane: ancille mobili, trasferimento di un'eccitazione lungo una catena, oppure gate BAM tramite buffer. Il compilatore DT prepara un canale e poi realizza CZ remoti tra dati fermi. Questi confronti situano BRIDGE tra tecniche che scambiano trasporto fisico e propagazione delle interazioni.",
+      "it-expert": "Il confronto distingue Q-Pilot con flying ancillas, hopping di una singola eccitazione su ancille, gate BAM e il compilatore DT. Quest'ultimo usa AOD per predisporre un canale e trasferimento di eccitazione per CZ remoti tra qubit stazionari. È il contesto architetturale del routing relay di BRIDGE."
     },
     "section": "VII. Outlook and Future Work"
   },
@@ -5577,7 +5577,7 @@
     ],
     "sourceText": "First, dynamic-static trade-off compilation should determinewhen a motion-assisted interaction is worth its fidelity costrelative to a purely static relay path. Second, erasure-awarecompilation can integrate real-time erasure detection into the",
     "explanations": {
-      "it-intermediate": "Primo, la compilazione con trade-off dinamico-statico dovrebbe determinare quando un'interazione assistita da movimento vale il suo costo di fedeltà rispetto a un percorso di relay puramente statico. Secondo, la compilazione erasure-aware può integrare il rilevamento in tempo reale delle cancellazioni nella...",
+      "it-intermediate": "Le direzioni future includono decidere più precisamente quando un'interazione assistita dal movimento conviene rispetto a un relay statico. Un secondo obiettivo è integrare il rilevamento delle perdite per instradare e pianificare attorno agli atomi mancanti. Sono estensioni proposte, non capacità già dimostrate dal compilatore attuale.",
       "it-expert": "Direzioni future 1-2: (1) formalizzare ulteriormente il trade-off dinamico/statico oltre l'euristica break-even attuale; (2) erasure-aware compilation — integrazione di rilevamento erasure real-time nel routing/scheduling (dettagliata nel paragrafo successivo)."
     },
     "section": "VII. Outlook and Future Work"

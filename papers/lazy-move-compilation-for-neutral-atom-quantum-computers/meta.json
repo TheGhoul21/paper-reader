@@ -28,5 +28,6 @@
       "result": "Su 22 programmi di prova, il compilatore BRIDGE è 10–16 volte più affidabile e centinaia di volte più veloce dei metodi basati sugli spostamenti, senza spostare nessun atomo con i dati.",
       "why": "Mostra che per la maggior parte dei programmi il movimento non serve. Il prezzo è un hardware più complesso: circa il doppio delle trappole e due tipi di atomi da controllare."
     }
-  }
+  },
+  "sourceSha256": "ebee311948fb3e98d69305d20311cd45be0c06cabad26d600b59fd834291dd58"
 }

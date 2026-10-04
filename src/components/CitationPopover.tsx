@@ -14,11 +14,19 @@ interface Props {
   onClose: () => void;
 }
 
-export default function CitationPopover({ text, pageNumber, sourceSlug, variant, anchor, onJumpToPage, onClose }: Props) {
+export default function CitationPopover({
+  text,
+  pageNumber,
+  sourceSlug,
+  variant,
+  anchor,
+  onJumpToPage,
+  onClose,
+}: Props) {
   const links = citationLinks(text);
   const external = { target: "_blank", rel: "noopener noreferrer" } as const;
   return (
-    <Popover anchor={anchor} onClose={onClose}>
+    <Popover anchor={anchor} onClose={onClose} label="Riferimento bibliografico">
       <div className="explanation-section">Riferimento</div>
       <p>{text}</p>
       <div className="citation-search">

@@ -6,8 +6,7 @@ type RefProxy = { num: number; gen: number };
 type TextItem = { str: string; transform: number[] };
 
 export type LinkTarget =
-  | { type: "citation"; pageNumber: number; text: string }
-  | { type: "jump"; pageNumber: number };
+  { type: "citation"; pageNumber: number; text: string } | { type: "jump"; pageNumber: number };
 
 interface TextLine {
   x: number;
@@ -117,7 +116,9 @@ async function extractReferenceEntry(
 ): Promise<{ pageNumber: number; text: string } | null> {
   const page = await doc.getPage(pageNumber);
   const content = await page.getTextContent();
-  const items: TextItem[] = content.items.flatMap((i) => ("str" in i ? [{ str: i.str, transform: i.transform }] : []));
+  const items: TextItem[] = content.items.flatMap((i) =>
+    "str" in i ? [{ str: i.str, transform: i.transform }] : [],
+  );
   const lines = buildLines(items);
   if (lines.length === 0) return null;
 
@@ -137,7 +138,11 @@ async function extractReferenceEntry(
   const marginX = lines[startIndex].x;
   const collected = [lines[startIndex].text];
   let chars = collected[0].length;
-  for (let i = startIndex + 1; i < lines.length && collected.length < MAX_LINES && chars < MAX_CHARS; i++) {
+  for (
+    let i = startIndex + 1;
+    i < lines.length && collected.length < MAX_LINES && chars < MAX_CHARS;
+    i++
+  ) {
     const line = lines[i];
     if (Math.abs(line.x - marginX) <= MARGIN_X_TOLERANCE) break;
     collected.push(line.text);
@@ -153,7 +158,10 @@ async function extractReferenceEntry(
  * act on: a full bibliography entry to show inline, or — for everything else, including
  * citation styles the line-based extraction can't parse — a page to jump to.
  */
-export async function resolveLinkTarget(doc: PDFDocumentProxy, dest: string | unknown[]): Promise<LinkTarget | null> {
+export async function resolveLinkTarget(
+  doc: PDFDocumentProxy,
+  dest: string | unknown[],
+): Promise<LinkTarget | null> {
   const resolved = await resolveDestination(doc, dest);
   if (!resolved) return null;
   const { pageNumber, left, top } = resolved;

@@ -1,7 +1,19 @@
 import type { SVGProps } from "react";
 
 function Icon(props: SVGProps<SVGSVGElement>) {
-  return <svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" {...props} />;
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      width="17"
+      height="17"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    />
+  );
 }
 
 export const LibraryIcon = (p: SVGProps<SVGSVGElement>) => (
@@ -119,12 +131,11 @@ export const CommentsIcon = (p: SVGProps<SVGSVGElement>) => (
   </Icon>
 );
 
-/** "Il filo": a thread through three nodes — the argument's path through the paper. */
+/** "Il filo": a continuous route between the beginning and end of the argument. */
 export const ThreadIcon = (p: SVGProps<SVGSVGElement>) => (
   <Icon {...p}>
-    <circle cx="4.5" cy="15" r="1.8" />
-    <circle cx="10" cy="5" r="1.8" />
-    <circle cx="15.5" cy="13" r="1.8" />
-    <path d="M5.4 13.4l3.7-6.8M11 6.6l3.6 4.8" />
+    <circle cx="4.5" cy="15" r="2" />
+    <path d="M6.5 15h6a2.5 2.5 0 0 0 0-5h-5a2.5 2.5 0 0 1 0-5h6" />
+    <circle cx="15.5" cy="5" r="2" />
   </Icon>
 );

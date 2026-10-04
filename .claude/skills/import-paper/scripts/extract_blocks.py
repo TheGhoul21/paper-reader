@@ -366,6 +366,7 @@ def main() -> None:
                 "rects": [b["rect"]],
                 "text": b["text"],
             }
+            entry["anchors"] = [{"page": page_index, "rects": entry["rects"]}]
             if args.all:
                 result.append(entry)
                 continue

@@ -116,5 +116,692 @@
       "evidence": ["p0073", "p0078"],
       "dependsOn": ["scaling-gap", "insideout"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "overview",
+      "title": {
+        "it-intermediate": "Abstract e background · Preparare un array pieno",
+        "it-expert": "Abstract e background · Preparare un array pieno"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché il riarrangiamento fisico degli atomi diventa difficile con dimensione e rumore.",
+        "it-expert": "Capire perché il riarrangiamento fisico degli atomi diventa difficile con dimensione e rumore."
+      },
+      "steps": [
+        {
+          "id": "overview-1",
+          "title": {
+            "it-intermediate": "Il target è una disposizione di atomi",
+            "it-expert": "Il target è una disposizione di atomi"
+          },
+          "paragraphs": [
+            "p0009",
+            "p0011",
+            "p0012",
+            "p0014"
+          ],
+          "meaning": {
+            "it-intermediate": "Il riarrangiamento porta atomi caricati casualmente nelle pinzette verso una geometria desiderata. Qui si prepara l’array fisico su cui poi lavorerà il processore.",
+            "it-expert": "Si considera la trasformazione dell’occupazione iniziale verso un pattern target tramite optical tweezers."
+          },
+          "purpose": {
+            "it-intermediate": "Definisce il problema studiato dal simulatore.",
+            "it-expert": "Fissa il task di preparazione geometrica degli array."
+          }
+        },
+        {
+          "id": "overview-2",
+          "title": {
+            "it-intermediate": "Tempo, trasferimenti e perdite",
+            "it-expert": "Tempo, trasferimenti e perdite"
+          },
+          "paragraphs": [
+            "p0015",
+            "p0016",
+            "p0017",
+            "p0018",
+            "p0019",
+            "p0020",
+            "p0021"
+          ],
+          "meaning": {
+            "it-intermediate": "Un array senza difetti deve conservare tutti gli atomi necessari. Attese, trasporti e passaggi tra pinzette possono produrre perdite; più atomi rendono il problema più stringente.",
+            "it-expert": "Vacuum loss e tweezer handoff loss competono con la durata di rearrangement e il numero di atomi target."
+          },
+          "purpose": {
+            "it-intermediate": "Motiva i tre studi: limiti temporali, rumore e riarrangiamento di due specie.",
+            "it-expert": "Prepara i regimi distinti che atommovr dovrà confrontare."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0023",
+        "why": {
+          "it-intermediate": "Identificare i vincoli delle pinzette AOD e distinguere minima distanza da minimo tempo.",
+          "it-expert": "Identificare i vincoli delle pinzette AOD e distinguere minima distanza da minimo tempo."
+        }
+      }
+    },
+    {
+      "id": "definitions",
+      "title": {
+        "it-intermediate": "Definizioni · Cosa conta come movimento",
+        "it-expert": "Definizioni · Cosa conta come movimento"
+      },
+      "goal": {
+        "it-intermediate": "Identificare i vincoli delle pinzette AOD e distinguere minima distanza da minimo tempo.",
+        "it-expert": "Identificare i vincoli delle pinzette AOD e distinguere minima distanza da minimo tempo."
+      },
+      "steps": [
+        {
+          "id": "definitions-1",
+          "title": {
+            "it-intermediate": "La matrice indica occupazione fisica",
+            "it-expert": "La matrice indica occupazione fisica"
+          },
+          "paragraphs": [
+            "p0023",
+            "p0024",
+            "p0025",
+            "p0026",
+            "p0027",
+            "p0028"
+          ],
+          "meaning": {
+            "it-intermediate": "Xᵢⱼ vale uno se il sito fisico contiene un atomo e zero se è vuoto. Un segmento AOD muove insieme le pinzette selezionate da righe e colonne.",
+            "it-expert": "X∈{0,1}ᵐˣⁿ e gli operatori ε descrivono configurazioni e move segment del crossed-AOD substrate."
+          },
+          "purpose": {
+            "it-intermediate": "Traduce il riarrangiamento in una sequenza di operazioni lecite.",
+            "it-expert": "Definisce il problema di shortest operation sequence."
+          }
+        },
+        {
+          "id": "definitions-2",
+          "title": {
+            "it-intermediate": "Due obiettivi diversi",
+            "it-expert": "Due obiettivi diversi"
+          },
+          "paragraphs": [
+            "p0029",
+            "p0030"
+          ],
+          "meaning": {
+            "it-intermediate": "L’assegnamento Hungarian minimizza la somma delle distanze percorse. Gli algoritmi per righe e colonne cercano invece di ridurre il tempo usando movimenti paralleli.",
+            "it-expert": "LSAP minimizza distanza aggregata; le euristiche parallele mirano al rearrangement makespan."
+          },
+          "purpose": {
+            "it-intermediate": "Prepara il confronto fra strategie che ottimizzano costi diversi.",
+            "it-expert": "Evita di assumere che distance-optimal implichi time-optimal."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0032",
+        "why": {
+          "it-intermediate": "Capire quali elementi fisici e algoritmici vengono modellati nello stesso ambiente.",
+          "it-expert": "Capire quali elementi fisici e algoritmici vengono modellati nello stesso ambiente."
+        }
+      }
+    },
+    {
+      "id": "simulator",
+      "title": {
+        "it-intermediate": "Ambiente di simulazione · Rendere i confronti riproducibili",
+        "it-expert": "Ambiente di simulazione · Rendere i confronti riproducibili"
+      },
+      "goal": {
+        "it-intermediate": "Capire quali elementi fisici e algoritmici vengono modellati nello stesso ambiente.",
+        "it-expert": "Capire quali elementi fisici e algoritmici vengono modellati nello stesso ambiente."
+      },
+      "steps": [
+        {
+          "id": "simulator-1",
+          "title": {
+            "it-intermediate": "Un banco di prova parametrico",
+            "it-expert": "Un banco di prova parametrico"
+          },
+          "paragraphs": [
+            "p0032",
+            "p0033"
+          ],
+          "meaning": {
+            "it-intermediate": "atommovr simula caricamento, mosse, perdite e costi temporali. Produce misure di riempimento e successo e visualizzazioni del riarrangiamento.",
+            "it-expert": "La libreria integra algoritmi, timing e stochastic loss models con metriche di filling e success rate."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce il contesto comune per confrontare gli algoritmi nelle sezioni seguenti.",
+            "it-expert": "Stabilisce il protocollo di benchmarking condiviso."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0035",
+        "why": {
+          "it-intermediate": "Confrontare limiti inferiori e algoritmi realizzabili nello scenario senza rumore.",
+          "it-expert": "Confrontare limiti inferiori e algoritmi realizzabili nello scenario senza rumore."
+        }
+      }
+    },
+    {
+      "id": "scaling",
+      "title": {
+        "it-intermediate": "Scaling temporale · Quanto manca all’ottimo",
+        "it-expert": "Scaling temporale · Quanto manca all’ottimo"
+      },
+      "goal": {
+        "it-intermediate": "Confrontare limiti inferiori e algoritmi realizzabili nello scenario senza rumore.",
+        "it-expert": "Confrontare limiti inferiori e algoritmi realizzabili nello scenario senza rumore."
+      },
+      "steps": [
+        {
+          "id": "scaling-1",
+          "title": {
+            "it-intermediate": "Conta il viaggio più lungo",
+            "it-expert": "Conta il viaggio più lungo"
+          },
+          "paragraphs": [
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038"
+          ],
+          "meaning": {
+            "it-intermediate": "Il problema bottleneck associa atomi ai target minimizzando la distanza massima. Anche con parallelismo ideale, il completamento deve attendere l’atomo più lento.",
+            "it-expert": "LBAP/MBMP minimizza la distanza massima e fornisce tLB dato spacing e velocità."
+          },
+          "purpose": {
+            "it-intermediate": "Costruisce un limite inferiore sul tempo con cui confrontare le euristiche.",
+            "it-expert": "Introduce una baseline ottimistica separata dai vincoli del scheduling AOD."
+          }
+        },
+        {
+          "id": "scaling-2",
+          "title": {
+            "it-intermediate": "Gli esponenti descrivono la crescita",
+            "it-expert": "Gli esponenti descrivono la crescita"
+          },
+          "paragraphs": [
+            "p0039",
+            "p0040",
+            "p0041",
+            "p0043",
+            "p0044",
+            "p0045",
+            "p0046",
+            "p0047",
+            "p0049"
+          ],
+          "meaning": {
+            "it-intermediate": "N è il numero di siti target da riempire. Le curve misurano come il tempo cresce con N per algoritmi diversi e per il limite inferiore.",
+            "it-expert": "I fit confrontano Z⋆, Balance and Compact, Hungarian e ParHungarian a loading fissato."
+          },
+          "purpose": {
+            "it-intermediate": "Quantifica quanto vantaggio porta il parallelismo e quanto margine resta.",
+            "it-expert": "Misura il gap di scaling fra lower bound e implementazioni euristiche."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0051",
+        "why": {
+          "it-intermediate": "Capire perché la strategia migliore cambia con la sorgente dominante di perdita.",
+          "it-expert": "Capire perché la strategia migliore cambia con la sorgente dominante di perdita."
+        }
+      }
+    },
+    {
+      "id": "noise",
+      "title": {
+        "it-intermediate": "Rumore · Quale algoritmo conviene davvero",
+        "it-expert": "Rumore · Quale algoritmo conviene davvero"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché la strategia migliore cambia con la sorgente dominante di perdita.",
+        "it-expert": "Capire perché la strategia migliore cambia con la sorgente dominante di perdita."
+      },
+      "steps": [
+        {
+          "id": "noise-1",
+          "title": {
+            "it-intermediate": "Meno tempo o meno handoff",
+            "it-expert": "Meno tempo o meno handoff"
+          },
+          "paragraphs": [
+            "p0051",
+            "p0052",
+            "p0053",
+            "p0054"
+          ],
+          "meaning": {
+            "it-intermediate": "Una strategia sequenziale può trasferire meno volte ciascun atomo; una parallela può completare prima. Queste scelte proteggono rispettivamente dalle perdite di handoff e dalle perdite durante l’attesa.",
+            "it-expert": "Hungarian limita pickup/putdown; Balance and Compact limita l’esposizione a vacuum loss tramite parallelismo."
+          },
+          "purpose": {
+            "it-intermediate": "Trasforma il confronto di tempi in un confronto di probabilità di preparare l’array completo.",
+            "it-expert": "Spiega il crossover nei noise regimes anziché assegnare un vincitore unico."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0056",
+        "why": {
+          "it-intermediate": "Seguire il nuovo vincolo introdotto dall’identità degli atomi fino alla strategia InsideOut.",
+          "it-expert": "Seguire il nuovo vincolo introdotto dall’identità degli atomi fino alla strategia InsideOut."
+        }
+      }
+    },
+    {
+      "id": "dual-species",
+      "title": {
+        "it-intermediate": "Due specie · Evitare configurazioni bloccate",
+        "it-expert": "Due specie · Evitare configurazioni bloccate"
+      },
+      "goal": {
+        "it-intermediate": "Seguire il nuovo vincolo introdotto dall’identità degli atomi fino alla strategia InsideOut.",
+        "it-expert": "Seguire il nuovo vincolo introdotto dall’identità degli atomi fino alla strategia InsideOut."
+      },
+      "steps": [
+        {
+          "id": "dual-species-1",
+          "title": {
+            "it-intermediate": "La specie rende i siti distinguibili",
+            "it-expert": "La specie rende i siti distinguibili"
+          },
+          "paragraphs": [
+            "p0056",
+            "p0057",
+            "p0058",
+            "p0059",
+            "p0060",
+            "p0061"
+          ],
+          "meaning": {
+            "it-intermediate": "Il target prescrive anche quale specie atomica occupa ogni sito. Un atomo della specie sbagliata può impedire il passaggio o occupare la destinazione di un altro.",
+            "it-expert": "Il matching diventa species-selective e gli ostacoli eterospecie invalidano le sostituzioni domino del caso singolo."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra perché più atomi caricati non garantiscono automaticamente un riarrangiamento più facile.",
+            "it-expert": "Motiva un algoritmo che prevenga i blocked states."
+          }
+        },
+        {
+          "id": "dual-species-2",
+          "title": {
+            "it-intermediate": "Costruire dal centro verso l’esterno",
+            "it-expert": "Costruire dal centro verso l’esterno"
+          },
+          "paragraphs": [
+            "p0062",
+            "p0063",
+            "p0064",
+            "p0065",
+            "p0066",
+            "p0067",
+            "p0068"
+          ],
+          "meaning": {
+            "it-intermediate": "InsideOut completa anelli di siti fisici partendo dal centro. Spinge all’esterno gli atomi mal posizionati, preservando le regioni già preparate.",
+            "it-expert": "Il layer-by-layer clearing sposta gli ostacoli outward e protegge gli inner layers già completati."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega il meccanismo confrontato con ParHungarian per densità e geometrie target diverse.",
+            "it-expert": "Collega il meccanismo alla robustezza empirica e ai trade-off con i pattern target."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0070",
+        "why": {
+          "it-intermediate": "Individuare quali risultati dipendono dal modello di controllo e quali sviluppi sono proposti.",
+          "it-expert": "Individuare quali risultati dipendono dal modello di controllo e quali sviluppi sono proposti."
+        }
+      }
+    },
+    {
+      "id": "discussion",
+      "title": {
+        "it-intermediate": "Discussione · Limiti e alternative",
+        "it-expert": "Discussione · Limiti e alternative"
+      },
+      "goal": {
+        "it-intermediate": "Individuare quali risultati dipendono dal modello di controllo e quali sviluppi sono proposti.",
+        "it-expert": "Individuare quali risultati dipendono dal modello di controllo e quali sviluppi sono proposti."
+      },
+      "steps": [
+        {
+          "id": "discussion-1",
+          "title": {
+            "it-intermediate": "Dal modello discreto al controllo continuo",
+            "it-expert": "Dal modello discreto al controllo continuo"
+          },
+          "paragraphs": [
+            "p0070",
+            "p0071",
+            "p0072",
+            "p0073",
+            "p0074",
+            "p0075",
+            "p0076",
+            "p0077",
+            "p0078",
+            "p0079"
+          ],
+          "meaning": {
+            "it-intermediate": "Il crossed-AOD impone una griglia di pinzette mobili. SLM e AOD olografici possono offrire altre mosse; modelli continui possono descrivere più finemente traiettorie e riscaldamento.",
+            "it-expert": "Alternative di addressing e continuous RF tone modeling alterano spazio delle azioni e timing conservativo."
+          },
+          "purpose": {
+            "it-intermediate": "Delimita il modello simulato e presenta direzioni future, compreso l’apprendimento di strategie.",
+            "it-expert": "Distingue risultati del benchmark da proposte di estensione del framework."
+          }
+        },
+        {
+          "id": "discussion-2",
+          "title": {
+            "it-intermediate": "Provenienza del lavoro e supplemento",
+            "it-expert": "Provenienza del lavoro e supplemento"
+          },
+          "paragraphs": [
+            "p0080",
+            "p0081",
+            "p0083",
+            "p0084",
+            "p0141"
+          ],
+          "meaning": {
+            "it-intermediate": "Questi paragrafi indicano ringraziamenti, finanziamenti, contributi e affiliazioni del supplemento.",
+            "it-expert": "Questi paragrafi indicano ringraziamenti, finanziamenti, contributi e affiliazioni del supplemento."
+          },
+          "purpose": {
+            "it-intermediate": "Chiudono le informazioni editoriali prima dei dettagli tecnici.",
+            "it-expert": "Chiudono le informazioni editoriali prima dei dettagli tecnici."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0145",
+        "why": {
+          "it-intermediate": "Capire come i vettori di controllo codificano le pinzette e come vengono individuate collisioni.",
+          "it-expert": "Capire come i vettori di controllo codificano le pinzette e come vengono individuate collisioni."
+        }
+      }
+    },
+    {
+      "id": "aod-legality",
+      "title": {
+        "it-intermediate": "Appendice A.1 · Rappresentare mosse valide",
+        "it-expert": "Appendice A.1 · Rappresentare mosse valide"
+      },
+      "goal": {
+        "it-intermediate": "Capire come i vettori di controllo codificano le pinzette e come vengono individuate collisioni.",
+        "it-expert": "Capire come i vettori di controllo codificano le pinzette e come vengono individuate collisioni."
+      },
+      "steps": [
+        {
+          "id": "aod-legality-1",
+          "title": {
+            "it-intermediate": "Gli indici sono comandi per righe e colonne",
+            "it-expert": "Gli indici sono comandi per righe e colonne"
+          },
+          "paragraphs": [
+            "p0145",
+            "p0146",
+            "p0147",
+            "p0148",
+            "p0149",
+            "p0150",
+            "p0151",
+            "p0152"
+          ],
+          "meaning": {
+            "it-intermediate": "Le entrate dei vettori indicano tono spento, statico o spostato al sito vicino. Le pinzette esistono alle intersezioni dei toni attivi; traiettorie che si intersecano possono far perdere atomi.",
+            "it-expert": "crow,ccol codificano RF tones e la griglia prodotto delle tweezers; legalità esclude crossing AOD e collisioni con SLM occupate."
+          },
+          "purpose": {
+            "it-intermediate": "Definisce il controllo di legalità che protegge le simulazioni e la parallelizzazione.",
+            "it-expert": "Fissa la semantica degli operatori usata nei benchmark."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0154",
+        "why": {
+          "it-intermediate": "Separare distanza, accelerazione e trasferimento tra trappole nel costo fisico.",
+          "it-expert": "Separare distanza, accelerazione e trasferimento tra trappole nel costo fisico."
+        }
+      }
+    },
+    {
+      "id": "timing",
+      "title": {
+        "it-intermediate": "Appendice A.2 · Il tempo di una mossa",
+        "it-expert": "Appendice A.2 · Il tempo di una mossa"
+      },
+      "goal": {
+        "it-intermediate": "Separare distanza, accelerazione e trasferimento tra trappole nel costo fisico.",
+        "it-expert": "Separare distanza, accelerazione e trasferimento tra trappole nel costo fisico."
+      },
+      "steps": [
+        {
+          "id": "timing-1",
+          "title": {
+            "it-intermediate": "Il modello semplice",
+            "it-expert": "Il modello semplice"
+          },
+          "paragraphs": [
+            "p0154",
+            "p0155",
+            "p0156",
+            "p0157",
+            "p0158"
+          ],
+          "meaning": {
+            "it-intermediate": "Il tempo del segmento segue il massimo spostamento simultaneo, con una distinzione fra mosse diagonali e assiali.",
+            "it-expert": "Il naive timing usa dmax/vavg per il segmento parallelo."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce il riferimento semplificato per interpretare il modello dettagliato.",
+            "it-expert": "Definisce la baseline prima dei costi fissi."
+          }
+        },
+        {
+          "id": "timing-2",
+          "title": {
+            "it-intermediate": "Il modello dettagliato",
+            "it-expert": "Il modello dettagliato"
+          },
+          "paragraphs": [
+            "p0159",
+            "p0160",
+            "p0161",
+            "p0162",
+            "p0163",
+            "p0164",
+            "p0165",
+            "p0166"
+          ],
+          "meaning": {
+            "it-intermediate": "Una traiettoria include accelerazione, eventuale tratto a velocità massima e decelerazione. Pickup e putdown tra SLM e AOD aggiungono tempi di trasferimento.",
+            "it-expert": "Il profilo adiabatico e i δ-eventi aggiungono acceleration/deceleration e transfer overhead al massimo displacement."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché contare solo la distanza sottostima il costo delle strategie con molti handoff.",
+            "it-expert": "Rende riproducibili i parametri temporali della valutazione."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0169",
+        "why": {
+          "it-intermediate": "Seguire la trasformazione degli abbinamenti atomo-target in segmenti AOD compatibili.",
+          "it-expert": "Seguire la trasformazione degli abbinamenti atomo-target in segmenti AOD compatibili."
+        }
+      }
+    },
+    {
+      "id": "parallel-hungarian",
+      "title": {
+        "it-intermediate": "Appendice B.1–2 · Dall’assegnamento alle mosse parallele",
+        "it-expert": "Appendice B.1–2 · Dall’assegnamento alle mosse parallele"
+      },
+      "goal": {
+        "it-intermediate": "Seguire la trasformazione degli abbinamenti atomo-target in segmenti AOD compatibili.",
+        "it-expert": "Seguire la trasformazione degli abbinamenti atomo-target in segmenti AOD compatibili."
+      },
+      "steps": [
+        {
+          "id": "parallel-hungarian-1",
+          "title": {
+            "it-intermediate": "Assegnare atomi e costruire percorsi",
+            "it-expert": "Assegnare atomi e costruire percorsi"
+          },
+          "paragraphs": [
+            "p0169",
+            "p0174",
+            "p0175",
+            "p0178",
+            "p0180",
+            "p0181",
+            "p0182",
+            "p0183",
+            "p0184",
+            "p0185",
+            "p0186",
+            "p0187"
+          ],
+          "meaning": {
+            "it-intermediate": "L’assegnamento accoppia siti target vuoti con atomi in eccesso. Quando un atomo uguale blocca il percorso, la catena domino usa le posizioni liberate in successione.",
+            "it-expert": "LSAP genera source-target pairs e i percorsi vengono scomposti in direct o domino subpaths."
+          },
+          "purpose": {
+            "it-intermediate": "Dà la procedura concreta che precede il raggruppamento delle mosse.",
+            "it-expert": "Esplicita il planning single-species alla base di ParHungarian."
+          }
+        },
+        {
+          "id": "parallel-hungarian-2",
+          "title": {
+            "it-intermediate": "Raggruppare senza cambiare il risultato",
+            "it-expert": "Raggruppare senza cambiare il risultato"
+          },
+          "paragraphs": [
+            "p0188",
+            "p0189",
+            "p0190",
+            "p0191",
+            "p0192",
+            "p0193",
+            "p0194",
+            "p0198",
+            "p0200"
+          ],
+          "meaning": {
+            "it-intermediate": "Il simulatore confronta una mossa collettiva con l’esecuzione dei segmenti separati. Il raggruppamento greedy conserva l’esito ma non promette il massimo parallelismo possibile.",
+            "it-expert": "Greedy grouping verifica equivalenza fra X′Par e X′No-Par e rinvia i conflitti."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega la correttezza operativa e il compromesso fra ricerca del piano e tempo di calcolo.",
+            "it-expert": "Delimita l’euristica di parallelizzazione e la sua complessità."
+          }
+        },
+        {
+          "id": "parallel-hungarian-3",
+          "title": {
+            "it-intermediate": "L’estensione a due specie",
+            "it-expert": "L’estensione a due specie"
+          },
+          "paragraphs": [
+            "p0202",
+            "p0203",
+            "p0204",
+            "p0205"
+          ],
+          "meaning": {
+            "it-intermediate": "La matrice ha una componente di occupazione per ciascuna specie e al massimo un atomo per sito. Matching e percorsi devono rispettare queste identità.",
+            "it-expert": "Il dual-species tensor impone occupazione unitaria e matching separato; ostacoli eterospecie producono blocked configurations."
+          },
+          "purpose": {
+            "it-intermediate": "Individua precisamente il caso in cui la strategia domino può fallire.",
+            "it-expert": "Fornisce la baseline dual-species confrontata con InsideOut."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0207",
+        "why": {
+          "it-intermediate": "Tradurre l’idea degli anelli concentrici in coordinate, clearing e assegnamenti.",
+          "it-expert": "Tradurre l’idea degli anelli concentrici in coordinate, clearing e assegnamenti."
+        }
+      }
+    },
+    {
+      "id": "insideout",
+      "title": {
+        "it-intermediate": "Appendice B.3 · La procedura InsideOut",
+        "it-expert": "Appendice B.3 · La procedura InsideOut"
+      },
+      "goal": {
+        "it-intermediate": "Tradurre l’idea degli anelli concentrici in coordinate, clearing e assegnamenti.",
+        "it-expert": "Tradurre l’idea degli anelli concentrici in coordinate, clearing e assegnamenti."
+      },
+      "steps": [
+        {
+          "id": "insideout-1",
+          "title": {
+            "it-intermediate": "Preparare un anello alla volta",
+            "it-expert": "Preparare un anello alla volta"
+          },
+          "paragraphs": [
+            "p0207",
+            "p0208",
+            "p0209",
+            "p0210",
+            "p0211",
+            "p0212",
+            "p0213",
+            "p0215",
+            "p0216",
+            "p0218",
+            "p0219",
+            "p0223",
+            "p0224",
+            "p0228"
+          ],
+          "meaning": {
+            "it-intermediate": "Ogni layer è il bordo di un rettangolo fisico centrato nel target. Dopo il controllo del numero di atomi, si rimuovono gli ostacoli e si riempiono i siti con la specie richiesta.",
+            "it-expert": "Il layer Lk definisce il frontier; clearing e species-selective LSAP riempiono il bordo rispettando i path constraints."
+          },
+          "purpose": {
+            "it-intermediate": "Collega il diagramma di flusso all’invariante di preservare i layer interni.",
+            "it-expert": "Formalizza l’avanzamento monotono dal centro."
+          }
+        },
+        {
+          "id": "insideout-2",
+          "title": {
+            "it-intermediate": "Aggiornare i confini e spingere all’esterno",
+            "it-expert": "Aggiornare i confini e spingere all’esterno"
+          },
+          "paragraphs": [
+            "p0229",
+            "p0230",
+            "p0231",
+            "p0232",
+            "p0233",
+            "p0234"
+          ],
+          "meaning": {
+            "it-intermediate": "Le formule gestiscono array con dimensioni pari o dispari. Il verso di clearing segue il lato del bordo, poi il processo passa al layer successivo.",
+            "it-expert": "I parametri di parità e boundary coordinano clearing parallelo sui lati e avanzamento k→k+1."
+          },
+          "purpose": {
+            "it-intermediate": "Completa i dettagli che rendono implementabile il meccanismo osservato nei benchmark.",
+            "it-expert": "Chiude l’algoritmo preservando le regioni già corrette."
+          }
+        }
+      ]
+    }
   ]
 }

@@ -42,10 +42,19 @@ export default function ConceptPopover({
 }: Props) {
   const { text, isFallback } = conceptDefinition(concept, variant);
   return (
-    <Popover anchor={anchor} onClose={onClose} className="concept-popover">
+    <Popover
+      anchor={anchor}
+      onClose={onClose}
+      className="concept-popover"
+      label={`Glossario: ${concept.term}`}
+    >
       <div className="explanation-section">Glossario</div>
       <p className="concept-term-title">{concept.term}</p>
-      {isFallback && <p className="explanation-fallback-note">Non disponibile in questa combinazione — mostrata quella predefinita.</p>}
+      {isFallback && (
+        <p className="explanation-fallback-note">
+          Non disponibile in questa combinazione — mostrata quella predefinita.
+        </p>
+      )}
       <p>{text}</p>
       {related.length > 0 && (
         <div className="concept-related">
@@ -66,7 +75,9 @@ export default function ConceptPopover({
                 <Link to={`/paper/${e.slug}?p=${e.definedIn}`} title={e.definition}>
                   {e.title}
                 </Link>
-                {e.term.toLowerCase() !== concept.term.toLowerCase() && <span className="concept-elsewhere-term"> — “{e.term}”</span>}
+                {e.term.toLowerCase() !== concept.term.toLowerCase() && (
+                  <span className="concept-elsewhere-term"> — “{e.term}”</span>
+                )}
               </li>
             ))}
           </ul>
@@ -82,7 +93,11 @@ export default function ConceptPopover({
         >
           Evidenzia nel PDF
         </button>
-        <button className={`explanation-ask-btn review-toggle${inReview ? " is-on" : ""}`} onClick={onToggleReview} aria-pressed={inReview}>
+        <button
+          className={`explanation-ask-btn review-toggle${inReview ? " is-on" : ""}`}
+          onClick={onToggleReview}
+          aria-pressed={inReview}
+        >
           {inReview ? "Nel ripasso ✓" : "Aggiungi al ripasso"}
         </button>
         {definedIn &&

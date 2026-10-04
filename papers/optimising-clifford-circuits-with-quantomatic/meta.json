@@ -19,5 +19,6 @@
       "result": "L'ottimizzatore funziona in modo automatico e ogni accorciamento è anche una prova che il programma è rimasto equivalente. Per uno e due qubit trova sempre la forma più corta.",
       "why": "Unisce ottimizzazione e verifica. Riguarda però solo una famiglia di operazioni (i Clifford), e sui programmi più grandi non trova sempre il minimo ed è lento, per limiti del software più che del metodo."
     }
-  }
+  },
+  "sourceSha256": "a171ca92b917e3d66afa39a1dd501cff1571da424b36ccf6f008580ba824df04"
 }

@@ -116,5 +116,566 @@
       "evidence": ["p0145", "p0151", "p0152", "p0153"],
       "dependsOn": ["optimiser"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "quanto-overview",
+      "title": {
+        "it-intermediate": "Perché ottimizzare con un assistente di prova",
+        "it-expert": "Perché ottimizzare con un assistente di prova"
+      },
+      "goal": {
+        "it-intermediate": "Separare due promesse: ottenere un circuito più piccolo e certificare che resti equivalente.",
+        "it-expert": "Separare due promesse: ottenere un circuito più piccolo e certificare che resti equivalente."
+      },
+      "steps": [
+        {
+          "id": "quanto-overview-1",
+          "title": {
+            "it-intermediate": "Il problema e il risultato",
+            "it-expert": "Il problema e il risultato"
+          },
+          "paragraphs": [
+            "p0003",
+            "p0005",
+            "p0006",
+            "p0007",
+            "p0008",
+            "p0009",
+            "p0010",
+            "p0012",
+            "p0013",
+            "p0014",
+            "p0015",
+            "p0016",
+            "p0017",
+            "p0018"
+          ],
+          "meaning": {
+            "it-intermediate": "Quantomatic applica riscritture ZX a circuiti Clifford e produce una prova delle trasformazioni. L’ottimalità è dimostrata per uno e due qubit; sui circuiti più grandi il paper mostra riduzioni empiriche. Ringraziamenti e progetto scaricabile indicano il contesto e i materiali.",
+            "it-expert": "L’ottimizzatore produce derivazioni certificate nel frammento stabilizer, con minimalità per C₁/C₂ e valutazione euristica a larghezza superiore."
+          },
+          "purpose": {
+            "it-intermediate": "Fissa il risultato e anticipa la difficoltà di conservare la struttura globale di circuito durante riscritture locali.",
+            "it-expert": "Distingue correttezza delle riscritture, completezza del calcolo e ottimalità della strategia."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0020",
+        "why": {
+          "it-intermediate": "Capire perché due circuiti diversi possono rappresentare la stessa operazione.",
+          "it-expert": "Capire perché due circuiti diversi possono rappresentare la stessa operazione."
+        }
+      }
+    },
+    {
+      "id": "quanto-clifford",
+      "title": {
+        "it-intermediate": "II · Gruppo e circuiti Clifford",
+        "it-expert": "II · Gruppo e circuiti Clifford"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché due circuiti diversi possono rappresentare la stessa operazione.",
+        "it-expert": "Capire perché due circuiti diversi possono rappresentare la stessa operazione."
+      },
+      "steps": [
+        {
+          "id": "quanto-clifford-1",
+          "title": {
+            "it-intermediate": "Una semantica, molte implementazioni",
+            "it-expert": "Una semantica, molte implementazioni"
+          },
+          "paragraphs": [
+            "p0020",
+            "p0021",
+            "p0022",
+            "p0023",
+            "p0024",
+            "p0025",
+            "p0026",
+            "p0027",
+            "p0028",
+            "p0029",
+            "p0030"
+          ],
+          "meaning": {
+            "it-intermediate": "Il gruppo raccoglie le operazioni Clifford, ignorando scalari globali; il linguaggio dei circuiti distingue invece le sequenze di gate che le realizzano. Un Clifford può spostare un Pauli attraverso di sé cambiandone il tipo.",
+            "it-expert": "Cliff è la †-PROP libera dei circuiti, mentre l’interpretazione la manda nel gruppo Clifford ridotto. La normalizzazione del gruppo Pauli consente propagazione dei Pauli."
+          },
+          "purpose": {
+            "it-intermediate": "Prepara sia il criterio di equivalenza sia la commutazione dei Pauli usata dall’ottimizzatore.",
+            "it-expert": "Stabilisce la distinzione sintassi/semantica e l’invariante delle commutazioni."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0032",
+        "why": {
+          "it-intermediate": "Leggere il grafo ZX come rappresentazione di un processo quantistico, non come mappa fisica dei qubit.",
+          "it-expert": "Leggere il grafo ZX come rappresentazione di un processo quantistico, non come mappa fisica dei qubit."
+        }
+      }
+    },
+    {
+      "id": "quanto-zx",
+      "title": {
+        "it-intermediate": "III · Il linguaggio dei diagrammi",
+        "it-expert": "III · Il linguaggio dei diagrammi"
+      },
+      "goal": {
+        "it-intermediate": "Leggere il grafo ZX come rappresentazione di un processo quantistico, non come mappa fisica dei qubit.",
+        "it-expert": "Leggere il grafo ZX come rappresentazione di un processo quantistico, non come mappa fisica dei qubit."
+      },
+      "steps": [
+        {
+          "id": "quanto-zx-1",
+          "title": {
+            "it-intermediate": "Nodi e confini",
+            "it-expert": "Nodi e confini"
+          },
+          "paragraphs": [
+            "p0032",
+            "p0033",
+            "p0034",
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038",
+            "p0039",
+            "p0040",
+            "p0041",
+            "p0042",
+            "p0043",
+            "p0044"
+          ],
+          "meaning": {
+            "it-intermediate": "Nodi Z, X e H, fili, ingressi e uscite definiscono un diagramma. La geometria del disegno serve a mostrarne le connessioni: non assegna distanze fra qubit hardware. Composizione e aggiunto combinano e invertono i processi.",
+            "it-expert": "I termini sono framed open graphs, con composizione monoidale e aggiunto; si lavora nel quoziente scalar-free."
+          },
+          "purpose": {
+            "it-intermediate": "Dà significato ai simboli prima di usarli come oggetti di riscrittura.",
+            "it-expert": "Fissa il dominio combinatorio su cui opera il matching di Quantomatic."
+          }
+        },
+        {
+          "id": "quanto-zx-2",
+          "title": {
+            "it-intermediate": "Quando una riscrittura è lecita",
+            "it-expert": "Quando una riscrittura è lecita"
+          },
+          "paragraphs": [
+            "p0045",
+            "p0046",
+            "p0047",
+            "p0048",
+            "p0049",
+            "p0050",
+            "p0051"
+          ],
+          "meaning": {
+            "it-intermediate": "L’interpretazione assegna mappe lineari ai diagrammi; le regole ZX preservano questa interpretazione. Essere lo stesso grafo ed essere equivalente attraverso riscritture sono due relazioni diverse.",
+            "it-expert": "Il functor di interpretazione è sound per l’equivalenza generata dagli assiomi; uguaglianza di grafi ed equivalenza ZX restano distinte."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché un cambio di diagramma può costituire una prova di correttezza.",
+            "it-expert": "Giustifica le regole derivate utilizzate successivamente."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0053",
+        "why": {
+          "it-intermediate": "Seguire il passaggio da completezza teorica a una procedura concreta di riduzione.",
+          "it-expert": "Seguire il passaggio da completezza teorica a una procedura concreta di riduzione."
+        }
+      }
+    },
+    {
+      "id": "quanto-small-circuits",
+      "title": {
+        "it-intermediate": "IV · Perché i casi piccoli si possono ottimizzare esattamente",
+        "it-expert": "IV · Perché i casi piccoli si possono ottimizzare esattamente"
+      },
+      "goal": {
+        "it-intermediate": "Seguire il passaggio da completezza teorica a una procedura concreta di riduzione.",
+        "it-expert": "Seguire il passaggio da completezza teorica a una procedura concreta di riduzione."
+      },
+      "steps": [
+        {
+          "id": "quanto-small-circuits-1",
+          "title": {
+            "it-intermediate": "Limitarsi al frammento stabilizer",
+            "it-expert": "Limitarsi al frammento stabilizer"
+          },
+          "paragraphs": [
+            "p0053",
+            "p0054",
+            "p0055",
+            "p0056",
+            "p0057",
+            "p0058",
+            "p0059",
+            "p0060",
+            "p0061",
+            "p0062",
+            "p0063",
+            "p0064",
+            "p0065"
+          ],
+          "meaning": {
+            "it-intermediate": "Gli angoli multipli di π/2 definiscono il sottolinguaggio Clifford. La traduzione del circuito conserva l’operazione; la completezza garantisce che esista una prova fra rappresentazioni equivalenti, ma non dice come trovarla rapidamente.",
+            "it-expert": "ZXs è sound e complete per il frammento stabilizer, e T conserva la semantica di Cliff."
+          },
+          "purpose": {
+            "it-intermediate": "Motiva la costruzione delle forme minime nei due casi successivi.",
+            "it-expert": "Distingue esistenza della derivazione e algoritmo di ricerca."
+          }
+        },
+        {
+          "id": "quanto-small-circuits-2",
+          "title": {
+            "it-intermediate": "Un qubit: spostare i Pauli e ridurre",
+            "it-expert": "Un qubit: spostare i Pauli e ridurre"
+          },
+          "paragraphs": [
+            "p0066",
+            "p0067",
+            "p0068",
+            "p0069",
+            "p0070",
+            "p0071",
+            "p0072",
+            "p0073",
+            "p0074",
+            "p0075",
+            "p0076",
+            "p0077",
+            "p0078",
+            "p0079",
+            "p0080",
+            "p0081",
+            "p0082",
+            "p0083",
+            "p0084",
+            "p0085",
+            "p0086",
+            "p0087",
+            "p0088",
+            "p0089",
+            "p0090"
+          ],
+          "meaning": {
+            "it-intermediate": "Le 24 forme rappresentano le operazioni distinte su un qubit. La prova porta i Pauli verso l’ingresso e accorcia le sequenze fino a una di quelle forme. La posizione dei Pauli fornisce una misura che diminuisce.",
+            "it-expert": "La Pauli-standard form e la metrica di posizione sostengono la prova costruttiva di riduzione a C₁; l’enumerazione verifica la minimalità."
+          },
+          "purpose": {
+            "it-intermediate": "Produce una strategia terminante, non soltanto l’affermazione che una forma minima esiste.",
+            "it-expert": "Fornisce regole e metriche per la futura simproc."
+          }
+        },
+        {
+          "id": "quanto-small-circuits-3",
+          "title": {
+            "it-intermediate": "Due qubit: assorbire un gate alla volta",
+            "it-expert": "Due qubit: assorbire un gate alla volta"
+          },
+          "paragraphs": [
+            "p0091",
+            "p0092",
+            "p0093",
+            "p0094",
+            "p0095",
+            "p0096",
+            "p0097",
+            "p0098",
+            "p0099",
+            "p0100",
+            "p0101"
+          ],
+          "meaning": {
+            "it-intermediate": "Le forme a due qubit combinano Clifford locali, CNOT e scambi. La dimostrazione mostra che aggiungere un generatore a una forma standard può essere riassorbito in un’altra forma standard.",
+            "it-expert": "La proposizione 4.7 prova la chiusura della famiglia C₂ sotto moltiplicazione per generatori, attraverso casi di commutazione e bialgebra."
+          },
+          "purpose": {
+            "it-intermediate": "Estende il meccanismo esatto al caso in cui compaiono interazioni fra qubit.",
+            "it-expert": "Costruisce le regole di riduzione a due qubit del motore."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0103",
+        "why": {
+          "it-intermediate": "Capire perché regole corrette da sole non determinano una buona strategia automatica.",
+          "it-expert": "Capire perché regole corrette da sole non determinano una buona strategia automatica."
+        }
+      }
+    },
+    {
+      "id": "quanto-engine",
+      "title": {
+        "it-intermediate": "V · Come Quantomatic applica le regole",
+        "it-expert": "V · Come Quantomatic applica le regole"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché regole corrette da sole non determinano una buona strategia automatica.",
+        "it-expert": "Capire perché regole corrette da sole non determinano una buona strategia automatica."
+      },
+      "steps": [
+        {
+          "id": "quanto-engine-1",
+          "title": {
+            "it-intermediate": "Match, tattiche e terminazione",
+            "it-expert": "Match, tattiche e terminazione"
+          },
+          "paragraphs": [
+            "p0103",
+            "p0104",
+            "p0105",
+            "p0106",
+            "p0107",
+            "p0108",
+            "p0109",
+            "p0110",
+            "p0111",
+            "p0112"
+          ],
+          "meaning": {
+            "it-intermediate": "Il motore trova sottografi che corrispondono al lato sinistro di una regola. Targeting e metriche guidano la scelta; ripetere liberamente tutte le regole può tornare indietro o non terminare.",
+            "it-expert": "REWRITE, REWRITE_METRIC e REWRITE_TARGETED controllano aspetti diversi del matching; gli assiomi ZX non formano un sistema terminante e confluente."
+          },
+          "purpose": {
+            "it-intermediate": "Espone il problema operativo che l’algoritmo della sezione successiva deve risolvere.",
+            "it-expert": "Motiva una strategia ristretta e guidata dalla struttura globale."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0114",
+        "why": {
+          "it-intermediate": "Vedere come l’ottimizzatore riconosce i fili dei qubit e usa quell’informazione per scegliere trasformazioni.",
+          "it-expert": "Vedere come l’ottimizzatore riconosce i fili dei qubit e usa quell’informazione per scegliere trasformazioni."
+        }
+      }
+    },
+    {
+      "id": "quanto-optimiser",
+      "title": {
+        "it-intermediate": "VI · Conservare il circuito durante la riscrittura",
+        "it-expert": "VI · Conservare il circuito durante la riscrittura"
+      },
+      "goal": {
+        "it-intermediate": "Vedere come l’ottimizzatore riconosce i fili dei qubit e usa quell’informazione per scegliere trasformazioni.",
+        "it-expert": "Vedere come l’ottimizzatore riconosce i fili dei qubit e usa quell’informazione per scegliere trasformazioni."
+      },
+      "steps": [
+        {
+          "id": "quanto-optimiser-1",
+          "title": {
+            "it-intermediate": "Dal grafo al circuito",
+            "it-expert": "Dal grafo al circuito"
+          },
+          "paragraphs": [
+            "p0114",
+            "p0115",
+            "p0116",
+            "p0117",
+            "p0118",
+            "p0119",
+            "p0120",
+            "p0121",
+            "p0122",
+            "p0123",
+            "p0124",
+            "p0125",
+            "p0126",
+            "p0127",
+            "p0128",
+            "p0129",
+            "p0130",
+            "p0131",
+            "p0132",
+            "p0133",
+            "p0134"
+          ],
+          "meaning": {
+            "it-intermediate": "Un diagramma equivalente a un circuito può non assomigliare più a un circuito. Il causal flow individua cammini ingresso–uscita come fili dei qubit; gli altri collegamenti sono interazioni. Il criterio circuit-like consente di ricostruire un circuito.",
+            "it-expert": "La semplicità e il causal flow con uguale numero di ingressi/uscite danno un path cover e una procedura di estrazione."
+          },
+          "purpose": {
+            "it-intermediate": "Dà al motore una nozione globale di quali riscritture conservano una forma utilizzabile.",
+            "it-expert": "Stabilisce l’invariante conservativo verificato dopo le riscritture."
+          }
+        },
+        {
+          "id": "quanto-optimiser-2",
+          "title": {
+            "it-intermediate": "Alternare riduzione e commutazione",
+            "it-expert": "Alternare riduzione e commutazione"
+          },
+          "paragraphs": [
+            "p0135",
+            "p0136",
+            "p0137",
+            "p0138",
+            "p0139",
+            "p0140",
+            "p0141",
+            "p0142",
+            "p0143",
+            "p0144",
+            "p0145",
+            "p0146",
+            "p0147"
+          ],
+          "meaning": {
+            "it-intermediate": "Le riduzioni cancellano o accorciano; le commutazioni avvicinano Pauli e gate sulla stessa coppia per rendere possibili nuove riduzioni. Un match locale ambiguo può rompere la struttura del circuito, perciò metriche e cammini filtrano le scelte.",
+            "it-expert": "La simproc alterna regole strettamente riducenti e commutazioni guidate da targeting/metrica; penalizza vertici fuori dai cammini per evitare match non circuitali."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega l’algoritmo effettivo e perché non usa tutta la libertà del calcolo ZX.",
+            "it-expert": "Mostra il compromesso fra libertà equazionale, preservazione del circuito e costo della ricerca."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0149",
+        "why": {
+          "it-intermediate": "Interpretare la riduzione misurata rispetto alla metrica realmente adottata.",
+          "it-expert": "Interpretare la riduzione misurata rispetto alla metrica realmente adottata."
+        }
+      }
+    },
+    {
+      "id": "quanto-results",
+      "title": {
+        "it-intermediate": "Risultati e limiti",
+        "it-expert": "Risultati e limiti"
+      },
+      "goal": {
+        "it-intermediate": "Interpretare la riduzione misurata rispetto alla metrica realmente adottata.",
+        "it-expert": "Interpretare la riduzione misurata rispetto alla metrica realmente adottata."
+      },
+      "steps": [
+        {
+          "id": "quanto-results-1",
+          "title": {
+            "it-intermediate": "Che cosa significa «più piccolo»",
+            "it-expert": "Che cosa significa «più piccolo»"
+          },
+          "paragraphs": [
+            "p0149",
+            "p0150",
+            "p0151",
+            "p0152",
+            "p0153",
+            "p0155"
+          ],
+          "meaning": {
+            "it-intermediate": "La misura conta vertici non banali, con due vertici per CNOT; gli scambi non hanno costo in questa rappresentazione. I risultati sui circuiti grandi non garantiscono il minimo, e la ricerca dei match diventa costosa quando la larghezza cresce.",
+            "it-expert": "La metrica ZX assegna costo nullo a σ e non penalizza CNOT non locali; il matching e il ricalcolo stateless del path cover dominano parte del tempo."
+          },
+          "purpose": {
+            "it-intermediate": "Delimita sia il risultato empirico sia il legame con un hardware concreto.",
+            "it-expert": "Esplicita le assunzioni della funzione di costo e i limiti dell’automazione."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0183",
+        "why": {
+          "it-intermediate": "Ritrovare le prove e le regole su cui si fonda la procedura.",
+          "it-expert": "Ritrovare le prove e le regole su cui si fonda la procedura."
+        }
+      }
+    },
+    {
+      "id": "quanto-appendices",
+      "title": {
+        "it-intermediate": "Appendici · Materiali e regole derivate",
+        "it-expert": "Appendici · Materiali e regole derivate"
+      },
+      "goal": {
+        "it-intermediate": "Ritrovare le prove e le regole su cui si fonda la procedura.",
+        "it-expert": "Ritrovare le prove e le regole su cui si fonda la procedura."
+      },
+      "steps": [
+        {
+          "id": "quanto-appendices-1",
+          "title": {
+            "it-intermediate": "Risorse, CNOT e scambi",
+            "it-expert": "Risorse, CNOT e scambi"
+          },
+          "paragraphs": [
+            "p0183",
+            "p0184",
+            "p0186",
+            "p0187",
+            "p0188",
+            "p0189",
+            "p0190",
+            "p0191"
+          ],
+          "meaning": {
+            "it-intermediate": "Il progetto contiene le prove riutilizzabili. Le identità su CNOT, TONC e SWAP spiegano come passare fra diverse rappresentazioni delle interazioni.",
+            "it-expert": "Le identità ZX derivano σ tramite CNOT/TONC e la dualità di colore; i materiali rendono ispezionabile lo sviluppo formale."
+          },
+          "purpose": {
+            "it-intermediate": "Ricollega i generatori scelti nel corpo alle loro derivazioni.",
+            "it-expert": "Completa il collegamento fra presentazione della PROP e set di gate usato."
+          }
+        },
+        {
+          "id": "quanto-appendices-2",
+          "title": {
+            "it-intermediate": "I dettagli delle dimostrazioni",
+            "it-expert": "I dettagli delle dimostrazioni"
+          },
+          "paragraphs": [
+            "p0193",
+            "p0194",
+            "p0195",
+            "p0196",
+            "p0197",
+            "p0198",
+            "p0199",
+            "p0200",
+            "p0201"
+          ],
+          "meaning": {
+            "it-intermediate": "I diagrammi completano la regola di cambio colore e i casi della riduzione a due qubit. Sono passi di prova dell’equivalenza delle trasformazioni.",
+            "it-expert": "L’appendice C chiude il lemma 3.5 e i casi (i)–(iv) della proposizione 4.7."
+          },
+          "purpose": {
+            "it-intermediate": "Consente di verificare le parti omesse delle proposizioni, senza introdurre un nuovo algoritmo.",
+            "it-expert": "Fornisce i certificati equazionali mancanti nel corpo."
+          }
+        },
+        {
+          "id": "quanto-appendices-3",
+          "title": {
+            "it-intermediate": "Le regole della simproc",
+            "it-expert": "Le regole della simproc"
+          },
+          "paragraphs": [
+            "p0203",
+            "p0204",
+            "p0206",
+            "p0208",
+            "p0211",
+            "p0212",
+            "p0214"
+          ],
+          "meaning": {
+            "it-intermediate": "Le famiglie di regole corrispondono alle fasi dell’algoritmo: inizializzazione, riduzioni sempre applicabili, commutazioni Pauli e trasformazioni a due qubit guidate.",
+            "it-expert": "Le regole derivate sono organizzate secondo i combinatori e le metriche delle simproc."
+          },
+          "purpose": {
+            "it-intermediate": "Trasforma la descrizione della strategia in un catalogo consultabile.",
+            "it-expert": "Rende esplicito quali identità vengono orientate e con quale controllo applicativo."
+          }
+        }
+      ]
+    }
   ]
 }

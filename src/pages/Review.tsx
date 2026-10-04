@@ -1,7 +1,8 @@
+import UndoNotice, { useUndo } from "../components/UndoNotice";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { downloadBackup, importBackup } from "../lib/backup";
 import { Link, useSearchParams } from "react-router-dom";
-import { papersUrl } from "../lib/paths";
+import { loadPaper as loadPaperData } from "../lib/papers.ts";
 import { conceptDefinition } from "../lib/concepts";
 import { isDue, previewInterval, useReview, type Grade, type ReviewCard } from "../lib/review";
 import type { Concept, PaperMeta, Paragraph } from "../types";
@@ -22,41 +23,40 @@ const GRADES: { grade: Grade; label: string; key: string }[] = [
 ];
 
 async function loadPaper(slug: string): Promise<PaperData> {
-  const json = (path: string) =>
-    fetch(papersUrl(`${slug}/${path}`)).then((r) => {
-      if (!r.ok) throw new Error(`${path}: ${r.status}`);
-      return r.json();
-    });
-  const [meta, paragraphs, concepts] = await Promise.all([
-    json("meta.json") as Promise<PaperMeta>,
-    json("paragraphs.json") as Promise<Paragraph[]>,
-    (json("concepts.json") as Promise<Concept[]>).catch(() => [] as Concept[]),
-  ]);
-  const ordered = [...paragraphs].sort((a, b) => a.page - b.page || a.order - b.order);
+  const { meta, paragraphs, concepts, numbers } = await loadPaperData(slug);
   return {
     meta,
     paragraphs,
-    numbers: new Map(ordered.map((p, i) => [p.id, i + 1])),
+    numbers,
     concepts: new Map((Array.isArray(concepts) ? concepts : []).map((c) => [c.id, c])),
   };
 }
 
-/** Export/import of everything kept only in this browser (review deck + annotations). */
+/** Export/import of the user's guided journeys, review deck, annotations and preferences. */
 function BackupControls() {
   const input = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
+  function onExport() {
+    try {
+      downloadBackup();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Esportazione non riuscita.");
+    }
+  }
   async function onFile(file: File) {
     try {
-      const { cards, annotations } = importBackup(JSON.parse(await file.text()));
-      setMessage(`Importate ${cards} card e ${annotations} annotazioni.`);
+      const { cards, annotations, journeys } = importBackup(JSON.parse(await file.text()));
+      setMessage(
+        `Backup importato: ${journeys} ${journeys === 1 ? "percorso" : "percorsi"}, ${cards} card e ${annotations} ${annotations === 1 ? "annotazione" : "annotazioni"}.`,
+      );
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "File non valido.");
     }
   }
   return (
     <div className="review-backup">
-      <span>Ripasso e annotazioni restano in questo browser.</span>
-      <button className="explanation-ask-btn" onClick={downloadBackup}>
+      <span>Percorsi, sintesi, ripasso e annotazioni restano in questo browser.</span>
+      <button className="explanation-ask-btn" onClick={onExport}>
         Esporta backup
       </button>
       <button className="explanation-ask-btn" onClick={() => input.current?.click()}>
@@ -81,19 +81,29 @@ function BackupControls() {
 function formatWhen(iso: string): string {
   const d = new Date(iso);
   const days = Math.round((d.getTime() - Date.now()) / 86400000);
-  if (days <= 0) return `oggi alle ${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}`;
+  if (days <= 0)
+    return `oggi alle ${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}`;
   if (days === 1) return "domani";
   return `tra ${days} giorni`;
 }
 
 export default function Review() {
-  const { cards, gradeCard, removeCard } = useReview();
+  const { cards, gradeCard, removeCard, restoreCard } = useReview();
+  const undo = useUndo();
+  function removeCurrent() {
+    if (current) {
+      const old = current;
+      removeCard(old.id);
+      undo.remember("Card rimossa", () => restoreCard(old));
+    }
+  }
   // ?paper=<slug>: review only that paper's cards (the reader's "Ripassa questo paper").
   const [searchParams] = useSearchParams();
   const paperFilter = searchParams.get("paper");
-  const [papers, setPapers] = useState<Record<string, PaperData | "error">>({});
+  const [papers, setPapers] = useState<Record<string, PaperData | { error: string }>>({});
   const [revealed, setRevealed] = useState(false);
   const [now, setNow] = useState(() => new Date());
+  const loading = useRef(new Set<string>());
 
   // Cards graded "again" come back after a few minutes: re-evaluate what's due periodically.
   useEffect(() => {
@@ -101,18 +111,25 @@ export default function Review() {
     return () => clearInterval(timer);
   }, []);
 
-  const all = useMemo(() => Object.values(cards).filter((c) => !paperFilter || c.slug === paperFilter), [cards, paperFilter]);
-  const due = useMemo(() => all.filter((c) => isDue(c, now)).sort((a, b) => a.due.localeCompare(b.due)), [all, now]);
+  const all = useMemo(
+    () => Object.values(cards).filter((c) => !paperFilter || c.slug === paperFilter),
+    [cards, paperFilter],
+  );
+  const due = useMemo(
+    () => all.filter((c) => isDue(c, now)).sort((a, b) => a.due.localeCompare(b.due)),
+    [all, now],
+  );
   const current: ReviewCard | undefined = due[0];
 
   // Load each paper that has cards in the queue, once.
   const neededSlugs = useMemo(() => [...new Set(due.map((c) => c.slug))], [due]);
   useEffect(() => {
     for (const slug of neededSlugs) {
-      if (papers[slug]) continue;
+      if (papers[slug] || loading.current.has(slug)) continue;
+      loading.current.add(slug);
       loadPaper(slug).then(
         (data) => setPapers((prev) => ({ ...prev, [slug]: data })),
-        () => setPapers((prev) => ({ ...prev, [slug]: "error" })),
+        (error) => setPapers((prev) => ({ ...prev, [slug]: { error: String(error) } })),
       );
     }
   }, [neededSlugs, papers]);
@@ -121,14 +138,18 @@ export default function Review() {
 
   const paper = current ? papers[current.slug] : undefined;
   const content = useMemo(() => {
-    if (!current || !paper || paper === "error") return null;
+    if (!current || !paper || "error" in paper) return null;
     if (current.kind === "concept") {
       const concept = paper.concepts.get(current.refId);
       if (!concept) return null;
       const definedIn = paper.paragraphs.find((p) => p.id === concept.definedIn);
       return {
         chip: "Concetto",
-        prompt: <>Cos'è <strong>{concept.term}</strong>, nel senso di questo paper?</>,
+        prompt: (
+          <>
+            Cos'è <strong>{concept.term}</strong>, nel senso di questo paper?
+          </>
+        ),
         context: null as string | null,
         answer: conceptDefinition(concept, current.variant).text,
         openAt: definedIn?.id ?? null,
@@ -139,7 +160,8 @@ export default function Review() {
       const paragraph = paper.paragraphs.find((p) => p.id === paragraphId);
       const question = paragraph?.recall?.find((r) => r.id === questionId);
       if (!paragraph || !question) return null;
-      const pick = (texts: Record<string, string>) => texts[current.variant] ?? Object.values(texts)[0] ?? "";
+      const pick = (texts: Record<string, string>) =>
+        texts[current.variant] ?? Object.values(texts)[0] ?? "";
       return {
         chip: "Domanda",
         prompt: <>{pick(question.q)}</>,
@@ -150,7 +172,8 @@ export default function Review() {
     }
     const paragraph = paper.paragraphs.find((p) => p.id === current.refId);
     if (!paragraph) return null;
-    const explanation = paragraph.explanations[current.variant] ?? Object.values(paragraph.explanations)[0] ?? "";
+    const explanation =
+      paragraph.explanations[current.variant] ?? Object.values(paragraph.explanations)[0] ?? "";
     return {
       chip: "Paragrafo",
       prompt: (
@@ -159,19 +182,36 @@ export default function Review() {
           {paragraph.section ? <> ({paragraph.section})</> : null}
         </>
       ),
-      context: paragraph.sourceText.length > 420 ? `${paragraph.sourceText.slice(0, 420)}…` : paragraph.sourceText,
+      context:
+        paragraph.sourceText.length > 420
+          ? `${paragraph.sourceText.slice(0, 420)}…`
+          : paragraph.sourceText,
       answer: explanation,
       openAt: paragraph.id,
     };
   }, [current, paper]);
 
   function grade(g: Grade) {
-    if (current) gradeCard(current.id, g);
+    if (current) {
+      const old = current;
+      gradeCard(old.id, g);
+      undo.remember("Valutazione registrata", () => restoreCard(old));
+    }
   }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (!current || e.target instanceof HTMLInputElement) return;
+      if (
+        !current ||
+        !content ||
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.repeat ||
+        (e.target instanceof Element &&
+          e.target.closest("input, textarea, select, button, a, summary, [contenteditable=true]"))
+      )
+        return;
       if (!revealed && (e.key === " " || e.key === "Enter")) {
         e.preventDefault();
         setRevealed(true);
@@ -189,9 +229,11 @@ export default function Review() {
       <div className="review">
         <h1 className="review-title">Ripasso</h1>
         <p className="state-message">
-          Nessuna card. Mentre leggi, usa <strong>Da ripassare</strong> su una nota o <strong>Aggiungi al ripasso</strong> nel
-          glossario: quei concetti e paragrafi ti verranno richiesti qui, a intervalli sempre più lunghi finché non li ricordi.
+          Nessuna card. Mentre leggi, usa <strong>Da ripassare</strong> su una nota o{" "}
+          <strong>Aggiungi al ripasso</strong> nel glossario: quei concetti e paragrafi ti verranno
+          richiesti qui, a intervalli sempre più lunghi finché non li ricordi.
         </p>
+        <UndoNotice {...undo} />
         <BackupControls />
       </div>
     );
@@ -203,9 +245,16 @@ export default function Review() {
       <div className="review">
         <h1 className="review-title">Ripasso</h1>
         <p className="state-message">
-          Niente da ripassare ora{paperFilter ? " per questo paper" : ""}. {all.length} card in tutto; la prossima{" "}
-          {formatWhen(next.due)}.{paperFilter && <> <Link to="/review">Tutti i paper</Link></>}
+          Niente da ripassare ora{paperFilter ? " per questo paper" : ""}. {all.length} card in
+          tutto; la prossima {formatWhen(next.due)}.
+          {paperFilter && (
+            <>
+              {" "}
+              <Link to="/review">Tutti i paper</Link>
+            </>
+          )}
         </p>
+        <UndoNotice {...undo} />
         <BackupControls />
       </div>
     );
@@ -227,10 +276,29 @@ export default function Review() {
 
       {!paper ? (
         <p className="state-message">Caricamento…</p>
-      ) : paper === "error" || !content ? (
+      ) : "error" in paper ? (
+        <div className="review-card" role="alert">
+          <p>Impossibile caricare il paper. {paper.error}</p>
+          <button
+            className="explanation-ask-btn"
+            onClick={() => {
+              loading.current.delete(current.slug);
+              setPapers((prev) => {
+                const next = { ...prev };
+                delete next[current.slug];
+                return next;
+              });
+            }}
+          >
+            Riprova
+          </button>
+        </div>
+      ) : !content ? (
         <div className="review-card">
-          <p>Questa card non è più disponibile (il paper o il concetto è stato rimosso o rinominato).</p>
-          <button className="explanation-ask-btn" onClick={() => removeCard(current.id)}>
+          <p>
+            Questa card non è più disponibile (il paper o il concetto è stato rimosso o rinominato).
+          </p>
+          <button className="explanation-ask-btn" onClick={removeCurrent}>
             Rimuovi dal ripasso
           </button>
         </div>
@@ -261,7 +329,11 @@ export default function Review() {
               </div>
               <div className="review-grades">
                 {GRADES.map((g) => (
-                  <button key={g.grade} className={`review-grade review-grade-${g.grade}`} onClick={() => grade(g.grade)}>
+                  <button
+                    key={g.grade}
+                    className={`review-grade review-grade-${g.grade}`}
+                    onClick={() => grade(g.grade)}
+                  >
                     <span>{g.label}</span>
                     <small>
                       {previewInterval(current, g.grade)} · <kbd>{g.key}</kbd>
@@ -271,11 +343,12 @@ export default function Review() {
               </div>
             </>
           )}
-          <button className="review-remove" onClick={() => removeCard(current.id)}>
+          <button className="review-remove" onClick={removeCurrent}>
             Rimuovi dal ripasso
           </button>
         </div>
       )}
+      <UndoNotice {...undo} />
       <BackupControls />
     </div>
   );

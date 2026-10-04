@@ -19,5 +19,6 @@
       "result": "Programmi molto più brevi e più affidabili rispetto ai metodi esistenti, con un vantaggio che cresce con la dimensione: sui programmi grandi l'affidabilità arriva a 15 volte quella del miglior concorrente.",
       "why": "Toglie il collo di bottiglia principale delle macchine ad atomi a zone. Serve però preparare le file di atomi di supporto, e per alcuni algoritmi (come la QFT) queste vanno ricostruite strada facendo."
     }
-  }
+  },
+  "sourceSha256": "21797c5fcf82d9b0e6505ad553fe04e623b535496340dc11f1fefbad1f269c42"
 }

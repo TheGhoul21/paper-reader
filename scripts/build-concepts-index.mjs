@@ -24,8 +24,14 @@ for (const paper of library) {
   }
 }
 
-const sorted = Object.fromEntries(Object.keys(index).sort().map((id) => [id, index[id]]));
+const sorted = Object.fromEntries(
+  Object.keys(index)
+    .sort()
+    .map((id) => [id, index[id]]),
+);
 writeFileSync(join(papersDir, "concepts-index.json"), JSON.stringify(sorted, null, 2) + "\n");
 
 const shared = Object.values(sorted).filter((entries) => entries.length > 1).length;
-console.log(`concepts-index.json: ${Object.keys(sorted).length} concepts, ${shared} shared by 2+ papers`);
+console.log(
+  `concepts-index.json: ${Object.keys(sorted).length} concepts, ${shared} shared by 2+ papers`,
+);

@@ -12,6 +12,8 @@ interface Props {
 export default function DeepDive({ markdown, onGoToParagraph }: Props) {
   const html = useMemo(() => renderDeepDive(markdown), [markdown]);
   return (
+    // Native anchors generate click for keyboard activation; this handler only delegates.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       className="deep-dive"
       dangerouslySetInnerHTML={{ __html: html }}

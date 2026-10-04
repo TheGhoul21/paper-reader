@@ -30,5 +30,6 @@
       "result": "Il programma viene tradotto in meno di un secondo in media (contro minuti o ore), e sui programmi grandi il risultato è molto più affidabile: fino a cento volte in certi casi.",
       "why": "Spostare offline il lavoro pesante rende la compilazione praticamente istantanea anche per macchine grandi. Il vantaggio è modesto sui programmi di prova più tradizionali."
     }
-  }
+  },
+  "sourceSha256": "22119ec8a109cbce1480fe81e37c14f33954e90c92dce6369764da1fc9c2461d"
 }

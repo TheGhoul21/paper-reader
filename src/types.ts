@@ -35,6 +35,14 @@ export interface Tldr {
 export interface PaperMeta extends LibraryEntry {
   sourceType: "arxiv" | "url" | "local";
   sourceRef: string;
+  sourceVersion?: string;
+  sourceSha256?: string;
+}
+
+export interface ParagraphAnchor {
+  /** Zero-based PDF page; the rectangles belong to this page. */
+  page: number;
+  rects: [number, number, number, number][];
 }
 
 export interface Paragraph {
@@ -44,6 +52,8 @@ export interface Paragraph {
   section?: string;
   /** Fractions of page width/height (0-1), top-left origin. */
   rects: [number, number, number, number][];
+  /** Logical passage across pages. Legacy page/rects mirror the first anchor. */
+  anchors?: ParagraphAnchor[];
   sourceText: string;
   /** Keyed by Variant.key ("<language>-<level>"). */
   explanations: Record<string, string>;
@@ -56,6 +66,18 @@ export interface Paragraph {
   deepDive?: Record<string, string>;
   /** Recall questions about this paragraph, written at import; question and answer keyed by Variant.key. */
   recall?: RecallQuestion[];
+  /**
+   * For set-up paragraphs whose point only shows later: where in the paper this gets used
+   * ("Servirà più avanti"), in reading order.
+   */
+  leadsTo?: ForwardLink[];
+}
+
+export interface ForwardLink {
+  /** A later paragraph's id. */
+  to: string;
+  /** What this paragraph contributes there, keyed by Variant.key. */
+  why: Record<string, string>;
 }
 
 export interface RecallQuestion {
@@ -72,6 +94,7 @@ interface AnnotationBase {
   page: number;
   color: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface TextAnnotation extends AnnotationBase {
@@ -139,4 +162,29 @@ export interface ArgumentClaim {
 export interface PaperStructure {
   thesis: Record<string, string>;
   claims: ArgumentClaim[];
+  /** Optional section guides: what the objects mean and why each passage is here. */
+  readingGuide?: ReadingSection[];
+}
+
+export interface ReadingSection {
+  id: string;
+  title: Record<string, string>;
+  /** What the reader should understand by the end of this section. */
+  goal: Record<string, string>;
+  steps: ReadingStep[];
+  /** The passage that uses what this section has established. */
+  leadsTo?: { paragraphId: string; why: Record<string, string> };
+}
+
+export interface ReadingStep {
+  id: string;
+  title: Record<string, string>;
+  /** Paragraphs covered by this step, in reading order, including continuations/captions. */
+  paragraphs: string[];
+  /** What the objects correspond to: physical arrangement, logical operation, metric, etc. */
+  meaning: Record<string, string>;
+  /** Optional explanatory image in public/, with a caption at each reading level. */
+  diagram?: { path: string; caption: Record<string, string> };
+  /** Why this passage is needed in the section's argument. */
+  purpose: Record<string, string>;
 }

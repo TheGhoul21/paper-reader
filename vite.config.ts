@@ -14,6 +14,7 @@ function servePapersData(): Plugin {
   const mime: Record<string, string> = {
     ".json": "application/json",
     ".pdf": "application/pdf",
+    ".png": "image/png",
   };
   return {
     name: "serve-papers-data",
@@ -22,7 +23,11 @@ function servePapersData(): Plugin {
         if (!req.url?.startsWith("/papers/")) return next();
         const relative = decodeURIComponent(req.url.slice("/papers/".length).split("?")[0]);
         const filePath = normalize(join(papersRoot, relative));
-        if (!filePath.startsWith(papersRoot + sep) || !existsSync(filePath) || !statSync(filePath).isFile()) {
+        if (
+          !filePath.startsWith(papersRoot + sep) ||
+          !existsSync(filePath) ||
+          !statSync(filePath).isFile()
+        ) {
           return next();
         }
         const ext = filePath.slice(filePath.lastIndexOf("."));

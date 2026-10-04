@@ -1,68 +1,80 @@
-import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
 import PdfViewer from "../components/PdfViewer";
+import UndoNotice, { useUndo } from "../components/UndoNotice";
 import { useAnnotations } from "../lib/annotations";
 import { papersUrl } from "../lib/paths";
-import type { Concept, ConceptsIndex, PaperMeta, PaperStructure, Paragraph } from "../types";
+import { loadPaper, type PaperData } from "../lib/papers";
+import { saveReadingPosition, type ReadingPosition } from "../lib/readingProgress";
+import { userDataStore } from "../lib/storage";
+import { guidedUrl } from "../lib/guidedReading";
 
-export default function Reader() {
-  const { slug } = useParams<{ slug: string }>();
-  const [meta, setMeta] = useState<PaperMeta | null>(null);
-  const [paragraphs, setParagraphs] = useState<Paragraph[] | null>(null);
-  const [concepts, setConcepts] = useState<Concept[]>([]);
-  const [conceptsIndex, setConceptsIndex] = useState<ConceptsIndex>({});
-  const [structure, setStructure] = useState<PaperStructure | null>(null);
-  const [searchParams] = useSearchParams();
-  const [error, setError] = useState<string | null>(null);
-  const [variant, setVariant] = useState<string | null>(null);
-  const { annotations, addAnnotation, updateAnnotation, deleteAnnotation } = useAnnotations(slug ?? "");
+const GuidedReading = lazy(() => import("./GuidedReading"));
 
-  useEffect(() => {
-    if (!slug) return;
-    setMeta(null);
-    setParagraphs(null);
-    setConcepts([]);
-    setStructure(null);
-    setError(null);
-    setVariant(null);
-    Promise.all([
-      fetch(papersUrl(`${slug}/meta.json`)).then((r) => {
-        if (!r.ok) throw new Error(`meta.json: ${r.status}`);
-        return r.json();
-      }),
-      fetch(papersUrl(`${slug}/paragraphs.json`)).then((r) => {
-        if (!r.ok) throw new Error(`paragraphs.json: ${r.status}`);
-        return r.json();
-      }),
-      // Optional: papers imported before the glossary existed have no concepts.json (and the
-      // dev server answers a missing file with the SPA's index.html, hence the catch).
-      fetch(papersUrl(`${slug}/concepts.json`))
-        .then((r) => (r.ok ? r.json() : []))
-        .catch(() => []),
-      fetch(papersUrl("concepts-index.json"))
-        .then((r) => (r.ok ? r.json() : {}))
-        .catch(() => ({})),
-      fetch(papersUrl(`${slug}/structure.json`))
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null),
-    ])
-      .then(([m, p, c, ci, st]: [PaperMeta, Paragraph[], Concept[], ConceptsIndex, PaperStructure | null]) => {
-        setMeta(m);
-        setParagraphs(p);
-        setConcepts(Array.isArray(c) ? c : []);
-        setConceptsIndex(ci && typeof ci === "object" && !Array.isArray(ci) ? ci : {});
-        setStructure(st && Array.isArray(st.claims) ? st : null);
-        setVariant(m.variants[0]?.key ?? null);
-      })
-      .catch((err) => setError(String(err)));
-  }, [slug]);
-
-  if (error) return <p className="state-message">Could not load paper: {error}</p>;
-  if (!meta || !paragraphs || !variant) return <p className="state-message">Loading…</p>;
-
+function LoadedReader({ slug, data }: { slug: string; data: PaperData }) {
+  const [params, setParams] = useSearchParams();
+  const location = useLocation();
+  const [position] = useState(() => userDataStore.getSnapshot().data.reading?.[slug]);
+  const [journey] = useState(() => userDataStore.getSnapshot().data.journeys?.[slug]);
+  const hasGuide = !!data.structure?.readingGuide?.some((section) => section.steps.length);
+  const pdfMode =
+    params.get("view") === "pdf" ||
+    (params.has("p") && params.get("view") !== "guide") ||
+    !hasGuide;
+  const [variant, setVariant] = useState(() => {
+    const requested =
+      params.get("v") ?? (pdfMode ? position?.variant : journey?.variant) ?? position?.variant;
+    return data.meta.variants.find((v) => v.key === requested)?.key ?? data.meta.variants[0].key;
+  });
+  const shownVariant = data.meta.variants.find((v) => v.key === params.get("v"))?.key ?? variant;
+  function chooseVariant(key: string) {
+    setVariant(key);
+    const next = new URLSearchParams(params);
+    next.set("v", key);
+    setParams(next, { replace: true, state: location.state });
+  }
+  const { annotations, addAnnotation, updateAnnotation, deleteAnnotation } = useAnnotations(slug);
+  const undo = useUndo();
+  const savePosition = useCallback(
+    (progress: Omit<ReadingPosition, "updatedAt">) => saveReadingPosition(slug, progress),
+    [slug],
+  );
+  const { meta, paragraphs, concepts, conceptsIndex, structure } = data;
+  if (!pdfMode)
+    return (
+      <Suspense fallback={<p className="state-message">Caricamento percorso…</p>}>
+        <GuidedReading data={data} variant={shownVariant} onVariant={chooseVariant} />
+      </Suspense>
+    );
+  const returnUrl =
+    params.get("from") === "guide" && params.get("step")
+      ? guidedUrl(slug, {
+          stepId: params.get("step")!,
+          variant: shownVariant,
+          phase: params.get("stage") === "summary" ? "summary" : "reading",
+        })
+      : params.get("p")
+        ? `/paper/${slug}?view=guide&p=${encodeURIComponent(params.get("p")!)}&v=${encodeURIComponent(shownVariant)}`
+        : guidedUrl(slug);
   return (
     <div className="reader-page">
       <PdfViewer
+        readerNavigation={
+          hasGuide ? (
+            <div className="reader-mode-bar">
+              <Link to={returnUrl} state={location.state}>
+                {params.get("from") === "guide"
+                  ? "← Torna al percorso"
+                  : "Apri il percorso guidato →"}
+              </Link>
+              <span>Stai consultando il PDF originale</span>
+            </div>
+          ) : (
+            <p className="reader-mode-bar">
+              Il percorso guidato non è ancora disponibile. Puoi leggere e annotare il PDF.
+            </p>
+          )
+        }
         title={meta.title}
         authors={meta.authors}
         pdfUrl={papersUrl(`${slug}/source/paper.pdf`)}
@@ -71,16 +83,65 @@ export default function Reader() {
         conceptsIndex={conceptsIndex}
         structure={structure}
         tldr={meta.tldr}
-        slug={slug ?? ""}
-        initialParagraphId={searchParams.get("p")}
+        slug={slug}
+        initialParagraphId={params.get("p") ?? position?.paragraphId ?? null}
+        initialPage={position?.page}
+        onProgress={savePosition}
         variants={meta.variants}
-        variant={variant}
-        onVariantChange={setVariant}
+        variant={shownVariant}
+        onVariantChange={chooseVariant}
         annotations={annotations}
         onAddAnnotation={addAnnotation}
         onUpdateAnnotation={updateAnnotation}
-        onDeleteAnnotation={deleteAnnotation}
+        onDeleteAnnotation={(id) => {
+          const note = annotations.find((a) => a.id === id);
+          deleteAnnotation(id);
+          if (note) undo.remember("Nota eliminata", () => addAnnotation(note));
+        }}
       />
+      <UndoNotice {...undo} />
     </div>
   );
+}
+
+export default function Reader() {
+  const { slug } = useParams<{ slug: string }>();
+  const [loaded, setLoaded] = useState<{ slug: string; data?: PaperData; error?: string } | null>(
+    null,
+  );
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    if (!slug) return;
+    const controller = new AbortController();
+    loadPaper(slug, controller.signal).then(
+      (data) => {
+        if (!controller.signal.aborted) setLoaded({ slug, data });
+      },
+      (error: unknown) => {
+        if (!controller.signal.aborted) setLoaded({ slug, error: String(error) });
+      },
+    );
+    return () => controller.abort();
+  }, [slug, attempt]);
+  if (loaded?.slug === slug && loaded?.error)
+    return (
+      <div className="state-message" role="alert">
+        <p>Impossibile caricare il paper: {loaded.error}</p>
+        <button
+          onClick={() => {
+            setLoaded(null);
+            setAttempt((n) => n + 1);
+          }}
+        >
+          Riprova
+        </button>
+      </div>
+    );
+  if (!slug || loaded?.slug !== slug || !loaded.data)
+    return (
+      <p className="state-message" role="status">
+        Caricamento…
+      </p>
+    );
+  return <LoadedReader key={slug} slug={slug} data={loaded.data} />;
 }

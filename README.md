@@ -1,0 +1,55 @@
+# Paper Reader
+
+Una lettura guidata dei paper scientifici, dal quadro generale ai dettagli. Ogni paper si apre con un orientamento, prosegue per tappe con spiegazioni e glossario e si chiude con sintesi personale, prove e dubbi da rivedere. Il lettore PDF permette di confrontare la fonte e annotarla. Percorso, sintesi, ripasso, annotazioni e preferenze restano nel browser e si possono esportare in un backup.
+
+## Avvio
+
+Requisiti: Node **22.14 o successivo**, npm e Python 3 per la validazione dei paper. `uv` serve per gli script di importazione e i loro test.
+
+```sh
+npm ci
+npm run dev
+```
+
+Apri l'indirizzo stampato da Vite. I dati in `papers/` sono serviti direttamente durante lo sviluppo.
+
+## Verifiche
+
+```sh
+npm run verify
+npm run test:import
+npx playwright install chromium
+npm run test:browser
+```
+
+`verify` esegue lint, controllo di formattazione, test veloci, test DOM, validazione dei contenuti e build. I test browser usano la build con il percorso `/paper-reader/`, come GitHub Pages, e verificano anche l'avvio in sviluppo sulla porta 5199. La prima installazione di Chromium richiede rete. `test:import` usa `uv` e non scarica paper.
+
+Per formattare il codice usa `npm run format`. Per provare soltanto la build usa `npm run build`, poi `npm run preview`.
+
+Se aggiorni le dipendenze mentre Vite è aperto, ferma il server e riavvialo con `npm run dev -- --force`, poi ricarica la pagina. Un processo rimasto aperto può combinare il vecchio plugin React in memoria con il nuovo runtime su disco e causare errori di Fast Refresh.
+
+## Lettura guidata
+
+L'utente ha scelto il percorso A, ora implementato come ingresso principale. `/paper/<slug>` apre l'orientamento; `?stage=read&step=<id>` raggiunge una tappa e `?stage=summary` il riepilogo. `?view=pdf` apre la fonte; i vecchi link `?p=<id>` mantengono il comportamento PDF. Dal percorso si torna alla stessa tappa dopo il confronto con l'originale.
+
+Per usare il server locale sulla porta 5199: `npm run dev -- --port 5199 --strictPort`. Apri [DAScut](http://localhost:5199/paper/dascut). La [descrizione dell'esperienza](docs/guided-reading-experience-2026-10-04.md) documenta scelta, funzioni e limiti editoriali. L'ampiezza delle spiegazioni è indicata all'ingresso e nella sintesi: il numero di tappe percorse non certifica la comprensione dell'intero PDF.
+
+## Dove intervenire
+
+| Area                                    | Ingresso                                                                                      |
+| --------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Libreria, lettore, ripasso              | `src/pages/`                                                                                  |
+| Orientamento, tappe e sintesi           | `src/pages/GuidedReading.tsx`, `src/components/guided/`                                       |
+| Sessione e salvataggio del percorso     | `src/lib/useGuidedReading.ts`, regole pure in `guidedReading.ts`                              |
+| Composizione del lettore                | `src/components/PdfViewer.tsx`                                                                |
+| Selezione, scheda e filtro              | `src/lib/readerSession.ts`                                                                    |
+| Documento, viewport, ricerca, glossario | `src/lib/usePdfDocument.ts`, `usePdfViewport.ts`, `usePdfSearch.ts`, `useConceptHighlight.ts` |
+| Navigazione DOM del PDF                 | `src/lib/pdfNavigation.ts`                                                                    |
+| Salvataggi, migrazioni, backup          | `src/lib/userData.ts`, `storage.ts`, `backup.ts`                                              |
+| Posizione e preferenze di lettura       | `src/lib/readingProgress.ts`                                                                  |
+| Stili                                   | `src/index.css` e `src/styles/` per schermata                                                 |
+| Contenuti                               | `papers/<slug>/`                                                                              |
+
+Leggi [CONTRIBUTING.md](CONTRIBUTING.md) per modificare codice o dati, [il modello del dominio](CONTEXT.md) per il vocabolario e [la guida di sviluppo](docs/development.md) per formati, invarianti e importazione manuale.
+
+La pipeline verifica il progetto sulle pull request. Il push su `main` pubblica la build verificata su GitHub Pages. L'esecuzione locale dei comandi non pubblica il sito.

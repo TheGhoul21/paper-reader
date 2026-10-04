@@ -75,5 +75,697 @@
       "evidence": ["p0130", "p0132", "p0147"],
       "dependsOn": ["pauli", "aligned-cz", "qaoa"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "overview",
+      "title": {
+        "it-expert": "Abstract e I · Compilare il controllo degli array"
+      },
+      "goal": {
+        "it-expert": "Capire come i vincoli fisici di addressing e trasporto diventano problemi algebrici e combinatori."
+      },
+      "steps": [
+        {
+          "id": "overview-1",
+          "title": {
+            "it-expert": "Array fisico e programma logico"
+          },
+          "paragraphs": [
+            "p0002",
+            "p0005",
+            "p0006",
+            "p0007",
+            "p0008"
+          ],
+          "meaning": {
+            "it-expert": "L’array è la disposizione 2D degli atomi-qubit. Il circuito specifica operazioni logiche; il compilatore deve realizzarle con fasci di controllo e trasporti consentiti dalla piattaforma."
+          },
+          "purpose": {
+            "it-expert": "Introduce i due costi ottimizzati separatamente: layer di addressing per porte singole e trasporti per C-Z."
+          }
+        },
+        {
+          "id": "overview-2",
+          "title": {
+            "it-expert": "Garanzie e valutazioni"
+          },
+          "paragraphs": [
+            "p0009",
+            "p0011",
+            "p0012",
+            "p0013",
+            "p0014",
+            "p0015",
+            "p0016",
+            "p0017"
+          ],
+          "meaning": {
+            "it-expert": "I fattori di ottimalità confrontano il numero di operazioni prodotto dall’algoritmo con un ottimo matematico. I risparmi sperimentali confrontano invece baseline concrete."
+          },
+          "purpose": {
+            "it-expert": "Distingue ciò che sarà dimostrato da ciò che sarà misurato e prepara l’analisi delle famiglie di gate."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0020",
+        "why": {
+          "it-expert": "Identificare la matrice dei gate desiderati con il pattern delle operazioni sui qubit fisici."
+        }
+      }
+    },
+    {
+      "id": "addressing",
+      "title": {
+        "it-expert": "II.A · Da fasci laser a matrici"
+      },
+      "goal": {
+        "it-expert": "Identificare la matrice dei gate desiderati con il pattern delle operazioni sui qubit fisici."
+      },
+      "steps": [
+        {
+          "id": "addressing-1",
+          "title": {
+            "it-expert": "Un prodotto esterno è un layer fisico"
+          },
+          "paragraphs": [
+            "p0020",
+            "p0021",
+            "p0022",
+            "p0023",
+            "p0024"
+          ],
+          "meaning": {
+            "it-expert": "Mᵢⱼ specifica il gate richiesto sull’atomo in riga i e colonna j. I vettori binari u,v selezionano fasci orizzontali e verticali; uvᵀ ne descrive le intersezioni indirizzate insieme."
+          },
+          "purpose": {
+            "it-expert": "Fa corrispondere ogni termine della decomposizione a un’operazione hardware: minimizzare i termini significa minimizzare i layer."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0026",
+        "why": {
+          "it-expert": "Usare la cancellazione G²=I per trasformare il pattern di gate in algebra su GF(2)."
+        }
+      }
+    },
+    {
+      "id": "self-inverse",
+      "title": {
+        "it-expert": "II.A.1 · Il caso esattamente risolvibile"
+      },
+      "goal": {
+        "it-expert": "Usare la cancellazione G²=I per trasformare il pattern di gate in algebra su GF(2)."
+      },
+      "steps": [
+        {
+          "id": "self-inverse-1",
+          "title": {
+            "it-expert": "Il rango conta le operazioni necessarie"
+          },
+          "paragraphs": [
+            "p0026",
+            "p0027",
+            "p0029",
+            "p0030",
+            "p0031",
+            "p0032",
+            "p0033"
+          ],
+          "meaning": {
+            "it-expert": "Una matrice binaria indica dove applicare il gate auto-inverso. Sommare su GF(2) rappresenta due applicazioni che si annullano; l’eliminazione gaussiana produce pattern rank-one di addressing."
+          },
+          "purpose": {
+            "it-expert": "Costruisce la soluzione ottima che diventerà il sottoproblema di base delle famiglie successive."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0035",
+        "why": {
+          "it-expert": "Capire perché il caso Pauli richiede un tensore e come si ottiene una garanzia di approssimazione."
+        }
+      }
+    },
+    {
+      "id": "pauli",
+      "title": {
+        "it-expert": "II.A.2 · Due componenti binarie per le Pauli"
+      },
+      "goal": {
+        "it-expert": "Capire perché il caso Pauli richiede un tensore e come si ottiene una garanzia di approssimazione."
+      },
+      "steps": [
+        {
+          "id": "pauli-1",
+          "title": {
+            "it-expert": "Il tensore codifica due bit per gate"
+          },
+          "paragraphs": [
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038",
+            "p0039",
+            "p0040"
+          ],
+          "meaning": {
+            "it-expert": "Modulo fase globale, ogni Pauli corrisponde a due bit. Il tensore m×n×2 raccoglie questi due componenti per ogni posizione fisica dell’array."
+          },
+          "purpose": {
+            "it-expert": "Generalizza la matrice binaria senza assumere che il rango tensoriale si calcoli come il rango di una matrice."
+          }
+        },
+        {
+          "id": "pauli-2",
+          "title": {
+            "it-expert": "Scegliere la migliore di tre decomposizioni"
+          },
+          "paragraphs": [
+            "p0041",
+            "p0043",
+            "p0044",
+            "p0045"
+          ],
+          "meaning": {
+            "it-expert": "Le tre rappresentazioni usano le slice X₁, X₂ e X₁+X₂. Il numero di termini rank-one di ciascuna è calcolato tramite ranghi GF(2)."
+          },
+          "purpose": {
+            "it-expert": "Il lower bound sul rango tensoriale permette di provare che la scelta migliore costa al massimo 4/3 dell’ottimo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0047",
+        "why": {
+          "it-expert": "Separare il pattern delle potenze di S in una parte binaria e un residuo pari."
+        }
+      }
+    },
+    {
+      "id": "phase",
+      "title": {
+        "it-expert": "II.A.3 · Ricostruire le fasi modulo quattro"
+      },
+      "goal": {
+        "it-expert": "Separare il pattern delle potenze di S in una parte binaria e un residuo pari."
+      },
+      "steps": [
+        {
+          "id": "phase-1",
+          "title": {
+            "it-expert": "Due passaggi di compilazione"
+          },
+          "paragraphs": [
+            "p0047",
+            "p0048",
+            "p0050",
+            "p0051",
+            "p0052",
+            "p0053"
+          ],
+          "meaning": {
+            "it-expert": "Le entrate di M sono esponenti di S in Z₄. Il primo passaggio realizza M mod 2; il secondo realizza il residuo diviso per due usando operazioni S²."
+          },
+          "purpose": {
+            "it-expert": "Riduce il problema di fase a due decomposizioni binarie e ricompone un’implementazione valida."
+          }
+        },
+        {
+          "id": "phase-2",
+          "title": {
+            "it-expert": "Misurare la distanza dall’ottimo"
+          },
+          "paragraphs": [
+            "p0054",
+            "p0055",
+            "p0056",
+            "p0057",
+            "p0058"
+          ],
+          "meaning": {
+            "it-expert": "r₄ impone vettori di selezione binari, mentre ρ₄ è una quantità algebrica ausiliaria con vettori in Z₄. Servono a contare termini, con vincoli diversi."
+          },
+          "purpose": {
+            "it-expert": "Giustifica il fattore tre e mostra dove la scelta dei coefficienti può migliorare il risultato pratico."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0060",
+        "why": {
+          "it-expert": "Riutilizzare gli algoritmi precedenti per Clifford e potenze del gate T."
+        }
+      }
+    },
+    {
+      "id": "clifford-t",
+      "title": {
+        "it-expert": "II.A.4–5 · Comporre e generalizzare"
+      },
+      "goal": {
+        "it-expert": "Riutilizzare gli algoritmi precedenti per Clifford e potenze del gate T."
+      },
+      "steps": [
+        {
+          "id": "clifford-t-1",
+          "title": {
+            "it-expert": "Clifford come tre sottoproblemi"
+          },
+          "paragraphs": [
+            "p0060",
+            "p0061",
+            "p0062"
+          ],
+          "meaning": {
+            "it-expert": "La fattorizzazione PHᵃSᵇ assegna a ogni sito una Pauli, una Hadamard opzionale e una potenza di S. L’ordine dei fattori determina l’ordine fisico di esecuzione."
+          },
+          "purpose": {
+            "it-expert": "Combina i compilatori già costruiti per ottenere l’intera famiglia Clifford."
+          }
+        },
+        {
+          "id": "clifford-t-2",
+          "title": {
+            "it-expert": "La ricorsione da Z₈ a Z₄ e GF(2)"
+          },
+          "paragraphs": [
+            "p0064",
+            "p0065",
+            "p0067",
+            "p0068",
+            "p0069",
+            "p0070",
+            "p0071",
+            "p0072",
+            "p0073"
+          ],
+          "meaning": {
+            "it-expert": "Per T le entrate sono esponenti modulo otto. Eliminare la componente dispari lascia un residuo pari che si dimezza e si compila come un pattern di fase."
+          },
+          "purpose": {
+            "it-expert": "Estende lo schema ricorsivo; il fattore sette dichiarato dipende dalla congettura esplicitata nel testo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0075",
+        "why": {
+          "it-expert": "Tradurre le regole del trasporto AOD in vincoli sulle coppie che possono eseguire C-Z insieme."
+        }
+      }
+    },
+    {
+      "id": "cz-hardware",
+      "title": {
+        "it-expert": "II.B · C-Z e trasporto fisico"
+      },
+      "goal": {
+        "it-expert": "Tradurre le regole del trasporto AOD in vincoli sulle coppie che possono eseguire C-Z insieme."
+      },
+      "steps": [
+        {
+          "id": "cz-hardware-1",
+          "title": {
+            "it-expert": "La zona entangling impone uno scheduling"
+          },
+          "paragraphs": [
+            "p0075",
+            "p0076",
+            "p0077",
+            "p0078",
+            "p0079",
+            "p0080",
+            "p0081",
+            "p0082",
+            "p0083",
+            "p0084",
+            "p0085"
+          ],
+          "meaning": {
+            "it-expert": "Gli atomi selezionati da righe e colonne vengono trasportati nella zona entangling mantenendo l’ordine relativo. Le porte si applicano alle coppie rese adiacenti secondo il modello collettivo descritto."
+          },
+          "purpose": {
+            "it-expert": "Spiega perché coppie allineate e non allineate richiedono algoritmi distinti e perché si minimizzano i trasporti."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0087",
+        "why": {
+          "it-expert": "Partizionare le operazioni compatibili e sfruttare pattern condivisi tra righe."
+        }
+      }
+    },
+    {
+      "id": "aligned-cz",
+      "title": {
+        "it-expert": "II.B.1 · C-Z allineate"
+      },
+      "goal": {
+        "it-expert": "Partizionare le operazioni compatibili e sfruttare pattern condivisi tra righe."
+      },
+      "steps": [
+        {
+          "id": "aligned-cz-1",
+          "title": {
+            "it-expert": "Intervalli incompatibili e colori"
+          },
+          "paragraphs": [
+            "p0087",
+            "p0088",
+            "p0089",
+            "p0090",
+            "p0091"
+          ],
+          "meaning": {
+            "it-expert": "Ogni C-Z su una riga diventa un intervallo fra indici di atomi. Nel grafo degli intervalli, un arco indica sovrapposizione; un colore identifica un gruppo eseguibile nello stesso trasporto."
+          },
+          "purpose": {
+            "it-expert": "La colorazione ottima degli interval graph risolve il caso di una riga."
+          }
+        },
+        {
+          "id": "aligned-cz-2",
+          "title": {
+            "it-expert": "Raggruppare e ridurre i pattern"
+          },
+          "paragraphs": [
+            "p0092",
+            "p0093",
+            "p0095",
+            "p0096",
+            "p0097",
+            "p0098",
+            "p0099",
+            "p0100",
+            "p0101",
+            "p0102",
+            "p0103",
+            "p0104",
+            "p0105"
+          ],
+          "meaning": {
+            "it-expert": "La matrice ora ha righe fisiche e colonne corrispondenti a coppie di siti. Entro gruppi di intervalli disgiunti, un termine rank-one descrive un trasporto condiviso."
+          },
+          "purpose": {
+            "it-expert": "Usa la proprietà auto-inversa delle C-Z per riapplicare l’eliminazione gaussiana e ridurre i trasporti su più righe."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0106",
+        "why": {
+          "it-expert": "Usare il vincolo di ordine degli atomi per costruire trasporti compatibili e combinarli con il caso allineato."
+        }
+      }
+    },
+    {
+      "id": "nonaligned-cz",
+      "title": {
+        "it-expert": "II.B.2–3 · C-Z non allineate e scheduling completo"
+      },
+      "goal": {
+        "it-expert": "Usare il vincolo di ordine degli atomi per costruire trasporti compatibili e combinarli con il caso allineato."
+      },
+      "steps": [
+        {
+          "id": "nonaligned-cz-1",
+          "title": {
+            "it-expert": "Le connessioni non devono incrociarsi"
+          },
+          "paragraphs": [
+            "p0106",
+            "p0107",
+            "p0108",
+            "p0109",
+            "p0111",
+            "p0112"
+          ],
+          "meaning": {
+            "it-expert": "Gli indici delle coppie di qubit descrivono connessioni fra due righe fisiche. Dopo l’ordinamento, i gruppi compatibili corrispondono a sottosequenze strettamente crescenti."
+          },
+          "purpose": {
+            "it-expert": "Trasforma il vincolo geometrico in una partizione calcolabile efficientemente."
+          }
+        },
+        {
+          "id": "nonaligned-cz-2",
+          "title": {
+            "it-expert": "Combinare i due casi"
+          },
+          "paragraphs": [
+            "p0114",
+            "p0115"
+          ],
+          "meaning": {
+            "it-expert": "Si schedulano prima le coppie non allineate, eseguendo anche porte allineate compatibili quando possibile; poi si completano quelle residue."
+          },
+          "purpose": {
+            "it-expert": "Chiude il compilatore C-Z che sarà usato nell’applicazione QAOA."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0117",
+        "why": {
+          "it-expert": "Mostrare come la struttura del problema applicativo espone blocchi compilabili con gli algoritmi precedenti."
+        }
+      }
+    },
+    {
+      "id": "qaoa",
+      "title": {
+        "it-expert": "III · Dal grafo MaxCut alle operazioni fisiche"
+      },
+      "goal": {
+        "it-expert": "Mostrare come la struttura del problema applicativo espone blocchi compilabili con gli algoritmi precedenti."
+      },
+      "steps": [
+        {
+          "id": "qaoa-1",
+          "title": {
+            "it-expert": "Le stelle organizzano le porte del circuito"
+          },
+          "paragraphs": [
+            "p0117",
+            "p0118",
+            "p0119",
+            "p0120",
+            "p0121",
+            "p0122"
+          ],
+          "meaning": {
+            "it-expert": "Il grafo MaxCut rappresenta le interazioni logiche richieste dal problema. Le star forest raggruppano archi per riscrivere il circuito in blocchi Hadamard, C-Z e Rz."
+          },
+          "purpose": {
+            "it-expert": "Rende applicabili i compilatori delle singole famiglie e consente la fusione di layer Hadamard adiacenti."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0124",
+        "why": {
+          "it-expert": "Distinguere test delle garanzie, confronti di risorse e tempo del compilatore classico."
+        }
+      }
+    },
+    {
+      "id": "experiments",
+      "title": {
+        "it-expert": "IV · Cosa verificano gli esperimenti"
+      },
+      "goal": {
+        "it-expert": "Distinguere test delle garanzie, confronti di risorse e tempo del compilatore classico."
+      },
+      "steps": [
+        {
+          "id": "experiments-1",
+          "title": {
+            "it-expert": "Pattern casuali e ottimi piccoli"
+          },
+          "paragraphs": [
+            "p0124",
+            "p0125",
+            "p0127",
+            "p0128",
+            "p0130",
+            "p0131",
+            "p0132",
+            "p0133",
+            "p0135",
+            "p0136",
+            "p0137",
+            "p0138",
+            "p0139",
+            "p0140"
+          ],
+          "meaning": {
+            "it-expert": "I pattern sono insiemi di gate richiesti su array simulati. I test piccoli confrontano le Pauli con ricerca esaustiva; quelli grandi misurano layer e trasporti rispetto a metodi naïve."
+          },
+          "purpose": {
+            "it-expert": "Verifica separatamente il bound 4/3 e i risparmi pratici dei diversi sottocompilatori."
+          }
+        },
+        {
+          "id": "experiments-2",
+          "title": {
+            "it-expert": "Il caso applicativo QAOA"
+          },
+          "paragraphs": [
+            "p0142",
+            "p0143",
+            "p0144",
+            "p0145",
+            "p0146",
+            "p0147"
+          ],
+          "meaning": {
+            "it-expert": "Le istanze sono grafi MaxCut mappati su un array 30×30. Le risorse contate sono trasporti C-Z e layer di addressing per Hadamard e Rz."
+          },
+          "purpose": {
+            "it-expert": "Controlla se i vantaggi dei sottoproblemi si conservano in circuiti strutturati completi."
+          }
+        },
+        {
+          "id": "experiments-3",
+          "title": {
+            "it-expert": "Quanto lavoro fa il compilatore"
+          },
+          "paragraphs": [
+            "p0149",
+            "p0150",
+            "p0151"
+          ],
+          "meaning": {
+            "it-expert": "Il tempo misurato qui è quello della procedura classica di compilazione sulla workstation. La dimensione n dell’array significa n×n atomi."
+          },
+          "purpose": {
+            "it-expert": "Verifica la praticabilità della ricerca di scheduling, separandola dal tempo fisico di esecuzione."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0153",
+        "why": {
+          "it-expert": "Ricollegare i risparmi alla formulazione strutturale e riconoscere cosa resta da valutare."
+        }
+      }
+    },
+    {
+      "id": "conclusion",
+      "title": {
+        "it-expert": "V · Risultati e limiti delle metriche"
+      },
+      "goal": {
+        "it-expert": "Ricollegare i risparmi alla formulazione strutturale e riconoscere cosa resta da valutare."
+      },
+      "steps": [
+        {
+          "id": "conclusion-1",
+          "title": {
+            "it-expert": "Dai conteggi alla futura valutazione hardware"
+          },
+          "paragraphs": [
+            "p0153",
+            "p0154",
+            "p0155"
+          ],
+          "meaning": {
+            "it-expert": "Layer di addressing e trasporti sono proxy del costo fisico. Il paper propone di integrare in seguito durate, rumore e decoerenza per una valutazione più completa."
+          },
+          "purpose": {
+            "it-expert": "Sintetizza i benefici dimostrati e misurati senza trasformarli automaticamente in una garanzia di fedeltà."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0156",
+        "why": {
+          "it-expert": "Seguire le prove algebriche che sostengono le garanzie dei compilatori."
+        }
+      }
+    },
+    {
+      "id": "proofs",
+      "title": {
+        "it-expert": "Appendice A · Perché valgono i bound"
+      },
+      "goal": {
+        "it-expert": "Seguire le prove algebriche che sostengono le garanzie dei compilatori."
+      },
+      "steps": [
+        {
+          "id": "proofs-1",
+          "title": {
+            "it-expert": "Rango tensoriale e trasformazioni invertibili"
+          },
+          "paragraphs": [
+            "p0156",
+            "p0159",
+            "p0160"
+          ],
+          "meaning": {
+            "it-expert": "Le matrici e i tensori rappresentano pattern di gate; le trasformazioni invertibili conservano le quantità usate per delimitare il numero di termini."
+          },
+          "purpose": {
+            "it-expert": "Fornisce il lower bound del caso Pauli e i passaggi algebrici per il caso Z₄."
+          }
+        },
+        {
+          "id": "proofs-2",
+          "title": {
+            "it-expert": "La forma diagonale chiude la prova"
+          },
+          "paragraphs": [
+            "p0161",
+            "p0163",
+            "p0164",
+            "p0167"
+          ],
+          "meaning": {
+            "it-expert": "Dᵣ è una matrice diagonale con entrate due in Z₄. La prova mostra che richiede esattamente r termini rank-one nella quantità ausiliaria."
+          },
+          "purpose": {
+            "it-expert": "Dimostra il lemma che identifica ρ₄ con il rango GF(2) e giustifica il bound sulle fasi."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0169",
+        "why": {
+          "it-expert": "Capire come l’ordine degli archi favorisce l’hardware senza cambiare la correttezza della decomposizione."
+        }
+      }
+    },
+    {
+      "id": "star-heuristic",
+      "title": {
+        "it-expert": "Appendice B · La scelta pratica delle star forest"
+      },
+      "goal": {
+        "it-expert": "Capire come l’ordine degli archi favorisce l’hardware senza cambiare la correttezza della decomposizione."
+      },
+      "steps": [
+        {
+          "id": "star-heuristic-1",
+          "title": {
+            "it-expert": "Un’euristica dipendente dal layout"
+          },
+          "paragraphs": [
+            "p0169",
+            "p0170"
+          ],
+          "meaning": {
+            "it-expert": "Gli archi sono quelli del grafo logico MaxCut; gli indici dei vertici riflettono l’assegnazione per righe ai qubit fisici. L’ordinamento favorisce gruppi localizzati."
+          },
+          "purpose": {
+            "it-expert": "Descrive la scelta implementativa usata negli esperimenti e la distingue dalla validità generale del framework."
+          }
+        }
+      ]
+    }
   ]
 }

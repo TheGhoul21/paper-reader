@@ -15,7 +15,15 @@ interface Props {
  * The paper's argument at a glance: its thesis, then each claim with where it's stated, what
  * supports it and which claims it builds on. Focusing a claim highlights its paragraphs in the PDF.
  */
-export default function ArgumentMap({ structure, index, variant, numbers, focusClaim, onFocusClaim, onGoToParagraph }: Props) {
+export default function ArgumentMap({
+  structure,
+  index,
+  variant,
+  numbers,
+  focusClaim,
+  onFocusClaim,
+  onGoToParagraph,
+}: Props) {
   const chips = (ids: string[]) =>
     ids
       .filter((id) => numbers.has(id))
@@ -51,11 +59,16 @@ export default function ArgumentMap({ structure, index, variant, numbers, focusC
               key={claim.id}
               id={`claim-${claim.id}`}
               className={`map-claim${focused ? " is-focused" : ""}`}
-              onClick={() => onFocusClaim(focused ? null : claim.id)}
             >
               <div className="map-claim-head">
                 <span className="map-claim-label">{label}</span>
-                <strong className="map-claim-title">{pickVariant(claim.title, variant)}</strong>
+                <button
+                  className="map-claim-title"
+                  aria-pressed={focused}
+                  onClick={() => onFocusClaim(focused ? null : claim.id)}
+                >
+                  {pickVariant(claim.title, variant)}
+                </button>
               </div>
               <p className="map-claim-summary">{pickVariant(claim.summary, variant)}</p>
               <div className="map-claim-links">
@@ -83,7 +96,9 @@ export default function ArgumentMap({ structure, index, variant, numbers, focusC
                           onClick={(e) => {
                             e.stopPropagation();
                             onFocusClaim(id);
-                            document.getElementById(`claim-${id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                            document
+                              .getElementById(`claim-${id}`)
+                              ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
                           }}
                         >
                           {index.labels.get(id)}

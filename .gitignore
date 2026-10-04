@@ -17,3 +17,6 @@ __pycache__/
 
 # Old Quarto site: a local, stale copy of github.com/TheGhoul21/phase-kickback — not part of this repo
 legacy/
+
+test-results/
+playwright-report/

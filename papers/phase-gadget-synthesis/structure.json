@@ -116,5 +116,431 @@
       "evidence": ["p0414", "p0415"],
       "dependsOn": ["balanced-tree", "pairwise"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "gadgets-overview",
+      "title": {
+        "it-intermediate": "Dai circuiti ai gadget",
+        "it-expert": "Dai circuiti ai gadget"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché riconoscere una rotazione collettiva può offrire più libertà che ottimizzare un gate alla volta.",
+        "it-expert": "Capire perché riconoscere una rotazione collettiva può offrire più libertà che ottimizzare un gate alla volta."
+      },
+      "steps": [
+        {
+          "id": "gadgets-overview-1",
+          "title": {
+            "it-intermediate": "Il bersaglio dell’ottimizzazione",
+            "it-expert": "Il bersaglio dell’ottimizzazione"
+          },
+          "paragraphs": [
+            "p0003",
+            "p0005",
+            "p0006",
+            "p0007",
+            "p0018",
+            "p0019"
+          ],
+          "meaning": {
+            "it-intermediate": "Il paper cerca di ridurre gate a due qubit e profondità dei circuiti, soprattutto quelli di chimica quantistica. Un gadget rappresenta una rotazione associata a un prodotto di operatori Pauli.",
+            "it-expert": "La rappresentazione ZX rende visibili esponenziali di stringhe Pauli; le metriche NISQ privilegiano count e depth entangling rispetto al solo T-count."
+          },
+          "purpose": {
+            "it-intermediate": "Annuncia l’oggetto che unifica riscrittura grafica e sintesi del circuito.",
+            "it-expert": "Fissa dominio e funzione di costo dell’ottimizzazione."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0021",
+        "why": {
+          "it-intermediate": "Collocare la nuova tecnica fra i passaggi di riscrittura già usati da t|ket⟩.",
+          "it-expert": "Collocare la nuova tecnica fra i passaggi di riscrittura già usati da t|ket⟩."
+        }
+      }
+    },
+    {
+      "id": "gadgets-passes",
+      "title": {
+        "it-intermediate": "II · Il contesto del compilatore",
+        "it-expert": "II · Il contesto del compilatore"
+      },
+      "goal": {
+        "it-intermediate": "Collocare la nuova tecnica fra i passaggi di riscrittura già usati da t|ket⟩.",
+        "it-expert": "Collocare la nuova tecnica fra i passaggi di riscrittura già usati da t|ket⟩."
+      },
+      "steps": [
+        {
+          "id": "gadgets-passes-1",
+          "title": {
+            "it-intermediate": "Riscrivere per aprire altre possibilità",
+            "it-expert": "Riscrivere per aprire altre possibilità"
+          },
+          "paragraphs": [
+            "p0021",
+            "p0022",
+            "p0024",
+            "p0025",
+            "p0026",
+            "p0027"
+          ],
+          "meaning": {
+            "it-intermediate": "Un pass può fondere rotazioni, cancellare inversi o risintetizzare un blocco a due qubit. Una trasformazione utile può anche preparare una cancellazione successiva. Il grafo interno descrive operazioni e dipendenze, non una disposizione fisica dei qubit.",
+            "it-expert": "La rappresentazione a non-planar maps conserva l’ordine delle incidenze ma astrae tempi e permutazioni; peephole, Euler e KAK costituiscono i pass di contesto."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché il costo di una scelta va valutato nel contesto del circuito.",
+            "it-expert": "Prepara una risintesi macroscopica complementare alle riduzioni locali."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0029",
+        "why": {
+          "it-intermediate": "Vedere una phase gadget come calcolo di parità, rotazione e disfacimento del calcolo.",
+          "it-expert": "Vedere una phase gadget come calcolo di parità, rotazione e disfacimento del calcolo."
+        }
+      }
+    },
+    {
+      "id": "gadgets-phase",
+      "title": {
+        "it-intermediate": "III · Costruire una phase gadget",
+        "it-expert": "III · Costruire una phase gadget"
+      },
+      "goal": {
+        "it-intermediate": "Vedere una phase gadget come calcolo di parità, rotazione e disfacimento del calcolo.",
+        "it-expert": "Vedere una phase gadget come calcolo di parità, rotazione e disfacimento del calcolo."
+      },
+      "steps": [
+        {
+          "id": "gadgets-phase-1",
+          "title": {
+            "it-intermediate": "La definizione e le leggi",
+            "it-expert": "La definizione e le leggi"
+          },
+          "paragraphs": [
+            "p0029",
+            "p0030",
+            "p0038",
+            "p0041",
+            "p0042",
+            "p0044"
+          ],
+          "meaning": {
+            "it-intermediate": "I CNOT raccolgono una parità, una rotazione Z applica la fase e i CNOT inversi ripristinano i valori. Le leggi ZX permettono di decomporre, commutare e fondere queste operazioni. Le note collocano le affermazioni nel contesto della pubblicazione.",
+            "it-expert": "La famiglia Φn è definita ricorsivamente per coniugazione CNOT; la forma ZX espone decomposizione, commutazione e fusione, a fase globale ignorata."
+          },
+          "purpose": {
+            "it-intermediate": "Dà un significato operativo alla forma grafica che verrà risintetizzata.",
+            "it-expert": "Stabilisce gli invarianti semantici delle sintesi alternative."
+          }
+        },
+        {
+          "id": "gadgets-phase-2",
+          "title": {
+            "it-intermediate": "Ladder e albero: due circuiti equivalenti",
+            "it-expert": "Ladder e albero: due circuiti equivalenti"
+          },
+          "paragraphs": [
+            "p0064",
+            "p0067",
+            "p0068",
+            "p0070"
+          ],
+          "meaning": {
+            "it-intermediate": "Qui «ladder» indica una catena di CNOT nel circuito. Un albero bilanciato calcola la stessa parità con più operazioni parallele: riduce la profondità, mentre il numero di CNOT del gadget isolato resta uguale. L’ordine scelto può anche favorire cancellazioni fra gadget vicini.",
+            "it-expert": "La simmetria del gadget consente sintesi ladder di depth 2(n−1) o tree di depth 2⌈log₂ n⌉, entrambe con 2(n−1) CNOT nel modello discusso."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra separatamente il beneficio sulla profondità e quello possibile sulle cancellazioni.",
+            "it-expert": "Sfrutta libertà di sintesi e allineamento fra gadget, senza dedurne automaticamente la compatibilità con ogni topologia hardware."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0072",
+        "why": {
+          "it-intermediate": "Seguire come i cambi di base trasformano le phase gadget in rotazioni Pauli e permettono ottimizzazioni fra coppie.",
+          "it-expert": "Seguire come i cambi di base trasformano le phase gadget in rotazioni Pauli e permettono ottimizzazioni fra coppie."
+        }
+      }
+    },
+    {
+      "id": "gadgets-pauli",
+      "title": {
+        "it-intermediate": "IV · Generalizzare alle stringhe Pauli",
+        "it-expert": "IV · Generalizzare alle stringhe Pauli"
+      },
+      "goal": {
+        "it-intermediate": "Seguire come i cambi di base trasformano le phase gadget in rotazioni Pauli e permettono ottimizzazioni fra coppie.",
+        "it-expert": "Seguire come i cambi di base trasformano le phase gadget in rotazioni Pauli e permettono ottimizzazioni fra coppie."
+      },
+      "steps": [
+        {
+          "id": "gadgets-pauli-1",
+          "title": {
+            "it-intermediate": "Da Z a X, Y e identità",
+            "it-expert": "Da Z a X, Y e identità"
+          },
+          "paragraphs": [
+            "p0072",
+            "p0075",
+            "p0079",
+            "p0080",
+            "p0081",
+            "p0083",
+            "p0084",
+            "p0085",
+            "p0086",
+            "p0087",
+            "p0093",
+            "p0094"
+          ],
+          "meaning": {
+            "it-intermediate": "Una phase gadget è un esponenziale di un prodotto di Z. Cambi di base locali permettono X e Y; l’identità segnala un qubit non coinvolto. Con basi diverse, due gadget non sono necessariamente commutanti.",
+            "it-expert": "La coniugazione Clifford estende Φ a e^(−iαP) per una stringa Pauli P; il confronto con i phase polynomials distingue fase diagonale e trasformazione lineare reversibile."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce il problema nuovo che le sole phase gadget diagonali non ponevano.",
+            "it-expert": "Prepara la dicotomia fra commutazione e riduzione Euler di coppie di gadget."
+          }
+        },
+        {
+          "id": "gadgets-pauli-2",
+          "title": {
+            "it-intermediate": "Estrarre una parte comune",
+            "it-expert": "Estrarre una parte comune"
+          },
+          "paragraphs": [
+            "p0096",
+            "p0097",
+            "p0098",
+            "p0099",
+            "p0100",
+            "p0112",
+            "p0113",
+            "p0175",
+            "p0194",
+            "p0196",
+            "p0197",
+            "p0198",
+            "p0199",
+            "p0200"
+          ],
+          "meaning": {
+            "it-intermediate": "Le regole mostrano come spostare Clifford e CNOT attraverso un gadget. Una parte della stringa può essere raccolta in un circuito esterno U; gadget con la stessa stringa si fondono sommando gli angoli.",
+            "it-expert": "Il lemma 4.5 e il corollario 4.7 fattorizzano sottostringhe tramite coniugazione Clifford; il corollario 4.8 fonde esponenziali con generatore identico."
+          },
+          "purpose": {
+            "it-intermediate": "Costruisce gli strumenti per condividere lavoro fra gadget invece di sintetizzarli separatamente.",
+            "it-expert": "Isola i fattori di compute/uncompute cancellabili in una coppia."
+          }
+        },
+        {
+          "id": "gadgets-pauli-3",
+          "title": {
+            "it-intermediate": "Ridurre la sovrapposizione",
+            "it-expert": "Ridurre la sovrapposizione"
+          },
+          "paragraphs": [
+            "p0201",
+            "p0202",
+            "p0204",
+            "p0205",
+            "p0209",
+            "p0215",
+            "p0216",
+            "p0223",
+            "p0232"
+          ],
+          "meaning": {
+            "it-intermediate": "La dimostrazione trova un circuito Clifford comune che trasforma due stringhe in stringhe sovrapposte su al massimo un qubit. Elimina prima i simboli uguali e poi riduce quelli con basi differenti.",
+            "it-expert": "Il lemma 4.9 riduce l’intersezione a cardinalità ≤1 estraendo la sottostringa comune e trattando le coppie di basi discordanti per induzione."
+          },
+          "purpose": {
+            "it-intermediate": "Porta un problema su molti qubit a un caso piccolo di cui sappiamo decidere la commutazione.",
+            "it-expert": "Fornisce la forma canonica necessaria al teorema successivo."
+          }
+        },
+        {
+          "id": "gadgets-pauli-4",
+          "title": {
+            "it-intermediate": "Il teorema e il risparmio",
+            "it-expert": "Il teorema e il risparmio"
+          },
+          "paragraphs": [
+            "p0234",
+            "p0235",
+            "p0236",
+            "p0237",
+            "p0238",
+            "p0239",
+            "p0240",
+            "p0242",
+            "p0243",
+            "p0256",
+            "p0293"
+          ],
+          "meaning": {
+            "it-intermediate": "Se la parte residua è compatibile, i gadget commutano. Altrimenti una tripletta alternata può essere riscritta con angoli di Euler diversi. La parte condivisa offre un risparmio di CNOT rispetto alla sintesi indipendente; l’analisi della profondità è meno completa.",
+            "it-expert": "Il teorema 4.10 deriva commutazione o relazione Euler dalla forma a intersezione ≤1; il conteggio finale quantifica le cancellazioni in funzione della sottostringa comune e della restante intersezione."
+          },
+          "purpose": {
+            "it-intermediate": "Collega la dimostrazione a regole e costi che un compilatore può usare.",
+            "it-expert": "Traduce la struttura algebrica in count entangling, mantenendo distinta la questione depth."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0296",
+        "why": {
+          "it-intermediate": "Riconoscere i passaggi precedenti in un circuito concreto anziché nelle sole identità.",
+          "it-expert": "Riconoscere i passaggi precedenti in un circuito concreto anziché nelle sole identità."
+        }
+      }
+    },
+    {
+      "id": "gadgets-example",
+      "title": {
+        "it-intermediate": "V · Un esempio di chimica",
+        "it-expert": "V · Un esempio di chimica"
+      },
+      "goal": {
+        "it-intermediate": "Riconoscere i passaggi precedenti in un circuito concreto anziché nelle sole identità.",
+        "it-expert": "Riconoscere i passaggi precedenti in un circuito concreto anziché nelle sole identità."
+      },
+      "steps": [
+        {
+          "id": "gadgets-example-1",
+          "title": {
+            "it-intermediate": "Riconoscere e risintetizzare",
+            "it-expert": "Riconoscere e risintetizzare"
+          },
+          "paragraphs": [
+            "p0296",
+            "p0326",
+            "p0360",
+            "p0387"
+          ],
+          "meaning": {
+            "it-intermediate": "Nel frammento UCC per H₂ gli autori identificano le catene CNOT come gadget, le risintetizzano e ottimizzano il Clifford intermedio. Poi mostrano il beneficio di trattare la coppia direttamente come gadget Pauli.",
+            "it-expert": "Il caso H₂ confronta risintesi di phase gadget più riduzioni Clifford con l’ottimizzazione congiunta della coppia Pauli."
+          },
+          "purpose": {
+            "it-intermediate": "Rende visibile il percorso dal circuito originale alla struttura che consente il risparmio.",
+            "it-expert": "Verifica sullo stesso frammento la differenza fra ottimizzazione locale e struttura condivisa."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0414",
+        "why": {
+          "it-intermediate": "Capire quali circuiti e metriche sostengono l’utilità della tecnica.",
+          "it-expert": "Capire quali circuiti e metriche sostengono l’utilità della tecnica."
+        }
+      }
+    },
+    {
+      "id": "gadgets-results",
+      "title": {
+        "it-intermediate": "VI · Risultati e conclusioni",
+        "it-expert": "VI · Risultati e conclusioni"
+      },
+      "goal": {
+        "it-intermediate": "Capire quali circuiti e metriche sostengono l’utilità della tecnica.",
+        "it-expert": "Capire quali circuiti e metriche sostengono l’utilità della tecnica."
+      },
+      "steps": [
+        {
+          "id": "gadgets-results-1",
+          "title": {
+            "it-intermediate": "I benchmark",
+            "it-expert": "I benchmark"
+          },
+          "paragraphs": [
+            "p0414",
+            "p0415",
+            "p0417",
+            "p0420",
+            "p0421",
+            "p0422",
+            "p0423",
+            "p0425",
+            "p0426"
+          ],
+          "meaning": {
+            "it-intermediate": "Le istanze di chimica quantistica confrontano i circuiti prima e dopo diversi pass di ottimizzazione. Le riduzioni misurano gate e profondità; il paper usa questi valori come indicatori di costo, senza dimostrare un miglioramento identico di fidelity su ogni dispositivo.",
+            "it-expert": "Il benchmarking sugli ansatz di chimica valuta CNOT-count e CNOT-depth della pipeline; costi di scheduling su connettività vincolata richiedono ulteriori scelte."
+          },
+          "purpose": {
+            "it-intermediate": "Verifica il beneficio oltre l’esempio piccolo e delimita la portata empirica.",
+            "it-expert": "Collega i teoremi locali ai risultati della pipeline su un insieme di circuiti."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0498",
+        "why": {
+          "it-intermediate": "Usare le derivazioni come supporto alle regole invocate nel testo principale.",
+          "it-expert": "Usare le derivazioni come supporto alle regole invocate nel testo principale."
+        }
+      }
+    },
+    {
+      "id": "gadgets-appendices",
+      "title": {
+        "it-intermediate": "Appendici · Le identità grafiche",
+        "it-expert": "Appendici · Le identità grafiche"
+      },
+      "goal": {
+        "it-intermediate": "Usare le derivazioni come supporto alle regole invocate nel testo principale.",
+        "it-expert": "Usare le derivazioni come supporto alle regole invocate nel testo principale."
+      },
+      "steps": [
+        {
+          "id": "gadgets-appendices-1",
+          "title": {
+            "it-intermediate": "A · Spostare Clifford locali",
+            "it-expert": "A · Spostare Clifford locali"
+          },
+          "paragraphs": [
+            "p0498",
+            "p0527",
+            "p0547"
+          ],
+          "meaning": {
+            "it-intermediate": "Le regole spider e cambio colore fanno passare gate locali attraverso le componenti del gadget; le regole sulle fasi π completano i casi Pauli. I diagrammi dimostrano le identità del lemma 4.3.",
+            "it-expert": "Spider fusion, colour change e regole π-copy/phase-inversion derivano le commutazioni del lemma 4.3."
+          },
+          "purpose": {
+            "it-intermediate": "Giustifica le commutazioni a un qubit usate prima di estrarre parti comuni dei gadget.",
+            "it-expert": "Fornisce la prova ZX delle identità Clifford locali."
+          }
+        },
+        {
+          "id": "gadgets-appendices-2",
+          "title": {
+            "it-intermediate": "B · Spostare CNOT attraverso i gadget",
+            "it-expert": "B · Spostare CNOT attraverso i gadget"
+          },
+          "paragraphs": [
+            "p0569",
+            "p0578",
+            "p0604"
+          ],
+          "meaning": {
+            "it-intermediate": "Il controllo CNOT commuta con una componente Z; per estendere componenti X si introducono CNOT mediante identità e Hopf e si usa la bialgebra. Il caso Y viene riportato a X con cambi di base.",
+            "it-expert": "La derivazione ZX tratta controllo su Z, estensione di X e riduzione Y→X tramite Hadamard decomposition."
+          },
+          "purpose": {
+            "it-intermediate": "Dimostra le regole del lemma 4.4 che riducono il supporto e la sovrapposizione dei gadget.",
+            "it-expert": "Completa le identità CNOT necessarie alla fattorizzazione condivisa."
+          }
+        }
+      ]
+    }
   ]
 }

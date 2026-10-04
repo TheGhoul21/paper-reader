@@ -26,5 +26,6 @@
       "result": "Meno tempo complessivo, meno perdita di qualità e più lavori portati a termine rispetto al taglio \"alla cieca\". Gli esperimenti mostrano anche che la scelta della macchina conta quasi quanto il taglio.",
       "why": "Finché le macchine restano piccole, spezzare i programmi è uno dei pochi modi per far girare problemi più grandi. Resta però costoso per i programmi molto \"intrecciati\", dove ogni taglio fa esplodere il numero di ripetizioni."
     }
-  }
+  },
+  "sourceSha256": "e88f2c33284d5af87f467afb5568a4fab704cf7feb8640e7ffd3ede430e44af4"
 }

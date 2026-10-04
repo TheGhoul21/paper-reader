@@ -210,7 +210,21 @@
     },
     "deepDive": {
       "it-intermediate": "### Cosa fa davvero una CNOT\nSui bit della base computazionale, $CX_{c,t}$ lascia stare il controllo e sostituisce il bersaglio con lo XOR dei due:\n$$|a_c,\\,a_t\\rangle \\;\\longmapsto\\; |a_c,\\; a_c\\oplus a_t\\rangle$$\nDopo la porta il bersaglio non porta più $a_t$ ma la **parità** $a_c\\oplus a_t$. Non si è perso nulla: da $a_c$ e $a_c\\oplus a_t$ si ricava di nuovo $a_t$. L'informazione è solo stata *ricombinata*.\n\nEsempio: da $|a_1a_2a_3\\rangle = |1,1,0\\rangle$, dopo $CX_{1,2}$ si ha $|1,0,0\\rangle$: il qubit 2 vale $1\\oplus 1 = 0$, cioè \"i bit 1 e 2 erano uguali\".\n\n### E nella base x?\nNella base $x$ ($|+\\rangle$, $|-\\rangle$) i ruoli si scambiano: la stessa CNOT scrive la parità x sul **controllo**. Lo si vede da come la porta trasforma gli operatori di Pauli (i \"rivelatori\" di parità):\n$$Z_t \\;\\to\\; Z_c Z_t, \\qquad X_c \\;\\to\\; X_c X_t .$$\nMisurare $Z$ sul bersaglio dopo la porta equivale a misurare la parità z dei due qubit prima; misurare $X$ sul controllo, la parità x. Il paper usa quasi sempre solo la metà z (la metà x torna in gioco con tutto il gruppo di Clifford, [par. 24](#p0040)).\n\n### Perché \"etichetta\" e non \"valore\"\nInvece di seguire i valori dei bit, che dipendono dall'input, si segue *quali* bit logici sono stati combinati su ogni qubit: un insieme. Nell'esempio il qubit 2 porta l'etichetta $\\{1,2\\}$ qualunque sia l'input. È questa contabilità indipendente dallo stato che permette di progettare i circuiti a tavolino.\n\n> **Da portarti dietro:** una CNOT non copia né sposta: *combina*. Il bersaglio passa a portare la parità dei due qubit, e l'etichetta registra quale combinazione porta ogni qubit."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0025",
+        "why": {
+          "it-intermediate": "Il motivo per cui interessa dove finisce la parità: una rotazione su un gruppo di qubit si fa portando la loro parità su un solo qubit."
+        }
+      },
+      {
+        "to": "p0061",
+        "why": {
+          "it-intermediate": "La CNOT come «spostare parità» diventa lo strumento base: la DCNOT porta un'etichetta lungo la catena e intanto la combina con le altre."
+        }
+      }
+    ]
   },
   {
     "id": "p0015",
@@ -261,7 +275,21 @@
     },
     "deepDive": {
       "it-intermediate": "### L'equazione (1) su un esempio\nTre qubit, etichette iniziali $(\\{1\\},\\{2\\},\\{3\\})$. Ogni CNOT cambia solo l'etichetta del bersaglio:\n$$(\\{1\\},\\{2\\},\\{3\\})\\,CX_{1,2} = (\\{1\\},\\{1,2\\},\\{3\\})$$\n$$(\\{1\\},\\{1,2\\},\\{3\\})\\,CX_{2,3} = (\\{1\\},\\{1,2\\},\\{1,2,3\\})$$\n$$(\\{1\\},\\{1,2\\},\\{1,2,3\\})\\,CX_{1,3} = (\\{1\\},\\{1,2\\},\\{2,3\\})$$\nNell'ultimo passo la differenza simmetrica **toglie** l'1: $\\{1,2,3\\}\\triangle\\{1\\} = \\{2,3\\}$. È lo XOR all'opera: $a_1\\oplus a_1 = 0$, un bit combinato due volte con sé stesso sparisce.\n\n### Differenza simmetrica = XOR sugli insiemi\n$A\\triangle B$ contiene gli elementi che stanno in *esattamente uno* dei due insiemi. Se scrivi un'etichetta come stringa di bit (1 = quel qubit logico c'è), è lo XOR bit a bit:\n$$\\{1,2\\}\\triangle\\{1\\} \\;\\leftrightarrow\\; 110 \\oplus 100 = 010 \\;\\leftrightarrow\\; \\{2\\}.$$\n\n### Perché gli operatori agiscono \"da destra\"\n$\\ell\\,CX_{1,2}\\,CX_{2,3}$ si legge da sinistra a destra nell'ordine in cui le porte vengono eseguite, come si disegna un circuito. È l'opposto della convenzione dell'algebra lineare, dove $U_2U_1|\\psi\\rangle$ applica *prima* $U_1$. Scelta voluta: così una sequenza di porte sulle etichette è semplicemente una linea del tempo. Attenzione quando più avanti compaiono insieme le due notazioni, come nell'equazione (2) ([par. 17](#p0025)).\n\n> **Da portarti dietro:** $\\ell_t \\to \\ell_t\\triangle\\ell_c$, e nient'altro cambia. Tutto il resto del paper è l'arte di scegliere la sequenza di CNOT che fa comparire, prima o poi, le etichette che servono."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0061",
+        "why": {
+          "it-intermediate": "Applica questa regola a due CNOT di fila e ottieni tutta la DCNOT: le etichette si scambiano e resta la coppia ℓcℓt."
+        }
+      },
+      {
+        "to": "p0063",
+        "why": {
+          "it-intermediate": "Ripetuta lungo una catena di DCNOT, fa viaggiare ℓ1 e la combina con ogni altra etichetta: è il conto che fa la Parity Twine chain."
+        }
+      }
+    ]
   },
   {
     "id": "p0018",
@@ -279,7 +307,15 @@
     "sourceText": "In the following, we denote the symmetric difference of two labels with shorthand notation ℓcℓt := ℓc △ℓt as well as we waive the set notation. For example, if the logical parity label ℓi contains the labels p and q we denote ℓi = pq. Moreover, if not explicitly stated differently, we assume an initial state with logical parity labels ℓj = j for all j ∈Q.",
     "explanations": {
       "it-intermediate": "Notazione abbreviata: si scrive ℓcℓt per la differenza simmetrica e si omettono le parentesi degli insiemi, per cui un'etichetta che contiene i qubit logici p e q si scrive pq. Salvo diversa indicazione, si parte dallo stato in cui ogni qubit j porta l'etichetta j, cioè solo se stesso."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0068",
+        "why": {
+          "it-intermediate": "Le etichette in uscita dei circuiti (ℓ2ℓ1, ℓ3ℓ2, …) sono scritte in questa notazione, partendo da ℓj = j."
+        }
+      }
+    ]
   },
   {
     "id": "p0019",
@@ -345,7 +381,21 @@
     },
     "deepDive": {
       "it-intermediate": "### Etichette come vettori di bit\nCon $n = 3$: $\\{1\\} = 100$, $\\{2\\} = 010$, $\\{1,2\\} = 110$, $\\{1,2,3\\} = 111$, e l'etichetta vuota è $000$. La somma è lo XOR (cioè la differenza simmetrica), quindi le etichette sono i vettori di $V = \\mathrm{GF}(2)^n$, lo spazio vettoriale in cui $1+1 = 0$.\n\nUna sequenza di $n$ etichette diventa una matrice $n\\times n$ di bit, una riga per qubit, e una CNOT **somma la riga del controllo a quella del bersaglio**:\n$$\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&1\\end{pmatrix}\\xrightarrow{\\;CX_{1,2}\\;}\\begin{pmatrix}1&0&0\\\\1&1&0\\\\0&0&1\\end{pmatrix}$$\nÈ un passo dell'eliminazione di Gauss.\n\n### Perché le etichette restano sempre una base\nUna somma di righe è invertibile (rifarla la annulla), quindi la matrice resta invertibile. Tre conseguenze pratiche:\n- **nessuna etichetta diventa vuota**: una riga nulla renderebbe la matrice singolare;\n- **due qubit non portano mai la stessa etichetta** nello stesso momento: sarebbero due righe uguali;\n- nulla si cancella, si ricombina soltanto.\n\n### E il contrario: ogni base è raggiungibile\nCon le sole somme di righe l'eliminazione di Gauss porta qualunque matrice invertibile all'identità. Su GF(2) non servono moltiplicazioni per costanti, e anche lo scambio di due righe si fa con tre somme ($r_a \\mathrel{+}= r_b$, $r_b \\mathrel{+}= r_a$, $r_a \\mathrel{+}= r_b$): sono le tre CNOT di uno SWAP. Quindi tra due basi di etichette qualsiasi esiste sempre un circuito di CNOT, il fatto che il [par. 16](#p0023) dà per scontato.\n\nLa vera domanda è *quanto costa*: una somma di righe è permessa solo tra qubit collegati sul chip. Nota anche che questo paper non cerca una matrice finale, ma che certe righe compaiano **lungo il percorso**. È la nozione di generatore ([par. 26](#p0042)).\n\n> **Da portarti dietro:** sequenza di etichette = matrice binaria invertibile; circuito di CNOT = sequenza di somme di righe tra qubit collegati."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0036",
+        "why": {
+          "it-intermediate": "Garantisce che alla fine si possa sempre tornare alle etichette iniziali con un unico circuito di pulizia."
+        }
+      },
+      {
+        "to": "p0072",
+        "why": {
+          "it-intermediate": "È per questo che esistono generatori «puliti»: partono da etichette singole e ci tornano, quindi si possono concatenare."
+        }
+      }
+    ]
   },
   {
     "id": "p0023",
@@ -372,7 +422,27 @@
     },
     "deepDive": {
       "it-intermediate": "### Momenti, profondità, dimensione\nEsempio su 4 qubit: nel momento 1 ci sono $CX_{1,2}$ e $CX_{3,4}$ (qubit disgiunti, quindi in parallelo), nel momento 2 $CX_{2,3}$, nel momento 3 $CX_{1,2}$. La dimensione (size) è 4 porte, la profondità 3 momenti. Sull'hardware la profondità misura il tempo, cioè quanta decoerenza si accumula, e la dimensione misura quante porte a due qubit possono sbagliare. Sono le due grandezze che il paper ottimizza, normalizzate in $\\mu$ e $\\nu$ ([par. 26](#p0042), [par. 27](#p0046)).\n\n### $A\\odot B$: concatenazione, anche sfalsata\nNella versione ingenua si esegue prima tutto $A$ e poi tutto $B$: profondità $d_A + d_B$. Nella versione **sfalsata** i momenti di $B$ scivolano a sinistra e si sovrappongono agli ultimi di $A$, purché nessun momento finisca con due porte sullo stesso qubit (Def. A.6, [par. 151](#p0331)).\n\nEsempio: $A$ = $CX_{1,2}$, poi $CX_{2,3}$; $B$ = $CX_{4,5}$, poi $CX_{3,4}$. Il primo momento di $B$ (qubit 4, 5) può stare nel secondo momento di $A$ (qubit 2, 3): profondità 3 invece di 4. Più in là di così non si va, perché $CX_{3,4}$ si scontrerebbe con $CX_{2,3}$ sul qubit 3. Nel paper è da qui che vengono i grandi risparmi di profondità: ogni Parity Twine chain parte pochi momenti dopo la precedente, senza aspettarne la fine ([par. 52](#p0097)).\n\n### $C^\\dagger$: lo stesso circuito al contrario\nMomenti in ordine inverso, e ogni porta sostituita dal suo aggiunto. Per la CNOT $CX^\\dagger = CX$, quindi un circuito di CNOT al contrario è semplicemente la stessa lista di porte letta dal fondo. Con la notazione breve del [par. 13](#p0018) (12 sta per $\\{1,2\\}$), prendiamo $C$ = $CX_{1,2}$, $CX_{2,3}$:\n$$(1,\\,2,\\,3)\\xrightarrow{CX_{1,2}}(1,\\,12,\\,3)\\xrightarrow{CX_{2,3}}(1,\\,12,\\,123)$$\ne $C^\\dagger$ = $CX_{2,3}$, $CX_{1,2}$ ripercorre la strada all'indietro:\n$$(1,\\,12,\\,123)\\xrightarrow{CX_{2,3}}(1,\\,12,\\,3)\\xrightarrow{CX_{1,2}}(1,\\,2,\\,3).$$\nNota che $C^\\dagger$ fa ricomparire le stesse etichette di $C$ in ordine inverso. È il Lemma A.16 ([par. 169](#p0380)): anche il circuito di \"ritorno\" è un generatore delle stesse etichette.\n\n### A cosa serve: codifica, agisci, decodifica\n$\\ell C = \\ell'$ e $\\ell' C^\\dagger = \\ell$ preparano lo schema che regge tutto il paper, $C \\odot R_Z \\odot C^\\dagger$: porti un'etichetta su un qubit, ci fai sopra una rotazione, torni indietro. Lo spiega l'equazione (2) ([par. 17](#p0025)).\n\n> **Da portarti dietro:** $C$ spesso non è \"il calcolo\" ma un **cambio temporaneo di rappresentazione**, e $C^\\dagger$ lo disfa. Quanto costano entrambi dipende da come li concateni."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0046",
+        "why": {
+          "it-intermediate": "La profondità definita qui è quella che ν confronta con il minimo ideale."
+        }
+      },
+      {
+        "to": "p0067",
+        "why": {
+          "it-intermediate": "Con ⊙ si costruiscono i circuiti del paper: il Parity Twine network è PTC ⊙ PTC ⊙ … su catene sempre più corte."
+        }
+      },
+      {
+        "to": "p0097",
+        "why": {
+          "it-intermediate": "Il «possibilmente sfalsata» conta: sfalsando le catene la profondità del network scende da O(n²) a 4n."
+        }
+      }
+    ]
   },
   {
     "id": "p0025",
@@ -428,7 +498,21 @@
     ],
     "deepDive": {
       "it-intermediate": "### Che operatore è $\\exp(-i\\alpha\\prod_{j\\in\\ell}Z_j)$\nÈ diagonale nella base computazionale. Su uno stato di base $\\prod_{j\\in\\ell}Z_j\\,|a\\rangle = (-1)^{a(\\ell)}|a\\rangle$, dove $a(\\ell)$ è la parità dei bit in $\\ell$ ([par. 14](#p0019)). Quindi\n$$\\exp\\Big(-i\\alpha\\prod_{j\\in\\ell}Z_j\\Big)|a\\rangle = e^{-i\\alpha\\,(-1)^{a(\\ell)}}\\,|a\\rangle,$$\ncioè fase $e^{-i\\alpha}$ se la parità è pari, $e^{+i\\alpha}$ se è dispari. Con $|\\ell| = 2$ è il termine $Z_iZ_j$ del QAOA, con $|\\ell| = 3$ un termine a tre corpi, e così via.\n\nAttenzione alla convenzione: qui $R_Z(\\alpha) = e^{-i\\alpha Z}$, senza il fattore $1/2$ che usa per esempio Qiskit ($R_Z(\\theta) = e^{-i\\theta Z/2}$).\n\n### Perché bastano CNOT e una sola rotazione\nEsempio con $\\ell = \\{1,2,3\\}$ su una catena di 3 qubit, da portare sul qubit 3. Con $C$ = $CX_{1,2}$, $CX_{2,3}$ le etichette diventano $(1,\\,12,\\,123)$, quindi il bit del qubit 3 è $a_1\\oplus a_2\\oplus a_3$. Una $R_Z(\\alpha)$ sul qubit 3 dà proprio la fase $e^{-i\\alpha(-1)^{a_1\\oplus a_2\\oplus a_3}}$. Poi $C^\\dagger$ = $CX_{2,3}$, $CX_{1,2}$ rimette a posto i bit, ma la fase resta: in tutto 4 CNOT e una rotazione.\n\n### Circuito ≠ unitario\nLo stesso operatore si ottiene anche con $C$ = $CX_{1,3}$, $CX_{2,3}$: il qubit 3 porta subito $123$ e il qubit 2 non viene toccato. La profondità è la stessa, ma serve un collegamento diretto 1–3 che una catena non ha. Stesso unitario, circuiti diversi, requisiti hardware diversi: il paper ottimizza nello spazio dei **circuiti**, per questo insiste sulla distinzione.\n\n### Le $R_Z$ non toccano le etichette\nUna $R_Z$ è diagonale: cambia fasi, non bit, quindi le etichette z restano uguali. Due conseguenze:\n- una rotazione si può inserire in qualunque momento in cui l'etichetta giusta compare su un qubit ([par. 25](#p0041));\n- l'effetto di ogni rotazione dipende solo dall'etichetta presente in quel momento, non dalle altre $R_Z$.\n\nÈ ciò che rende possibile l'equazione (3) ([par. 22](#p0036)): tante rotazioni appese allo stesso circuito di CNOT.\n\n> **Da portarti dietro:** rotazione su $k$ qubit logici = portare la loro etichetta su un qubit fisico + una rotazione a un qubit. Tutto il costo sta nelle CNOT."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0036",
+        "why": {
+          "it-intermediate": "Il passo successivo: invece di tornare indietro con C† dopo ogni rotazione, si passa direttamente all'etichetta successiva."
+        }
+      },
+      {
+        "to": "p0041",
+        "why": {
+          "it-intermediate": "Siccome le RZ non toccano le etichette, tutto il problema si riduce a progettare la parte di sole CNOT."
+        }
+      }
+    ]
   },
   {
     "id": "p0029",
@@ -574,7 +658,27 @@
     ],
     "deepDive": {
       "it-intermediate": "### L'equazione (3) in parole\nHai un insieme $L$ di etichette da ruotare, per esempio tutti i termini $Z_iZ_j$ di un QAOA. La versione ingenua (l'equazione senza numero del [par. 21](#p0035)) fa, per ogni etichetta: codifica, $R_Z$, decodifica, ripartendo ogni volta dallo stato iniziale. L'equazione (3) invece **non torna indietro**: dall'etichetta appena usata passa direttamente alla successiva con un circuito $C_p$, e decodifica una sola volta alla fine con $C_\\text{clean}$.\n\n### Un esempio completo\nCatena di 3 qubit (1–2–3), $L = \\{12,\\ 23,\\ 13\\}$ (notazione breve del [par. 13](#p0018)).\n\n**Ingenuo:** $12$ costa 2 CNOT ($CX_{1,2}$ avanti e indietro), $23$ altre 2. Per $13$ invece i qubit 1 e 3 non sono vicini, e servono 3 CNOT per codificare più 3 per decodificare. Totale **10 CNOT**.\n\n**Con il tracciamento:**\n\n| passo | porta ($C_p$) | etichette dopo | rotazione |\n|---|---|---|---|\n| 0 | — | (1, 2, 3) | |\n| 1 | $CX_{2,3}$ | (1, 2, 23) | $R_{Z_3}(\\alpha_{23})$ |\n| 2 | $CX_{1,2}$ | (1, 12, 23) | $R_{Z_2}(\\alpha_{12})$ |\n| 3 | $CX_{2,3}$ | (1, 12, 13) | $R_{Z_3}(\\alpha_{13})$ |\n| pulizia | $CX_{2,3}$, $CX_{1,2}$, $CX_{2,3}$ | (1, 2, 3) | |\n\nTotale **6 CNOT**. Qui $C_\\text{clean} = C_3^\\dagger\\odot C_2^\\dagger\\odot C_1^\\dagger$, la formula del paper con $p$ che va a ritroso, e $k(p)$ = 3, 2, 3 sono i qubit su cui cade ogni rotazione. Il prodotto $\\bigodot_{i=1}^{p} C_i$ è tutto il circuito fino al passo $p$: è lui a produrre $\\ell(p)$ sul qubit $k(p)$.\n\n### Perché \"non-Clifford\"\nCNOT (e H, S) sono porte di Clifford: si simulano e si tracciano facilmente, ed è proprio ciò che fanno le etichette. Le $R_Z(\\alpha)$ con $\\alpha$ generico non lo sono, e sono la parte \"costosa\" che dà potenza al calcolo. Il paper tiene separate le due cose: le etichette gestiscono lo scheletro di Clifford, e le rotazioni si appendono dove compare l'etichetta giusta ([par. 25](#p0041)).\n\n### Dove porta\nIl problema diventa: trovare un circuito di CNOT in cui *tutte* le etichette di $L$ compaiano almeno una volta, con meno CNOT possibili. È la definizione di generatore, e $\\mu$ conta le CNOT per etichetta ([par. 26](#p0042)). Nell'esempio la fase di generazione costa 1 CNOT per etichetta, il minimo possibile ([par. 28](#p0048)).\n\n> **Da portarti dietro:** non decodificare dopo ogni rotazione. Passa da un'etichetta utile alla successiva e pulisci una volta sola alla fine."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0042",
+        "why": {
+          "it-intermediate": "La sequenza C1, C2, … dell'eq. (3) diventa un unico «circuito generatore», e il suo costo per etichetta si chiama µ."
+        }
+      },
+      {
+        "to": "p0048",
+        "why": {
+          "it-intermediate": "Da qui viene il limite µ ≥ 1: ogni etichetta dell'eq. (3) richiede almeno una CNOT."
+        }
+      },
+      {
+        "to": "p0054",
+        "why": {
+          "it-intermediate": "Il primo generatore concreto: tutte le coppie ℓiℓj su una catena lineare."
+        }
+      }
+    ]
   },
   {
     "id": "p0039",
@@ -595,7 +699,21 @@
     },
     "deepDive": {
       "it-intermediate": "### Perché $C_\\text{clean}$ può essere più corto della formula\n$C_\\text{clean} = C_{|L|}^\\dagger\\odot\\dots\\odot C_1^\\dagger$ ripercorre all'indietro tutta la strada. Ma alla fine conta solo una cosa: riportare le etichette finali a quelle iniziali. Qualsiasi circuito di CNOT che lo fa va bene, e spesso ne esiste uno molto più corto, trovato per eliminazione di Gauss ([par. 15](#p0021)) o semplicemente perché porte uguali adiacenti si cancellano ($CX\\,CX = I$).\n\n### L'ordine non cambia il risultato…\nTutti gli operatori $\\exp(-i\\alpha\\prod Z_j)$ sono diagonali, quindi commutano: applicarli in qualunque ordine dà lo stesso unitario.\n\n### …ma cambia il costo\nGià su 3 qubit in catena, con le etichette $\\{12, 23, 13\\}$ dell'esempio del [par. 22](#p0036), il circuito di generazione più corto costa 3 CNOT se si comincia da $12$ o da $23$, e 4 se si comincia da $13$ (ricerca esaustiva). Su $n$ qubit, con $n(n-1)/2$ coppie, la differenza esplode: un ordine qualsiasi costa un numero di CNOT per etichetta che cresce con la distanza tra i qubit sulla catena. La costruzione del paper ne usa 2 per etichetta, contro le 3 della migliore alternativa nota con reti di SWAP (Tab. I, [par. 11](#p0015)).\n\n### Perché \"commesso viaggiatore\"\nPensa a ogni etichetta come a una città, e al numero di CNOT per passare da una configurazione di etichette a quella che ne produce un'altra come alla distanza. Cerchi il giro più corto che tocca tutte le città. In realtà è anche più difficile di un TSP, perché la \"distanza\" dipende dall'intera configurazione in cui ti trovi e non solo dall'ultima città visitata. Per questo il paper non cerca l'ordine ottimo con un solver: **costruisce** ordini buoni, le Parity Twine chain ([par. 36](#p0061), [par. 37](#p0063)), che passano per tutte le coppie con un costo per etichetta dimostrabilmente basso.\n\n> **Da portarti dietro:** la fisica fissa *quali* etichette servono; l'ordine è libero, ed è lì che si vince o si perde sul numero di porte."
-    }
+    },
+    "leadsTo": [
+      {
+        "to": "p0063",
+        "why": {
+          "it-intermediate": "La risposta del paper: invece di cercare l'ordine migliore, la Parity Twine chain ne fornisce uno costruito a mano, dove ogni etichetta costa poche CNOT."
+        }
+      },
+      {
+        "to": "p0139",
+        "why": {
+          "it-intermediate": "Quanto rende quell'ordine costruito: µ = 2 sulla catena lineare, per ogni k."
+        }
+      }
+    ]
   },
   {
     "id": "p0040",
@@ -7904,7 +8022,7 @@
     ],
     "sourceText": "σ(n−1)) and π := π1◦π2. Here, σ: {1, . . . , n} →{1, . . . , n} denotes the permutation defined by σ(1) := 1, σ(2) := 2 and σ(i) := π(i −1) + 1. This shows together with Eq. (E7) that W (n) k is a special k-body generator satisfying Eq. (E6). (ii) We only prove the expression for the size of the circuit SG(n) k . The expression for the depth of the circuit SG(n) k can be proven analogously. Assume that the statement holds for some k −1 ≥k0. Then, our induction hypothesis implies (k0 −1)! ik−2 + O(ik−3). SG(n) SG(i+1,n) = O(n) + = O(n) + c1 (k −2)! Hence, applying Faulhaber’s formula yields the above identity for the size of SG(n)",
     "explanations": {
-      "it-intermediate": "Continuazione della prova: composizione delle permutazioni e calcolo per induzione di porte e profondità."
+      "it-intermediate": "La prova ricompone le permutazioni dei passaggi precedenti e verifica che il circuito produca le combinazioni di etichette richieste per un generatore k-body. Per contarne le porte somma poi i costi dei sottocircuiti già costruiti al livello k−1. La somma di Faulhaber trasforma questi costi in un polinomio con termine dominante di ordine n^(k−1); per la profondità il ragionamento analogo dà n^(k−2)."
     }
   },
   {

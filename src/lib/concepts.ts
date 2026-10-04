@@ -64,7 +64,10 @@ export function segmentText(text: string, matcher: ConceptMatcher): TextSegment[
 }
 
 /** The definition for the selected variant, falling back to the concept's first one. */
-export function conceptDefinition(concept: Concept, variant: string): { text: string; isFallback: boolean } {
+export function conceptDefinition(
+  concept: Concept,
+  variant: string,
+): { text: string; isFallback: boolean } {
   const text = concept.definitions[variant];
   if (text) return { text, isFallback: false };
   const first = Object.values(concept.definitions)[0] ?? "";

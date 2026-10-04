@@ -133,7 +133,7 @@
     "sourceText": "We evaluate the proposed methods through numericalexperiments on randomly generated instances.Acrossall considered single-qubit gate families, our methods re-duce the number of addressing layers by up to a factor oftwo compared with naïve row- or column-wise implemen-tations. For C-Z gates, the proposed scheduling strat-egy reduces the required number of atom transport op-",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Inizio del riepilogo dei risultati sperimentali (continua a pagina successiva): riduzione fino a 2x del numero di addressing layer rispetto a implementazioni naive riga/colonna, su tutte le famiglie di gate a singolo qubit considerate; per i C-Z, la strategia di scheduling proposta riduce le operazioni di trasporto atomico..."
+      "it-expert": "Sulle istanze casuali testate, gli addressing layers si riducono fino a 2× rispetto alle baseline row/column e il trasporto per CZ di circa il 50%. Il benchmark QAOA-MaxCut completo riporta una riduzione media del costo di trasporto CZ superiore al 30%. I test esaustivi piccoli confermano la garanzia 4/3 per Pauli; i tempi sotto un secondo riguardano le dimensioni di array valutate."
     }
   },
   {
@@ -564,7 +564,7 @@
     "sourceText": "commonly used single-qubit gates, including the Pauligates and the Hadamard gates, satisfy this property. Inthis setting, the group G is isomorphic to the finite fieldGF(2), and the optimization problem (1) reduces to mink kX utv⊤ t ,ut ∈{0, 1}m, vt ∈{0, 1}n, s.t.M = t=1",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "...tra cui i gate di Pauli e l'Hadamard. In questo caso G è isomorfo al campo finito GF(2), e il problema (1) si riduce a un problema di decomposizione su GF(2)."
+      "it-expert": "Per un gate autoinverso X, il pattern di operazioni è una matrice binaria M e ogni layer contribuisce con un prodotto esterno utvtᵀ. Poiché le composizioni si sommano modulo 2, minimizzare il numero di layer equivale a decomporre M su GF(2); il minimo è il rango binario e si costruisce con eliminazione di Gauss."
     }
   },
   {

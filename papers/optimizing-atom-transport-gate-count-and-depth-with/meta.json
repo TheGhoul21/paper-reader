@@ -19,5 +19,6 @@
       "result": "Sulla QFT a 30 qubit servono meno operazioni, meno spostamenti e meno fasi laser, con un'affidabilità stimata fino a mille volte più alta dei metodi precedenti.",
       "why": "La QFT è alla base di molti algoritmi, anche di aritmetica quantistica. Il vantaggio dipende dall'hardware: con certe caratteristiche della macchina conviene la versione senza spostamenti."
     }
-  }
+  },
+  "sourceSha256": "92eaf33303ef144b379735f3b94aed240f8f8671f2f27331635ea496163cc00f"
 }

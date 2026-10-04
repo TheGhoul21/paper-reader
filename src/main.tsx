@@ -1,11 +1,12 @@
-import { StrictMode } from "react";
+import { lazy, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Library from "./pages/Library";
-import Reader from "./pages/Reader";
-import Review from "./pages/Review";
 import "./index.css";
+
+const Reader = lazy(() => import("./pages/Reader"));
+const Review = lazy(() => import("./pages/Review"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

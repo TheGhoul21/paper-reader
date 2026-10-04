@@ -1,0 +1,9 @@
+node_modules
+dist
+public
+papers
+legacy
+package-lock.json
+test-results
+playwright-report
+.claude

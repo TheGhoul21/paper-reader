@@ -19,5 +19,6 @@
       "result": "Il metodo è veloce, mette sotto lo stesso tetto i modi esistenti di tenere traccia di queste operazioni, e aiuta a progettare programmi più corti: in un esempio, tre operazioni diventano eseguibili contemporaneamente.",
       "why": "È uno strumento di ragionamento che semplifica la progettazione di programmi quantistici, anche di quelli protetti dagli errori. È un paper teorico: il guadagno concreto dipende da come lo si usa."
     }
-  }
+  },
+  "sourceSha256": "eb0714a02728d96b86ce25206aafeccdf03c3a95a5278f88ca88033b9470b716"
 }

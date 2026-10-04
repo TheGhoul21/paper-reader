@@ -116,5 +116,805 @@
       "evidence": ["p0144", "p0241"],
       "dependsOn": ["czswap"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "twine-overview",
+      "title": {
+        "it-intermediate": "I · Dove vuole arrivare il paper",
+        "it-expert": "I · Dove vuole arrivare il paper"
+      },
+      "goal": {
+        "it-intermediate": "Seguire la catena: parità logiche → circuito Twine → operazioni native → costo fisico.",
+        "it-expert": "Seguire la catena: parità logiche → circuito Twine → operazioni native → costo fisico."
+      },
+      "steps": [
+        {
+          "id": "twine-overview-1",
+          "title": {
+            "it-intermediate": "Tre costi da ottimizzare insieme",
+            "it-expert": "Tre costi da ottimizzare insieme"
+          },
+          "paragraphs": [
+            "p0003",
+            "p0007",
+            "p0008"
+          ],
+          "meaning": {
+            "it-intermediate": "Muovere atomi rende disponibili nuove interazioni ma richiede tempo e introduce errori. Il paper cerca circuiti che sfruttino questa possibilità riducendo gate, profondità e trasporto; la QFT sarà il caso di studio.",
+            "it-expert": "Il co-design PTN/NAQC ottimizza count entangling, depth e trasporto mediante primitive native e mobilità."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce il compromesso che guiderà la scelta fra implementazioni equivalenti.",
+            "it-expert": "Definisce la funzione di costo fisica oltre la sola sintesi logica."
+          }
+        },
+        {
+          "id": "twine-overview-2",
+          "title": {
+            "it-intermediate": "Perché la parità aiuta",
+            "it-expert": "Perché la parità aiuta"
+          },
+          "paragraphs": [
+            "p0009",
+            "p0010",
+            "p0011",
+            "p0012",
+            "p0013",
+            "p0014",
+            "p0015"
+          ],
+          "meaning": {
+            "it-intermediate": "Una rete di CNOT distribuisce informazioni di parità: quando una parità utile è disponibile, una rotazione locale realizza l’interazione logica associata. Il trasporto può contribuire a un CZSWAP anziché servire soltanto a portare vicini due atomi.",
+            "it-expert": "Le PTN espongono etichette di parità per implementare interazioni in una base comune; CZSWAP integra scambio fisico e operazione entangling."
+          },
+          "purpose": {
+            "it-intermediate": "Anticipa il percorso del paper prima di entrare nelle definizioni della sezione II.",
+            "it-expert": "Prepara la separazione fra sintesi delle etichette e lowering alle primitive hardware."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0017",
+        "why": {
+          "it-intermediate": "Capire come ottenere le interazioni logiche tra tutte le coppie usando i collegamenti fisici disponibili. La sezione introduce il meccanismo di parità, poi confronta le disposizioni dei qubit: risparmiare porte e accorciare il circuito sono due obiettivi diversi. Questo prepara la scelta di come eseguire le PTN sugli atomi neutri.",
+          "it-expert": "Separare il problema logico (generare tutte le label a due corpi) dalla topologia fisica e dallo scheduling. La costruzione PTN lega questi livelli e fa emergere il compromesso CNOT count/depth; la sezione III tradurrà i blocchi astratti nel gate set e nei movimenti nativi dei NAQC."
+        }
+      }
+    },
+    {
+      "id": "parity-twine-networks",
+      "title": {
+        "it-intermediate": "II · Come le PTN usano i collegamenti tra qubit",
+        "it-expert": "II · Parity Twine Networks: encoding, layout e costi"
+      },
+      "goal": {
+        "it-intermediate": "Capire come ottenere le interazioni logiche tra tutte le coppie usando i collegamenti fisici disponibili. La sezione introduce il meccanismo di parità, poi confronta le disposizioni dei qubit: risparmiare porte e accorciare il circuito sono due obiettivi diversi. Questo prepara la scelta di come eseguire le PTN sugli atomi neutri.",
+        "it-expert": "Separare il problema logico (generare tutte le label a due corpi) dalla topologia fisica e dallo scheduling. La costruzione PTN lega questi livelli e fa emergere il compromesso CNOT count/depth; la sezione III tradurrà i blocchi astratti nel gate set e nei movimenti nativi dei NAQC."
+      },
+      "steps": [
+        {
+          "id": "logical-interactions",
+          "title": {
+            "it-intermediate": "Quali interazioni vogliamo ottenere",
+            "it-expert": "Dalle interazioni logiche alle label di parità"
+          },
+          "paragraphs": [
+            "p0017",
+            "p0018",
+            "p0019",
+            "p0020",
+            "p0021"
+          ],
+          "meaning": {
+            "it-intermediate": "«Tutti-con-tutti» descrive le coppie di qubit logici che l’algoritmo vuole far interagire. Le etichette dicono quale parità dei bit logici è codificata su ciascun qubit fisico. Quando un qubit porta la parità della coppia i,j, una rotazione Z su quel qubit realizza la corrispondente rotazione logica ZZ, all’interno dello schema di codifica e decodifica.",
+            "it-expert": "All-to-all è la struttura delle interazioni logiche richieste. Le label ℓᵢℓⱼ sono parità Z codificate sui qubit fisici: una RZ sulla label realizza exp(−iθZiZj/2) nel frame logico, con la successiva decodifica. La Fig. 2 mostra le sequenze di porte che producono queste label sui diversi grafi di connettività."
+          },
+          "purpose": {
+            "it-intermediate": "Stabilisce cosa deve produrre il circuito: tutte le parità delle coppie, così da applicare le rotazioni richieste dall’algoritmo. Ora possiamo chiedere come generarle usando solo i collegamenti disponibili.",
+            "it-expert": "Fissa il requisito di sintesi: coprire tutte le label ℓᵢℓⱼ mediante n−1 Twine chain. Le rotazioni logiche si inseriscono quando compare la label desiderata; resta da organizzare il network sulla connettività fisica."
+          }
+        },
+        {
+          "id": "linear-layout",
+          "title": {
+            "it-intermediate": "Il caso di partenza: qubit in una fila",
+            "it-expert": "La costruzione sul layout lineare"
+          },
+          "paragraphs": [
+            "p0022"
+          ],
+          "meaning": {
+            "it-intermediate": "Il layout lineare è una disposizione di qubit fisici con operazioni a due qubit disponibili solo tra vicini. Una Twine chain è la sequenza di porte eseguita su quella fila. La DCNOT applica due CNOT in direzioni opposte; la decodifica finale ripristina le etichette individuali.",
+            "it-expert": "Il layout LNN specifica la connettività tra qubit fisici. Su questo grafo ogni Twine chain è una sequenza di DCNOT, e la PTN ne concatena versioni progressivamente più corte prima della decodifica delle label."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce il caso più semplice con cui confrontare gli altri layout: anche con soli vicini si possono generare tutte le parità necessarie. I prossimi paragrafi cercano di sfruttare collegamenti aggiuntivi.",
+            "it-expert": "Stabilisce la baseline con un unico backbone e nessun leg. Il confronto successivo riguarda come la connettività aggiuntiva modifica i blocchi costruttivi e il loro scheduling."
+          }
+        },
+        {
+          "id": "backbone-legs",
+          "title": {
+            "it-intermediate": "Usare i collegamenti aggiuntivi",
+            "it-expert": "Backbone e legs sulla connettività fisica"
+          },
+          "paragraphs": [
+            "p0023"
+          ],
+          "meaning": {
+            "it-intermediate": "Backbone e legs assegnano un ruolo ai collegamenti tra qubit fisici nel percorso scelto per una Twine chain. Sul backbone l’informazione di parità avanza tramite DCNOT; sui rami viene combinata con i qubit laterali tramite CNOT singole. Su una griglia quadrata si possono scegliere colonne alterne come backbone e collegare le colonne intermedie tramite rami.",
+            "it-expert": "Backbone e legs definiscono il Twine path scelto sul grafo hardware: gli archi del backbone ospitano DCNOT, quelli dei legs CNOT singole. La costruzione a strisce sul square lattice mostra come usare la connettività 2D per ridurre il CNOT count."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega da dove può venire il risparmio di porte: alcuni collegamenti richiedono una CNOT invece delle due della DCNOT. Questo rende importante la disposizione fisica dei qubit.",
+            "it-expert": "Introduce la distinzione operativa che rende i costi dipendenti dal layout: una diversa scelta del percorso cambia la ripartizione tra DCNOT e CNOT."
+          }
+        },
+        {
+          "id": "ladder-layout",
+          "title": {
+            "it-intermediate": "La scala è un layout dei qubit fisici",
+            "it-expert": "Il ladder e i suoi due backbone paralleli"
+          },
+          "paragraphs": [
+            "p0024"
+          ],
+          "meaning": {
+            "it-intermediate": "Il ladder («scala») è lo schema dei qubit fisici e dei collegamenti disponibili: due file con collegamenti lungo ciascuna fila e collegamenti trasversali tra le due. Su questo layout la PTN usa due backbone paralleli. Le linee dello schema indicano quali coppie possono eseguire una porta a due qubit. Sugli atomi neutri il layout può essere realizzato anche piegando la scala o collegando segmenti con brevi spostamenti degli atomi.",
+            "it-expert": "Il ladder è un grafo di connettività dei qubit fisici: due catene longitudinali con archi trasversali. La PTN vi impiega due backbone paralleli. La geometria di embedding può differire dal disegno rettilineo del grafo: sui NAQC si considerano piegatura con posizioni irregolari o segmenti collegati via shuttling."
+          },
+          "diagram": {
+            "path": "diagrams/ladder-layout.svg",
+            "caption": {
+              "it-intermediate": "Esempio con 6 qubit fisici: i cerchi sono i qubit, le linee sono i collegamenti per le porte a due qubit. Lo schema mostra la connettività; distanze e numero di qubit sono illustrativi.",
+              "it-expert": "Grafo ladder illustrativo a 6 qubit: archi longitudinali e trasversali. Le distanze nel disegno non specificano l’embedding fisico o il tempo di esecuzione."
+            }
+          },
+          "purpose": {
+            "it-intermediate": "Presenta un compromesso utile: il ladder mantiene la profondità minima fra i layout confrontati, usando un po’ più CNOT della griglia quadrata. La mobilità degli atomi rende interessante anche un layout difficile da disporre in 2D; tornerà nella QFT ottimistica della sezione IV.B.",
+            "it-expert": "Individua il compromesso favorevole del ladder: profondità minima tra i layout considerati, con ¾n² CNOT invece di ⅔n² del square al leading order. La realizzabilità tramite mobilità prepara i ladder patch usati nell’OQFT di IV.B."
+          }
+        },
+        {
+          "id": "gate-count-depth",
+          "title": {
+            "it-intermediate": "Meno porte può comunque richiedere più tempo",
+            "it-expert": "Il compromesso gate count/depth"
+          },
+          "paragraphs": [
+            "p0025",
+            "p0026",
+            "p0027"
+          ],
+          "meaning": {
+            "it-intermediate": "Il numero di porte conta quante operazioni si eseguono in totale. La profondità conta i passi sequenziali dopo aver eseguito in parallelo ciò che è compatibile. I rami possono ridurre il numero di CNOT, ma ritardare l’avvio delle Twine chain successive. Per leggere la Fig. 2 bisogna quindi considerare la parallelizzazione, oltre al numero di simboli disegnati.",
+            "it-expert": "Gate count e depth misurano rispettivamente le operazioni totali e il cammino temporale dopo il parallel scheduling. I legs sostituiscono DCNOT con CNOT nella generazione, ma possono imporre ritardi maggiori fra chain successive; il ripristino delle label sui legs può inoltre richiedere DCNOT, come precisa la nota sul square."
+          },
+          "purpose": {
+            "it-intermediate": "È la conclusione del confronto: avere più collegamenti non basta per scegliere il layout migliore. Bisogna sapere quanto pesano gli errori delle porte, le attese e il trasporto sull’hardware concreto. È proprio ciò che il seguito del paper valuterà.",
+            "it-expert": "Chiude la sezione con un problema di co-design: più connettività può ridurre il CNOT count senza ridurre la depth. La scelta richiede un costo hardware concreto; dopo la transpilazione va rivalutata anche l’unità con cui si contano le porte."
+          }
+        },
+        {
+          "id": "hardware-next",
+          "title": {
+            "it-intermediate": "Adesso si passa alla macchina reale",
+            "it-expert": "Dalla PTN astratta al gate set nativo"
+          },
+          "paragraphs": [
+            "p0028"
+          ],
+          "meaning": {
+            "it-intermediate": "Fin qui gli autori hanno ragionato con CNOT e DCNOT e con diversi schemi di collegamenti. Nella sezione III passano ai processori ad atomi neutri: quali porte eseguono direttamente e come possono muovere gli atomi in una singola zona di calcolo.",
+            "it-expert": "La sezione II ha fissato encoding e topologie in termini di CNOT/DCNOT. La sezione III specializza le costruzioni alle architetture NAQC monolitiche, ai loro gate set e alle primitive di trasporto."
+          },
+          "purpose": {
+            "it-intermediate": "Segna il passaggio dalla domanda «come realizziamo tutte le interazioni?» alla domanda «come eseguiamo questa costruzione sulla macchina, e a quale costo?».",
+            "it-expert": "Trasforma il trade-off astratto in una domanda implementativa: come realizzare i blocchi PTN nativamente e confrontarne gate count, profondità e trasporto."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0030",
+        "why": {
+          "it-intermediate": "La sezione III apre con i vincoli della macchina: la DCNOT va tradotta nelle porte disponibili e alcune rotazioni si possono applicare solo globalmente. Il confronto tra layout acquista quindi un costo fisico concreto.",
+          "it-expert": "III introduce la transpilazione DCNOT→CZ/CZSWAP/iSWAP e il vincolo delle rotazioni XY globali. III.D fornirà poi il modello di fedeltà con cui IV confronterà le implementazioni."
+        }
+      }
+    },
+    {
+      "id": "twine-hardware",
+      "title": {
+        "it-intermediate": "III.A · Dal circuito logico al dispositivo",
+        "it-expert": "III.A · Dal circuito logico al dispositivo"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché la stessa PTN richiede implementazioni diverse a seconda di gate e movimento disponibili.",
+        "it-expert": "Capire perché la stessa PTN richiede implementazioni diverse a seconda di gate e movimento disponibili."
+      },
+      "steps": [
+        {
+          "id": "twine-hardware-1",
+          "title": {
+            "it-intermediate": "Statico, mobile e a zone",
+            "it-expert": "Statico, mobile e a zone"
+          },
+          "paragraphs": [
+            "p0030",
+            "p0032",
+            "p0033",
+            "p0034",
+            "p0035",
+            "p0036",
+            "p0037"
+          ],
+          "meaning": {
+            "it-intermediate": "Finora DCNOT era un blocco logico. Ora contano CZ nativi, controllo globale, trappole SLM e AOD. In un array statico gli atomi restano fermi durante il calcolo; in uno mobile il compilatore può modificarne le posizioni. Le architetture a zone sono discusse come estensione.",
+            "it-expert": "Si distingue connettività statica, mobilità monolitica e possibili estensioni zoned; costi e parallelismo del trasporto differiscono da quelli dei gate."
+          },
+          "purpose": {
+            "it-intermediate": "Apre il passaggio dal formalismo generale alla scelta di operazioni fisicamente realizzabili.",
+            "it-expert": "Fissa le assunzioni hardware per il lowering di DCNOT e per il modello di costo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0039",
+        "why": {
+          "it-intermediate": "Confrontare decomposizioni equivalenti che consumano risorse fisiche diverse.",
+          "it-expert": "Confrontare decomposizioni equivalenti che consumano risorse fisiche diverse."
+        }
+      }
+    },
+    {
+      "id": "twine-entangling",
+      "title": {
+        "it-intermediate": "III.B · Come realizzare DCNOT",
+        "it-expert": "III.B · Come realizzare DCNOT"
+      },
+      "goal": {
+        "it-intermediate": "Confrontare decomposizioni equivalenti che consumano risorse fisiche diverse.",
+        "it-expert": "Confrontare decomposizioni equivalenti che consumano risorse fisiche diverse."
+      },
+      "steps": [
+        {
+          "id": "twine-entangling-1",
+          "title": {
+            "it-intermediate": "Due CZ, iSWAP o CZSWAP",
+            "it-expert": "Due CZ, iSWAP o CZSWAP"
+          },
+          "paragraphs": [
+            "p0039",
+            "p0040",
+            "p0041",
+            "p0042",
+            "p0043",
+            "p0044",
+            "p0045",
+            "p0046"
+          ],
+          "meaning": {
+            "it-intermediate": "DCNOT può essere riscritto con due CZ, con iSWAP e rotazioni locali, oppure con CZ seguito dallo scambio dei qubit. L’equivalenza del circuito non rende uguale il costo delle tre scelte sul dispositivo.",
+            "it-expert": "Le tre decomposizioni preservano l’unitaria, ma differiscono per disponibilità della primitiva entangling, gate locali e scambio fisico."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce le alternative che la geometria e il rumore permetteranno di confrontare.",
+            "it-expert": "Espone le alternative di lowering senza assimilare conteggio astratto e costo sperimentale."
+          }
+        },
+        {
+          "id": "twine-entangling-2",
+          "title": {
+            "it-intermediate": "Che cosa costa un CZ mobile",
+            "it-expert": "Che cosa costa un CZ mobile"
+          },
+          "paragraphs": [
+            "p0047",
+            "p0048",
+            "p0049",
+            "p0050",
+            "p0052",
+            "p0053",
+            "p0054",
+            "p0055",
+            "p0056",
+            "p0057"
+          ],
+          "meaning": {
+            "it-intermediate": "Un atomo viene prelevato, avvicinato, usato nel gate e riportato indietro. Big moves e trasferimenti fra trappole sono operazioni distinte. Gli autori assumono CZ fra trappole AOD/SLM e specificano come contare due CZ indipendenti. La figura 3 confronta i circuiti QFT nativi.",
+            "it-expert": "Il modello separa big moves e handoff SLM↔AOD, ammette inter-tweezer CZ e non usa nel caso mobile principale due CZ consecutivi mantenendo gli atomi vicini."
+          },
+          "purpose": {
+            "it-intermediate": "Rende concreto il costo di trasporto associato ai gate e prepara il motivo per cui CZSWAP può convenire.",
+            "it-expert": "Fissa le ipotesi operative che determinano il confronto fra decomposizioni."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0059",
+        "why": {
+          "it-intermediate": "Seguire come la struttura Twine assorbe i limiti del controllo a singolo qubit.",
+          "it-expert": "Seguire come la struttura Twine assorbe i limiti del controllo a singolo qubit."
+        }
+      }
+    },
+    {
+      "id": "twine-global-control",
+      "title": {
+        "it-intermediate": "III.C · Scambio fisico e rotazioni globali",
+        "it-expert": "III.C · Scambio fisico e rotazioni globali"
+      },
+      "goal": {
+        "it-intermediate": "Seguire come la struttura Twine assorbe i limiti del controllo a singolo qubit.",
+        "it-expert": "Seguire come la struttura Twine assorbe i limiti del controllo a singolo qubit."
+      },
+      "steps": [
+        {
+          "id": "twine-global-control-1",
+          "title": {
+            "it-intermediate": "Due vincoli hardware nello stesso passaggio",
+            "it-expert": "Due vincoli hardware nello stesso passaggio"
+          },
+          "paragraphs": [
+            "p0059",
+            "p0060"
+          ],
+          "meaning": {
+            "it-intermediate": "Le rotazioni nel piano XY sono globali e vanno combinate con RZ locali. Il testo completa anche il CZSWAP: dopo il CZ torna alla posizione iniziale l’altro atomo, con piccoli spostamenti e trasferimenti aggiuntivi per rispettare i vincoli AOD.",
+            "it-expert": "Il lowering deve soddisfare controllo XY globale; la continuazione sul CZSWAP esplicita quattro handoff e offset per il non-crossing AOD."
+          },
+          "purpose": {
+            "it-intermediate": "Completa il costo dello scambio prima di spiegare come globalizzare le rotazioni del circuito.",
+            "it-expert": "Collega i vincoli di controllo e trasporto ai circuiti nativi successivi."
+          }
+        },
+        {
+          "id": "twine-global-control-2",
+          "title": {
+            "it-intermediate": "Riutilizzare i pulse globali",
+            "it-expert": "Riutilizzare i pulse globali"
+          },
+          "paragraphs": [
+            "p0061",
+            "p0062",
+            "p0063",
+            "p0064",
+            "p0065",
+            "p0066",
+            "p0067",
+            "p0068",
+            "p0069"
+          ],
+          "meaning": {
+            "it-intermediate": "La regolarità delle catene permette di condividere rotazioni globali fra qubit invece di decomporre ogni Hadamard indipendentemente. I circuiti CZ-only e CZSWAP usano sequenze globali diverse; iSWAP differisce da CZSWAP per ulteriori fasi locali.",
+            "it-expert": "Le cancellazioni della PTN riducono gli overhead di globalizzazione; coniugazioni SY implementano RX locali e le S† collegano iSWAP a CZSWAP."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra un risparmio che nasce dalla struttura del circuito e non dal solo numero di gate a due qubit.",
+            "it-expert": "Chiude il lowering al gate set e al modello di addressing assunto."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0072",
+        "why": {
+          "it-intermediate": "Capire quali errori entrano nel confronto e quali contributi vengono normalizzati.",
+          "it-expert": "Capire quali errori entrano nel confronto e quali contributi vengono normalizzati."
+        }
+      }
+    },
+    {
+      "id": "twine-fidelity",
+      "title": {
+        "it-intermediate": "III.D · Dalle risorse alla fidelity stimata",
+        "it-expert": "III.D · Dalle risorse alla fidelity stimata"
+      },
+      "goal": {
+        "it-intermediate": "Capire quali errori entrano nel confronto e quali contributi vengono normalizzati.",
+        "it-expert": "Capire quali errori entrano nel confronto e quali contributi vengono normalizzati."
+      },
+      "steps": [
+        {
+          "id": "twine-fidelity-1",
+          "title": {
+            "it-intermediate": "Leggere i fattori della formula",
+            "it-expert": "Leggere i fattori della formula"
+          },
+          "paragraphs": [
+            "p0072",
+            "p0073",
+            "p0074",
+            "p0075",
+            "p0076",
+            "p0077"
+          ],
+          "meaning": {
+            "it-intermediate": "La stima moltiplica contributi di CZ, eccitazioni indesiderate, trasferimenti e idle. Uno stadio Rydberg può contenere più CZ paralleli. Le rotazioni a un qubit sono normalizzate fuori dal confronto: il valore mostrato non è una caratterizzazione completa di ogni errore hardware.",
+            "it-expert": "L’equazione (3) usa NCZ, NqS−2NCZ e Ntrans; fGR=1 normalizza il contributo 1Q per rendere comparabili implementazioni con controllo locale/globale differente."
+          },
+          "purpose": {
+            "it-intermediate": "Dà il significato delle metriche che appariranno nei grafici dei risultati.",
+            "it-expert": "Rende esplicite le assunzioni del proxy di fidelity."
+          }
+        },
+        {
+          "id": "twine-fidelity-2",
+          "title": {
+            "it-intermediate": "Il tempo dei movimenti",
+            "it-expert": "Il tempo dei movimenti"
+          },
+          "paragraphs": [
+            "p0078",
+            "p0079",
+            "p0080",
+            "p0081",
+            "p0082"
+          ],
+          "meaning": {
+            "it-intermediate": "Distanze, accelerazione e trasferimenti determinano il tempo di trasporto, che contribuisce all’idle. La decoerenza è approssimata al primo ordine per tempi piccoli rispetto a T₂, assumendo decoupling dinamico.",
+            "it-expert": "Shuttling e idle sono modellati con parametri geometrici e T₂ effettivo sotto decoupling; la stima di primo ordine evita simulazioni complete del circuito."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché due circuiti con lo stesso count possono avere fidelity stimata diversa.",
+            "it-expert": "Collega schedule fisico e proxy di errore scalabile."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0084",
+        "why": {
+          "it-intermediate": "Seguire separatamente sintesi, scelta della disposizione e confronto statico/mobile.",
+          "it-expert": "Seguire separatamente sintesi, scelta della disposizione e confronto statico/mobile."
+        }
+      }
+    },
+    {
+      "id": "twine-exact-qft",
+      "title": {
+        "it-intermediate": "IV.A · La QFT esatta come prova del metodo",
+        "it-expert": "IV.A · La QFT esatta come prova del metodo"
+      },
+      "goal": {
+        "it-intermediate": "Seguire separatamente sintesi, scelta della disposizione e confronto statico/mobile.",
+        "it-expert": "Seguire separatamente sintesi, scelta della disposizione e confronto statico/mobile."
+      },
+      "steps": [
+        {
+          "id": "twine-exact-qft-1",
+          "title": {
+            "it-intermediate": "Una QFT, più disposizioni",
+            "it-expert": "Una QFT, più disposizioni"
+          },
+          "paragraphs": [
+            "p0084",
+            "p0086",
+            "p0087",
+            "p0089",
+            "p0090",
+            "p0091",
+            "p0092",
+            "p0093",
+            "p0094"
+          ],
+          "meaning": {
+            "it-intermediate": "Le rotazioni della QFT si inseriscono nella PTN. Cambiare layout fisico redistribuisce CZ e CZSWAP: maggiore connettività può ridurre gli scambi senza ridurre il totale dei gate a due qubit. Le figure contano CZ e CZSWAP come una operazione ciascuno.",
+            "it-expert": "Le rotazioni QFT sono assorbite nel lowering globale; N2Q=NCZ+NCZSWAP è invariato fra layout mentre cambiano primitive e overhead 1Q/depth."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra come la definizione della metrica influisce sul confronto fra layout.",
+            "it-expert": "Distingue l’invariante della sintesi dalla dipendenza hardware del costo."
+          }
+        },
+        {
+          "id": "twine-exact-qft-2",
+          "title": {
+            "it-intermediate": "Perché il ladder risulta favorevole",
+            "it-expert": "Perché il ladder risulta favorevole"
+          },
+          "paragraphs": [
+            "p0095",
+            "p0096",
+            "p0097",
+            "p0098",
+            "p0099",
+            "p0100",
+            "p0101",
+            "p0102",
+            "p0103",
+            "p0104"
+          ],
+          "meaning": {
+            "it-intermediate": "Il confronto con altri compilatori usa il modello di rumore definito prima. Il ladder combina count/depth contenuti con meno trasferimenti e offset della linea; una griglia più connessa può richiedere più stadi e soffrire maggiormente il crosstalk.",
+            "it-expert": "Il benchmark QFT confronta costi entangling, Rydberg stages e trasporto; la sostituzione parziale CZSWAP→CZ sul ladder riduce handoff e offset senza cambiare N2Q."
+          },
+          "purpose": {
+            "it-intermediate": "Risponde al motivo per cui il paper preferisce una specifica connettività anziché assumere che più archi siano sempre meglio.",
+            "it-expert": "Attribuisce il vantaggio al vettore delle risorse sotto il modello condiviso."
+          }
+        },
+        {
+          "id": "twine-exact-qft-3",
+          "title": {
+            "it-intermediate": "Quando conviene muovere gli atomi",
+            "it-expert": "Quando conviene muovere gli atomi"
+          },
+          "paragraphs": [
+            "p0105",
+            "p0106",
+            "p0107",
+            "p0109",
+            "p0110",
+            "p0111",
+            "p0112"
+          ],
+          "meaning": {
+            "it-intermediate": "La versione statica evita shuttling ma usa più CZ. Con crosstalk il modello favorisce la mobile; senza crosstalk e con CZ sufficientemente accurati può prevalere la statica. Il punto di incrocio dipende dai parametri assunti.",
+            "it-expert": "Il crossover dipende da fCZ, fexc e dai costi di trasporto; le soglie numeriche sono indicatori nel modello normalizzato."
+          },
+          "purpose": {
+            "it-intermediate": "Dimostra il compromesso iniziale invece di proporre una sola implementazione migliore in assoluto.",
+            "it-expert": "Chiude il confronto fra decomposizioni con una scelta dipendente dall’hardware."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0114",
+        "why": {
+          "it-intermediate": "Capire il passaggio dall’implementazione esatta a una costruzione approssimata e parallela.",
+          "it-expert": "Capire il passaggio dall’implementazione esatta a una costruzione approssimata e parallela."
+        }
+      }
+    },
+    {
+      "id": "twine-optimistic-qft",
+      "title": {
+        "it-intermediate": "IV.B · La QFT ottimistica",
+        "it-expert": "IV.B · La QFT ottimistica"
+      },
+      "goal": {
+        "it-intermediate": "Capire il passaggio dall’implementazione esatta a una costruzione approssimata e parallela.",
+        "it-expert": "Capire il passaggio dall’implementazione esatta a una costruzione approssimata e parallela."
+      },
+      "steps": [
+        {
+          "id": "twine-optimistic-qft-1",
+          "title": {
+            "it-intermediate": "Blocchi più piccoli, errore diverso",
+            "it-expert": "Blocchi più piccoli, errore diverso"
+          },
+          "paragraphs": [
+            "p0114",
+            "p0115",
+            "p0116",
+            "p0117",
+            "p0118",
+            "p0119",
+            "p0120",
+            "p0122",
+            "p0123",
+            "p0124"
+          ],
+          "meaning": {
+            "it-intermediate": "AQFT elimina rotazioni piccole con una garanzia uniforme; OQFT sfrutta inoltre una struttura a blocchi paralleli, concentrando errori più grandi su una piccola parte degli input. I blocchi QFT e QFT† possono usare PTN, ma bisogna tenere traccia delle permutazioni.",
+            "it-expert": "AQFT riduce il count a O(n log(n/ε)); OQFT sfrutta commutatività approssimata e blocchi m/2m per depth logaritmica con garanzia non uniforme sugli input."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce il nuovo obiettivo e distingue risparmio hardware e accuratezza algoritmica.",
+            "it-expert": "Delimita la nozione di approssimazione prima del co-design geometrico."
+          }
+        },
+        {
+          "id": "twine-optimistic-qft-2",
+          "title": {
+            "it-intermediate": "I blocchi diventano gruppi fisici di atomi",
+            "it-expert": "I blocchi diventano gruppi fisici di atomi"
+          },
+          "paragraphs": [
+            "p0125",
+            "p0126",
+            "p0127",
+            "p0128",
+            "p0130",
+            "p0131",
+            "p0132",
+            "p0134",
+            "p0135",
+            "p0136",
+            "p0129",
+            "p0133"
+          ],
+          "meaning": {
+            "it-intermediate": "Ogni patch contiene atomi organizzati come un piccolo ladder. I QFT cambiano l’ordine dei qubit; spostamenti collettivi delle patch permettono alle coppie giuste di incontrarsi nel layer successivo. La figura distingue tempo, posizione e identità logica.",
+            "it-expert": "Le inversioni interne delle PTN e gli scambi di colonne determinano le permutazioni fra layer; nearest-neighbor patch exchanges si realizzano con traslazioni collettive."
+          },
+          "purpose": {
+            "it-intermediate": "Fa vedere perché la struttura dei blocchi algoritmici si traduce in un piano concreto di trasporto.",
+            "it-expert": "Verifica composizione corretta dei blocchi e costo del riordino."
+          }
+        },
+        {
+          "id": "twine-optimistic-qft-3",
+          "title": {
+            "it-intermediate": "Il compromesso sul parametro m",
+            "it-expert": "Il compromesso sul parametro m"
+          },
+          "paragraphs": [
+            "p0137",
+            "p0138",
+            "p0139",
+            "p0140"
+          ],
+          "meaning": {
+            "it-intermediate": "Blocchi piccoli consumano meno gate e riducono il costo fisico, ma cambiano l’insieme di stati per cui la trasformazione riproduce fedelmente la QFT. La fidelity hardware del circuito va letta insieme alla sua approssimazione algoritmica. Una variante ulteriore è rimandata a lavoro futuro.",
+            "it-expert": "Il beneficio del count quasi lineare e della parallelizzazione va combinato con l’errore OQFT dipendente da m; la variante solo-QFTm non è sviluppata qui."
+          },
+          "purpose": {
+            "it-intermediate": "Evita di interpretare il miglioramento del grafico come la stessa trasformazione esatta ottenuta gratis.",
+            "it-expert": "Separa fidelity di implementazione e accuratezza della trasformazione obiettivo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0142",
+        "why": {
+          "it-intermediate": "Ricondurre QFT e OQFT al principio generale di co-design.",
+          "it-expert": "Ricondurre QFT e OQFT al principio generale di co-design."
+        }
+      }
+    },
+    {
+      "id": "twine-outlook",
+      "title": {
+        "it-intermediate": "V · Risultati e possibili estensioni",
+        "it-expert": "V · Risultati e possibili estensioni"
+      },
+      "goal": {
+        "it-intermediate": "Ricondurre QFT e OQFT al principio generale di co-design.",
+        "it-expert": "Ricondurre QFT e OQFT al principio generale di co-design."
+      },
+      "steps": [
+        {
+          "id": "twine-outlook-1",
+          "title": {
+            "it-intermediate": "Che cosa è dimostrato e che cosa resta aperto",
+            "it-expert": "Che cosa è dimostrato e che cosa resta aperto"
+          },
+          "paragraphs": [
+            "p0142",
+            "p0143",
+            "p0144",
+            "p0145",
+            "p0146",
+            "p0147",
+            "p0148",
+            "p0150"
+          ],
+          "meaning": {
+            "it-intermediate": "Le applicazioni analizzate sono QFT e OQFT sui modelli hardware descritti. Architetture a zone, QEC, QAOA, aritmetica e IQP mostrano possibili usi del framework; non ricevono tutte la stessa analisi di risorse nel paper. Seguono i ringraziamenti.",
+            "it-expert": "La conclusione estende il principio di compilazione parity-aware a ulteriori domini, distinguendo benchmark presentati e direzioni prospettate."
+          },
+          "purpose": {
+            "it-intermediate": "Riassume la portata del lavoro e orienta la lettura delle appendici.",
+            "it-expert": "Delimita l’evidenza per ciascun use-case."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0223",
+        "why": {
+          "it-intermediate": "Usare i dettagli supplementari per controllare le ipotesi del confronto principale.",
+          "it-expert": "Usare i dettagli supplementari per controllare le ipotesi del confronto principale."
+        }
+      }
+    },
+    {
+      "id": "twine-appendices",
+      "title": {
+        "it-intermediate": "Appendici · Verificare costi e generalizzazioni",
+        "it-expert": "Appendici · Verificare costi e generalizzazioni"
+      },
+      "goal": {
+        "it-intermediate": "Usare i dettagli supplementari per controllare le ipotesi del confronto principale.",
+        "it-expert": "Usare i dettagli supplementari per controllare le ipotesi del confronto principale."
+      },
+      "steps": [
+        {
+          "id": "twine-appendices-1",
+          "title": {
+            "it-intermediate": "A · La sequenza fisica CZSWAP",
+            "it-expert": "A · La sequenza fisica CZSWAP"
+          },
+          "paragraphs": [
+            "p0223",
+            "p0224",
+            "p0225",
+            "p0226",
+            "p0227",
+            "p0228",
+            "p0229"
+          ],
+          "meaning": {
+            "it-intermediate": "Le figure e le distanze mostrano come si scambiano i due atomi dopo il CZ e quali offset servono. La possibilità di tenere gli atomi vicini fra due CZ modifica il confronto dei trasferimenti.",
+            "it-expert": "Big moves, offset e handoff definiscono il confronto CZ/CZSWAP; l’appendice discute la variante con permanenza fra CZ consecutivi."
+          },
+          "purpose": {
+            "it-intermediate": "Esplicita il costo della primitiva che sostituisce il DCNOT.",
+            "it-expert": "Permette di controllare la sensibilità alle assunzioni operative."
+          }
+        },
+        {
+          "id": "twine-appendices-2",
+          "title": {
+            "it-intermediate": "B · Count e depth per layout",
+            "it-expert": "B · Count e depth per layout"
+          },
+          "paragraphs": [
+            "p0231",
+            "p0232",
+            "p0233",
+            "p0234",
+            "p0236"
+          ],
+          "meaning": {
+            "it-intermediate": "La tabella separa rotazioni globali, RZ, CZ e CZSWAP. Count totale e tipo di gate raccontano cose diverse; alcune formule sono fit numerici, con approssimazioni indicate per la griglia quadrata.",
+            "it-expert": "Le scalings dei layout distinguono count/depth e fit esatti sui dati da fit approssimati per CZ/CZSWAP square."
+          },
+          "purpose": {
+            "it-intermediate": "Rende consultabili le risorse dietro i grafici della QFT.",
+            "it-expert": "Supporta il confronto quantitativo senza promuovere ogni fit a teorema."
+          }
+        },
+        {
+          "id": "twine-appendices-3",
+          "title": {
+            "it-intermediate": "C · La soglia per OQFT",
+            "it-expert": "C · La soglia per OQFT"
+          },
+          "paragraphs": [
+            "p0238",
+            "p0239"
+          ],
+          "meaning": {
+            "it-intermediate": "La stessa competizione fra errori CZ, crosstalk e movimento viene verificata per i blocchi OQFT. Un rapporto mobile/statico sopra uno favorisce la versione mobile nel modello.",
+            "it-expert": "Il rapporto di fidelity OQFT64 esplora fCZ e fexc per più m."
+          },
+          "purpose": {
+            "it-intermediate": "Controlla se il compromesso visto per QFT esatta si ripresenta nel nuovo caso.",
+            "it-expert": "Estende l’analisi di sensibilità alle implementazioni a blocchi."
+          }
+        },
+        {
+          "id": "twine-appendices-4",
+          "title": {
+            "it-intermediate": "D · Aritmetica in base Fourier",
+            "it-expert": "D · Aritmetica in base Fourier"
+          },
+          "paragraphs": [
+            "p0241",
+            "p0242",
+            "p0243",
+            "p0244",
+            "p0245",
+            "p0246",
+            "p0247",
+            "p0248",
+            "p0249",
+            "p0251",
+            "p0252",
+            "p0253",
+            "p0254"
+          ],
+          "meaning": {
+            "it-intermediate": "Un’operazione aritmetica può cambiare base con QFT, applicare fasi che codificano il calcolo e tornare con QFT†. PTN ottimizza le QFT; due registri quantistici richiedono anche interazioni nel blocco diagonale. Un’analisi completa dell’aritmetica ottimistica è lasciata al futuro.",
+            "it-expert": "La forma QFT†DQFT separa costo del cambio di base e del diagonale; addizione classico-quantistica e quantistico-quantistica hanno diversi supporti delle fasi."
+          },
+          "purpose": {
+            "it-intermediate": "Illustra una generalizzazione concreta distinguendola dai benchmark già svolti.",
+            "it-expert": "Motiva il riuso delle PTN senza assumere già una resource analysis completa."
+          }
+        }
+      ]
+    }
   ]
 }

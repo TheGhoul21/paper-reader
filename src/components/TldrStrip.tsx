@@ -3,7 +3,10 @@ import { ChevronRightIcon } from "./icons";
 import type { Tldr } from "../types";
 
 /** The summary in the given language, else the first available (like explanations' variant fallback). */
-export function pickTldr(tldr: Record<string, Tldr> | undefined, language: string | undefined): Tldr | null {
+export function pickTldr(
+  tldr: Record<string, Tldr> | undefined,
+  language: string | undefined,
+): Tldr | null {
   if (!tldr) return null;
   return (language ? tldr[language] : undefined) ?? Object.values(tldr)[0] ?? null;
 }
@@ -40,7 +43,9 @@ export default function TldrStrip({ tldr }: { tldr: Tldr }) {
   return (
     <div ref={ref} className={`tldr-strip${open ? " is-open" : ""}`}>
       <button className="tldr-strip-bar" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-        <span className="tldr-strip-mark" aria-hidden>✦</span>
+        <span className="tldr-strip-mark" aria-hidden>
+          ✦
+        </span>
         <span className="tldr-strip-label">In breve</span>
         <span className="tldr-strip-idea">{open ? "" : tldr.idea}</span>
         <span className="tldr-strip-toggle">

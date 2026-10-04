@@ -32,5 +32,6 @@
       "result": "Servono molte meno operazioni dei metodi migliori noti, fino al minimo teorico quando tutti i qubit sono collegati, e i programmi non diventano più lunghi. Su chip reali (IQM) il programma QFT a 18 qubit dà ancora un risultato utile quando gli altri metodi danno solo rumore.",
       "why": "Vale per algoritmi importanti come QAOA, QFT e simulazione di sistemi fisici. Sui chip a fila unica resta un limite: scendere sotto un certo numero di operazioni sembra molto difficile."
     }
-  }
+  },
+  "sourceSha256": "06188e8b8e30fce87368afaa412b919e73409a649689d0f8722848d9b3305d10"
 }

@@ -75,5 +75,408 @@
       "evidence": ["p0115"],
       "dependsOn": ["gnn-placement"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "argon-overview",
+      "title": {
+        "it-intermediate": "La promessa di ARGON"
+      },
+      "goal": {
+        "it-intermediate": "Capire come ARGON sposta parte del lavoro del compilatore prima della compilazione del singolo circuito."
+      },
+      "steps": [
+        {
+          "id": "argon-overview-1",
+          "title": {
+            "it-intermediate": "Tre moduli, un obiettivo"
+          },
+          "paragraphs": [
+            "p0003"
+          ],
+          "meaning": {
+            "it-intermediate": "ARGON prepara disposizioni geometriche valide, sceglie fra esse con una rete neurale e genera movimenti degli atomi. Il prodotto finale è un programma eseguibile sul dispositivo."
+          },
+          "purpose": {
+            "it-intermediate": "Fissa la divisione del lavoro che organizzerà tutto il paper."
+          }
+        },
+        {
+          "id": "argon-overview-2",
+          "title": {
+            "it-intermediate": "Il collo di bottiglia"
+          },
+          "paragraphs": [
+            "p0008",
+            "p0011",
+            "p0012",
+            "p0013",
+            "p0014",
+            "p0015",
+            "p0016",
+            "p0017",
+            "p0018",
+            "p0019",
+            "p0020",
+            "p0021",
+            "p0022"
+          ],
+          "meaning": {
+            "it-intermediate": "La stessa scelta deve consentire gate paralleli e movimenti AOD senza incroci. Cercare insieme tutte le disposizioni e tutte le traiettorie costa troppo; guardare soltanto al layer corrente può peggiorare quelli successivi."
+          },
+          "purpose": {
+            "it-intermediate": "Motiva una pipeline che separi vincoli fisici invarianti e dipendenze del circuito."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0023",
+        "why": {
+          "it-intermediate": "Distinguere il circuito logico, le coordinate degli atomi e i movimenti collettivi consentiti dall’AOD."
+        }
+      }
+    },
+    {
+      "id": "argon-background",
+      "title": {
+        "it-intermediate": "II · Quali vincoli impone il dispositivo"
+      },
+      "goal": {
+        "it-intermediate": "Distinguere il circuito logico, le coordinate degli atomi e i movimenti collettivi consentiti dall’AOD."
+      },
+      "steps": [
+        {
+          "id": "argon-background-1",
+          "title": {
+            "it-intermediate": "Gate, geometria e trasporto"
+          },
+          "paragraphs": [
+            "p0023",
+            "p0024",
+            "p0026",
+            "p0027",
+            "p0029",
+            "p0030",
+            "p0031",
+            "p0032",
+            "p0033",
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038",
+            "p0040"
+          ],
+          "meaning": {
+            "it-intermediate": "Il raggio di interazione decide quali coppie possono eseguire un gate; il raggio di restrizione limita quali gate possono avvenire insieme. L’AOD muove righe e colonne con vincoli di ordine: una coppia vicina oggi può richiedere un trasporto scomodo domani."
+          },
+          "purpose": {
+            "it-intermediate": "Dà significato fisico ai vincoli che ARGON assegnerà a moduli diversi e spiega i limiti dei metodi precedenti."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0041",
+        "why": {
+          "it-intermediate": "Capire che cosa viene certificato una volta per un dato hardware e riutilizzato per molti circuiti."
+        }
+      }
+    },
+    {
+      "id": "argon-library",
+      "title": {
+        "it-intermediate": "III.A · La biblioteca di disposizioni"
+      },
+      "goal": {
+        "it-intermediate": "Capire che cosa viene certificato una volta per un dato hardware e riutilizzato per molti circuiti."
+      },
+      "steps": [
+        {
+          "id": "argon-library-1",
+          "title": {
+            "it-intermediate": "Separare il costo statico da quello dinamico"
+          },
+          "paragraphs": [
+            "p0041",
+            "p0042",
+            "p0043",
+            "p0045",
+            "p0046",
+            "p0047"
+          ],
+          "meaning": {
+            "it-intermediate": "La biblioteca contiene schemi geometrici di coppie compatibili con l’hardware. La selezione di quale qubit logico assegnare a ciascuna posizione dipende invece dal circuito e dalle sue interazioni future."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce i tre moduli senza confondere la validità geometrica di un candidato con la qualità dell’intera compilazione."
+          }
+        },
+        {
+          "id": "argon-library-2",
+          "title": {
+            "it-intermediate": "Il grafo dei conflitti"
+          },
+          "paragraphs": [
+            "p0048",
+            "p0049",
+            "p0050",
+            "p0051",
+            "p0052",
+            "p0055",
+            "p0053",
+            "p0056",
+            "p0057",
+            "p0058"
+          ],
+          "meaning": {
+            "it-intermediate": "Qui un nodo rappresenta un possibile gate su una coppia di siti fisici; un arco segnala due gate incompatibili in parallelo. Il solver cerca insiemi indipendenti di capacità massima, poi rotazioni e riflessioni ampliano la biblioteca."
+          },
+          "purpose": {
+            "it-intermediate": "Trasforma un problema di geometria in una ricerca discreta effettuata offline; le figure mostrano gli schemi che il modulo successivo valuterà."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0060",
+        "why": {
+          "it-intermediate": "Seguire come un candidato geometrico riceve un punteggio in funzione del circuito corrente e futuro."
+        }
+      }
+    },
+    {
+      "id": "argon-prediction",
+      "title": {
+        "it-intermediate": "III.B · Prevedere il costo dei prossimi layer"
+      },
+      "goal": {
+        "it-intermediate": "Seguire come un candidato geometrico riceve un punteggio in funzione del circuito corrente e futuro."
+      },
+      "steps": [
+        {
+          "id": "argon-prediction-1",
+          "title": {
+            "it-intermediate": "Che cosa vede la GNN"
+          },
+          "paragraphs": [
+            "p0060",
+            "p0061",
+            "p0062",
+            "p0063",
+            "p0064",
+            "p0065",
+            "p0066",
+            "p0067",
+            "p0068",
+            "p0069",
+            "p0070",
+            "p0071",
+            "p0072",
+            "p0073"
+          ],
+          "meaning": {
+            "it-intermediate": "I nodi codificano coordinate vecchie e nuove dei qubit; gli archi e i ritardi descrivono gate futuri entro una finestra. La rete aggrega queste informazioni per predire un costo di routing del candidato. La previsione non è ancora una traiettoria eseguibile."
+          },
+          "purpose": {
+            "it-intermediate": "Rende concreto il termine «foresight»: la scelta di oggi tiene conto dei movimenti che potrebbe imporre dopo."
+          }
+        },
+        {
+          "id": "argon-prediction-2",
+          "title": {
+            "it-intermediate": "Da rollout costosi a inferenza rapida"
+          },
+          "paragraphs": [
+            "p0074",
+            "p0075",
+            "p0077",
+            "p0078",
+            "p0079"
+          ],
+          "meaning": {
+            "it-intermediate": "Durante la preparazione si simulano scelte e movimenti futuri per produrre etichette di costo; la rete impara a predirle. In compilazione si valuta il modello addestrato al posto di ripetere quei rollout."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega da dove arrivano i target di training e perché la latenza online esclude il lavoro offline. Le etichette derivano da rollout euristici, non da un ottimo globale certificato."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0081",
+        "why": {
+          "it-intermediate": "Capire come la scelta della disposizione diventa una sequenza AOD legalmente eseguibile."
+        }
+      }
+    },
+    {
+      "id": "argon-router",
+      "title": {
+        "it-intermediate": "III.C · Dalle posizioni ai movimenti"
+      },
+      "goal": {
+        "it-intermediate": "Capire come la scelta della disposizione diventa una sequenza AOD legalmente eseguibile."
+      },
+      "steps": [
+        {
+          "id": "argon-router-1",
+          "title": {
+            "it-intermediate": "Sbloccare e parallelizzare"
+          },
+          "paragraphs": [
+            "p0081",
+            "p0082",
+            "p0083",
+            "p0084"
+          ],
+          "meaning": {
+            "it-intermediate": "Il router rompe dipendenze cicliche con un parcheggio temporaneo, sposta i qubit inattivi che ostacolano le traiettorie e raggruppa movimenti non conflittuali con una colorazione greedy."
+          },
+          "purpose": {
+            "it-intermediate": "Completa la pipeline: biblioteca e previsione scelgono dove andare, questo modulo stabilisce come arrivarci."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0085",
+        "why": {
+          "it-intermediate": "Leggere insieme qualità del programma prodotto, tempo di compilazione e costo della preparazione."
+        }
+      }
+    },
+    {
+      "id": "argon-evaluation",
+      "title": {
+        "it-intermediate": "IV · Che cosa dimostrano i benchmark"
+      },
+      "goal": {
+        "it-intermediate": "Leggere insieme qualità del programma prodotto, tempo di compilazione e costo della preparazione."
+      },
+      "steps": [
+        {
+          "id": "argon-evaluation-1",
+          "title": {
+            "it-intermediate": "Esperimenti e modello di errore"
+          },
+          "paragraphs": [
+            "p0085",
+            "p0086",
+            "p0087",
+            "p0088",
+            "p0089",
+            "p0090",
+            "p0091",
+            "p0093"
+          ],
+          "meaning": {
+            "it-intermediate": "Le famiglie di circuiti, i compilatori di confronto e il modello di fidelity stabiliscono il significato delle misure. La fidelity combina errori di gate, eccitazione, trasporto e decoerenza; non è una misura hardware diretta."
+          },
+          "purpose": {
+            "it-intermediate": "Definisce le condizioni entro cui interpretare i risultati."
+          }
+        },
+        {
+          "id": "argon-evaluation-2",
+          "title": {
+            "it-intermediate": "Risultati e contributo dei moduli"
+          },
+          "paragraphs": [
+            "p0095",
+            "p0096",
+            "p0097",
+            "p0098",
+            "p0099",
+            "p0100",
+            "p0103",
+            "p0105",
+            "p0101",
+            "p0107",
+            "p0108",
+            "p0109",
+            "p0112",
+            "p0104",
+            "p0110"
+          ],
+          "meaning": {
+            "it-intermediate": "Le tabelle confrontano stadi Rydberg, movimenti, fidelity modellata e latenza; la scomposizione del framework mostra come le diverse scelte contribuiscano al risultato."
+          },
+          "purpose": {
+            "it-intermediate": "Collega il miglioramento alle due decisioni centrali: preparare geometrie valide e scegliere con informazioni sul futuro."
+          }
+        },
+        {
+          "id": "argon-evaluation-3",
+          "title": {
+            "it-intermediate": "Ablazioni e scalabilità"
+          },
+          "paragraphs": [
+            "p0115",
+            "p0117",
+            "p0118",
+            "p0121",
+            "p0122",
+            "p0113",
+            "p0114",
+            "p0116",
+            "p0119",
+            "p0123"
+          ],
+          "meaning": {
+            "it-intermediate": "Le varianti del modello e le prove su griglie diverse verificano quanto contino previsione, dati di training e dimensione. Generare la biblioteca e il dataset e addestrare la rete richiede un costo separato dalla compilazione online."
+          },
+          "purpose": {
+            "it-intermediate": "Aiuta a distinguere la rapidità del compilatore già preparato dalla spesa necessaria per prepararlo e dalla generalizzazione misurata."
+          }
+        },
+        {
+          "id": "argon-evaluation-4",
+          "title": {
+            "it-intermediate": "Confronto con architetture a zone"
+          },
+          "paragraphs": [
+            "p0125",
+            "p0126",
+            "p0129",
+            "p0127"
+          ],
+          "meaning": {
+            "it-intermediate": "Il confronto con un approccio a zone richiede hardware e modelli differenti; gli autori confrontano le metriche che considerano compatibili e discutono l’estensione del framework."
+          },
+          "purpose": {
+            "it-intermediate": "Delimita il confronto: non tutte le colonne di due esperimenti su hardware diverso rappresentano la stessa quantità."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0130",
+        "why": {
+          "it-intermediate": "Ricondurre i risultati alla scelta architetturale iniziale e alle estensioni ancora da sviluppare."
+        }
+      }
+    },
+    {
+      "id": "argon-conclusion",
+      "title": {
+        "it-intermediate": "V · La conclusione"
+      },
+      "goal": {
+        "it-intermediate": "Ricondurre i risultati alla scelta architetturale iniziale e alle estensioni ancora da sviluppare."
+      },
+      "steps": [
+        {
+          "id": "argon-conclusion-1",
+          "title": {
+            "it-intermediate": "Che cosa portare via"
+          },
+          "paragraphs": [
+            "p0130",
+            "p0131"
+          ],
+          "meaning": {
+            "it-intermediate": "Il risultato centrale è la separazione fra certificazione geometrica offline, valutazione predittiva e routing euristico. Le estensioni verso altre configurazioni hardware restano una direzione di lavoro."
+          },
+          "purpose": {
+            "it-intermediate": "Chiude l’argomento senza trasformare i benchmark presentati in una garanzia universale."
+          }
+        }
+      ]
+    }
   ]
 }

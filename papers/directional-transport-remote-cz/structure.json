@@ -88,5 +88,447 @@
       "evidence": ["p0134"],
       "dependsOn": ["static-compiler", "dynamic-compiler"]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "abstract",
+      "title": {
+        "it-intermediate": "Abstract · Rendere veloci le CZ remote",
+        "it-expert": "Abstract · Rendere veloci le CZ remote"
+      },
+      "goal": {
+        "it-intermediate": "Capire come un canale di atomi ausiliari riduce il movimento necessario per far interagire qubit lontani.",
+        "it-expert": "Capire come un canale di atomi ausiliari riduce il movimento necessario per far interagire qubit lontani."
+      },
+      "steps": [
+        {
+          "id": "abstract-1",
+          "title": {
+            "it-intermediate": "Il canale trasporta un’eccitazione",
+            "it-expert": "Il canale trasporta un’eccitazione"
+          },
+          "paragraphs": [
+            "p0009"
+          ],
+          "meaning": {
+            "it-intermediate": "I qubit sono atomi intrappolati. Il directional transport propaga un’eccitazione Rydberg lungo atomi ausiliari predisposti, mentre gli AOD configurano fisicamente il percorso.",
+            "it-expert": "Il DT propaga coerentemente un’eccitazione su un corridoio ancilla in antiblockade; gli AOD provvedono a setup e micro-allineamento."
+          },
+          "purpose": {
+            "it-intermediate": "Anticipa la separazione fra preparazione lenta del canale ed esecuzione rapida delle interazioni.",
+            "it-expert": "Introduce il co-design di primitive DT e AOD per remote CZ su architetture zonate."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0014",
+        "why": {
+          "it-intermediate": "Identificare il collo di bottiglia e il motivo per cui DT e AOD devono essere coordinati.",
+          "it-expert": "Identificare il collo di bottiglia e il motivo per cui DT e AOD devono essere coordinati."
+        }
+      }
+    },
+    {
+      "id": "introduction",
+      "title": {
+        "it-intermediate": "1 · Perché il movimento domina il costo",
+        "it-expert": "1 · Perché il movimento domina il costo"
+      },
+      "goal": {
+        "it-intermediate": "Identificare il collo di bottiglia e il motivo per cui DT e AOD devono essere coordinati.",
+        "it-expert": "Identificare il collo di bottiglia e il motivo per cui DT e AOD devono essere coordinati."
+      },
+      "steps": [
+        {
+          "id": "introduction-1",
+          "title": {
+            "it-intermediate": "Spostare atomi e propagare stati",
+            "it-expert": "Spostare atomi e propagare stati"
+          },
+          "paragraphs": [
+            "p0014",
+            "p0015",
+            "p0011",
+            "p0012"
+          ],
+          "meaning": {
+            "it-intermediate": "Le zone sono regioni fisiche dell’array. Nel metodo tradizionale gli atomi viaggiano per eseguire porte; nel protocollo DT il segnale quantistico attraversa il canale di ancilla.",
+            "it-expert": "Lo shuttling inter-zona domina la latenza della CZ Rydberg locale; la facilitation permette di mediare la fase tramite ancilla."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra perché una porta veloce può appartenere a una procedura lenta, se si conta il trasporto.",
+            "it-expert": "Motiva il cambio di primitiva per l’entanglement remoto."
+          }
+        },
+        {
+          "id": "introduction-2",
+          "title": {
+            "it-intermediate": "Costruire solo i canali utili",
+            "it-expert": "Costruire solo i canali utili"
+          },
+          "paragraphs": [
+            "p0016",
+            "p0018",
+            "p0019",
+            "p0020"
+          ],
+          "meaning": {
+            "it-intermediate": "Un canale occupa siti e atomi ausiliari reali. Coprire in anticipo tutte le possibili coppie consumerebbe troppe risorse; il compilatore decide cosa predisporre e cosa riutilizzare.",
+            "it-expert": "Provisioning e mantenimento dei corridoi hanno costo spaziale e AOD; eleggibilità DT e fallback diretto selezionano le interazioni."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce la gestione dei canali come parte essenziale del vantaggio, soprattutto nella QFT.",
+            "it-expert": "Prepara le strategie statica e dinamica invece di assumere una topologia DT gratuita."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0023",
+        "why": {
+          "it-intermediate": "Capire cosa resta fermo, cosa si muove e dove le operazioni possono avvenire.",
+          "it-expert": "Capire cosa resta fermo, cosa si muove e dove le operazioni possono avvenire."
+        }
+      }
+    },
+    {
+      "id": "background",
+      "title": {
+        "it-intermediate": "2–3 · Le primitive e il loro compromesso",
+        "it-expert": "2–3 · Le primitive e il loro compromesso"
+      },
+      "goal": {
+        "it-intermediate": "Capire cosa resta fermo, cosa si muove e dove le operazioni possono avvenire.",
+        "it-expert": "Capire cosa resta fermo, cosa si muove e dove le operazioni possono avvenire."
+      },
+      "steps": [
+        {
+          "id": "background-1",
+          "title": {
+            "it-intermediate": "Zone fisiche e corridoi di ancilla",
+            "it-expert": "Zone fisiche e corridoi di ancilla"
+          },
+          "paragraphs": [
+            "p0023",
+            "p0025",
+            "p0026",
+            "p0027",
+            "p0028",
+            "p0029"
+          ],
+          "meaning": {
+            "it-intermediate": "Storage, entanglement e readout sono zone del processore. Il corridoio è una fila fisica di atomi; a propagarsi lungo la fila è l’eccitazione Rydberg.",
+            "it-expert": "Le zone delimitano le operazioni consentite; i corridoi statici realizzano hop facilitati dell’eccitazione con detuning controllato."
+          },
+          "purpose": {
+            "it-intermediate": "Dà un significato concreto a canale, hop e trasporto prima delle formule del protocollo.",
+            "it-expert": "Definisce il substrate su cui il compilatore pianifica remote CZ."
+          }
+        },
+        {
+          "id": "background-2",
+          "title": {
+            "it-intermediate": "AOD e DT lavorano in tempi diversi",
+            "it-expert": "AOD e DT lavorano in tempi diversi"
+          },
+          "paragraphs": [
+            "p0031",
+            "p0032",
+            "p0033",
+            "p0035"
+          ],
+          "meaning": {
+            "it-intermediate": "Gli AOD caricano gli atomi nella zona entangling e predispongono i canali. Il DT esegue le comunicazioni rapide su quei percorsi, con eventuali aggiustamenti locali.",
+            "it-expert": "Il bulk migration è concentrato nel setup; le primitive DT operano sulla topologia stabilita."
+          },
+          "purpose": {
+            "it-intermediate": "Collega il guadagno di latenza al costo di configurazione che il framework deve gestire.",
+            "it-expert": "Chiarisce il workflow ibrido e il confine fra routing meccanico ed esecuzione DT."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0037",
+        "why": {
+          "it-intermediate": "Seguire il percorso dell’eccitazione fino alla fase condizionata e al ripristino del controllo.",
+          "it-expert": "Seguire il percorso dell’eccitazione fino alla fase condizionata e al ripristino del controllo."
+        }
+      }
+    },
+    {
+      "id": "remote-cz",
+      "title": {
+        "it-intermediate": "4.1 · Come il canale realizza una CZ",
+        "it-expert": "4.1 · Come il canale realizza una CZ"
+      },
+      "goal": {
+        "it-intermediate": "Seguire il percorso dell’eccitazione fino alla fase condizionata e al ripristino del controllo.",
+        "it-expert": "Seguire il percorso dell’eccitazione fino alla fase condizionata e al ripristino del controllo."
+      },
+      "steps": [
+        {
+          "id": "remote-cz-1",
+          "title": {
+            "it-intermediate": "Map-in e hop verso il target",
+            "it-expert": "Map-in e hop verso il target"
+          },
+          "paragraphs": [
+            "p0037",
+            "p0038",
+            "p0039",
+            "p0040"
+          ],
+          "meaning": {
+            "it-intermediate": "Un impulso converte la componente |1⟩ del controllo in un’eccitazione Rydberg. Le ancilla la inoltrano fino a un sito vicino al target senza trasferire fisicamente il qubit di dati.",
+            "it-expert": "Map-in selettivo e swap facilitati |r,0⟩↔|0,r⟩ inoltrano l’eccitazione lungo L hop."
+          },
+          "purpose": {
+            "it-intermediate": "Prepara il segnale che condizionerà la fase del target.",
+            "it-expert": "Costruisce la prima metà del protocollo coerente."
+          }
+        },
+        {
+          "id": "remote-cz-2",
+          "title": {
+            "it-intermediate": "Fase condizionata e ritorno",
+            "it-expert": "Fase condizionata e ritorno"
+          },
+          "paragraphs": [
+            "p0041",
+            "p0042",
+            "p0043",
+            "p0044"
+          ],
+          "meaning": {
+            "it-intermediate": "Il target riceve un impulso la cui risonanza dipende dall’eccitazione vicina. Poi il percorso viene ripercorso al contrario e il controllo ritorna ai livelli computazionali.",
+            "it-expert": "Il 2π in facilitation imprime la fase; reverse DT e map-out ripristinano il controllo, con correzioni Z virtuali."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché il costo include andata e ritorno e cresce con il numero di hop.",
+            "it-expert": "Deriva la durata del remote CZ dalla sequenza completa, evitando di contare solo la propagazione in avanti."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0046",
+        "why": {
+          "it-intermediate": "Passare dal protocollo fisico alla scelta di siti, canali e movimenti compatibili.",
+          "it-expert": "Passare dal protocollo fisico alla scelta di siti, canali e movimenti compatibili."
+        }
+      }
+    },
+    {
+      "id": "static-compiler",
+      "title": {
+        "it-intermediate": "4.2 · Configurare e riutilizzare una topologia",
+        "it-expert": "4.2 · Configurare e riutilizzare una topologia"
+      },
+      "goal": {
+        "it-intermediate": "Passare dal protocollo fisico alla scelta di siti, canali e movimenti compatibili.",
+        "it-expert": "Passare dal protocollo fisico alla scelta di siti, canali e movimenti compatibili."
+      },
+      "steps": [
+        {
+          "id": "static-compiler-1",
+          "title": {
+            "it-intermediate": "Assegnare qubit e ancilla ai siti",
+            "it-expert": "Assegnare qubit e ancilla ai siti"
+          },
+          "paragraphs": [
+            "p0046",
+            "p0047",
+            "p0048",
+            "p0049",
+            "p0050"
+          ],
+          "meaning": {
+            "it-intermediate": "Il placement associa i qubit logici a coordinate fisiche. La priorità privilegia i qubit usati presto; i canali definiscono i siti in cui disporre gli atomi di relay.",
+            "it-expert": "Il placement pesato sullo schedule e il costo dominato dalle colonne allineano i qubit ai DT channel heads."
+          },
+          "purpose": {
+            "it-intermediate": "Concentra il costo del movimento nella preparazione di una topologia riutilizzabile.",
+            "it-expert": "Minimizza il costo della migrazione iniziale e delle future remote CZ."
+          }
+        },
+        {
+          "id": "static-compiler-2",
+          "title": {
+            "it-intermediate": "Movimenti paralleli e costo complessivo",
+            "it-expert": "Movimenti paralleli e costo complessivo"
+          },
+          "paragraphs": [
+            "p0051",
+            "p0052"
+          ],
+          "meaning": {
+            "it-intermediate": "Nel grafo dei conflitti ogni nodo è un movimento proposto; gli archi indicano movimenti incompatibili. Il router seleziona gruppi compatibili e il modello somma tempi ed errori.",
+            "it-expert": "MIS greedy e parking multi-stage schedulano le move primitives; il timing alimenta la stima di fedeltà."
+          },
+          "purpose": {
+            "it-intermediate": "Verifica che la configurazione possa essere eseguita e che il risparmio di moto abbia un effetto sulle metriche.",
+            "it-expert": "Chiude la strategia statica con vincoli hardware e costo end-to-end."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0054",
+        "why": {
+          "it-intermediate": "Capire perché interazioni che cambiano nel tempo richiedono un canale aggiornabile.",
+          "it-expert": "Capire perché interazioni che cambiano nel tempo richiedono un canale aggiornabile."
+        }
+      }
+    },
+    {
+      "id": "dynamic-qft",
+      "title": {
+        "it-intermediate": "4.3 · Adattare il canale al pattern della QFT",
+        "it-expert": "4.3 · Adattare il canale al pattern della QFT"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché interazioni che cambiano nel tempo richiedono un canale aggiornabile.",
+        "it-expert": "Capire perché interazioni che cambiano nel tempo richiedono un canale aggiornabile."
+      },
+      "steps": [
+        {
+          "id": "dynamic-qft-1",
+          "title": {
+            "it-intermediate": "Una finestra di interazioni che scorre",
+            "it-expert": "Una finestra di interazioni che scorre"
+          },
+          "paragraphs": [
+            "p0054",
+            "p0055",
+            "p0056",
+            "p0057"
+          ],
+          "meaning": {
+            "it-intermediate": "Nella QFT le coppie attive sono poche e cambiano fra stage. Il backbone è il percorso fisico del canale; i rami connettono gli estremi delle interazioni ai suoi siti.",
+            "it-expert": "Lo sliding interaction pattern della QFT guida anchor-column selection, shortest paths e classificazione DT/AOD."
+          },
+          "purpose": {
+            "it-intermediate": "Motiva l’aggiornamento locale del percorso invece di predisporre una rete completa per tutte le coppie.",
+            "it-expert": "Adatta il provisioning al workload e rende espliciti i fallback di fattibilità."
+          }
+        },
+        {
+          "id": "dynamic-qft-2",
+          "title": {
+            "it-intermediate": "Quali atomi possono fare da relay",
+            "it-expert": "Quali atomi possono fare da relay"
+          },
+          "paragraphs": [
+            "p0064",
+            "p0065",
+            "p0066"
+          ],
+          "meaning": {
+            "it-intermediate": "Flying ancilla e qubit non ancora usati sono risorse fisiche temporanee. Un pre-use qubit smette di fare da relay quando arriva la sua prima operazione logica.",
+            "it-expert": "Hungarian assignment e reuse delle channel/reserve ancilla mantengono il backbone; i pre-use qubit vengono ritirati al primo gate."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega come riutilizzare siti e atomi senza consumare una riserva illimitata.",
+            "it-expert": "Collega gestione delle risorse e scheduling logico nel regime dinamico."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0097",
+        "why": {
+          "it-intermediate": "Leggere i risultati separando beneficio del DT, costo del canale e differenze fra workload.",
+          "it-expert": "Leggere i risultati separando beneficio del DT, costo del canale e differenze fra workload."
+        }
+      }
+    },
+    {
+      "id": "evaluation",
+      "title": {
+        "it-intermediate": "5 · Durata e fedeltà nei confronti",
+        "it-expert": "5 · Durata e fedeltà nei confronti"
+      },
+      "goal": {
+        "it-intermediate": "Leggere i risultati separando beneficio del DT, costo del canale e differenze fra workload.",
+        "it-expert": "Leggere i risultati separando beneficio del DT, costo del canale e differenze fra workload."
+      },
+      "steps": [
+        {
+          "id": "evaluation-1",
+          "title": {
+            "it-intermediate": "Statico e dinamico risolvono compromessi diversi",
+            "it-expert": "Statico e dinamico risolvono compromessi diversi"
+          },
+          "paragraphs": [
+            "p0097",
+            "p0098",
+            "p0107",
+            "p0134",
+            "p0136",
+            "p0138"
+          ],
+          "meaning": {
+            "it-intermediate": "I grafici confrontano circuiti compilati sotto il modello hardware adottato. Il canale dinamico può richiedere più tempo DT del canale statico e ottenere comunque una fedeltà migliore.",
+            "it-expert": "I benchmark confrontano ZAC, ZAP ed Enola e poi static/dynamic DT sulla QFT sotto parametri condivisi."
+          },
+          "purpose": {
+            "it-intermediate": "Controlla i benefici complessivi senza identificare automaticamente il minimo tempo di canale con il miglior risultato.",
+            "it-expert": "Evidenzia il trade-off fra DT duration e fedeltà e la dipendenza dalla struttura delle interazioni."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0140",
+        "why": {
+          "it-intermediate": "Ricollegare il vantaggio alla coordinazione fra canali DT e movimento AOD.",
+          "it-expert": "Ricollegare il vantaggio alla coordinazione fra canali DT e movimento AOD."
+        }
+      }
+    },
+    {
+      "id": "conclusion",
+      "title": {
+        "it-intermediate": "6–7 · Il risultato del framework",
+        "it-expert": "6–7 · Il risultato del framework"
+      },
+      "goal": {
+        "it-intermediate": "Ricollegare il vantaggio alla coordinazione fra canali DT e movimento AOD.",
+        "it-expert": "Ricollegare il vantaggio alla coordinazione fra canali DT e movimento AOD."
+      },
+      "steps": [
+        {
+          "id": "conclusion-1",
+          "title": {
+            "it-intermediate": "Il contributo finale",
+            "it-expert": "Il contributo finale"
+          },
+          "paragraphs": [
+            "p0140"
+          ],
+          "meaning": {
+            "it-intermediate": "La proposta comprende una primitiva remote CZ e compilatori che organizzano la sua infrastruttura fisica. Le valutazioni riguardano i benchmark e le condizioni modellate.",
+            "it-expert": "Il contributo integra il protocollo DT con provisioning statico e aggiornamento dinamico dei canali."
+          },
+          "purpose": {
+            "it-intermediate": "Riassume dove la combinazione DT+AOD ha mostrato vantaggi.",
+            "it-expert": "Conclude l’argomento di co-design per i workload valutati."
+          }
+        },
+        {
+          "id": "conclusion-2",
+          "title": {
+            "it-intermediate": "Ringraziamenti",
+            "it-expert": "Ringraziamenti"
+          },
+          "paragraphs": [
+            "p0142"
+          ],
+          "meaning": {
+            "it-intermediate": "Qui sono indicate le persone ringraziate dagli autori.",
+            "it-expert": "Qui sono indicate le persone ringraziate dagli autori."
+          },
+          "purpose": {
+            "it-intermediate": "Completa le informazioni editoriali del paper.",
+            "it-expert": "Completa le informazioni editoriali del paper."
+          }
+        }
+      ]
+    }
   ]
 }

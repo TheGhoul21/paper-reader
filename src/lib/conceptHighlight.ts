@@ -1,4 +1,6 @@
 import type { PDFDocumentProxy } from "pdfjs-dist";
+import { waitForElement } from "./pdfNavigation.ts";
+import { pageText } from "./pdfText.ts";
 
 /** One occurrence of a concept in the PDF: its page and its position among that page's occurrences. */
 export interface Occurrence {
@@ -23,11 +25,13 @@ function pageTexts(doc: PDFDocumentProxy): Promise<string[]> {
     cached = (async () => {
       const pages: string[] = [];
       for (let n = 1; n <= doc.numPages; n++) {
-        const content = await (await doc.getPage(n)).getTextContent();
-        pages.push(content.items.map((i) => ("str" in i ? i.str + (i.hasEOL ? "\n" : "") : "")).join(""));
+        pages.push(await pageText(doc, n));
       }
       return pages;
-    })();
+    })().catch((error) => {
+      pageTextCache.delete(doc);
+      throw error;
+    });
     pageTextCache.set(doc, cached);
   }
   return cached;
@@ -39,10 +43,18 @@ function matchRanges(text: string, pattern: RegExp): [number, number][] {
 }
 
 /** All occurrences of `pattern` across the document, in page order. */
-export async function findOccurrences(doc: PDFDocumentProxy, pattern: RegExp): Promise<Occurrence[]> {
+export async function findOccurrences(
+  doc: PDFDocumentProxy,
+  pattern: RegExp,
+  signal?: AbortSignal,
+): Promise<Occurrence[]> {
+  if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
   const occurrences: Occurrence[] = [];
   (await pageTexts(doc)).forEach((text, i) => {
-    matchRanges(text, pattern).forEach((_, indexOnPage) => occurrences.push({ page: i + 1, indexOnPage }));
+    if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+    matchRanges(text, pattern).forEach((_, indexOnPage) =>
+      occurrences.push({ page: i + 1, indexOnPage }),
+    );
   });
   return occurrences;
 }
@@ -103,6 +115,7 @@ function markLayer(layer: HTMLElement, pattern: RegExp) {
     span.replaceChildren(fragment);
   }
   layer.dataset.conceptMarks = signature;
+  layer.dataset.conceptPattern = pattern.source;
 }
 
 /**
@@ -119,30 +132,35 @@ export function unmarkTextLayers(root: HTMLElement) {
   for (const layer of root.querySelectorAll<HTMLElement>(".textLayer")) {
     flatten(layer);
     delete layer.dataset.conceptMarks;
+    delete layer.dataset.conceptPattern;
   }
 }
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-/**
- * Scrolls an occurrence into view: first its page (triggering its lazy render), then — once the
- * text layer is up and marked — the occurrence itself, which is emphasized briefly.
- */
-export async function scrollToOccurrence(occurrence: Occurrence) {
+/** Wait for marks belonging to this concept; cancelled requests cannot touch newer marks. */
+export async function scrollToOccurrence(
+  occurrence: Occurrence,
+  signal?: AbortSignal,
+  pattern?: string,
+) {
+  if (signal?.aborted) return;
   const page = document.getElementById(`page-${occurrence.page}`);
   if (!page) return;
   page.scrollIntoView({ block: "center", behavior: "smooth" });
-  const deadline = Date.now() + 2500;
-  while (Date.now() < deadline) {
-    const marks = [...page.querySelectorAll<HTMLElement>(`mark.${MARK_CLASS}[data-occurrence="${occurrence.indexOnPage}"]`)];
-    if (marks.length > 0) {
-      marks[0].scrollIntoView({ block: "center", behavior: "smooth" });
-      for (const mark of marks) mark.classList.add("is-current");
-      setTimeout(() => marks.forEach((mark) => mark.classList.remove("is-current")), 1800);
-      return;
-    }
-    await sleep(100);
-  }
+  const find = () => {
+    const layer = page.querySelector<HTMLElement>(".textLayer");
+    if (!layer || (pattern !== undefined && layer.dataset.conceptPattern !== pattern)) return null;
+    return layer.querySelector<HTMLElement>(
+      `mark.${MARK_CLASS}[data-occurrence="${occurrence.indexOnPage}"]`,
+    );
+  };
+  const mark = await waitForElement(page, find, signal);
+  if (!mark || signal?.aborted) return;
+  mark.scrollIntoView({ block: "center", behavior: "smooth" });
+  mark.classList.add("is-current");
+  const clear = () => {
+    mark.classList.remove("is-current");
+    signal?.removeEventListener("abort", clear);
+  };
+  signal?.addEventListener("abort", clear, { once: true });
+  setTimeout(clear, 1800);
 }

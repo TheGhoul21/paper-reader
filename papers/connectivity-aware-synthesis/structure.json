@@ -189,5 +189,1082 @@
         "applications"
       ]
     }
+  ],
+  "readingGuide": [
+    {
+      "id": "connectivity-overview",
+      "title": {
+        "it-intermediate": "I · Dal problema logico alla connettività"
+      },
+      "goal": {
+        "it-intermediate": "Capire come un’interazione richiesta dal programma può essere realizzata con meno gate su un hardware limitato."
+      },
+      "steps": [
+        {
+          "id": "connectivity-overview-1",
+          "title": {
+            "it-intermediate": "La promessa delle Twine"
+          },
+          "paragraphs": [
+            "p0000",
+            "p0001",
+            "p0002",
+            "p0003",
+            "p0004",
+            "p0006",
+            "p0009",
+            "p0011",
+            "p0012"
+          ],
+          "meaning": {
+            "it-intermediate": "Il grafo del problema dice quali informazioni logiche devono interagire; il grafo hardware dice fra quali qubit fisici sono consentiti gate diretti. Le Twine muovono e combinano informazioni di parità sfruttando gli archi disponibili. Il paper confronterà count, depth e prestazioni rumorose."
+          },
+          "purpose": {
+            "it-intermediate": "Fissa gli oggetti che resteranno distinti nelle costruzioni e nei benchmark."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0014",
+        "why": {
+          "it-intermediate": "Capire come una rotazione locale può realizzare un’interazione logica fra molti qubit."
+        }
+      }
+    },
+    {
+      "id": "connectivity-labels",
+      "title": {
+        "it-intermediate": "II · Parità e ricodifica"
+      },
+      "goal": {
+        "it-intermediate": "Capire come una rotazione locale può realizzare un’interazione logica fra molti qubit."
+      },
+      "steps": [
+        {
+          "id": "connectivity-labels-1",
+          "title": {
+            "it-intermediate": "Le etichette sui fili"
+          },
+          "paragraphs": [
+            "p0014",
+            "p0015",
+            "p0016",
+            "p0018",
+            "p0019",
+            "p0021",
+            "p0023"
+          ],
+          "meaning": {
+            "it-intermediate": "Una label elenca gli indici logici la cui parità è codificata nel qubit fisico. Il CNOT combina target e control con differenza simmetrica, equivalente a XOR. I moments raggruppano gate eseguibili insieme. Le tabelle anticipano i risultati, non definiscono nuovi oggetti hardware."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce sia il contenuto delle etichette sia il significato temporale della profondità."
+          }
+        },
+        {
+          "id": "connectivity-labels-2",
+          "title": {
+            "it-intermediate": "Non disfare ogni codifica"
+          },
+          "paragraphs": [
+            "p0025",
+            "p0029",
+            "p0033",
+            "p0034",
+            "p0035",
+            "p0036",
+            "p0039",
+            "p0040"
+          ],
+          "meaning": {
+            "it-intermediate": "Dopo aver generato una label utile si inserisce RZ, poi si passa alla label successiva. Non serve tornare ogni volta alla configurazione iniziale. L’ordine delle rotazioni logiche commutanti è libero, ma cambia il costo fisico dei circuiti di ricodifica."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega il risparmio di gate e perché la sintesi cerca un percorso fra etichette."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0041",
+        "why": {
+          "it-intermediate": "Interpretare le metriche come costi per etichetta utile, non come fidelity o durata in secondi."
+        }
+      }
+    },
+    {
+      "id": "connectivity-metrics",
+      "title": {
+        "it-intermediate": "III · Che cosa misurano μ e ν"
+      },
+      "goal": {
+        "it-intermediate": "Interpretare le metriche come costi per etichetta utile, non come fidelity o durata in secondi."
+      },
+      "steps": [
+        {
+          "id": "connectivity-metrics-1",
+          "title": {
+            "it-intermediate": "Generare etichette costa gate e momenti"
+          },
+          "paragraphs": [
+            "p0041",
+            "p0042",
+            "p0046",
+            "p0048",
+            "p0050"
+          ],
+          "meaning": {
+            "it-intermediate": "μ normalizza il CNOT-count per numero di label richieste; ν normalizza la depth rispetto al parallelismo massimo di n qubit. Un CNOT può creare al massimo una label nuova. I limiti inferiori aiutano a capire quanto una costruzione si avvicini all’ottimo, sotto le ipotesi dichiarate."
+          },
+          "purpose": {
+            "it-intermediate": "Definisce il metro con cui verranno confrontate costruzioni e topologie."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0053",
+        "why": {
+          "it-intermediate": "Vedere come il DCNOT propaga una label e la combina con le altre lungo una linea."
+        }
+      }
+    },
+    {
+      "id": "connectivity-two-body",
+      "title": {
+        "it-intermediate": "IV.A · Generare tutte le coppie"
+      },
+      "goal": {
+        "it-intermediate": "Vedere come il DCNOT propaga una label e la combina con le altre lungo una linea."
+      },
+      "steps": [
+        {
+          "id": "connectivity-two-body-1",
+          "title": {
+            "it-intermediate": "Il blocco DCNOT e la catena"
+          },
+          "paragraphs": [
+            "p0053",
+            "p0054",
+            "p0056",
+            "p0058",
+            "p0059",
+            "p0060",
+            "p0061",
+            "p0063"
+          ],
+          "meaning": {
+            "it-intermediate": "DCNOT combina CNOT e scambio; due CNOT bastano a realizzarlo. La concatenazione trasporta una label di partenza lungo la linea e rende disponibili tutte le coppie che la contengono. È un circuito che usa una connettività fisica lineare."
+          },
+          "purpose": {
+            "it-intermediate": "Costruisce il meccanismo elementare del generatore."
+          }
+        },
+        {
+          "id": "connectivity-two-body-2",
+          "title": {
+            "it-intermediate": "Dalla catena alla rete pulita"
+          },
+          "paragraphs": [
+            "p0066",
+            "p0067",
+            "p0068",
+            "p0069",
+            "p0072"
+          ],
+          "meaning": {
+            "it-intermediate": "Ripetere catene su insiemi di qubit sempre più piccoli genera tutte le label a due corpi. Una catena finale decodifica fino a label singole, eventualmente in ordine permutato. «Clean» riguarda questo stato finale delle etichette."
+          },
+          "purpose": {
+            "it-intermediate": "Rende il blocco componibile con altre parti di un algoritmo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0074",
+        "why": {
+          "it-intermediate": "Seguire l’aggiunta di un indice speciale e il riuso della configurazione in uscita."
+        }
+      }
+    },
+    {
+      "id": "connectivity-three-body",
+      "title": {
+        "it-intermediate": "IV.B · Passare dalle coppie alle triple"
+      },
+      "goal": {
+        "it-intermediate": "Seguire l’aggiunta di un indice speciale e il riuso della configurazione in uscita."
+      },
+      "steps": [
+        {
+          "id": "connectivity-three-body-1",
+          "title": {
+            "it-intermediate": "La label speciale e la chiusura"
+          },
+          "paragraphs": [
+            "p0074",
+            "p0077",
+            "p0078",
+            "p0081",
+            "p0082",
+            "p0085",
+            "p0086",
+            "p0091",
+            "p0094"
+          ],
+          "meaning": {
+            "it-intermediate": "Una label fissata viene aggiunta alle coppie per produrre triple che la contengono. Il problema successivo è lasciare le altre label in una forma riutilizzabile: inizializzazione, rete modificata e decoding evitano trasporti inutili. Poi si cambia label speciale."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché la sezione dedica tanto spazio a input e output dei blocchi."
+          }
+        },
+        {
+          "id": "connectivity-three-body-2",
+          "title": {
+            "it-intermediate": "Sovrapporre i blocchi nel tempo"
+          },
+          "paragraphs": [
+            "p0097",
+            "p0100"
+          ],
+          "meaning": {
+            "it-intermediate": "Shifted concatenation permette di iniziare un blocco prima che il precedente sia del tutto terminato, purché i gate non condividano qubit nello stesso momento. Il count resta quello della costruzione; la depth può diminuire."
+          },
+          "purpose": {
+            "it-intermediate": "Collega la forma dei diagrammi alla possibilità reale di parallelismo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0108",
+        "why": {
+          "it-intermediate": "Capire come riutilizzare un generatore a k−1 corpi per costruirne uno a k corpi."
+        }
+      }
+    },
+    {
+      "id": "connectivity-k-body",
+      "title": {
+        "it-intermediate": "IV.C · La costruzione ricorsiva"
+      },
+      "goal": {
+        "it-intermediate": "Capire come riutilizzare un generatore a k−1 corpi per costruirne uno a k corpi."
+      },
+      "steps": [
+        {
+          "id": "connectivity-k-body-1",
+          "title": {
+            "it-intermediate": "Il caso a quattro corpi"
+          },
+          "paragraphs": [
+            "p0108",
+            "p0112",
+            "p0113",
+            "p0114",
+            "p0115",
+            "p0119",
+            "p0122",
+            "p0123"
+          ],
+          "meaning": {
+            "it-intermediate": "Si aggiunge una label speciale alle triple e si usano configurazioni e cleanup che permettono di ripetere il blocco. Le figure mostrano composizione e output, non soltanto una formula per il numero di gate."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce il caso concreto su cui poggia la ricorsione."
+          }
+        },
+        {
+          "id": "connectivity-k-body-2",
+          "title": {
+            "it-intermediate": "Generalizzare e leggere l’asintotica"
+          },
+          "paragraphs": [
+            "p0129",
+            "p0134",
+            "p0139",
+            "p0141",
+            "p0142"
+          ],
+          "meaning": {
+            "it-intermediate": "La costruzione ricicla i blocchi più piccoli, alternando indici speciali e scambi. Le metriche asintotiche descrivono il termine dominante; a n finito le correzioni, soprattutto sulla depth per k grande, possono essere rilevanti."
+          },
+          "purpose": {
+            "it-intermediate": "Distingue la legge generale dal costo di istanze realistiche prima di cambiare connettività."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0144",
+        "why": {
+          "it-intermediate": "Capire quale parte del lavoro della Twine diventa evitabile quando cambia il grafo hardware."
+        }
+      }
+    },
+    {
+      "id": "connectivity-topologies",
+      "title": {
+        "it-intermediate": "V · Usare gli archi in più"
+      },
+      "goal": {
+        "it-intermediate": "Capire quale parte del lavoro della Twine diventa evitabile quando cambia il grafo hardware."
+      },
+      "steps": [
+        {
+          "id": "connectivity-topologies-1",
+          "title": {
+            "it-intermediate": "All-to-all e SWAP virtuali"
+          },
+          "paragraphs": [
+            "p0144",
+            "p0145",
+            "p0146",
+            "p0147",
+            "p0152"
+          ],
+          "meaning": {
+            "it-intermediate": "Con accesso diretto a qualunque coppia non serve trasportare fisicamente le label lungo una linea. Una permutazione annotata dal software sostituisce lo SWAP del DCNOT; resta il CNOT che combina la parità."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra il caso limite in cui ogni gate può contribuire a una label utile e il count si avvicina al limite inferiore."
+          }
+        },
+        {
+          "id": "connectivity-topologies-2",
+          "title": {
+            "it-intermediate": "Backbone e vicini sulla griglia"
+          },
+          "paragraphs": [
+            "p0156",
+            "p0157",
+            "p0159",
+            "p0160",
+            "p0163"
+          ],
+          "meaning": {
+            "it-intermediate": "Un cammino Hamiltoniano visita tutti i nodi; un HGP può invece lasciare qubit come vicini del cammino. Il backbone usa DCNOT per portare avanti l’informazione; i vicini ricevono la parità con CNOT più economici. La griglia rappresenta collegamenti hardware."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega come più connettività riduce il costo senza richiedere all-to-all."
+          }
+        },
+        {
+          "id": "connectivity-topologies-3",
+          "title": {
+            "it-intermediate": "Ricollocare e decodificare le label"
+          },
+          "paragraphs": [
+            "p0169",
+            "p0175",
+            "p0183",
+            "p0185",
+            "p0192",
+            "p0199",
+            "p0200",
+            "p0202",
+            "p0203",
+            "p0204"
+          ],
+          "meaning": {
+            "it-intermediate": "Dopo una catena, le label devono occupare posizioni che i blocchi successivi possono raggiungere. Pigeonhole, initializer e decoder organizzano questi input e output. Ridurre count con gli archi extra può rendere peggiore l’allineamento temporale."
+          },
+          "purpose": {
+            "it-intermediate": "Completa la ricetta di adattamento e introduce il problema della depth."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0205",
+        "why": {
+          "it-intermediate": "Capire perché collegamenti in più e gate in meno non garantiscono automaticamente un circuito più breve."
+        }
+      }
+    },
+    {
+      "id": "connectivity-depth",
+      "title": {
+        "it-intermediate": "VI · Ridurre anche la profondità"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché collegamenti in più e gate in meno non garantiscono automaticamente un circuito più breve."
+      },
+      "steps": [
+        {
+          "id": "connectivity-depth-1",
+          "title": {
+            "it-intermediate": "Due cammini sul ladder"
+          },
+          "paragraphs": [
+            "p0205",
+            "p0206",
+            "p0208",
+            "p0209",
+            "p0213",
+            "p0214",
+            "p0216",
+            "p0217"
+          ],
+          "meaning": {
+            "it-intermediate": "Molti vicini di un backbone richiedono più operazioni prima di avanzare. Due cammini compatibili sul ladder permettono invece di distribuire il lavoro in parallelo. Qui ladder significa il grafo fisico con due linee e collegamenti trasversali."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega il motivo strutturale del vantaggio in count e depth e i requisiti aggiuntivi per generalizzarlo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0218",
+        "why": {
+          "it-intermediate": "Collegare i generatori di parità ai termini del problema e ai layer del driver."
+        }
+      }
+    },
+    {
+      "id": "connectivity-qaoa",
+      "title": {
+        "it-intermediate": "VII.A · Inserire le Twine in QAOA"
+      },
+      "goal": {
+        "it-intermediate": "Collegare i generatori di parità ai termini del problema e ai layer del driver."
+      },
+      "steps": [
+        {
+          "id": "connectivity-qaoa-1",
+          "title": {
+            "it-intermediate": "Fasi del problema e rotazioni del driver"
+          },
+          "paragraphs": [
+            "p0218",
+            "p0222",
+            "p0227",
+            "p0231",
+            "p0240",
+            "p0241"
+          ],
+          "meaning": {
+            "it-intermediate": "Le label a due o più corpi permettono di applicare le fasi del costo QUBO/HUBO con rotazioni locali. Il driver va inserito quando le informazioni richieste sono disponibili. Alternare generatori, riflessioni o aggiunti compatibili consente di sovrapporre i cicli."
+          },
+          "purpose": {
+            "it-intermediate": "Trasforma il generatore in un algoritmo completo e spiega il miglioramento della depth per ciclo."
+          }
+        },
+        {
+          "id": "connectivity-qaoa-2",
+          "title": {
+            "it-intermediate": "Se il problema è sparso"
+          },
+          "paragraphs": [
+            "p0246"
+          ],
+          "meaning": {
+            "it-intermediate": "Il generatore completo produce anche label inutili per un problema sparso. Il benchmark confronta il suo costo con transpiler generici variando la densità: il vantaggio non è garantito per ogni densità."
+          },
+          "purpose": {
+            "it-intermediate": "Delimita quando una soluzione esatta per interazioni dense resta competitiva."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0248",
+        "why": {
+          "it-intermediate": "Capire il vincolo di ordine che distingue la QFT dalle sole rotazioni diagonali commutanti."
+        }
+      }
+    },
+    {
+      "id": "connectivity-qft",
+      "title": {
+        "it-intermediate": "VII.B · Inserire le Twine nella QFT"
+      },
+      "goal": {
+        "it-intermediate": "Capire il vincolo di ordine che distingue la QFT dalle sole rotazioni diagonali commutanti."
+      },
+      "steps": [
+        {
+          "id": "connectivity-qft-1",
+          "title": {
+            "it-intermediate": "Seguire anche le etichette X"
+          },
+          "paragraphs": [
+            "p0248",
+            "p0249",
+            "p0250",
+            "p0251",
+            "p0253",
+            "p0254",
+            "p0255",
+            "p0256",
+            "p0257",
+            "p0258"
+          ],
+          "meaning": {
+            "it-intermediate": "La QFT combina fasi e Hadamard in un ordine preciso. Le Twine hanno proprietà sulle label X oltre che Z: queste permettono di inserire le rotazioni al momento corretto e adattare i blocchi a diverse topologie. Le figure sui grafi sparsi proseguono il confronto precedente."
+          },
+          "purpose": {
+            "it-intermediate": "Giustifica l’adattamento alla QFT senza assumere che tutte le sue operazioni possano essere riordinate liberamente."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0260",
+        "why": {
+          "it-intermediate": "Distinguere il costo della sintesi dall’errore di approssimazione del tempo evolutivo."
+        }
+      }
+    },
+    {
+      "id": "connectivity-simulation",
+      "title": {
+        "it-intermediate": "VII.C · Simulazione di Hamiltoniane"
+      },
+      "goal": {
+        "it-intermediate": "Distinguere il costo della sintesi dall’errore di approssimazione del tempo evolutivo."
+      },
+      "steps": [
+        {
+          "id": "connectivity-simulation-1",
+          "title": {
+            "it-intermediate": "Un layer Trotter con interazioni lunghe"
+          },
+          "paragraphs": [
+            "p0260",
+            "p0261",
+            "p0264",
+            "p0265"
+          ],
+          "meaning": {
+            "it-intermediate": "La decomposizione Suzuki/Trotter separa componenti del modello. I termini ZZ commutanti possono usare il generatore di coppie, mentre le rotazioni locali completano il layer. Risparmiare CNOT non elimina l’errore introdotto dalla decomposizione temporale."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra un secondo riuso della stessa struttura e delimita la sua accuratezza."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0266",
+        "why": {
+          "it-intermediate": "Leggere il modello di fidelity come una scelta di pesi fra due costi diversi."
+        }
+      }
+    },
+    {
+      "id": "connectivity-noise",
+      "title": {
+        "it-intermediate": "VIII.A · Come count e depth entrano nel rumore"
+      },
+      "goal": {
+        "it-intermediate": "Leggere il modello di fidelity come una scelta di pesi fra due costi diversi."
+      },
+      "steps": [
+        {
+          "id": "connectivity-noise-1",
+          "title": {
+            "it-intermediate": "Gate contro idle"
+          },
+          "paragraphs": [
+            "p0266",
+            "p0267",
+            "p0271",
+            "p0273",
+            "p0274"
+          ],
+          "meaning": {
+            "it-intermediate": "La stima assegna errori ai gate e agli intervalli in cui i qubit restano inattivi, assumendo rumore Markoviano non correlato. Layout più efficienti in count o in depth possono prevalere in regimi di rumore diversi."
+          },
+          "purpose": {
+            "it-intermediate": "Collega le metriche astratte alla previsione di qualità dell’esecuzione."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0276",
+        "why": {
+          "it-intermediate": "Capire che cosa viene preparato, misurato e confrontato nelle simulazioni QFT."
+        }
+      }
+    },
+    {
+      "id": "connectivity-numerics",
+      "title": {
+        "it-intermediate": "VIII.B · La verifica tramite simulazioni"
+      },
+      "goal": {
+        "it-intermediate": "Capire che cosa viene preparato, misurato e confrontato nelle simulazioni QFT."
+      },
+      "steps": [
+        {
+          "id": "connectivity-numerics-1",
+          "title": {
+            "it-intermediate": "Leggere gli assi della verifica"
+          },
+          "paragraphs": [
+            "p0276",
+            "p0277",
+            "p0279",
+            "p0283",
+            "p0287",
+            "p0288",
+            "p0289",
+            "p0290",
+            "p0291",
+            "p0292",
+            "p0295"
+          ],
+          "meaning": {
+            "it-intermediate": "Si preparano input con output QFT noto, si esegue il circuito rumoroso e si misura il risultato corretto per stimare la prestazione. Parametri di gate e rilassamento vengono variati; readout e altri effetti seguono le ipotesi dichiarate. Ladder e square possono scambiarsi il vantaggio."
+          },
+          "purpose": {
+            "it-intermediate": "Verifica la previsione del modello mantenendo distinti proxy analitico e statistica simulata."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0298",
+        "why": {
+          "it-intermediate": "Capire come la scelta dei qubit e le fluttuazioni del dispositivo condizionano il confronto."
+        }
+      }
+    },
+    {
+      "id": "connectivity-experiments",
+      "title": {
+        "it-intermediate": "VIII.C · La prova su hardware reale"
+      },
+      "goal": {
+        "it-intermediate": "Capire come la scelta dei qubit e le fluttuazioni del dispositivo condizionano il confronto."
+      },
+      "steps": [
+        {
+          "id": "connectivity-experiments-1",
+          "title": {
+            "it-intermediate": "Usare gli stessi qubit quando possibile"
+          },
+          "paragraphs": [
+            "p0298",
+            "p0299",
+            "p0302",
+            "p0303",
+            "p0304",
+            "p0305",
+            "p0306"
+          ],
+          "meaning": {
+            "it-intermediate": "Le esecuzioni IQM confrontano implementazioni compatibili sullo stesso insieme di qubit. Non ogni coppia di topologie può essere confrontata così. I risultati confermano vantaggi in alcuni casi, ma differenze fra qubit e campionamento possono modificare il quadro previsto."
+          },
+          "purpose": {
+            "it-intermediate": "Aggiunge evidenza sperimentale e spiega perché i risultati non replicano perfettamente il modello uniforme."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0307",
+        "why": {
+          "it-intermediate": "Ricollegare label, topologia e metriche senza trasformare una costruzione efficiente in un ottimo universale."
+        }
+      }
+    },
+    {
+      "id": "connectivity-conclusion",
+      "title": {
+        "it-intermediate": "IX · Che cosa portare via"
+      },
+      "goal": {
+        "it-intermediate": "Ricollegare label, topologia e metriche senza trasformare una costruzione efficiente in un ottimo universale."
+      },
+      "steps": [
+        {
+          "id": "connectivity-conclusion-1",
+          "title": {
+            "it-intermediate": "Risultato generale e limiti"
+          },
+          "paragraphs": [
+            "p0307",
+            "p0308",
+            "p0310",
+            "p0313",
+            "p0314"
+          ],
+          "meaning": {
+            "it-intermediate": "Gli autori forniscono ricette di sintesi adattabili e verifiche su QAOA, QFT e simulazione. L’all-to-all raggiunge il limite asintotico di count; sulle topologie locali esistono limiti e spazi ancora aperti fra costruzione e ottimo."
+          },
+          "purpose": {
+            "it-intermediate": "Riassume la portata delle affermazioni prima delle prove supplementari."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0315",
+        "why": {
+          "it-intermediate": "Consultare le definizioni precise quando un simbolo del corpo diventa ambiguo."
+        }
+      }
+    },
+    {
+      "id": "connectivity-appendix-a",
+      "title": {
+        "it-intermediate": "A · Il linguaggio formale"
+      },
+      "goal": {
+        "it-intermediate": "Consultare le definizioni precise quando un simbolo del corpo diventa ambiguo."
+      },
+      "steps": [
+        {
+          "id": "connectivity-appendix-a-1",
+          "title": {
+            "it-intermediate": "Circuito, riflessione, aggiunto e shift"
+          },
+          "paragraphs": [
+            "p0315",
+            "p0316",
+            "p0318",
+            "p0319",
+            "p0320",
+            "p0325",
+            "p0328",
+            "p0331",
+            "p0335",
+            "p0338"
+          ],
+          "meaning": {
+            "it-intermediate": "Un circuito specifica gate per momento. Riflettere gli indici dei qubit e invertire la sequenza col dagger sono operazioni diverse. La concatenazione con shift preserva l’operazione solo se i gate sovrapposti restano disgiunti."
+          },
+          "purpose": {
+            "it-intermediate": "Fissa le condizioni temporali delle costruzioni di depth."
+          }
+        },
+        {
+          "id": "connectivity-appendix-a-2",
+          "title": {
+            "it-intermediate": "Label, clean generator e metriche"
+          },
+          "paragraphs": [
+            "p0339",
+            "p0341",
+            "p0342",
+            "p0343",
+            "p0348",
+            "p0351",
+            "p0356",
+            "p0358",
+            "p0365",
+            "p0369"
+          ],
+          "meaning": {
+            "it-intermediate": "Una label è un sottoinsieme di indici con XOR come somma. Un generatore deve far comparire ogni label richiesta almeno una volta; clean richiede di restituire l’input fino a permutazione. μ e ν normalizzano count/depth per il compito svolto."
+          },
+          "purpose": {
+            "it-intermediate": "Precisa che generare una label non significa conservarle tutte simultaneamente."
+          }
+        },
+        {
+          "id": "connectivity-appendix-a-3",
+          "title": {
+            "it-intermediate": "Perché riflessioni e aggiunti si riusano"
+          },
+          "paragraphs": [
+            "p0370",
+            "p0371",
+            "p0375",
+            "p0377",
+            "p0379",
+            "p0380",
+            "p0384",
+            "p0389"
+          ],
+          "meaning": {
+            "it-intermediate": "I lemmi mostrano come riflessioni e circuiti inversi preservino o trasformino il set di label generate. Sono le identità che consentono di alternare blocchi nei generatori e nei cicli QAOA."
+          },
+          "purpose": {
+            "it-intermediate": "Giustifica le equivalenze usate per sovrapporre i blocchi."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0392",
+        "why": {
+          "it-intermediate": "Verificare l’azione esatta della costruzione più semplice."
+        }
+      }
+    },
+    {
+      "id": "connectivity-appendix-b",
+      "title": {
+        "it-intermediate": "B–C · Blocchi e generatore a due corpi"
+      },
+      "goal": {
+        "it-intermediate": "Verificare l’azione esatta della costruzione più semplice."
+      },
+      "steps": [
+        {
+          "id": "connectivity-appendix-b-1",
+          "title": {
+            "it-intermediate": "Definire i mattoni"
+          },
+          "paragraphs": [
+            "p0392",
+            "p0393",
+            "p0398",
+            "p0401",
+            "p0404",
+            "p0405",
+            "p0410"
+          ],
+          "meaning": {
+            "it-intermediate": "CNOT chains, DCNOT, Parity Twine chains e reti vengono definiti con indici e intervalli precisi. Le loro formule specificano quali label entrano, quali escono e dove si trovano."
+          },
+          "purpose": {
+            "it-intermediate": "Rende riproducibile la composizione schematica del corpo."
+          }
+        },
+        {
+          "id": "connectivity-appendix-b-2",
+          "title": {
+            "it-intermediate": "Dimostrare la generazione delle coppie"
+          },
+          "paragraphs": [
+            "p0411",
+            "p0412",
+            "p0415",
+            "p0417",
+            "p0420",
+            "p0421"
+          ],
+          "meaning": {
+            "it-intermediate": "L’analisi prova quali coppie compaiono durante la rete e come il decoder restituisce label singole. Count e depth seguono da queste sequenze e dai loro shift."
+          },
+          "purpose": {
+            "it-intermediate": "Chiude la correttezza e il costo del caso a due corpi."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0422",
+        "why": {
+          "it-intermediate": "Controllare gli invarianti che consentono la ricorsione."
+        }
+      }
+    },
+    {
+      "id": "connectivity-appendix-d",
+      "title": {
+        "it-intermediate": "D–E · Generatori a tre e più corpi"
+      },
+      "goal": {
+        "it-intermediate": "Controllare gli invarianti che consentono la ricorsione."
+      },
+      "steps": [
+        {
+          "id": "connectivity-appendix-d-1",
+          "title": {
+            "it-intermediate": "Il caso a tre corpi"
+          },
+          "paragraphs": [
+            "p0422",
+            "p0423",
+            "p0424",
+            "p0429",
+            "p0433",
+            "p0438",
+            "p0442"
+          ],
+          "meaning": {
+            "it-intermediate": "Le dimostrazioni esplicitano label speciale, configurazione d’ingresso, rete modificata e uscita riutilizzabile. Il generatore completo ripete i blocchi con un indice speciale diverso."
+          },
+          "purpose": {
+            "it-intermediate": "Giustifica che non manchino triple e che il risultato resti componibile."
+          }
+        },
+        {
+          "id": "connectivity-appendix-d-2",
+          "title": {
+            "it-intermediate": "La ricorsione per k arbitrario"
+          },
+          "paragraphs": [
+            "p0459",
+            "p0465",
+            "p0468",
+            "p0474",
+            "p0479",
+            "p0482",
+            "p0486",
+            "p0491",
+            "p0495",
+            "p0498",
+            "p0507",
+            "p0514",
+            "p0518"
+          ],
+          "meaning": {
+            "it-intermediate": "Le definizioni dei generatori speciali e clean formalizzano l’aggiunta di indici. Le prove per induzione trasferiscono proprietà e scalings dal caso base; le somme determinano i termini dominanti del costo."
+          },
+          "purpose": {
+            "it-intermediate": "Dà fondamento alla generalizzazione senza dover ridisegnare separatamente ogni k."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0528",
+        "why": {
+          "it-intermediate": "Seguire come la stessa ricetta cambia con backbone e vicini hardware."
+        }
+      }
+    },
+    {
+      "id": "connectivity-appendix-topology",
+      "title": {
+        "it-intermediate": "F–G · I costi sulle altre topologie"
+      },
+      "goal": {
+        "it-intermediate": "Seguire come la stessa ricetta cambia con backbone e vicini hardware."
+      },
+      "steps": [
+        {
+          "id": "connectivity-appendix-topology-1",
+          "title": {
+            "it-intermediate": "Heavy hexagon"
+          },
+          "paragraphs": [
+            "p0528",
+            "p0530",
+            "p0531",
+            "p0536"
+          ],
+          "meaning": {
+            "it-intermediate": "Un HGP raggiunge qubit anche quando non esiste un cammino Hamiltoniano che li attraversi tutti. Il decoder e i collegamenti ai vicini cambiano count e depth rispetto alla griglia."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra un caso concreto in cui ridurre tutto a una linea perderebbe qubit o archi utili."
+          }
+        },
+        {
+          "id": "connectivity-appendix-topology-2",
+          "title": {
+            "it-intermediate": "All-to-all e griglia: termini dominanti"
+          },
+          "paragraphs": [
+            "p0542",
+            "p0544",
+            "p0545",
+            "p0550",
+            "p0554",
+            "p0555",
+            "p0558",
+            "p0564"
+          ],
+          "meaning": {
+            "it-intermediate": "Il conteggio distingue DCNOT sul backbone e CNOT verso vicini. Lo shift fra blocchi determina la depth; nella griglia le forme asimmetriche richiedono attenzione per k maggiore di due."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega le origini dei valori nelle tabelle, separando costo dei gate e compatibilità temporale."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0569",
+        "why": {
+          "it-intermediate": "Capire perché il numero totale di momenti non descrive sempre tutto l’idle."
+        }
+      }
+    },
+    {
+      "id": "connectivity-appendix-noise",
+      "title": {
+        "it-intermediate": "H · Profondità effettiva e confronto rumoroso"
+      },
+      "goal": {
+        "it-intermediate": "Capire perché il numero totale di momenti non descrive sempre tutto l’idle."
+      },
+      "steps": [
+        {
+          "id": "connectivity-appendix-noise-1",
+          "title": {
+            "it-intermediate": "Quale layout conviene?"
+          },
+          "paragraphs": [
+            "p0569",
+            "p0571",
+            "p0580",
+            "p0581"
+          ],
+          "meaning": {
+            "it-intermediate": "Si somma il tempo effettivamente rilevante per ciascun qubit e si inserisce il risultato nella stima di fidelity. Il rapporto fra ladder e square produce una soglia dipendente dalla dimensione e dagli errori."
+          },
+          "purpose": {
+            "it-intermediate": "Rende controllabile il confine fra i regimi di vantaggio dei grafici."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0585",
+        "why": {
+          "it-intermediate": "Seguire la logica della prova senza perdersi nel conteggio dei casi."
+        }
+      }
+    },
+    {
+      "id": "connectivity-lower-bound",
+      "title": {
+        "it-intermediate": "I · Perché su una linea un gate per label non basta"
+      },
+      "goal": {
+        "it-intermediate": "Seguire la logica della prova senza perdersi nel conteggio dei casi."
+      },
+      "steps": [
+        {
+          "id": "connectivity-lower-bound-1",
+          "title": {
+            "it-intermediate": "Gate tipici e label nuove"
+          },
+          "paragraphs": [
+            "p0585",
+            "p0586",
+            "p0589",
+            "p0591",
+            "p0594",
+            "p0595",
+            "p0601"
+          ],
+          "meaning": {
+            "it-intermediate": "Il teorema assume una famiglia di label con proprietà precise, incluse molte label rispetto al numero di qubit. Un punto buono traccia una label utile vista per la prima volta; un gate tipico ne produce una nuova partendo da un target già buono."
+          },
+          "purpose": {
+            "it-intermediate": "Definisce la classificazione con cui la prova cercherà un costo inevitabile."
+          }
+        },
+        {
+          "id": "connectivity-lower-bound-2",
+          "title": {
+            "it-intermediate": "Due conteggi incompatibili con overhead nullo"
+          },
+          "paragraphs": [
+            "p0602",
+            "p0613",
+            "p0620"
+          ],
+          "meaning": {
+            "it-intermediate": "La prova conta i gate non tipici in due modi: limita quanto pochi possano essere e associa loro predecessori di gate tipici. Se ogni CNOT fosse quasi sempre utile, i due conteggi entrerebbero in contraddizione."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega la strategia del limite inferiore prima dei dettagli locali."
+          }
+        },
+        {
+          "id": "connectivity-lower-bound-3",
+          "title": {
+            "it-intermediate": "Perché la geometria lineare forza eccezioni"
+          },
+          "paragraphs": [
+            "p0625",
+            "p0626",
+            "p0636",
+            "p0640"
+          ],
+          "meaning": {
+            "it-intermediate": "Le disposizioni locali dei predecessori non possono essere tutte tipiche senza rigenerare una label già vista. Un gate non tipico può giustificare solo un numero limitato di casi: ne segue un overhead positivo. Il bound non prova che la costruzione proposta sia l’ottimo della linea."
+          },
+          "purpose": {
+            "it-intermediate": "Chiude il legame fra vincolo di connettività e limite asintotico, distinguendo bound e soluzione costruttiva."
+          }
+        }
+      ]
+    }
   ]
 }

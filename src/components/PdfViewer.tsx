@@ -1,7 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import type { PDFDocumentProxy } from "pdfjs-dist";
-import { pdfjsLib } from "../lib/pdfjs";
-import { findMatches, highlightMatchInDom, type SearchMatch } from "../lib/search";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useNarrow } from "../lib/useNarrow";
 import PageCanvas from "./PageCanvas";
 import NotesPane from "./NotesPane";
@@ -10,14 +7,31 @@ import NoteConnector from "./NoteConnector";
 import CitationPopover from "./CitationPopover";
 import ConceptPopover from "./ConceptPopover";
 import ConceptHighlightBar from "./ConceptHighlightBar";
-import { buildConceptMatcher, pdfSpellings, spellingPattern } from "../lib/concepts";
-import { findOccurrences, markTextLayers, scrollToOccurrence, unmarkTextLayers, type Occurrence } from "../lib/conceptHighlight";
+import { buildConceptMatcher } from "../lib/concepts";
 import { cardId, useReview } from "../lib/review";
 import { indexStructure } from "../lib/structure";
-import Toolbar, { type FitMode } from "./Toolbar";
-import type { Annotation, AnnotationTool, Concept, ConceptsIndex, Paragraph, PaperStructure, Tldr, Variant } from "../types";
+import { paragraphAnchors, paragraphsByPage } from "../lib/paragraphs.ts";
+import Toolbar from "./Toolbar";
+import { usePdfDocument } from "../lib/usePdfDocument";
+import { usePdfViewport } from "../lib/usePdfViewport";
+import { usePdfSearch } from "../lib/usePdfSearch";
+import { useConceptHighlight } from "../lib/useConceptHighlight";
+import { useReaderSession, type NotesTab } from "../lib/readerSession";
+import { scrollToParagraph, waitForElement } from "../lib/pdfNavigation";
+import { useReaderPreferences } from "../lib/readingProgress";
+import type {
+  Annotation,
+  AnnotationTool,
+  Concept,
+  ConceptsIndex,
+  Paragraph,
+  PaperStructure,
+  Tldr,
+  Variant,
+} from "../types";
 
 interface Props {
+  readerNavigation?: ReactNode;
   title: string;
   authors: string[];
   pdfUrl: string;
@@ -32,6 +46,8 @@ interface Props {
   slug: string;
   /** Paragraph to open on load (the reader's `?p=` link, e.g. from another paper's glossary). */
   initialParagraphId: string | null;
+  initialPage?: number;
+  onProgress?: (progress: { page: number; paragraphId: string | null; variant: string }) => void;
   variants: Variant[];
   variant: string;
   onVariantChange: (key: string) => void;
@@ -41,13 +57,8 @@ interface Props {
   onDeleteAnnotation: (id: string) => void;
 }
 
-const DEFAULT_SCALE = 1.5;
-const MIN_SCALE = 0.75;
-const MAX_SCALE = 5.25;
-const HEADER_TOOLBAR_ALLOWANCE = 100; // rough space taken by the toolbar + margins, for "fit page" (no app header/heading above it anymore)
-const TLDR_STRIP_HEIGHT = 35; // the "In breve" strip under the toolbar, when the paper has a summary
-
 export default function PdfViewer({
+  readerNavigation,
   title,
   authors,
   pdfUrl,
@@ -58,6 +69,8 @@ export default function PdfViewer({
   tldr,
   slug,
   initialParagraphId,
+  initialPage,
+  onProgress,
   variants,
   variant,
   onVariantChange,
@@ -66,108 +79,31 @@ export default function PdfViewer({
   onUpdateAnnotation,
   onDeleteAnnotation,
 }: Props) {
-  const [doc, setDoc] = useState<PDFDocumentProxy | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [hoverId, setHoverId] = useState<string | null>(null);
   const narrow = useNarrow();
-  // Desktop: the comments column is shown or hidden. Narrow screens: it's a bottom sheet,
-  // always present, and this says whether it's expanded (it starts collapsed to a bar).
-  const [notesOpen, setNotesOpen] = useState(!narrow);
-  const [citation, setCitation] = useState<{ text: string; pageNumber: number; anchor: { x: number; y: number } } | null>(null);
-  const [openConcept, setOpenConcept] = useState<{ id: string; fromParagraphId: string | null; anchor: { x: number; y: number } } | null>(
-    null,
-  );
-  // The glossary concept currently highlighted in the PDF, with its occurrences (null while counting).
-  const [highlight, setHighlight] = useState<{ conceptId: string; occurrences: Occurrence[] | null; index: number } | null>(null);
-  const [scale, setScale] = useState(DEFAULT_SCALE);
-  // A phone can't show a page at 100% — start fitted to the width there.
-  const [fitMode, setFitMode] = useState<FitMode>(narrow ? "width" : "none");
-  const [nativeSize, setNativeSize] = useState<{ width: number; height: number } | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [session, dispatch] = useReaderSession(!narrow);
+  const { activeId, notesOpen, tab: notesTab, threadOnly, focusClaim, previousId } = session;
+  const [hoverId, setHoverId] = useState<string | null>(null);
+  const [citation, setCitation] = useState<{
+    text: string;
+    pageNumber: number;
+    anchor: { x: number; y: number };
+  } | null>(null);
+  const [openConcept, setOpenConcept] = useState<{
+    id: string;
+    fromParagraphId: string | null;
+    anchor: { x: number; y: number };
+  } | null>(null);
   const [tool, setTool] = useState<AnnotationTool>("none");
   const [color, setColor] = useState("#e8916a");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchMatches, setSearchMatches] = useState<SearchMatch[]>([]);
-  const [searchIndex, setSearchIndex] = useState(0);
-  // The two independently scrolling panes. State (not refs) so NoteConnector re-runs once they mount.
   const [pdfPane, setPdfPane] = useState<HTMLDivElement | null>(null);
   const [notesPane, setNotesPane] = useState<HTMLElement | null>(null);
+  const { doc, nativeSize, error, retry } = usePdfDocument(pdfUrl);
+  const viewport = usePdfViewport(doc, nativeSize, pdfPane);
+  const { scale, currentPage } = viewport;
+  const search = usePdfSearch(doc);
+  const preferences = useReaderPreferences();
 
-  useEffect(() => {
-    let cancelled = false;
-    const task = pdfjsLib.getDocument(pdfUrl);
-    task.promise.then(
-      (loaded) => {
-        if (!cancelled) setDoc(loaded);
-      },
-      (err) => {
-        if (!cancelled) setError(String(err));
-      },
-    );
-    return () => {
-      cancelled = true;
-      task.destroy();
-    };
-  }, [pdfUrl]);
-
-  useEffect(() => {
-    if (!doc) return;
-    doc.getPage(1).then((page) => {
-      const viewport = page.getViewport({ scale: 1 });
-      setNativeSize({ width: viewport.width, height: viewport.height });
-    });
-  }, [doc]);
-
-  // Recompute fit-width / fit-page whenever the mode, native page size, or window size changes.
-  useEffect(() => {
-    if (fitMode === "none" || !nativeSize) return;
-    function apply() {
-      if (!nativeSize) return;
-      const padding = pdfPane ? parseFloat(getComputedStyle(pdfPane).paddingLeft) * 2 : 32;
-      const containerWidth = (pdfPane?.clientWidth ?? window.innerWidth) - padding;
-      if (fitMode === "width") {
-        setScale(containerWidth / nativeSize.width);
-      } else {
-        const availableHeight = window.innerHeight - HEADER_TOOLBAR_ALLOWANCE - (tldr ? TLDR_STRIP_HEIGHT : 0);
-        setScale(Math.min(containerWidth / nativeSize.width, availableHeight / nativeSize.height));
-      }
-    }
-    apply();
-    window.addEventListener("resize", apply);
-    return () => window.removeEventListener("resize", apply);
-  }, [fitMode, nativeSize, notesOpen, pdfPane, tldr]);
-
-  useEffect(() => {
-    if (!doc || !searchQuery.trim()) {
-      setSearchMatches([]);
-      setSearchIndex(0);
-      return;
-    }
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      findMatches(doc, searchQuery).then((matches) => {
-        if (cancelled) return;
-        setSearchMatches(matches);
-        setSearchIndex(0);
-        if (matches.length > 0) highlightMatchInDom(matches[0], searchQuery);
-      });
-    }, 300);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [doc, searchQuery]);
-
-  const byPage = useMemo(() => {
-    const map = new Map<number, Paragraph[]>();
-    for (const p of paragraphs) {
-      const list = map.get(p.page) ?? [];
-      list.push(p);
-      map.set(p.page, list);
-    }
-    return map;
-  }, [paragraphs]);
+  const byPage = useMemo(() => paragraphsByPage(paragraphs), [paragraphs]);
 
   // Global paragraph numbers (reading order across the paper), shown as matching badges on the
   // PDF and on each comment; and which paragraphs start a new section (those comments show its name).
@@ -186,25 +122,48 @@ export default function PdfViewer({
 
   const conceptMatcher = useMemo(() => buildConceptMatcher(concepts), [concepts]);
 
-  // Argument map: "Il filo" (dim everything off the thread) and the claim focused in the map.
+  // Argument map: "Il filo" marks its passages and filters comments; focus selects one claim.
   const summary = pickTldr(tldr, variants.find((v) => v.key === variant)?.language);
-  const structureIndex = useMemo(() => indexStructure(structure, paragraphs), [structure, paragraphs]);
-  const [threadOnly, setThreadOnly] = useState(false);
-  const [focusClaim, setFocusClaim] = useState<string | null>(null);
-  const [notesTab, setNotesTab] = useState<"notes" | "map">("notes");
+  const structureIndex = useMemo(
+    () => indexStructure(structure, paragraphs),
+    [structure, paragraphs],
+  );
   const focusSet = useMemo(
-    () => (focusClaim && structureIndex ? new Set(structureIndex.paragraphsOf.get(focusClaim) ?? []) : null),
+    () =>
+      focusClaim && structureIndex
+        ? new Set(structureIndex.paragraphsOf.get(focusClaim) ?? [])
+        : null,
     [focusClaim, structureIndex],
   );
   const threadSet = threadOnly && structureIndex ? structureIndex.thread : null;
 
   // Focusing a claim brings its first paragraph into view in the PDF.
   function handleFocusClaim(claimId: string | null) {
-    setFocusClaim(claimId);
+    dispatch({ type: "focus-claim", id: claimId });
     const first = claimId ? structureIndex?.paragraphsOf.get(claimId)?.[0] : undefined;
     const paragraph = first ? paragraphs.find((p) => p.id === first) : undefined;
-    if (paragraph) scrollPdfToParagraph(paragraph);
+    if (paragraph) scrollToParagraph(pdfPane, paragraph);
   }
+
+  function handleNotesTab(tab: NotesTab) {
+    dispatch({ type: "tab", tab });
+    setHoverId(null);
+  }
+  useEffect(() => {
+    if (!notesPane || !notesOpen) return;
+    const controller = new AbortController();
+    if (notesTab === "notes" && activeId) {
+      void waitForElement(
+        notesPane,
+        () => document.getElementById(`note-${activeId}`),
+        controller.signal,
+      ).then((target) => {
+        if (!controller.signal.aborted)
+          target?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    } else notesPane.scrollTo({ top: 0 });
+    return () => controller.abort();
+  }, [activeId, notesTab, notesPane, notesOpen, threadOnly]);
 
   // Review deck (library-wide, localStorage): notes and glossary cards can be added from here.
   // A paragraph with recall questions is reviewed through them; otherwise as "explain paragraph N".
@@ -212,7 +171,10 @@ export default function PdfViewer({
   const paragraphCards = (paragraphId: string) => {
     const paragraph = paragraphs.find((p) => p.id === paragraphId);
     return paragraph?.recall?.length
-      ? paragraph.recall.map((r) => ({ kind: "question" as const, refId: `${paragraphId}#${r.id}` }))
+      ? paragraph.recall.map((r) => ({
+          kind: "question" as const,
+          refId: `${paragraphId}#${r.id}`,
+        }))
       : [{ kind: "paragraph" as const, refId: paragraphId }];
   };
   const inReview = (kind: "concept" | "paragraph", refId: string) =>
@@ -232,117 +194,68 @@ export default function PdfViewer({
   };
   // All of this paper's recall questions, for the "add them all" action in the notes pane.
   const allQuestions = useMemo(
-    () => paragraphs.flatMap((p) => (p.recall ?? []).map((r) => ({ kind: "question" as const, refId: `${p.id}#${r.id}` }))),
+    () =>
+      paragraphs.flatMap((p) =>
+        (p.recall ?? []).map((r) => ({ kind: "question" as const, refId: `${p.id}#${r.id}` })),
+      ),
     [paragraphs],
   );
-  const questionsInDeck = allQuestions.filter((c) => reviewCards[cardId(slug, c.kind, c.refId)]).length;
+  const questionsInDeck = allQuestions.filter(
+    (c) => reviewCards[cardId(slug, c.kind, c.refId)],
+  ).length;
 
-  const highlightConcept = highlight ? conceptMatcher.byId.get(highlight.conceptId) ?? null : null;
-  const highlightPattern = useMemo(() => (highlightConcept ? spellingPattern(pdfSpellings(highlightConcept)) : null), [highlightConcept]);
+  const conceptsView = useConceptHighlight(doc, pdfPane, conceptMatcher);
+  const { highlight, concept: highlightConcept } = conceptsView;
 
-  // Count the highlighted concept's occurrences over the whole document, then jump to the first.
-  useEffect(() => {
-    if (!doc || !highlightPattern) return;
-    let cancelled = false;
-    findOccurrences(doc, highlightPattern).then((occurrences) => {
-      if (cancelled) return;
-      setHighlight((h) => (h ? { ...h, occurrences, index: 0 } : h));
-      if (occurrences.length > 0) scrollToOccurrence(occurrences[0]);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [doc, highlightPattern]);
-
-  // Mark it in every text layer — including ones rendered later (lazy pages) or rebuilt (zoom).
-  useEffect(() => {
-    if (!pdfPane || !highlightPattern) return;
-    const pane = pdfPane;
-    let raf = 0;
-    const apply = () => markTextLayers(pane, highlightPattern);
-    apply();
-    // Marking is idempotent, so the mutations it causes itself settle after one extra pass.
-    const observer = new MutationObserver(() => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(apply);
-    });
-    observer.observe(pane, { childList: true, subtree: true });
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(raf);
-      unmarkTextLayers(pane);
-    };
-  }, [pdfPane, highlightPattern]);
-
-  function goToOccurrence(delta: number) {
-    if (!highlight?.occurrences?.length) return;
-    const count = highlight.occurrences.length;
-    const index = (highlight.index + delta + count) % count;
-    setHighlight({ ...highlight, index });
-    scrollToOccurrence(highlight.occurrences[index]);
-  }
-
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setActiveId(null);
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  function handleSelectParagraph(paragraph: Paragraph) {
+  function revealParagraph(paragraph: Paragraph, scrollPdf: boolean) {
     setCitation(null);
-    setActiveId(paragraph.id);
-    setNotesOpen(true);
-    // Wait for the (possibly just reopened) pane to lay out before scrolling its note into view.
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() =>
-        document.getElementById(`note-${paragraph.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }),
-      ),
-    );
+    dispatch({
+      type: "reveal",
+      id: paragraph.id,
+      inThread: structureIndex?.thread.has(paragraph.id) ?? false,
+    });
+    if (scrollPdf) scrollToParagraph(pdfPane, paragraph);
   }
-
-  // Clicking a comment brings its paragraph into view in the PDF pane, unless it already is.
-  function handleActivateNote(paragraph: Paragraph) {
-    setActiveId(paragraph.id);
-    scrollPdfToParagraph(paragraph);
-  }
-
-  function scrollPdfToParagraph(paragraph: Paragraph) {
-    const page = document.getElementById(`page-${paragraph.page + 1}`);
-    if (!pdfPane || !page) return;
-    const paneBox = pdfPane.getBoundingClientRect();
-    const pageBox = page.getBoundingClientRect();
-    const top = pageBox.top + Math.min(...paragraph.rects.map((r) => r[1])) * pageBox.height;
-    const bottom = pageBox.top + Math.max(...paragraph.rects.map((r) => r[3])) * pageBox.height;
-    if (top >= paneBox.top && bottom <= paneBox.bottom) return;
-    pdfPane.scrollBy({ top: top - paneBox.top - paneBox.height * 0.25, behavior: "smooth" });
-  }
-
-  // From the glossary: bring a paragraph into view in both panes and make it the active one.
-  function handleGoToParagraph(paragraph: Paragraph) {
-    setNotesOpen(true);
-    setNotesTab("notes");
-    handleActivateNote(paragraph);
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() =>
-        document.getElementById(`note-${paragraph.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }),
-      ),
-    );
-  }
-
-  // A `?p=` link: once page sizes are known, bring that paragraph up. The short delay lets every
-  // page placeholder take its real height first, so the scroll target doesn't move under us.
-  const initialJumpDone = useRef(false);
+  const handleSelectParagraph = (paragraph: Paragraph) => revealParagraph(paragraph, false);
+  const handleActivateNote = (paragraph: Paragraph) => revealParagraph(paragraph, true);
+  const handleGoToParagraph = handleActivateNote;
+  const initialJumpDone = useRef<string | null>(null);
   useEffect(() => {
-    if (!doc || !nativeSize || !initialParagraphId || initialJumpDone.current) return;
+    const destination = initialParagraphId ?? `page:${initialPage ?? 1}`;
+    if (!pdfPane || !nativeSize || initialJumpDone.current === destination) return;
+    // PageCanvas has actual placeholder dimensions at this point; no fixed rendering delay.
+    initialJumpDone.current = destination;
     const paragraph = paragraphs.find((p) => p.id === initialParagraphId);
-    if (!paragraph) return;
-    initialJumpDone.current = true;
-    const timer = setTimeout(() => handleGoToParagraph(paragraph), 400);
+    if (paragraph) {
+      dispatch({
+        type: "reveal",
+        id: paragraph.id,
+        inThread: structureIndex?.thread.has(paragraph.id) ?? false,
+      });
+      scrollToParagraph(pdfPane, paragraph);
+    } else viewport.jumpToPage(initialPage ?? 1);
+  }, [
+    pdfPane,
+    nativeSize,
+    initialParagraphId,
+    paragraphs,
+    initialPage,
+    structureIndex,
+    viewport,
+    dispatch,
+  ]);
+  useEffect(() => {
+    if (!initialJumpDone.current || !doc) return;
+    const timer = setTimeout(() => {
+      const active = paragraphs.find((p) => p.id === activeId);
+      const paragraphId =
+        active && paragraphAnchors(active).some((anchor) => anchor.page === currentPage - 1)
+          ? activeId
+          : null;
+      onProgress?.({ page: currentPage, paragraphId, variant });
+    }, 1000);
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doc, nativeSize, initialParagraphId, paragraphs]);
+  }, [doc, currentPage, activeId, variant, onProgress, paragraphs]);
 
   const annotationsByPage = useMemo(() => {
     const map = new Map<number, Annotation[]>();
@@ -354,106 +267,85 @@ export default function PdfViewer({
     return map;
   }, [annotations]);
 
-  // Track which page is "current" from scroll position: the last page whose top has
-  // scrolled past a reference line just below the PDF pane's top edge. Pages are a simple
-  // top-to-bottom DOM-ordered stack, so this is monotonic and doesn't need IntersectionObserver.
-  useEffect(() => {
-    if (!doc || !pdfPane) return;
-    const pane = pdfPane;
-    const numPages = doc.numPages;
-    let raf = 0;
-    function computeCurrentPage() {
-      const referenceY = pane.getBoundingClientRect().top + 10;
-      let best = 1;
-      for (let n = 1; n <= numPages; n++) {
-        const el = document.getElementById(`page-${n}`);
-        if (!el) continue;
-        if (el.getBoundingClientRect().top <= referenceY) best = n;
-        else break;
-      }
-      setCurrentPage((prev) => (prev !== best ? best : prev));
-    }
-    function onScroll() {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(computeCurrentPage);
-    }
-    pane.addEventListener("scroll", onScroll, { passive: true });
-    computeCurrentPage();
-    return () => {
-      pane.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-    // Re-run after zoom changes too: page positions shift without a scroll event firing.
-  }, [doc, scale, pdfPane]);
-
   const connectorParagraphs = useMemo(() => {
-    const byId = (id: string | null) => (id ? paragraphs.find((p) => p.id === id) ?? null : null);
+    const byId = (id: string | null) => (id ? (paragraphs.find((p) => p.id === id) ?? null) : null);
     return { active: byId(activeId), hover: hoverId !== activeId ? byId(hoverId) : null };
   }, [paragraphs, activeId, hoverId]);
 
-  function handleZoom(delta: number) {
-    setFitMode("none");
-    setScale((s) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, s + delta)));
-  }
-
   function handleJumpToPage(page: number) {
-    if (!doc) return;
-    const clamped = Math.min(doc.numPages, Math.max(1, page));
-    document.getElementById(`page-${clamped}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setCurrentPage(clamped);
+    viewport.jumpToPage(page);
     setCitation(null);
   }
-
-  function goToMatch(index: number) {
-    if (searchMatches.length === 0) return;
-    const clamped = (index + searchMatches.length) % searchMatches.length;
-    setSearchIndex(clamped);
-    highlightMatchInDom(searchMatches[clamped], searchQuery);
-  }
-
-  if (error) return <p className="state-message">Could not load PDF: {error}</p>;
-  if (!doc) return <p className="state-message">Loading PDF…</p>;
+  if (error)
+    return (
+      <>
+        {readerNavigation}
+        <div className="state-message" role="alert">
+          <p>Impossibile caricare il PDF: {error}</p>
+          <button onClick={retry}>Riprova</button>
+        </div>
+      </>
+    );
+  if (!doc || !nativeSize)
+    return (
+      <>
+        {readerNavigation}
+        <p className="state-message" role="status">
+          Caricamento PDF…
+        </p>
+      </>
+    );
 
   return (
-    <div className="pdf-viewer-wrapper">
+    <div
+      className="pdf-viewer-wrapper"
+      style={
+        {
+          "--reader-font-size": `${preferences.fontSize}px`,
+          "--notes-width": `${preferences.panelWidth}px`,
+        } as CSSProperties
+      }
+    >
+      {readerNavigation}
       <Toolbar
-        title={title}
-        authors={authors}
-        pdfUrl={pdfUrl}
-        scale={scale}
-        onZoom={handleZoom}
-        fitMode={fitMode}
-        onFit={setFitMode}
-        currentPage={currentPage}
-        numPages={doc.numPages}
-        onJumpToPage={handleJumpToPage}
-        searchQuery={searchQuery}
-        onSearchQueryChange={setSearchQuery}
-        searchMatchCount={searchMatches.length}
-        searchMatchIndex={searchIndex}
-        onSearchNext={() => goToMatch(searchIndex + 1)}
-        onSearchPrev={() => goToMatch(searchIndex - 1)}
-        tool={tool}
-        onToolChange={setTool}
-        color={color}
-        onColorChange={setColor}
+        paper={{ title, authors, pdfUrl }}
+        viewport={viewport}
+        pageCount={doc.numPages}
+        search={search}
+        tools={{ tool, color, setTool, setColor }}
         variants={variants}
         variant={variant}
         onVariantChange={onVariantChange}
-        notesOpen={notesOpen}
-        onToggleNotes={() => setNotesOpen((o) => !o)}
-        thread={structureIndex ? { on: threadOnly, onToggle: () => setThreadOnly((t) => !t) } : undefined}
+        panel={{ open: notesOpen, toggle: () => dispatch({ type: "toggle-panel" }) }}
+        preferences={preferences}
+        thread={
+          structureIndex
+            ? { on: threadOnly, onToggle: () => dispatch({ type: "toggle-thread" }) }
+            : undefined
+        }
+        onBack={
+          previousId
+            ? () => {
+                const p = paragraphs.find((p) => p.id === previousId);
+                if (p) {
+                  dispatch({ type: "back", inThread: structureIndex?.thread.has(p.id) ?? false });
+                  scrollToParagraph(pdfPane, p);
+                }
+              }
+            : undefined
+        }
       />
       {summary && <TldrStrip tldr={summary} />}
       <div className="reader-body">
         {highlight && highlightConcept && (
           <ConceptHighlightBar
             term={highlightConcept.term}
-            count={highlight.occurrences?.length ?? null}
+            count={highlight.error ? 0 : (highlight.occurrences?.length ?? null)}
+            error={highlight.error}
             index={highlight.index}
-            onPrev={() => goToOccurrence(-1)}
-            onNext={() => goToOccurrence(1)}
-            onClose={() => setHighlight(null)}
+            onPrev={() => conceptsView.move(-1)}
+            onNext={() => conceptsView.move(1)}
+            onClose={conceptsView.close}
           />
         )}
         <div className="pdf-viewer" ref={setPdfPane}>
@@ -463,6 +355,7 @@ export default function PdfViewer({
               doc={doc}
               pageNumber={pageNumber}
               scale={scale}
+              defaultSize={nativeSize}
               paragraphs={byPage.get(pageNumber - 1) ?? []}
               numbers={numbers}
               activeId={activeId}
@@ -501,12 +394,12 @@ export default function PdfViewer({
                     structure,
                     index: structureIndex,
                     tab: notesTab,
-                    onTab: setNotesTab,
+                    onTab: handleNotesTab,
                     threadOnly,
+                    onToggleThread: () => dispatch({ type: "toggle-thread" }),
                     focusClaim,
                     onFocusClaim: (id) => {
                       handleFocusClaim(id);
-                      if (id) setNotesTab("map");
                     },
                     onGoToParagraph: (id) => {
                       const paragraph = paragraphs.find((p) => p.id === id);
@@ -538,15 +431,29 @@ export default function PdfViewer({
               const paragraph = paragraphs.find((p) => p.id === id);
               if (paragraph) handleGoToParagraph(paragraph);
             }}
-            sheet={narrow ? { expanded: notesOpen, onToggle: () => setNotesOpen((o) => !o) } : undefined}
+            sheet={
+              narrow
+                ? { expanded: notesOpen, onToggle: () => dispatch({ type: "toggle-panel" }) }
+                : undefined
+            }
           />
         )}
       </div>
       {notesOpen && !narrow && connectorParagraphs.hover && (
-        <NoteConnector paragraph={connectorParagraphs.hover} pdfPane={pdfPane} notesPane={notesPane} variant="hover" />
+        <NoteConnector
+          paragraph={connectorParagraphs.hover}
+          pdfPane={pdfPane}
+          notesPane={notesPane}
+          variant="hover"
+        />
       )}
       {notesOpen && !narrow && connectorParagraphs.active && (
-        <NoteConnector paragraph={connectorParagraphs.active} pdfPane={pdfPane} notesPane={notesPane} variant="active" />
+        <NoteConnector
+          paragraph={connectorParagraphs.active}
+          pdfPane={pdfPane}
+          notesPane={notesPane}
+          variant="active"
+        />
       )}
       {citation && (
         <CitationPopover
@@ -559,28 +466,30 @@ export default function PdfViewer({
           onClose={() => setCitation(null)}
         />
       )}
-      {openConcept && conceptMatcher.byId.has(openConcept.id) && (() => {
-        const concept = conceptMatcher.byId.get(openConcept.id)!;
-        const definedIn = paragraphs.find((p) => p.id === concept.definedIn) ?? null;
-        return (
-          <ConceptPopover
-            concept={concept}
-            variant={variant}
-            definedIn={definedIn}
-            definedInNumber={definedIn ? numbers.get(definedIn.id) : undefined}
-            fromParagraphId={openConcept.fromParagraphId}
-            related={concept.related.flatMap((id) => conceptMatcher.byId.get(id) ?? [])}
-            elsewhere={(conceptsIndex[concept.id] ?? []).filter((e) => e.slug !== slug)}
-            anchor={openConcept.anchor}
-            onGoToParagraph={handleGoToParagraph}
-            onSelectConcept={(id) => setOpenConcept((c) => (c ? { ...c, id } : c))}
-            onHighlight={() => setHighlight({ conceptId: concept.id, occurrences: null, index: 0 })}
-            inReview={inReview("concept", concept.id)}
-            onToggleReview={() => toggleReview("concept", concept.id)}
-            onClose={() => setOpenConcept(null)}
-          />
-        );
-      })()}
+      {openConcept &&
+        conceptMatcher.byId.has(openConcept.id) &&
+        (() => {
+          const concept = conceptMatcher.byId.get(openConcept.id)!;
+          const definedIn = paragraphs.find((p) => p.id === concept.definedIn) ?? null;
+          return (
+            <ConceptPopover
+              concept={concept}
+              variant={variant}
+              definedIn={definedIn}
+              definedInNumber={definedIn ? numbers.get(definedIn.id) : undefined}
+              fromParagraphId={openConcept.fromParagraphId}
+              related={concept.related.flatMap((id) => conceptMatcher.byId.get(id) ?? [])}
+              elsewhere={(conceptsIndex[concept.id] ?? []).filter((e) => e.slug !== slug)}
+              anchor={openConcept.anchor}
+              onGoToParagraph={handleGoToParagraph}
+              onSelectConcept={(id) => setOpenConcept((c) => (c ? { ...c, id } : c))}
+              onHighlight={() => conceptsView.open(concept.id)}
+              inReview={inReview("concept", concept.id)}
+              onToggleReview={() => toggleReview("concept", concept.id)}
+              onClose={() => setOpenConcept(null)}
+            />
+          );
+        })()}
     </div>
   );
 }

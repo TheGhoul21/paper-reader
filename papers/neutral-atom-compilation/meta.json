@@ -29,5 +29,6 @@
       "result": "Fino alla metà dei passaggi di comando, circa la metà degli spostamenti di atomi, oltre il 30% di risparmio su un algoritmo di ottimizzazione molto usato (QAOA), e tutto calcolato in meno di un secondo anche su griglie da 200×200.",
       "why": "Meno passaggi vuol dire meno tempo e meno errori sulla macchina vera. Alcune garanzie valgono solo sotto una congettura matematica non ancora dimostrata."
     }
-  }
+  },
+  "sourceSha256": "e108e614e57c206bdbc697fbb5f94fcd067e7ac02b8ab9a13bcca2d52527a5f6"
 }

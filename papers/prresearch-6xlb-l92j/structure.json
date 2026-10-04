@@ -14,8 +14,19 @@
         "it-intermediate": "Dopo una CNOT il secondo qubit porta la parità dei due, quindi una rotazione su di lui agisce su entrambi. Tracciare le etichette di X e Z di ogni qubit basta per conoscere l'effetto di qualsiasi operatore di Pauli.",
         "it-expert": "Etichette sopra e sotto ogni filo (X e Z); con soli CNOT ℓ_Z coincide con la parity label; 2n+1 generatori bastano per tutto il gruppo di Pauli."
       },
-      "statedIn": ["p0009", "p0014"],
-      "evidence": ["p0015", "p0016", "p0017", "p0019", "p0020", "p0024", "p0035"],
+      "statedIn": [
+        "p0009",
+        "p0014"
+      ],
+      "evidence": [
+        "p0015",
+        "p0016",
+        "p0017",
+        "p0019",
+        "p0020",
+        "p0024",
+        "p0035"
+      ],
       "dependsOn": []
     },
     {
@@ -28,9 +39,22 @@
         "it-intermediate": "Hadamard scambia X e Z, S trasforma X in Y, la CNOT mescola le parità: poche regole applicate sempre alle etichette correnti, senza ricalcolare nulla del passato.",
         "it-expert": "Decomposizione di Pauli di C₂†g_jC₂ nei generatori, poi prodotto delle label precedenti; sul flow tableau sono operazioni di riga (Prop. B11)."
       },
-      "statedIn": ["p0027"],
-      "evidence": ["p0025", "p0026", "p0028", "p0029", "p0465", "p0467", "p0468", "p0469"],
-      "dependsOn": ["flow-labels"]
+      "statedIn": [
+        "p0027"
+      ],
+      "evidence": [
+        "p0025",
+        "p0026",
+        "p0028",
+        "p0029",
+        "p0465",
+        "p0467",
+        "p0468",
+        "p0469"
+      ],
+      "dependsOn": [
+        "flow-labels"
+      ]
     },
     {
       "id": "circuit-design",
@@ -42,9 +66,21 @@
         "it-intermediate": "Una rotazione su un solo qubit può realizzare una rotazione logica su molti qubit se l'etichetta lo dice; si passa da una codifica all'altra invece di tornare ogni volta alla codifica di partenza.",
         "it-expert": "Anche prodotti di Pauli fisici hanno effetto logico leggibile; con il gruppo di Clifford intero ogni stringa di Pauli logica si può portare su un singolo qubit."
       },
-      "statedIn": ["p0033", "p0038"],
-      "evidence": ["p0030", "p0031", "p0032", "p0034", "p0037"],
-      "dependsOn": ["flow-labels", "efficient-updates"]
+      "statedIn": [
+        "p0033",
+        "p0038"
+      ],
+      "evidence": [
+        "p0030",
+        "p0031",
+        "p0032",
+        "p0034",
+        "p0037"
+      ],
+      "dependsOn": [
+        "flow-labels",
+        "efficient-updates"
+      ]
     },
     {
       "id": "co-contra",
@@ -56,9 +92,23 @@
         "it-intermediate": "Il tableau classico dice dove va un operatore logico; le etichette di flusso dicono cosa fa logicamente un operatore fisico, che è quello che serve per interpretare le rotazioni. Ottenere l'altra direzione di solito richiede di invertire una tabella.",
         "it-expert": "Tracciando solo i generatori, una direzione è per prodotto e l'altra richiede inversione; la coniugazione non preferita richiede un insieme generatore simplettico minimale. Questo classifica i tableau della letteratura (Rem. B14)."
       },
-      "statedIn": ["p0048", "p0055"],
-      "evidence": ["p0040", "p0041", "p0045", "p0047", "p0058", "p0310", "p0311", "p0361"],
-      "dependsOn": ["flow-labels"]
+      "statedIn": [
+        "p0048",
+        "p0055"
+      ],
+      "evidence": [
+        "p0040",
+        "p0041",
+        "p0045",
+        "p0047",
+        "p0058",
+        "p0310",
+        "p0311",
+        "p0361"
+      ],
+      "dependsOn": [
+        "flow-labels"
+      ]
     },
     {
       "id": "combined",
@@ -70,9 +120,20 @@
         "it-intermediate": "Il costo resta O(n) per gate, con pochissima memoria in più. È il tableau di flusso \"combinato\", utile soprattutto con stabilizzatori e qubit ausiliari.",
         "it-expert": "Eq. 12–17; il combined flow tableau evita sia l'inversione a runtime sia il doppio tableau (App. C.1)."
       },
-      "statedIn": ["p0059", "p0062"],
-      "evidence": ["p0060", "p0061", "p0508", "p0509"],
-      "dependsOn": ["co-contra", "efficient-updates"]
+      "statedIn": [
+        "p0059",
+        "p0062"
+      ],
+      "evidence": [
+        "p0060",
+        "p0061",
+        "p0508",
+        "p0509"
+      ],
+      "dependsOn": [
+        "co-contra",
+        "efficient-updates"
+      ]
     },
     {
       "id": "stabilizer-codes",
@@ -84,9 +145,20 @@
         "it-intermediate": "Un qubit ausiliario a |0⟩ parte con etichetta vuota; le CNOT gli scrivono sopra parità di altri qubit, rendendo disponibili operazioni logiche su più qubit con rotazioni singole.",
         "it-expert": "Il tracking dell'encoding rivela operazioni logiche multi-qubit implementabili localmente (es. LHZ); marcature per generatori stabilizzati o anticommutanti."
       },
-      "statedIn": ["p0064", "p0069"],
-      "evidence": ["p0065", "p0066", "p0068", "p0070", "p0539"],
-      "dependsOn": ["flow-labels"]
+      "statedIn": [
+        "p0064",
+        "p0069"
+      ],
+      "evidence": [
+        "p0065",
+        "p0066",
+        "p0068",
+        "p0070",
+        "p0539"
+      ],
+      "dependsOn": [
+        "flow-labels"
+      ]
     },
     {
       "id": "equivalences",
@@ -98,9 +170,18 @@
         "it-intermediate": "Nell'esempio del modello di Heisenberg, con un qubit ausiliario tutti e tre i termini si eseguono in parallelo con rotazioni su qubit singoli.",
         "it-expert": "Serve il tracking combinato: la direzione covariante per lo stabilizzatore fisico, quella contravariante per l'effetto logico dei candidati (Fig. 2)."
       },
-      "statedIn": ["p0072", "p0075"],
-      "evidence": ["p0067", "p0071"],
-      "dependsOn": ["combined", "stabilizer-codes"]
+      "statedIn": [
+        "p0072",
+        "p0075"
+      ],
+      "evidence": [
+        "p0067",
+        "p0071"
+      ],
+      "dependsOn": [
+        "combined",
+        "stabilizer-codes"
+      ]
     },
     {
       "id": "foundations",
@@ -112,9 +193,1463 @@
         "it-intermediate": "Ogni operatore di Pauli ha un'unica forma standard (fase, X, Z) e quindi un'unica etichetta; la \"forma vettoriale\" permette i calcoli, e un semplice conteggio dice se due operatori commutano.",
         "it-expert": "Forma standard i^κ X̄^ξ Z̄^ζ (A2), Def. A1 di ⊛ (A7), ω(ρ̃(P), ρ̃(Q)) = ν ⟺ PQ = (−1)^ν QP. È la base dei tableau dell'App. B."
       },
-      "statedIn": ["p0103"],
-      "evidence": ["p0090", "p0091", "p0106", "p0200", "p0201"],
+      "statedIn": [
+        "p0103"
+      ],
+      "evidence": [
+        "p0090",
+        "p0091",
+        "p0106",
+        "p0200",
+        "p0201"
+      ],
       "dependsOn": []
+    }
+  ],
+  "readingGuide": [
+    {
+      "id": "flow-overview",
+      "title": {
+        "it-intermediate": "I · Quale informazione vogliamo seguire",
+        "it-expert": "I · Quale informazione vogliamo seguire"
+      },
+      "goal": {
+        "it-intermediate": "Capire che le etichette descrivono il significato logico delle operazioni, senza simulare tutta la funzione d’onda.",
+        "it-expert": "Capire che le etichette descrivono il significato logico delle operazioni, senza simulare tutta la funzione d’onda."
+      },
+      "steps": [
+        {
+          "id": "flow-overview-1",
+          "title": {
+            "it-intermediate": "Il circuito come codifica che cambia",
+            "it-expert": "Il circuito come codifica che cambia"
+          },
+          "paragraphs": [
+            "p0006",
+            "p0008",
+            "p0009",
+            "p0012"
+          ],
+          "meaning": {
+            "it-intermediate": "I Clifford cambiano la codifica; le etichette permettono di leggere quale operazione logica realizza una rotazione fisica in quel momento. Il corpo usa etichette sui fili, le appendici ne formalizzano la versione in tableau.",
+            "it-expert": "Il formalismo segue automorfismi Pauli contravarianti e il loro uso nella sintesi, con estensione al tracking combinato."
+          },
+          "purpose": {
+            "it-intermediate": "Anticipa perché questo tracciamento può guidare sintesi e parallelizzazione.",
+            "it-expert": "Distingue bookkeeping Clifford da simulazione classica di un circuito universale."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0014",
+        "why": {
+          "it-intermediate": "Vedere la relazione fra qubit fisico, Pauli applicato e operazione logica indotta.",
+          "it-expert": "Vedere la relazione fra qubit fisico, Pauli applicato e operazione logica indotta."
+        }
+      }
+    },
+    {
+      "id": "flow-labels",
+      "title": {
+        "it-intermediate": "II · Che cosa significa un’etichetta",
+        "it-expert": "II · Che cosa significa un’etichetta"
+      },
+      "goal": {
+        "it-intermediate": "Vedere la relazione fra qubit fisico, Pauli applicato e operazione logica indotta.",
+        "it-expert": "Vedere la relazione fra qubit fisico, Pauli applicato e operazione logica indotta."
+      },
+      "steps": [
+        {
+          "id": "flow-labels-1",
+          "title": {
+            "it-intermediate": "L’esempio CNOT",
+            "it-expert": "L’esempio CNOT"
+          },
+          "paragraphs": [
+            "p0014",
+            "p0015",
+            "p0016",
+            "p0017",
+            "p0018"
+          ],
+          "meaning": {
+            "it-intermediate": "Dopo un CNOT, un qubit può rappresentare la parità di due informazioni logiche. Una rotazione Z su quel qubit ha allora il significato di una rotazione ZZ prima della codifica. X e Z richiedono etichette diverse.",
+            "it-expert": "Le conjugazioni CNOT†ZtCNOT=ZcZt e CNOT†XcCNOT=XcXt descrivono la relazione fisico→logico."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce un esempio concreto prima di generalizzare il formalismo.",
+            "it-expert": "Motiva il tracking simultaneo dei generatori X/Z."
+          }
+        },
+        {
+          "id": "flow-labels-2",
+          "title": {
+            "it-intermediate": "Generalizzare e aggiornare",
+            "it-expert": "Generalizzare e aggiornare"
+          },
+          "paragraphs": [
+            "p0019",
+            "p0020",
+            "p0021",
+            "p0022",
+            "p0023",
+            "p0024",
+            "p0025",
+            "p0026",
+            "p0027",
+            "p0028",
+            "p0029"
+          ],
+          "meaning": {
+            "it-intermediate": "Un’etichetta codifica fase e indici X/Z del Pauli logico C†PC. Si tracciano i generatori, non tutti i Pauli. Ogni Clifford nuovo aggiorna le etichette precedenti; riordinare X e Z può cambiare la fase.",
+            "it-expert": "Le label sono iκ⟨ξ⟩ζ in standard order XZ; la decomposizione dei pullback dei generatori induce aggiornamenti inward per append."
+          },
+          "purpose": {
+            "it-intermediate": "Rende operativo il tracciamento e spiega perché il segno non è un dettaglio decorativo.",
+            "it-expert": "Stabilisce l’algoritmo locale e le correzioni di fase."
+          }
+        },
+        {
+          "id": "flow-labels-3",
+          "title": {
+            "it-intermediate": "Usare la codifica invece di annullarla",
+            "it-expert": "Usare la codifica invece di annullarla"
+          },
+          "paragraphs": [
+            "p0030",
+            "p0031",
+            "p0032",
+            "p0033",
+            "p0034",
+            "p0035",
+            "p0036",
+            "p0037",
+            "p0038"
+          ],
+          "meaning": {
+            "it-intermediate": "Le rotazioni non-Clifford si interpretano mediante le etichette disponibili, mentre il bookkeeping segue i Clifford. Dopo una rotazione si può passare direttamente alla codifica utile successiva, evitando di disfare e rifare tutto.",
+            "it-expert": "La fattorizzazione alternata Cj/Rj usa recoding incrementale al posto di coniugazioni indipendenti C̃j†RjC̃j; le rotazioni non-Clifford non sono aggiornamenti del tableau Clifford."
+          },
+          "purpose": {
+            "it-intermediate": "Collega il formalismo al risparmio di gate che il paper vuole ottenere.",
+            "it-expert": "Delimita il senso del tracking quando nel circuito compaiono operazioni universali."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0040",
+        "why": {
+          "it-intermediate": "Associare covariante e controvariante a due domande operative diverse.",
+          "it-expert": "Associare covariante e controvariante a due domande operative diverse."
+        }
+      }
+    },
+    {
+      "id": "flow-directions",
+      "title": {
+        "it-intermediate": "III · Due direzioni del tracciamento",
+        "it-expert": "III · Due direzioni del tracciamento"
+      },
+      "goal": {
+        "it-intermediate": "Associare covariante e controvariante a due domande operative diverse.",
+        "it-expert": "Associare covariante e controvariante a due domande operative diverse."
+      },
+      "steps": [
+        {
+          "id": "flow-directions-1",
+          "title": {
+            "it-intermediate": "Logico→fisico oppure fisico→logico",
+            "it-expert": "Logico→fisico oppure fisico→logico"
+          },
+          "paragraphs": [
+            "p0040",
+            "p0041",
+            "p0042",
+            "p0043",
+            "p0044",
+            "p0045",
+            "p0046",
+            "p0047",
+            "p0048"
+          ],
+          "meaning": {
+            "it-intermediate": "CPC† dice come una proprietà o operazione iniziale si rappresenta dopo la codifica. C†PC dice il significato iniziale di un’operazione applicata dopo. Conservare solo i generatori rende efficiente la direzione scelta, ma non rende automaticamente facile la direzione inversa.",
+            "it-expert": "Pushforward e pullback agiscono rispettivamente su base e componenti della decomposizione Pauli; le restrizioni ai generatori espongono query diverse."
+          },
+          "purpose": {
+            "it-intermediate": "Dà un uso concreto ai termini astratti della sezione.",
+            "it-expert": "Stabilisce quale mappa serve per interpretare rotazioni e quale per propagare stabilizzatori."
+          }
+        },
+        {
+          "id": "flow-directions-2",
+          "title": {
+            "it-intermediate": "Perché l’ordine conta",
+            "it-expert": "Perché l’ordine conta"
+          },
+          "paragraphs": [
+            "p0049",
+            "p0050",
+            "p0051",
+            "p0052",
+            "p0053",
+            "p0054",
+            "p0055",
+            "p0056",
+            "p0057",
+            "p0058"
+          ],
+          "meaning": {
+            "it-intermediate": "Aggiungere un gate alla fine del circuito e aggiungerlo all’inizio sono operazioni diverse. La posizione del nuovo gate nella coniugazione decide se si può riusare direttamente il risultato precedente. Per la direzione meno naturale occorre combinare un insieme completo di generatori.",
+            "it-expert": "Outward/inward conjugation e append/prepend determinano l’iteratività; il tracking controvariante in append sfrutta un generating set simplettico."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega la motivazione algoritmica delle formule con C₁ e C₂.",
+            "it-expert": "Motiva aggiornamenti di tableau anziché backtracking su un operatore isolato."
+          }
+        },
+        {
+          "id": "flow-directions-3",
+          "title": {
+            "it-intermediate": "Ottenere entrambe le risposte",
+            "it-expert": "Ottenere entrambe le risposte"
+          },
+          "paragraphs": [
+            "p0059",
+            "p0060",
+            "p0061",
+            "p0062"
+          ],
+          "meaning": {
+            "it-intermediate": "La struttura simplettica permette di recuperare la mappa inversa scambiando parti della rappresentazione; ulteriori fasi conservano i segni corretti. Così non serve invertire completamente il tableau a ogni passo né mantenerne due completi.",
+            "it-expert": "Le 2n Clifford phases completano l’inversa simplettica del blocco phaseless, con 4n bit extra e update O(n) per gate elementare."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce il tracking combinato necessario per gli stabilizzatori.",
+            "it-expert": "Prepara query bidirezionali senza inversione ripetuta."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0064",
+        "why": {
+          "it-intermediate": "Capire quando due operazioni fisiche diverse hanno lo stesso effetto nello spazio di codice.",
+          "it-expert": "Capire quando due operazioni fisiche diverse hanno lo stesso effetto nello spazio di codice."
+        }
+      }
+    },
+    {
+      "id": "flow-stabilizers",
+      "title": {
+        "it-intermediate": "IV · Come gli stabilizzatori creano libertà",
+        "it-expert": "IV · Come gli stabilizzatori creano libertà"
+      },
+      "goal": {
+        "it-intermediate": "Capire quando due operazioni fisiche diverse hanno lo stesso effetto nello spazio di codice.",
+        "it-expert": "Capire quando due operazioni fisiche diverse hanno lo stesso effetto nello spazio di codice."
+      },
+      "steps": [
+        {
+          "id": "flow-stabilizers-1",
+          "title": {
+            "it-intermediate": "L’ancilla non è un qubit logico in più",
+            "it-expert": "L’ancilla non è un qubit logico in più"
+          },
+          "paragraphs": [
+            "p0064",
+            "p0065",
+            "p0066",
+            "p0067",
+            "p0068"
+          ],
+          "meaning": {
+            "it-intermediate": "Un’ancilla inizializzata ha operatori che agiscono banalmente sul suo stato. Dopo la codifica, questi diventano stabilizzatori: alcune rotazioni possono realizzare interazioni logiche sui dati senza uscire dallo spazio di codice. Altre lo violano.",
+            "it-expert": "L’inizializzazione stabilizer produce equivalenze nel code space; il label omesso è lecito soltanto finché l’operazione preserva gli stabilizzatori."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce una risorsa di parallelizzazione con una condizione precisa di validità.",
+            "it-expert": "Distingue operatori triviali sul codice e destabilizzanti."
+          }
+        },
+        {
+          "id": "flow-stabilizers-2",
+          "title": {
+            "it-intermediate": "Leggere punti, croci e operazioni equivalenti",
+            "it-expert": "Leggere punti, croci e operazioni equivalenti"
+          },
+          "paragraphs": [
+            "p0069",
+            "p0070",
+            "p0071",
+            "p0072"
+          ],
+          "meaning": {
+            "it-intermediate": "I punti marcano indici stabilizzati; le croci quelli che violano il codice. Si può omettere la parte stabilizzata dopo aver controllato la validità e la fase. Il tracking combinato mostra rappresentanti fisici alternativi della stessa operazione logica.",
+            "it-expert": "I marker •/× e le Clifford phases implementano riduzione modulo stabilizer; pushforward e pullback forniscono rappresentanti equivalenti commutanti."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché nell’esempio Heisenberg più rotazioni diventano eseguibili insieme.",
+            "it-expert": "Giustifica il parallelismo con ancilla senza confonderlo con equivalenza su tutto lo spazio di Hilbert."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0074",
+        "why": {
+          "it-intermediate": "Ricollegare tracciamento, progettazione del circuito e uso delle ancilla.",
+          "it-expert": "Ricollegare tracciamento, progettazione del circuito e uso delle ancilla."
+        }
+      }
+    },
+    {
+      "id": "flow-summary",
+      "title": {
+        "it-intermediate": "V · Che cosa offre il formalismo",
+        "it-expert": "V · Che cosa offre il formalismo"
+      },
+      "goal": {
+        "it-intermediate": "Ricollegare tracciamento, progettazione del circuito e uso delle ancilla.",
+        "it-expert": "Ricollegare tracciamento, progettazione del circuito e uso delle ancilla."
+      },
+      "steps": [
+        {
+          "id": "flow-summary-1",
+          "title": {
+            "it-intermediate": "Il risultato e il tipo di evidenza",
+            "it-expert": "Il risultato e il tipo di evidenza"
+          },
+          "paragraphs": [
+            "p0074",
+            "p0075",
+            "p0077"
+          ],
+          "meaning": {
+            "it-intermediate": "Il contributo è un formalismo e le sue regole: permette di interpretare rotazioni, cambiare codifica e trovare equivalenze nel codice. Le prove sono nelle appendici; la dichiarazione finale specifica che lo studio non produce un dataset sperimentale.",
+            "it-expert": "Il risultato è formale: tracking contravariant e combined, recoding e stabilizer equivalences, senza benchmarking empirico del compilatore."
+          },
+          "purpose": {
+            "it-intermediate": "Chiude il corpo e indirizza alla giustificazione matematica.",
+            "it-expert": "Delimita il tipo di validazione presentata."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0079",
+        "why": {
+          "it-intermediate": "Orientarsi fra rappresentazione dei Pauli, azione dei Clifford e stabilizzatori.",
+          "it-expert": "Orientarsi fra rappresentazione dei Pauli, azione dei Clifford e stabilizzatori."
+        }
+      }
+    },
+    {
+      "id": "flow-appendix-map",
+      "title": {
+        "it-intermediate": "Appendici · La mappa delle prove",
+        "it-expert": "Appendici · La mappa delle prove"
+      },
+      "goal": {
+        "it-intermediate": "Orientarsi fra rappresentazione dei Pauli, azione dei Clifford e stabilizzatori.",
+        "it-expert": "Orientarsi fra rappresentazione dei Pauli, azione dei Clifford e stabilizzatori."
+      },
+      "steps": [
+        {
+          "id": "flow-appendix-map-1",
+          "title": {
+            "it-intermediate": "Tre livelli matematici",
+            "it-expert": "Tre livelli matematici"
+          },
+          "paragraphs": [
+            "p0079",
+            "p0080",
+            "p0081"
+          ],
+          "meaning": {
+            "it-intermediate": "A costruisce il linguaggio delle etichette; B descrive come i Clifford lo trasformano; C aggiunge la direzione inversa e le ancilla. Etichette e tableau contengono la stessa informazione, in forme adatte a usi diversi.",
+            "it-expert": "La sequenza Pauli presentation→Clifford action/tableaux→combined/stabilizer costituisce la catena delle dipendenze formali."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce il percorso delle appendici prima delle definizioni dense.",
+            "it-expert": "Aiuta a cercare la prova di una regola del corpo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0084",
+        "why": {
+          "it-intermediate": "Capire che le tre notazioni descrivono lo stesso Pauli.",
+          "it-expert": "Capire che le tre notazioni descrivono lo stesso Pauli."
+        }
+      }
+    },
+    {
+      "id": "flow-pauli-notation",
+      "title": {
+        "it-intermediate": "A.1 · Operatori, etichette e tuple",
+        "it-expert": "A.1 · Operatori, etichette e tuple"
+      },
+      "goal": {
+        "it-intermediate": "Capire che le tre notazioni descrivono lo stesso Pauli.",
+        "it-expert": "Capire che le tre notazioni descrivono lo stesso Pauli."
+      },
+      "steps": [
+        {
+          "id": "flow-pauli-notation-1",
+          "title": {
+            "it-intermediate": "Una rappresentazione con fase e supporti",
+            "it-expert": "Una rappresentazione con fase e supporti"
+          },
+          "paragraphs": [
+            "p0084",
+            "p0085",
+            "p0086",
+            "p0087",
+            "p0088",
+            "p0089",
+            "p0090",
+            "p0091",
+            "p0092",
+            "p0093",
+            "p0094",
+            "p0095",
+            "p0096",
+            "p0097",
+            "p0098",
+            "p0099",
+            "p0100",
+            "p0101",
+            "p0102"
+          ],
+          "meaning": {
+            "it-intermediate": "La tupla (κ|ξ|ζ) registra la fase iκ e dove compaiono X e Z. L’etichetta scrive solo gli indici presenti. Y richiede una fase quando viene espresso tramite XZ. La tabella traduce gli stessi oggetti fra forme.",
+            "it-expert": "La standard form iκXξZζ induce una bijection verso Z₄×F₂ⁿ×F₂ⁿ; support notation e tuple sono equivalenti."
+          },
+          "purpose": {
+            "it-intermediate": "Fissa convenzioni e ordine dei fattori necessari alle prove seguenti.",
+            "it-expert": "Stabilisce le coordinate per la legge di gruppo."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0103",
+        "why": {
+          "it-intermediate": "Vedere che la moltiplicazione dei Pauli non è una semplice somma di bit.",
+          "it-expert": "Vedere che la moltiplicazione dei Pauli non è una semplice somma di bit."
+        }
+      }
+    },
+    {
+      "id": "flow-pauli-group",
+      "title": {
+        "it-intermediate": "A.2 · Perché la fase corregge la somma",
+        "it-expert": "A.2 · Perché la fase corregge la somma"
+      },
+      "goal": {
+        "it-intermediate": "Vedere che la moltiplicazione dei Pauli non è una semplice somma di bit.",
+        "it-expert": "Vedere che la moltiplicazione dei Pauli non è una semplice somma di bit."
+      },
+      "steps": [
+        {
+          "id": "flow-pauli-group-1",
+          "title": {
+            "it-intermediate": "La legge di gruppo",
+            "it-expert": "La legge di gruppo"
+          },
+          "paragraphs": [
+            "p0103",
+            "p0104",
+            "p0105",
+            "p0106",
+            "p0107",
+            "p0108",
+            "p0109",
+            "p0110",
+            "p0111",
+            "p0112",
+            "p0113",
+            "p0114",
+            "p0115",
+            "p0116",
+            "p0117",
+            "p0118",
+            "p0119",
+            "p0120",
+            "p0121",
+            "p0122",
+            "p0123",
+            "p0124",
+            "p0125",
+            "p0126",
+            "p0127"
+          ],
+          "meaning": {
+            "it-intermediate": "I supporti X e Z si combinano con XOR, ma spostare un X attraverso un Z sullo stesso qubit introduce un meno. L’operazione ⊛ include proprio quella correzione e rappresenta fedelmente il prodotto dei Pauli.",
+            "it-expert": "La cocycle 2ζ₁·ξ₂ᵀ corregge κ modulo 4 e rende ϱ un isomorfismo di gruppi non abeliani."
+          },
+          "purpose": {
+            "it-intermediate": "Giustifica le regole di fase che un implementatore non può eliminare.",
+            "it-expert": "Fonda gli aggiornamenti di label sulla legge Pauli esatta."
+          }
+        },
+        {
+          "id": "flow-pauli-group-2",
+          "title": {
+            "it-intermediate": "Perché «vettore» è fra virgolette",
+            "it-expert": "Perché «vettore» è fra virgolette"
+          },
+          "paragraphs": [
+            "p0128",
+            "p0129",
+            "p0130",
+            "p0131",
+            "p0132",
+            "p0133",
+            "p0134",
+            "p0135",
+            "p0136",
+            "p0137",
+            "p0138",
+            "p0139",
+            "p0140",
+            "p0141",
+            "p0142",
+            "p0143",
+            "p0144"
+          ],
+          "meaning": {
+            "it-intermediate": "La tupla somiglia a un vettore, ma con la fase e il prodotto non commutativo non soddisfa tutte le regole di uno spazio vettoriale. Il testo prova diverse possibili nozioni di multiplo e ne mostra i limiti.",
+            "it-expert": "G con ⊛ non è un modulo: le proposte di scalar multiplication violano distributività o identità; i multipli convenzionali hanno dominio d’uso limitato."
+          },
+          "purpose": {
+            "it-intermediate": "Evita di applicare automaticamente algebra lineare ordinaria alla rappresentazione completa.",
+            "it-expert": "Delimita le manipolazioni lecite prima dei prodotti di molti fattori."
+          }
+        },
+        {
+          "id": "flow-pauli-group-3",
+          "title": {
+            "it-intermediate": "Molti fattori e correzioni di segno",
+            "it-expert": "Molti fattori e correzioni di segno"
+          },
+          "paragraphs": [
+            "p0145",
+            "p0146",
+            "p0147",
+            "p0148",
+            "p0149",
+            "p0150",
+            "p0151",
+            "p0152",
+            "p0153",
+            "p0154",
+            "p0155",
+            "p0156"
+          ],
+          "meaning": {
+            "it-intermediate": "La parte binaria del prodotto è facile da sommare; il segno accumula scambi fra coppie di fattori nell’ordine prescritto. Le matrici triangolari raccolgono questi contributi e ne permettono l’analisi del costo.",
+            "it-expert": "Q e strup raccolgono i termini quadratici della cocycle nel prodotto ordinato; l’analisi distingue costo lineare e sign correction."
+          },
+          "purpose": {
+            "it-intermediate": "Prepara la formula di applicazione e composizione dei tableau.",
+            "it-expert": "Costruisce l’operazione utilizzata nelle query generali sui tableau."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0158",
+        "why": {
+          "it-intermediate": "Capire quando l’algebra binaria basta e quando occorre ricostruire i segni.",
+          "it-expert": "Capire quando l’algebra binaria basta e quando occorre ricostruire i segni."
+        }
+      }
+    },
+    {
+      "id": "flow-phaseless",
+      "title": {
+        "it-intermediate": "A.3–4 · Versione senza fase e notazione XYZ",
+        "it-expert": "A.3–4 · Versione senza fase e notazione XYZ"
+      },
+      "goal": {
+        "it-intermediate": "Capire quando l’algebra binaria basta e quando occorre ricostruire i segni.",
+        "it-expert": "Capire quando l’algebra binaria basta e quando occorre ricostruire i segni."
+      },
+      "steps": [
+        {
+          "id": "flow-phaseless-1",
+          "title": {
+            "it-intermediate": "Dimenticare la fase",
+            "it-expert": "Dimenticare la fase"
+          },
+          "paragraphs": [
+            "p0158",
+            "p0159",
+            "p0160",
+            "p0161",
+            "p0162",
+            "p0163",
+            "p0164",
+            "p0165"
+          ],
+          "meaning": {
+            "it-intermediate": "Se si identifica ogni Pauli con tutti i suoi multipli di fase, resta un vero spazio vettoriale binario. Le formule intercalate completano la derivazione del prodotto con fase.",
+            "it-expert": "Il quoziente P/⟨iI⟩ è isomorfo a F₂²ⁿ; la cocycle appartiene alla lift con fase."
+          },
+          "purpose": {
+            "it-intermediate": "Distingue la semplificazione phaseless dalla rappresentazione esatta.",
+            "it-expert": "Fonda la parte simplettica senza estendere indebitamente il quoziente ai segni."
+          }
+        },
+        {
+          "id": "flow-phaseless-2",
+          "title": {
+            "it-intermediate": "XYZ e operatori hermitiani",
+            "it-expert": "XYZ e operatori hermitiani"
+          },
+          "paragraphs": [
+            "p0167",
+            "p0168",
+            "p0169",
+            "p0170",
+            "p0171",
+            "p0172",
+            "p0173",
+            "p0174",
+            "p0175",
+            "p0176",
+            "p0177",
+            "p0178",
+            "p0179",
+            "p0180",
+            "p0181",
+            "p0182",
+            "p0183",
+            "p0184",
+            "p0185",
+            "p0186",
+            "p0187",
+            "p0188",
+            "p0189",
+            "p0190",
+            "p0191",
+            "p0192",
+            "p0193",
+            "p0194",
+            "p0195",
+            "p0196"
+          ],
+          "meaning": {
+            "it-intermediate": "La notazione usuale con I/X/Y/Z e un segno riguarda i Pauli hermitiani adatti agli stabilizzatori. Il passaggio a XZ sposta fattori di i nella fase. Quel sottoinsieme non è chiuso rispetto a ogni prodotto.",
+            "it-expert": "La mappa XYZ su P≤2 si immerge in G con κ=2δ+ζ·ξᵀ; non è un isomorfismo di gruppi del Pauli completo."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega differenze rispetto alle convenzioni di altri tableau stabilizer.",
+            "it-expert": "Confronta convenzioni mantenendo dominio e fase corretti."
+          }
+        },
+        {
+          "id": "flow-phaseless-3",
+          "title": {
+            "it-intermediate": "La commutazione come forma simplettica",
+            "it-expert": "La commutazione come forma simplettica"
+          },
+          "paragraphs": [
+            "p0197",
+            "p0198",
+            "p0199",
+            "p0200",
+            "p0201",
+            "p0202",
+            "p0203",
+            "p0204",
+            "p0205",
+            "p0206",
+            "p0207",
+            "p0208",
+            "p0209",
+            "p0210",
+            "p0211",
+            "p0212",
+            "p0213",
+            "p0214"
+          ],
+          "meaning": {
+            "it-intermediate": "La commutazione dipende da quanti incroci X/Z avvengono sugli stessi qubit. Il prodotto simplettico binario restituisce commute oppure anticommute, indipendentemente dalla fase globale.",
+            "it-expert": "La forma ω codifica l’anticommutatore sui supporti phaseless e definisce la struttura simplettica."
+          },
+          "purpose": {
+            "it-intermediate": "Introduce l’invariante che i Clifford devono preservare.",
+            "it-expert": "Prepara i vincoli di ammissibilità dei tableau Clifford."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0216",
+        "why": {
+          "it-intermediate": "Seguire in modo formale le domande logico→fisico e fisico→logico.",
+          "it-expert": "Seguire in modo formale le domande logico→fisico e fisico→logico."
+        }
+      }
+    },
+    {
+      "id": "flow-clifford-action",
+      "title": {
+        "it-intermediate": "B.1 · Le due azioni del Clifford",
+        "it-expert": "B.1 · Le due azioni del Clifford"
+      },
+      "goal": {
+        "it-intermediate": "Seguire in modo formale le domande logico→fisico e fisico→logico.",
+        "it-expert": "Seguire in modo formale le domande logico→fisico e fisico→logico."
+      },
+      "steps": [
+        {
+          "id": "flow-clifford-action-1",
+          "title": {
+            "it-intermediate": "Pushforward e pullback",
+            "it-expert": "Pushforward e pullback"
+          },
+          "paragraphs": [
+            "p0216",
+            "p0217",
+            "p0218",
+            "p0219",
+            "p0220",
+            "p0221",
+            "p0222",
+            "p0223",
+            "p0224",
+            "p0225",
+            "p0226",
+            "p0227",
+            "p0229",
+            "p0230",
+            "p0231",
+            "p0232",
+            "p0233",
+            "p0234",
+            "p0235",
+            "p0236",
+            "p0237",
+            "p0238",
+            "p0239",
+            "p0240",
+            "p0241",
+            "p0242",
+            "p0243",
+            "p0244",
+            "p0245",
+            "p0246",
+            "p0247",
+            "p0248",
+            "p0249",
+            "p0250",
+            "p0251"
+          ],
+          "meaning": {
+            "it-intermediate": "Le due coniugazioni traducono operatori fra prima e dopo un circuito e preservano prodotti e commutazione. Invertire la direzione inverte anche l’ordine di composizione delle azioni.",
+            "it-expert": "CPC† è un’azione covariante e C†PC una controvariante nella variabile circuito; entrambe preservano la struttura Pauli."
+          },
+          "purpose": {
+            "it-intermediate": "Dimostra le proprietà usate nella sezione III.",
+            "it-expert": "Fissa le convenzioni di composizione per le rappresentazioni."
+          }
+        },
+        {
+          "id": "flow-clifford-action-2",
+          "title": {
+            "it-intermediate": "Appendere, anteporre e invertire",
+            "it-expert": "Appendere, anteporre e invertire"
+          },
+          "paragraphs": [
+            "p0252",
+            "p0253",
+            "p0254",
+            "p0255",
+            "p0256",
+            "p0257",
+            "p0258",
+            "p0259",
+            "p0260",
+            "p0261",
+            "p0262",
+            "p0263",
+            "p0264",
+            "p0265",
+            "p0266",
+            "p0267",
+            "p0268",
+            "p0269",
+            "p0270"
+          ],
+          "meaning": {
+            "it-intermediate": "Il testo distingue dove entra il nuovo gate e se si rappresenta C oppure C†. Queste scelte possono scambiare la direzione naturale degli aggiornamenti.",
+            "it-expert": "Append/prepend, circuit/inverse e left/right conjugation sono scelte indipendenti che determinano covariance."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega perché due fonti possono chiamare diversamente tableau apparentemente simili.",
+            "it-expert": "Prepara la classificazione sistematica di B.3."
+          }
+        },
+        {
+          "id": "flow-clifford-action-3",
+          "title": {
+            "it-intermediate": "L’azione dei gate elementari",
+            "it-expert": "L’azione dei gate elementari"
+          },
+          "paragraphs": [
+            "p0271",
+            "p0272",
+            "p0273",
+            "p0274",
+            "p0275",
+            "p0276",
+            "p0277",
+            "p0278",
+            "p0279",
+            "p0280",
+            "p0281",
+            "p0282",
+            "p0283",
+            "p0284",
+            "p0285",
+            "p0286",
+            "p0287",
+            "p0288",
+            "p0289",
+            "p0290",
+            "p0291",
+            "p0292",
+            "p0293",
+            "p0294",
+            "p0295",
+            "p0296",
+            "p0297",
+            "p0298"
+          ],
+          "meaning": {
+            "it-intermediate": "H, S e CNOT trasformano i generatori X/Z con regole esplicite. Il testo ricava gli aggiornamenti e introduce l’analogia fra un insieme di generatori e una base per rappresentare una mappa.",
+            "it-expert": "Coniugazioni elementari e correzioni di fase inducono le operazioni binarie; un symplectic generating tuple sostituisce una base del gruppo completo."
+          },
+          "purpose": {
+            "it-intermediate": "Passa dalle proprietà astratte ai dati che occorre memorizzare.",
+            "it-expert": "Costruisce la rappresentazione per generatori prima della definizione dei tableau."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0300",
+        "why": {
+          "it-intermediate": "Leggere ogni riga come immagine di un generatore e capire come usarla per un Pauli arbitrario.",
+          "it-expert": "Leggere ogni riga come immagine di un generatore e capire come usarla per un Pauli arbitrario."
+        }
+      }
+    },
+    {
+      "id": "flow-tableaux",
+      "title": {
+        "it-intermediate": "B.2 · Che cosa contiene un tableau",
+        "it-expert": "B.2 · Che cosa contiene un tableau"
+      },
+      "goal": {
+        "it-intermediate": "Leggere ogni riga come immagine di un generatore e capire come usarla per un Pauli arbitrario.",
+        "it-expert": "Leggere ogni riga come immagine di un generatore e capire come usarla per un Pauli arbitrario."
+      },
+      "steps": [
+        {
+          "id": "flow-tableaux-1",
+          "title": {
+            "it-intermediate": "Tableau fisici e vincoli di validità",
+            "it-expert": "Tableau fisici e vincoli di validità"
+          },
+          "paragraphs": [
+            "p0300",
+            "p0301",
+            "p0302",
+            "p0303",
+            "p0304",
+            "p0305",
+            "p0306",
+            "p0307",
+            "p0308",
+            "p0309",
+            "p0310",
+            "p0311",
+            "p0312",
+            "p0313",
+            "p0314",
+            "p0315",
+            "p0316",
+            "p0317",
+            "p0318",
+            "p0319",
+            "p0320",
+            "p0321",
+            "p0322",
+            "p0323",
+            "p0324",
+            "p0325",
+            "p0326",
+            "p0327"
+          ],
+          "meaning": {
+            "it-intermediate": "Clifford e flow tableau registrano le due direzioni della mappa. Il blocco senza fase deve preservare la commutazione; anche righe, fasi e generatore dell’identità devono rispettare condizioni precise per rappresentare un Clifford.",
+            "it-expert": "Proper tableaux combinano simpletticità, zeroth row e proper rows; F(C)=T(C†) e storage O(n²)."
+          },
+          "purpose": {
+            "it-intermediate": "Distingue una matrice binaria qualsiasi da una trasformazione fisicamente ammessa.",
+            "it-expert": "Caratterizza l’immagine della rappresentazione Clifford."
+          }
+        },
+        {
+          "id": "flow-tableaux-2",
+          "title": {
+            "it-intermediate": "Calcolare una query dal tableau",
+            "it-expert": "Calcolare una query dal tableau"
+          },
+          "paragraphs": [
+            "p0328",
+            "p0329",
+            "p0330",
+            "p0331",
+            "p0332",
+            "p0333",
+            "p0334",
+            "p0335",
+            "p0336",
+            "p0337",
+            "p0338",
+            "p0339",
+            "p0340",
+            "p0341",
+            "p0342",
+            "p0343",
+            "p0344",
+            "p0345",
+            "p0346",
+            "p0347",
+            "p0348",
+            "p0349",
+            "p0350",
+            "p0351",
+            "p0352",
+            "p0353",
+            "p0354",
+            "p0355",
+            "p0356",
+            "p0357",
+            "p0358",
+            "p0359"
+          ],
+          "meaning": {
+            "it-intermediate": "Si decompone il Pauli nei generatori e si combinano le righe corrispondenti nell’ordine stabilito. La moltiplicazione standard dà la parte lineare; una correzione di segno completa il risultato. Il costo cresce con il supporto della query.",
+            "it-expert": "ϱ(P)⊛F(C) e ϱ(P̄)⊛T(C) implementano pullback/pushforward con correzioni quadratiche di fase."
+          },
+          "purpose": {
+            "it-intermediate": "Mostra come estrarre l’operazione desiderata senza enumerare l’intero gruppo.",
+            "it-expert": "Fornisce query exact e relativa analisi della complessità."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0361",
+        "why": {
+          "it-intermediate": "Ricollegare il prodotto di circuiti all’ordine corretto delle operazioni sui tableau.",
+          "it-expert": "Ricollegare il prodotto di circuiti all’ordine corretto delle operazioni sui tableau."
+        }
+      }
+    },
+    {
+      "id": "flow-composition",
+      "title": {
+        "it-intermediate": "B.3 · Comporre e invertire tableau",
+        "it-expert": "B.3 · Comporre e invertire tableau"
+      },
+      "goal": {
+        "it-intermediate": "Ricollegare il prodotto di circuiti all’ordine corretto delle operazioni sui tableau.",
+        "it-expert": "Ricollegare il prodotto di circuiti all’ordine corretto delle operazioni sui tableau."
+      },
+      "steps": [
+        {
+          "id": "flow-composition-1",
+          "title": {
+            "it-intermediate": "Composizione con fase",
+            "it-expert": "Composizione con fase"
+          },
+          "paragraphs": [
+            "p0361",
+            "p0362",
+            "p0363",
+            "p0364",
+            "p0365",
+            "p0366",
+            "p0368",
+            "p0369",
+            "p0370",
+            "p0371",
+            "p0372",
+            "p0373",
+            "p0374",
+            "p0375",
+            "p0376",
+            "p0377",
+            "p0378",
+            "p0379",
+            "p0380",
+            "p0381",
+            "p0366-b46",
+            "p0367",
+            "p0382",
+            "p0383",
+            "p0384",
+            "p0385",
+            "p0386",
+            "p0387",
+            "p0388",
+            "p0389",
+            "p0390",
+            "p0391",
+            "p0392",
+            "p0393",
+            "p0394",
+            "p0395",
+            "p0396",
+            "p0397",
+            "p0398",
+            "p0399",
+            "p0400"
+          ],
+          "meaning": {
+            "it-intermediate": "Le formule di composizione differiscono per l’ordine fra flow e Clifford tableau. Le tuple con fase non sono matrici ordinarie: l’operazione ⊛ richiede condizioni e correzioni, e certe proprietà valide per tableau corretti non valgono per oggetti arbitrari.",
+            "it-expert": "F(C′C)=F(C′)⊛F(C) e T(C′C)=T(C)⊛T(C′), con sign corrections; l’associatività delle azioni proper non si estende a G arbitrario."
+          },
+          "purpose": {
+            "it-intermediate": "Previene errori di ordine e di algebra nell’implementazione.",
+            "it-expert": "Dimostra la compatibilità della rappresentazione con concatenazione."
+          }
+        },
+        {
+          "id": "flow-composition-2",
+          "title": {
+            "it-intermediate": "Recuperare la direzione inversa",
+            "it-expert": "Recuperare la direzione inversa"
+          },
+          "paragraphs": [
+            "p0401",
+            "p0402",
+            "p0403",
+            "p0404",
+            "p0405",
+            "p0406",
+            "p0407",
+            "p0408",
+            "p0409",
+            "p0410",
+            "p0411",
+            "p0412",
+            "p0413",
+            "p0414",
+            "p0415",
+            "p0416",
+            "p0417",
+            "p0418"
+          ],
+          "meaning": {
+            "it-intermediate": "La simpletticità rende semplice invertire il blocco binario, ma le fasi richiedono un calcolo ulteriore. Ecco perché invertire continuamente un tableau può essere evitabile e costoso.",
+            "it-expert": "L’inversione phaseless usa transpose e block swaps; la lift exact richiede ricostruzione della colonna di fase."
+          },
+          "purpose": {
+            "it-intermediate": "Prepara la motivazione del tableau combinato.",
+            "it-expert": "Separa inversione geometrica del blocco e correzione cocycle."
+          }
+        },
+        {
+          "id": "flow-composition-3",
+          "title": {
+            "it-intermediate": "La classificazione delle convenzioni",
+            "it-expert": "La classificazione delle convenzioni"
+          },
+          "paragraphs": [
+            "p0419",
+            "p0420",
+            "p0421",
+            "p0422",
+            "p0423",
+            "p0424",
+            "p0425",
+            "p0426",
+            "p0427",
+            "p0428",
+            "p0429",
+            "p0430",
+            "p0431",
+            "p0432",
+            "p0433",
+            "p0434",
+            "p0435",
+            "p0436",
+            "p0437",
+            "p0438",
+            "p0439",
+            "p0440",
+            "p0441",
+            "p0442"
+          ],
+          "meaning": {
+            "it-intermediate": "La figura 8 combina le tre scelte: aggiungere prima/dopo, usare circuito/inverso e coniugare nelle due direzioni. Le convenzioni dei lavori precedenti vengono collocate nello stesso schema.",
+            "it-expert": "La parity delle scelte contravarianti classifica i tableau e colloca le presentazioni XZ/XYZ della letteratura."
+          },
+          "purpose": {
+            "it-intermediate": "Rende confrontabili formalismi che possono differire solo per convenzione.",
+            "it-expert": "Chiude la tassonomia necessaria a scegliere l’update corretto."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0444",
+        "why": {
+          "it-intermediate": "Vedere in formule il tracciamento efficiente promesso dal corpo del paper.",
+          "it-expert": "Vedere in formule il tracciamento efficiente promesso dal corpo del paper."
+        }
+      }
+    },
+    {
+      "id": "flow-iterative",
+      "title": {
+        "it-intermediate": "B.4 · Aggiornare un gate alla volta",
+        "it-expert": "B.4 · Aggiornare un gate alla volta"
+      },
+      "goal": {
+        "it-intermediate": "Vedere in formule il tracciamento efficiente promesso dal corpo del paper.",
+        "it-expert": "Vedere in formule il tracciamento efficiente promesso dal corpo del paper."
+      },
+      "steps": [
+        {
+          "id": "flow-iterative-1",
+          "title": {
+            "it-intermediate": "Colonne per Clifford, righe per flow",
+            "it-expert": "Colonne per Clifford, righe per flow"
+          },
+          "paragraphs": [
+            "p0444",
+            "p0445",
+            "p0446",
+            "p0447",
+            "p0448",
+            "p0449",
+            "p0450",
+            "p0451",
+            "p0452",
+            "p0454",
+            "p0455",
+            "p0456",
+            "p0457",
+            "p0459",
+            "p0460",
+            "p0461",
+            "p0462",
+            "p0463",
+            "p0464",
+            "p0465",
+            "p0466",
+            "p0467",
+            "p0468",
+            "p0469",
+            "p0470",
+            "p0471",
+            "p0472",
+            "p0473",
+            "p0474",
+            "p0475",
+            "p0476"
+          ],
+          "meaning": {
+            "it-intermediate": "Le regole elementari diventano aggiornamenti di colonne nel tableau Clifford e di righe nel flow tableau. Swap e somme binarie richiedono le correzioni di fase indicate.",
+            "it-expert": "Le proposizioni B10/B11 specializzano la composizione exact alle elementary column/row operations."
+          },
+          "purpose": {
+            "it-intermediate": "Traduce la coniugazione in un algoritmo incrementale concreto.",
+            "it-expert": "Mostra come il generating tuple rende efficiente il pullback in append."
+          }
+        },
+        {
+          "id": "flow-iterative-2",
+          "title": {
+            "it-intermediate": "Il caso CNOT-only",
+            "it-expert": "Il caso CNOT-only"
+          },
+          "paragraphs": [
+            "p0477",
+            "p0478",
+            "p0479",
+            "p0480",
+            "p0481",
+            "p0482",
+            "p0483",
+            "p0484",
+            "p0485",
+            "p0486"
+          ],
+          "meaning": {
+            "it-intermediate": "Con soli CNOT i supporti X e Z non si mescolano e le fasi restano triviali. I due blocchi sono legati da un’inversa trasposta: una metà delle etichette determina l’altra.",
+            "it-expert": "Il flow CNOT-only è block diagonal con A=D⁻ᵀ e fase nulla, per simpletticità."
+          },
+          "purpose": {
+            "it-intermediate": "Ricollega il formalismo generale al semplice tracciamento di parità dell’inizio.",
+            "it-expert": "Giustifica l’equivalenza con i parity maps specializzati."
+          }
+        },
+        {
+          "id": "flow-iterative-3",
+          "title": {
+            "it-intermediate": "L’esempio Heisenberg completo",
+            "it-expert": "L’esempio Heisenberg completo"
+          },
+          "paragraphs": [
+            "p0487",
+            "p0488",
+            "p0489",
+            "p0490",
+            "p0491",
+            "p0492",
+            "p0493",
+            "p0494",
+            "p0495",
+            "p0496",
+            "p0497",
+            "p0498",
+            "p0499",
+            "p0500",
+            "p0501",
+            "p0502",
+            "p0503"
+          ],
+          "meaning": {
+            "it-intermediate": "Ogni gate aggiorna le etichette; le rotazioni grigie vengono interpretate tramite esse. H e S rendono visibili anche la rotazione YY e i suoi segni. Alla fine l’identità della codifica consente di leggere direttamente l’unitaria logica complessiva.",
+            "it-expert": "L’esempio B1 applica gli update exact fino al ritorno al tableau identità, distinguendo tracked Clifford e untracked Pauli rotations."
+          },
+          "purpose": {
+            "it-intermediate": "Verifica passo per passo l’esempio del corpo e collega formule e diagramma.",
+            "it-expert": "Controlla la sequenza logica e le correzioni di fase."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0505",
+        "why": {
+          "it-intermediate": "Capire come una sola struttura risponde a entrambe le direzioni.",
+          "it-expert": "Capire come una sola struttura risponde a entrambe le direzioni."
+        }
+      }
+    },
+    {
+      "id": "flow-combined",
+      "title": {
+        "it-intermediate": "C.1 · Il tableau combinato",
+        "it-expert": "C.1 · Il tableau combinato"
+      },
+      "goal": {
+        "it-intermediate": "Capire come una sola struttura risponde a entrambe le direzioni.",
+        "it-expert": "Capire come una sola struttura risponde a entrambe le direzioni."
+      },
+      "steps": [
+        {
+          "id": "flow-combined-1",
+          "title": {
+            "it-intermediate": "Un blocco condiviso, due tipi di fase",
+            "it-expert": "Un blocco condiviso, due tipi di fase"
+          },
+          "paragraphs": [
+            "p0505",
+            "p0506",
+            "p0508",
+            "p0509",
+            "p0510",
+            "p0511",
+            "p0512",
+            "p0513",
+            "p0514",
+            "p0515",
+            "p0516",
+            "p0517",
+            "p0518",
+            "p0519",
+            "p0520",
+            "p0521",
+            "p0522"
+          ],
+          "meaning": {
+            "it-intermediate": "La parte binaria contiene informazioni sulle due mappe attraverso la simpletticità. Il tableau combinato conserva anche le fasi della direzione Clifford; leggere righe o colonne richiede gli scambi e le convenzioni mostrati.",
+            "it-expert": "Fc aggiunge la Clifford phase row al flow tableau e recupera T tramite transpose e X/Z block swaps."
+          },
+          "purpose": {
+            "it-intermediate": "Costruisce la rappresentazione bidirezionale annunciata nel corpo.",
+            "it-expert": "Evita tracking doppio o inversione exact ripetuta."
+          }
+        },
+        {
+          "id": "flow-combined-2",
+          "title": {
+            "it-intermediate": "Aggiornamenti e query",
+            "it-expert": "Aggiornamenti e query"
+          },
+          "paragraphs": [
+            "p0523",
+            "p0524",
+            "p0525",
+            "p0526",
+            "p0534",
+            "p0527",
+            "p0528",
+            "p0529",
+            "p0530",
+            "p0531",
+            "p0532",
+            "p0533",
+            "p0535",
+            "p0536",
+            "p0537"
+          ],
+          "meaning": {
+            "it-intermediate": "Il gate nuovo aggiorna il flow tableau e le Clifford phases. L’esempio riprende il circuito Heisenberg e mostra sia il significato logico di una rotazione fisica sia la rappresentazione fisica di un operatore logico.",
+            "it-expert": "Il corollario C2 definisce update Fc per CNOT/H/S; C1 esemplifica le query nelle due direzioni."
+          },
+          "purpose": {
+            "it-intermediate": "Dimostra che la struttura combinata è utilizzabile durante la costruzione del circuito.",
+            "it-expert": "Prepara il tracking degli stabilizzatori con segni corretti."
+          }
+        }
+      ],
+      "leadsTo": {
+        "paragraphId": "p0539",
+        "why": {
+          "it-intermediate": "Capire quali rotazioni preservano il codice e come ricavarne il significato sui dati.",
+          "it-expert": "Capire quali rotazioni preservano il codice e come ricavarne il significato sui dati."
+        }
+      }
+    },
+    {
+      "id": "flow-auxiliaries",
+      "title": {
+        "it-intermediate": "C.2 · Ancilla e operazioni ammesse",
+        "it-expert": "C.2 · Ancilla e operazioni ammesse"
+      },
+      "goal": {
+        "it-intermediate": "Capire quali rotazioni preservano il codice e come ricavarne il significato sui dati.",
+        "it-expert": "Capire quali rotazioni preservano il codice e come ricavarne il significato sui dati."
+      },
+      "steps": [
+        {
+          "id": "flow-auxiliaries-1",
+          "title": {
+            "it-intermediate": "Inizializzare e controllare i marker",
+            "it-expert": "Inizializzare e controllare i marker"
+          },
+          "paragraphs": [
+            "p0539",
+            "p0540",
+            "p0541",
+            "p0542",
+            "p0543",
+            "p0544",
+            "p0545",
+            "p0546",
+            "p0547",
+            "p0548",
+            "p0549",
+            "p0550",
+            "p0551",
+            "p0552",
+            "p0553",
+            "p0554",
+            "p0555",
+            "p0556",
+            "p0557",
+            "p0558",
+            "p0559",
+            "p0560",
+            "p0561",
+            "p0562",
+            "p0563",
+            "p0564",
+            "p0565",
+            "p0566",
+            "p0567"
+          ],
+          "meaning": {
+            "it-intermediate": "Gli stati iniziali delle ancilla determinano generatori stabilizzati e destabilizzanti. Si calcola il label di una rotazione: se contiene indici violanti, non passa attraverso l’inizializzazione. Altrimenti gli indici banali si eliminano correggendo il segno.",
+            "it-expert": "Il pullback attraverso C·init esiste secondo le condizioni su ξα/ζα della proposizione C1, con sign correction per autostati −1."
+          },
+          "purpose": {
+            "it-intermediate": "Fornisce un criterio preciso per usare le equivalenze del codice.",
+            "it-expert": "Stabilisce il criterio di logical action sull’isometria di codifica."
+          }
+        },
+        {
+          "id": "flow-auxiliaries-2",
+          "title": {
+            "it-intermediate": "Perché non eliminare subito le ancilla",
+            "it-expert": "Perché non eliminare subito le ancilla"
+          },
+          "paragraphs": [
+            "p0568",
+            "p0569",
+            "p0570",
+            "p0571",
+            "p0572",
+            "p0573",
+            "p0574",
+            "p0575",
+            "p0576",
+            "p0577"
+          ],
+          "meaning": {
+            "it-intermediate": "Le colonne stabilizzate possono contribuire alle fasi anche quando la loro azione finale è banale. Il controllo di validità richiede meno informazione del calcolo completo dell’operazione logica e del suo segno.",
+            "it-expert": "Le query stabilizer-preserving usano support sums O(hn₂), mentre la lift exact mantiene cocycle e colonne • fino alla riduzione finale."
+          },
+          "purpose": {
+            "it-intermediate": "Spiega un dettaglio pratico che potrebbe produrre risultati apparentemente giusti con fase errata.",
+            "it-expert": "Distingue test di ammissibilità e ricostruzione exact del logical operator."
+          }
+        },
+        {
+          "id": "flow-auxiliaries-3",
+          "title": {
+            "it-intermediate": "Esempio e due controlli equivalenti",
+            "it-expert": "Esempio e due controlli equivalenti"
+          },
+          "paragraphs": [
+            "p0578",
+            "p0579",
+            "p0580",
+            "p0581",
+            "p0582",
+            "p0583",
+            "p0584",
+            "p0585",
+            "p0586",
+            "p0587",
+            "p0588",
+            "p0589",
+            "p0590",
+            "p0591",
+            "p0592",
+            "p0593",
+            "p0594",
+            "p0595",
+            "p0596",
+            "p0597",
+            "p0598",
+            "p0599",
+            "p0600"
+          ],
+          "meaning": {
+            "it-intermediate": "L’ancilla nell’esempio Heisenberg rende disponibili rappresentanti paralleli di XX, YY e ZZ. Si può controllare una rotazione riportandola al codice iniziale oppure portando avanti gli stabilizzatori: i due test danno la stessa compatibilità.",
+            "it-expert": "L’esempio C3 e i test pullback/pushforward verificano la stessa commutazione simplettica in tempi differenti."
+          },
+          "purpose": {
+            "it-intermediate": "Chiude l’argomento mostrando l’utilità concreta del tracking combinato.",
+            "it-expert": "Giustifica l’equivalenza dei criteri e il parallelismo nel code space."
+          }
+        }
+      ]
     }
   ]
 }

@@ -28,9 +28,11 @@ You need, for each variant to generate: **background level(s)** and **target lan
 uv run .claude/skills/import-paper/scripts/resolve_source.py <input> [--slug SLUG]
 ```
 
-`<input>` can be an arXiv id/URL, a direct PDF URL, or a local file path. This downloads/copies the PDF to `papers/<slug>/source/paper.pdf` and prints a JSON skeleton (`slug`, `title`, `authors`, `sourceType`, `sourceRef`, `pdfPath`) to stdout — it does not write `meta.json`.
+`<input>` can be an arXiv id/URL, a direct PDF URL, or a local file path. This downloads/copies the PDF to `papers/<slug>/source/paper.pdf` and prints a JSON skeleton (`slug`, `title`, `authors`, `sourceType`, `sourceRef`, `sourceVersion?`, `sourceSha256`, `pdfPath`) to stdout — it does not write `meta.json`. Carry the source identity fields into the final metadata. A requested arXiv `vN` is retained; an unversioned input resolves and pins the revision returned by the API. If that revision cannot be established, retry or provide a versioned ID instead of downloading an unspecified revision. The SHA-256 identifies the exact stored bytes for every source type.
 
 For `local` and generic `url` sources, `resolve_source.py` cannot fetch real metadata (title/authors come from the filename). Correct `title`/`authors` from the actual first page before writing `meta.json` — `extract_blocks.py --all` shows the page-1 blocks classified as `title`/`authors`, which the default output leaves out.
+
+The resolver refuses to overwrite an existing `source/paper.pdf`. Resolve a new revision under a staging `--papers-dir`, review its extraction and references, then replace the published source and data together. Adding a variant always reuses the existing PDF and IDs.
 
 ## 3. Extract blocks
 
@@ -38,15 +40,16 @@ For `local` and generic `url` sources, `resolve_source.py` cannot fetch real met
 uv run .claude/skills/import-paper/scripts/extract_blocks.py papers/<slug>/source/paper.pdf --out /tmp/blocks-<slug>.json
 ```
 
-Produces an ordered array of `{id, page, order, kind, section?, rects, text}` — one entry per paragraph worth a comment, in reading order, with page-relative fractional bounding boxes (see the script's docstring for the coordinate convention — no flipping needed, it already matches the reader's canvas).
+Produces an ordered array of `{id, page, order, kind, section?, rects, anchors, text}` — one entry per paragraph worth a comment, in reading order, with page-relative fractional bounding boxes (see the script's docstring for the coordinate convention — no flipping needed, it already matches the reader's canvas). `anchors` initially contains one `{page, rects}` entry.
 
 The script classifies every text block (font size/weight, position, text patterns — full list in its docstring) and **only emits `body` paragraphs and `caption`s**. Everything else is left out on purpose and must not get a comment: title, author names, affiliations, emails, dates/DOIs/arXiv stamps/copyright/keywords (all the page-1 front matter above the abstract), section headings, labels inside figures, page numbers, and the bibliography. Headings aren't lost: each emitted block carries the nearest preceding heading as `section`. Display equations are merged into the paragraph before them (extra rect), so they're explained in context. If something looks wrongly dropped or kept, rerun with `--all` to see every block with its `kind`.
 
 **Read the output and sanity-check it** before moving on:
 - Reading order should track the actual paper. The two-column heuristic is approximate — miss-ordered runs are the most likely defect. Note that a running page number sitting near the horizontal center of the page (x fraction ~0.48–0.52) silently defeats the two-column detection for that whole page (it lands in neither the "left" nor "right" bucket) — check for this specifically and re-sequence by hand when it happens, since the fallback is a plain top-to-bottom sort that interleaves both columns.
 - Drop anything that still isn't real paper prose: leftover front matter/affiliations, figure-internal text the figure detection missed (axis labels, circuit/table cells, algorithm pseudo-code lines), stray footnote markers. Running headers/footers are stripped when they repeat on ≥3 pages ignoring page numbers.
-- Merge a paragraph that the PDF splits across a column or page break (append the second block's rects and text to the first), and sub-figure captions ("(a) …", "(b) …") into their figure's main caption.
+- Merge a paragraph that the PDF splits across a column or page break, and sub-figure captions into their figure's main caption. Review the PDF first, then use `python3 .claude/skills/import-paper/scripts/merge_passages.py /tmp/blocks-<slug>.json --merge p0012,p0013 --out /tmp/curated-<slug>.json` (repeat `--merge` for distinct groups). This keeps each rectangle under its original page in `anchors`, and mirrors only the first anchor in legacy `page`/`rects`. Never append next-page rectangles into the first page's hit area. Do not merge unrelated fragments because their IDs are consecutive.
 - You may merge, split, reorder, or delete entries in this intermediate array freely — it's scratch data, not the final output.
+- Published paragraph IDs are stable references for review cards, glossaries, claims and links. For repairs, retain existing IDs and add a descriptive new ID for a necessary split; check every reference and guide membership. Extract replacement coordinates from the PDF, rather than estimating them. Do not run `merge_passages.py` on published explanations.
 
 ## 4. Write the explanations
 
@@ -55,6 +58,7 @@ For each surviving block, write one explanation per requested variant, at that v
 - Read the full block text list once up front for whole-paper context (what the paper is actually arguing), then write explanations in batches of roughly 15–20 blocks × all variants for that batch, so each batch stays coherent with the paper's argument without one tool call per paragraph.
 - Don't add back what extraction deliberately left out (authors, affiliations, metadata, headings, references) — nobody needs a comment explaining a list of names. Acknowledgments, funding and data-availability paragraphs get a one-line explanation at most, or can be dropped.
 - Explanation depth should actually track the requested level — an `expert` variant should read differently from a `beginner` one for the same paragraph (denser, assumes vocabulary, focuses on what's novel), not just be a shorter/longer version of the same text.
+- Explain a complete idea, including for continuations and equation fragments: name the object being discussed, recover the surrounding argument from the PDF, state what the formula or step does and keep its assumptions. Rewrite literal translations and unfinished ellipses. For two-column or appendix fragments, verify the actual PDF instead of trusting adjacent JSON entries. Do not expand a qualified or empirical claim into an unconditional guarantee.
 - **Keep explanations attached to their block id, never to a position in a list.** Two ways this silently went wrong before: writing an explanation for a section heading (headings are not blocks — see step 3), and explaining text the extraction lost (it exists in the paper but in no block). Both push every following explanation one paragraph out of place. If the paper has text that no block contains, fold its explanation into the block just before it; never insert an extra entry.
 - After writing, run `python3 .claude/skills/import-paper/scripts/check_paper.py <slug>`; it must print `OK` (it flags runs of 3+ paragraphs whose explanation matches a neighbour's text better than their own).
 - If a passage clearly wants an interactive notebook (a formula worth playing with, an algorithm worth stepping through), set `notebookSuggestion` on that block instead of building anything — notebooks are out of scope for this skill.
@@ -79,6 +83,7 @@ Assemble the final `papers/<slug>/paragraphs.json`: array of
   "order": 0,
   "section": "Introduction",
   "rects": [[0.12, 0.18, 0.88, 0.24]],
+  "anchors": [{ "page": 0, "rects": [[0.12, 0.18, 0.88, 0.24]] }],
   "sourceText": "...",
   "explanations": {
     "it-beginner": "...",
@@ -153,7 +158,7 @@ For an already-imported paper, the same can be added on its own: read `paragraph
 
 ## 4d. Write the argument map (`structure.json`)
 
-Write `papers/<slug>/structure.json`: the paper's thesis and the 5–8 claims that carry it. The reader shows it as the "Mappa" tab (thesis, then each claim with where it's stated, its evidence, and what it builds on), labels notes "Enuncia C2" / "Prova per C3", and the toolbar's "Il filo" dims every paragraph that neither states nor supports a claim — so the map is also the paper's quick reading path.
+Write `papers/<slug>/structure.json`: the paper's thesis and the 5–8 claims that carry it. The reader shows it as the "Mappa" tab (thesis, then each claim with where it's stated, its evidence, and what it builds on), labels notes "Enuncia C2" / "Prova per C3", and the toolbar's "Il filo" marks those passages in yellow in the PDF and filters the Comments tab to them. All PDF text remains readable. The map is also the paper's quick reading path; membership describes a claim's role, not every paragraph's importance.
 
 ```json
 {
@@ -222,6 +227,16 @@ Some paragraphs need more than a 2–4 sentence note: definitions of notation, e
 
 For an already-imported paper, add deep dives on their own, section by section: read the whole `paragraphs.json` first (forward links need it), write `deepDive` into the chosen paragraphs, run the checker. Nothing else changes.
 
+## 4g. Write the reading guide (`structure.json` → `readingGuide`)
+
+Cover the whole imported paper, including appendices, with a route through its argument. Each section has a destination (`goal`) and a few steps. Each step grounds the objects being discussed (`meaning`, shown as "In concreto") and explains why that passage appears there (`purpose`, shown as "Perché questo passaggio"). Schema and rendering behavior: [CLAUDE.md](../../../CLAUDE.md#reading-guides).
+
+- Use the whole paper to explain where each section is going. Distinguish the domain objects: a graph may describe logical interactions, physical hardware connections, operation dependencies, or conflicts; name which one it is here. Preserve the paper's assumptions and distinguish exact results, modeled performance, empirical evidence and future work.
+- Group paragraphs serving the same purpose using explicit ids in `(page, order)` order. Every paragraph belongs to exactly one step; keep captions, equation fragments and continuations with their argument, and identify administrative passages honestly. Follow the actual text when extracted `section` labels are interleaved.
+- Write all text fields in each requested variant with the same level discipline as explanations. Keep the guide concise; it orients the reader alongside the detailed notes. `leadsTo` links to the next section's first paragraph and explains the next question. Diagrams are optional; use them where spatial or structural ambiguity benefits from a picture.
+- For an existing paper, add the guide to `structure.json` using existing paragraph ids. Preserve claims, source text, coordinates, ordering and explanation variants.
+- Validate with `python3 .claude/skills/import-paper/scripts/check_paper.py <slug> --require-reading-guide` and `npm run test:reading-guide`.
+
 ## 5. Write meta.json and update the library index
 
 `papers/<slug>/meta.json`:
@@ -235,6 +250,8 @@ For an already-imported paper, add deep dives on their own, section by section: 
   "background": "...",
   "sourceType": "arxiv|url|local",
   "sourceRef": "...",
+  "sourceVersion": "v2",
+  "sourceSha256": "<SHA-256 from resolve_source.py>",
   "pageCount": N,
   "variants": [
     { "key": "it-beginner", "language": "it", "level": "beginner", "label": "Italiano · Nessun background" }
@@ -245,6 +262,8 @@ For an already-imported paper, add deep dives on their own, section by section: 
 `language`/`background` at the top level mirror the *first* generated variant (used by the library card); `variants` lists every combination actually present in `paragraphs.json`, in the order they should appear in the reader's selector. Label format: `"<Language name> · <level phrase>"` — level phrases: beginner → "Nessun background" / "No background", intermediate → "Laurea in campo affine" / "Adjacent-field grad level", expert → "Esperto nel sottocampo" / "Expert in this subfield" (match the label's own language to that variant's language).
 
 Then update `papers/index.json` (array of `{slug, title, authors, importedAt, language, background, pageCount, variants, tldr}`, mirroring the corresponding fields from `meta.json`) — append a new entry, or replace the existing one if this slug was already there (re-import). The library homepage reads `pageCount`/`variants`/`tldr` straight off this file, so keep them byte-for-byte in sync with `meta.json`.
+
+Generate the cover after writing the metadata: `npm run thumbnails -- <slug>`. Commit `source/thumbnail.png` and `source/thumbnail.sha256` with the paper. The script caches by PDF hash and refuses a changed PDF whose existing metadata still identifies the old source; review and reimport such a replacement first. Omit `sourceVersion` for URL/local sources or old imports with unknown historical revision; never copy the explanatory placeholder above literally.
 
 ## Importing from a GitHub issue (paper requests)
 
@@ -258,7 +277,7 @@ Readers request papers through GitHub issues (form `.github/ISSUE_TEMPLATE/paper
    It tries an arXiv id/URL in the text, then a DOI, then an arXiv title search (quoted title, or the text after "Authors (Year):"), and prints candidates with a title-similarity score, the arXiv licence, and whether the paper is already in the library. Below 0.8, confirm authors and year by hand. No arXiv hit: try the DOI / publisher page, then a web search (Google Scholar has no API); still nothing → comment asking for a link, add label `needs-link`, stop.
 3. **Duplicates**: already in the library at the requested level → comment with its link, label `duplicate`, close. Already there but not at that level/language → do **Adding a variant** below instead of a new import.
 4. **Licence** — the library republishes the PDF verbatim, so it must be redistributable: CC BY / CC BY-SA / CC0 (the arXiv abs page, or the publisher for open-access journals). arXiv's default `nonexclusive-distrib` licence is **not** enough: look for an open-access publisher version (e.g. Quantum, PRX/PR Research, EPTCS are CC BY) and import that URL instead; if none, comment explaining why, label `license-blocked`, close. Record the licence you relied on in the issue comment.
-5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, deep dives, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py`, `check_concepts.mjs`).
+5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, deep dives, reading guide, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py --require-reading-guide`, `check_concepts.mjs`).
 6. **Close the loop**: commit with `Closes #<N>` in the message; comment on the issue with `https://theghoul21.github.io/paper-reader/paper/<slug>` (live after the deploy).
 
 ## Adding a variant to an already-imported paper
@@ -271,6 +290,8 @@ Given a slug that already exists and a new (language, level) not yet in its `met
 4. Append the same new variant to this paper's entry in `papers/index.json` (its `variants` array must mirror `meta.json`'s) — everything else in that entry is unchanged.
 
 5. If the paper has a `concepts.json`, add the new variant's key to every concept's `definitions` too (same level discipline as step 4b), and add aliases in the new language if the variant is in a different language — otherwise terms won't be matched in the new explanations.
+
+6. Extend existing recall questions (`q`, `a`), argument-map thesis/titles/summaries, paragraph `leadsTo.why`, and every reading-guide text field (`title`, `goal`, `meaning`, `purpose`, `leadsTo.why`, diagram captions) for the new variant, preserving all IDs, guide paragraph membership and dependency graphs. Provide the TL;DR for a newly added language in both metadata and the manifest. Existing deep dives can be extended where useful; they may remain absent for a variant. Validate with `check_paper.py <slug> --require-reading-guide`, `check_concepts.mjs` and `check_deep_dives.mjs`.
 
 This is the cheap path — never regenerate `rects`/`page`/`order`/`sourceText` when only adding a variant.
 

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Annotation, AnnotationTool } from "../types";
 
 interface Props {
@@ -23,32 +23,80 @@ function pathFromPoints(points: [number, number][], width: number, height: numbe
   return points.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x * width} ${y * height}`).join(" ");
 }
 
-export default function AnnotationLayer({ page, width, height, tool, color, annotations, onAdd, onUpdate, onDelete }: Props) {
+export default function AnnotationLayer({
+  page,
+  width,
+  height,
+  tool,
+  color,
+  annotations,
+  onAdd,
+  onUpdate,
+  onDelete,
+}: Props) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const [draft, setDraft] = useState<{ x: number; y: number; text: string } | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editor, setEditor] = useState<{
+    note: Extract<Annotation, { type: "text" }>;
+    original: Extract<Annotation, { type: "text" }> | null;
+    persisted: boolean;
+  } | null>(null);
   const [drawPoints, setDrawPoints] = useState<[number, number][] | null>(null);
+
+  const editingId = editor?.note.id;
+  useEffect(() => {
+    if (editingId) textareaRef.current?.focus({ preventScroll: true });
+  }, [editingId]);
 
   function toFraction(clientX: number, clientY: number): [number, number] {
     const rect = svgRef.current!.getBoundingClientRect();
     return [(clientX - rect.left) / rect.width, (clientY - rect.top) / rect.height];
   }
 
-  function commitDraft() {
-    if (draft && draft.text.trim()) {
-      onAdd({ id: newId(), page, type: "text", color, createdAt: new Date().toISOString(), x: draft.x, y: draft.y, text: draft.text });
-    }
-    setDraft(null);
+  function changeText(text: string) {
+    if (!editor) return;
+    const note = { ...editor.note, text };
+    if (editor.persisted) onUpdate(note.id, { text });
+    else onAdd(note);
+    setEditor({ ...editor, note, persisted: true });
   }
-
+  function cancelEdit() {
+    if (!editor) return;
+    if (editor.original) onUpdate(editor.note.id, { text: editor.original.text });
+    else if (editor.persisted) onDelete(editor.note.id);
+    setEditor(null);
+  }
+  function finishEdit() {
+    if (editor?.persisted && !editor.note.text.trim()) onDelete(editor.note.id);
+    setEditor(null);
+  }
   function handleBackgroundClick(e: React.MouseEvent) {
-    if (tool !== "text") return;
+    if (
+      tool !== "text" ||
+      editor ||
+      (e.target instanceof Element && e.target.closest(".annotation-editor"))
+    )
+      return;
     const [x, y] = toFraction(e.clientX, e.clientY);
-    setDraft({ x, y, text: "" });
+    setEditor({
+      note: {
+        id: newId(),
+        page,
+        type: "text",
+        color,
+        createdAt: new Date().toISOString(),
+        x,
+        y,
+        text: "",
+      },
+      original: null,
+      persisted: false,
+    });
   }
 
   function handlePointerDown(e: React.PointerEvent) {
-    if (tool !== "draw") return;
+    if (tool !== "draw" || (e.target instanceof Element && e.target.closest(".annotation-editor")))
+      return;
     (e.target as Element).setPointerCapture(e.pointerId);
     setDrawPoints([toFraction(e.clientX, e.clientY)]);
   }
@@ -84,13 +132,21 @@ export default function AnnotationLayer({ page, width, height, tool, color, anno
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onPointerCancel={() => setDrawPoints(null)}
     >
       {annotations.map((a) => {
-        const isEditing = a.type === "text" && editingId === a.id;
+        if (a.id === editor?.note.id) return null;
         if (a.type === "freehand") {
           return (
             <g key={a.id}>
-              <path d={pathFromPoints(a.points, width, height)} stroke={a.color} strokeWidth={a.strokeWidth * width} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d={pathFromPoints(a.points, width, height)}
+                stroke={a.color}
+                strokeWidth={a.strokeWidth * width}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
               {tool === "erase" && (
                 <path
                   d={pathFromPoints(a.points, width, height)}
@@ -108,52 +164,73 @@ export default function AnnotationLayer({ page, width, height, tool, color, anno
           );
         }
         return (
-          <foreignObject key={a.id} x={a.x * width} y={a.y * height} width={220} height={90} style={{ overflow: "visible" }}>
-            {isEditing ? (
-              <textarea
-                className="annotation-text-input"
-                style={{ borderColor: a.color }}
-                defaultValue={a.text}
-                autoFocus
-                onBlur={(e) => {
-                  const text = e.target.value.trim();
-                  if (text) onUpdate(a.id, { text });
-                  else onDelete(a.id);
-                  setEditingId(null);
-                }}
-              />
-            ) : (
-              <div
-                className="annotation-note"
-                style={{ borderColor: a.color, backgroundColor: `${a.color}22` }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (tool === "erase") onDelete(a.id);
-                  else if (tool === "text") setEditingId(a.id);
-                }}
-              >
-                {a.text}
-              </div>
-            )}
+          <foreignObject
+            key={a.id}
+            x={a.x * width}
+            y={a.y * height}
+            width={220}
+            height={90}
+            style={{ overflow: "visible" }}
+          >
+            <button
+              type="button"
+              className="annotation-note"
+              aria-label={tool === "erase" ? `Elimina nota: ${a.text}` : `Modifica nota: ${a.text}`}
+              style={{ borderColor: a.color, backgroundColor: `${a.color}22` }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (tool === "erase") onDelete(a.id);
+                else if (tool === "text") setEditor({ note: a, original: a, persisted: true });
+              }}
+            >
+              {a.text}
+            </button>
           </foreignObject>
         );
       })}
 
-      {draft && (
-        <foreignObject x={draft.x * width} y={draft.y * height} width={220} height={90} style={{ overflow: "visible" }}>
-          <textarea
-            className="annotation-text-input"
-            style={{ borderColor: color }}
-            autoFocus
-            onChange={(e) => setDraft((d) => (d ? { ...d, text: e.target.value } : d))}
-            onBlur={commitDraft}
-            onClick={(e) => e.stopPropagation()}
-          />
+      {editor && (
+        <foreignObject
+          x={editor.note.x * width}
+          y={editor.note.y * height}
+          width={240}
+          height={150}
+          style={{ overflow: "visible" }}
+        >
+          <div role="group" aria-label="Editor della mia nota" className="annotation-editor">
+            <textarea
+              className="annotation-text-input"
+              aria-label="Testo della mia nota"
+              style={{ borderColor: editor.note.color }}
+              ref={textareaRef}
+              value={editor.note.text}
+              onChange={(e) => changeText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  e.stopPropagation();
+                  cancelEdit();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === "Enter") finishEdit();
+              }}
+            />
+            <small>Modifiche salvate automaticamente</small>
+            <div>
+              <button onClick={finishEdit}>Fine</button>
+              <button onClick={cancelEdit}>Annulla modifica</button>
+            </div>
+          </div>
         </foreignObject>
       )}
 
       {drawPoints && drawPoints.length > 1 && (
-        <path d={pathFromPoints(drawPoints, width, height)} stroke={color} strokeWidth={STROKE_WIDTH_FRACTION * width} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d={pathFromPoints(drawPoints, width, height)}
+          stroke={color}
+          strokeWidth={STROKE_WIDTH_FRACTION * width}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       )}
     </svg>
   );

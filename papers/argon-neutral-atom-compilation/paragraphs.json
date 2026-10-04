@@ -597,7 +597,7 @@
     "sourceText": "To circumvent this computational wall, alternative heuristicframeworks, such as DasAtom [17], have adopted a spatial-firstscheduling policy driven by exact graph isomorphism algorithms.While this methodology excels at rapidly resolving static spatialboundaries to ensure fast compilation for small-scale circuits, itoperates with a critical deficit of topological foresight. By eval-uating spatial placements in isolation—without integrating deeptemporal routing information or incorporating subsequent gatedependencies—these policies fundamentally fail to sustain high",
     "section": "2.4 Architectural Insights for ARGON",
     "explanations": {
-      "it-intermediate": "Per aggirare questo muro computazionale, framework euristici alternativi (es. DasAtom) adottano una politica di scheduling 'spatial-first' guidata da algoritmi esatti di isomorfismo di grafi. Efficace nel risolvere rapidamente i limiti spaziali statici su piccola scala, ma opera con un deficit critico di previsione topologica: valutando i posizionamenti spaziali in isolamento, senza integrare informazioni di instradamento temporale profonde o dipendenze dei gate successivi, queste politiche non riescono a sostenere..."
+      "it-intermediate": "Una scelta del layout basata soltanto sui vincoli spaziali può compilare rapidamente circuiti piccoli, ma ignorare i movimenti e le dipendenze dei gate successivi. Il risultato è una posizione valida adesso che può rendere costoso il passo seguente. Questa limitazione motiva la politica predittiva di ARGON, che considera anche il futuro instradamento."
     },
     "recall": [
       {
@@ -888,7 +888,7 @@
     "sourceText": "providing a highly compressed, hardware-certified discrete deci-sion library for the subsequent predictive routing phase.",
     "section": "3.1 Offline Spatial Layout Library Construction",
     "explanations": {
-      "it-intermediate": "...fornendo una libreria decisionale discreta e altamente compressa per la successiva fase di instradamento predittivo."
+      "it-intermediate": "La fase offline prepara una libreria compatta di configurazioni già verificate rispetto ai vincoli hardware. Il routing predittivo può quindi scegliere fra queste configurazioni, invece di ricercare da zero tutte le disposizioni possibili durante la compilazione. È il secondo vantaggio architetturale descritto nella pagina precedente."
     }
   },
   {
@@ -1002,7 +1002,7 @@
     "sourceText": "3.2.1Microarchitectural Feature Encoding and Predictive Policy.While the offline library resolves static geometric constraints, the",
     "section": "3.2 GNN-Guided Predictive Placement",
     "explanations": {
-      "it-intermediate": "Inizio sottosezione 3.2.1, Microarchitectural Feature Encoding and Predictive Policy — mentre la libreria offline risolve i vincoli geometrici statici..."
+      "it-intermediate": "La libreria offline garantisce layout geometricamente validi, ma il compilatore deve ancora scegliere quello che riduce i movimenti futuri. ARGON usa una politica neurale su grafi per combinare geometria fisica e interazioni logiche imminenti. Si separa così la verifica dei vincoli dalla valutazione del costo temporale."
     }
   },
   {
@@ -2433,7 +2433,7 @@
     "sourceText": "The architectural design of ARGON provides practical insights forthe evolution of neutral atom systems. A key implication of thespatiotemporal decoupling paradigm is the scale invariance of of-fline templates. Because physical exclusion constraints define localgeometric neighborhoods rather than global array dimensions, pre-computed layouts act as universal microarchitectural primitivesindependent of system scale. This enables zero-shot generaliza-tion to larger hardware topologies and allows the template libraryand predictive routing engine to naturally serve as an efficientscheduler for dense entangling regions in future zoned architec-tures. Moreover, since these templates are governed by invariantphysical rules rather than algorithmic logic, the resulting layoutlibrary constitutes a valuable microarchitectural dataset for broader",
     "section": "5. Discussion and Conclusion",
     "explanations": {
-      "it-intermediate": "Il design di ARGON offre spunti pratici per l'evoluzione dei sistemi ad atomi neutri: un'implicazione chiave del paradigma di disaccoppiamento spaziotemporale è l'invarianza di scala dei template offline — poiché i vincoli di esclusione fisica definiscono vicinati geometrici locali (non le dimensioni globali dell'array), i layout precalcolati fungono da primitive microarchitetturali universali indipendenti dalla scala del sistema. Questo abilita la generalizzazione zero-shot a topologie hardware più grandi, e permette a libreria di template e motore di instradamento predittivo di servire naturalmente come scheduler efficiente per regioni di entangling dense in future architetture a zone. Inoltre, poiché questi template sono governati da regole fisiche invarianti (non da logica algoritmica), la libreria di layout costituisce un dataset microarchitetturale utile per..."
+      "it-intermediate": "I template descrivono vincoli fisici locali, quindi possono essere riutilizzati senza ricostruire una libreria diversa per ogni dimensione globale dell'array. Gli autori propongono di usarli come base per altre esplorazioni guidate dai dati e come primitiva nelle regioni di interazione di sistemi a zone. Un sistema completo richiederebbe comunque gestione della memoria e del traffico tra zone."
     }
   },
   {

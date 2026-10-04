@@ -2,6 +2,8 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useDueCount } from "./lib/review";
 import { paperRequestUrl } from "./lib/requests";
 import Logo from "./components/Logo";
+import StorageStatus from "./components/StorageStatus";
+import { Suspense } from "react";
 
 export default function App() {
   const location = useLocation();
@@ -10,6 +12,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      <StorageStatus />
       {!isReader && (
         <header className="app-header">
           <Link to="/" className="app-title">
@@ -18,7 +21,12 @@ export default function App() {
               paper <span className="app-title-accent">reader</span>
             </span>
           </Link>
-          <a className="app-nav-link app-nav-request" href={paperRequestUrl()} target="_blank" rel="noopener noreferrer">
+          <a
+            className="app-nav-link app-nav-request"
+            href={paperRequestUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Richiedi un paper
           </a>
           <NavLink to="/review" className="app-nav-link app-nav-review">
@@ -28,7 +36,9 @@ export default function App() {
         </header>
       )}
       <main className={isReader ? "app-main app-main-flush" : "app-main"}>
-        <Outlet />
+        <Suspense fallback={<p className="state-message">Caricamento…</p>}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );
