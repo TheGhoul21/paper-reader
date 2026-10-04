@@ -10,7 +10,7 @@ La domanda dei prototipi era quale struttura accompagnasse meglio dal quadro gen
 npm run dev -- --port 5199 --strictPort
 ```
 
-Se il server è già attivo basta aprire [la libreria](http://localhost:5199/) oppure [DAScut](http://localhost:5199/paper/dascut). Il percorso A è l'ingresso ordinario anche nella build di produzione. Non è stato pubblicato il sito remoto.
+Se il server è già attivo basta aprire [la libreria](http://localhost:5199/) oppure [DAScut](http://localhost:5199/paper/dascut). Il percorso A è l'ingresso ordinario anche nella build di produzione. La pubblicazione su GitHub Pages avviene tramite il push su `main` e attende le verifiche della pipeline.
 
 ## All'arrivo: scegliere e orientarsi
 

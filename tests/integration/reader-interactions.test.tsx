@@ -257,6 +257,7 @@ it("page editing waits for confirmation and exposes validation", () => {
         pageCount={30}
         viewport={{
           currentPage: 1,
+          layoutReady: true,
           scale: 1,
           fitMode: "width",
           jumpToPage: jump,

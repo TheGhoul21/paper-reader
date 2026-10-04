@@ -222,8 +222,9 @@ export default function PdfViewer({
   const initialJumpDone = useRef<string | null>(null);
   useEffect(() => {
     const destination = initialParagraphId ?? `page:${initialPage ?? 1}`;
-    if (!pdfPane || !nativeSize || initialJumpDone.current === destination) return;
-    // PageCanvas has actual placeholder dimensions at this point; no fixed rendering delay.
+    if (!pdfPane || !nativeSize || !viewport.layoutReady || initialJumpDone.current === destination)
+      return;
+    // Placeholders now use the fitted scale; an animated restore can retain old coordinates.
     initialJumpDone.current = destination;
     const paragraph = paragraphs.find((p) => p.id === initialParagraphId);
     if (paragraph) {
@@ -232,8 +233,8 @@ export default function PdfViewer({
         id: paragraph.id,
         inThread: structureIndex?.thread.has(paragraph.id) ?? false,
       });
-      scrollToParagraph(pdfPane, paragraph);
-    } else viewport.jumpToPage(initialPage ?? 1);
+      scrollToParagraph(pdfPane, paragraph, "instant");
+    } else viewport.jumpToPage(initialPage ?? 1, "instant");
   }, [
     pdfPane,
     nativeSize,

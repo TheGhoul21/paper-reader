@@ -34,7 +34,11 @@ export function waitForElement(
   });
 }
 
-export function scrollToParagraph(pane: HTMLElement | null, paragraph: Paragraph) {
+export function scrollToParagraph(
+  pane: HTMLElement | null,
+  paragraph: Paragraph,
+  behavior: ScrollBehavior = "smooth",
+) {
   if (!pane) return;
   const anchor = paragraphAnchors(paragraph)[0];
   const page = pane.querySelector<HTMLElement>(`#page-${anchor.page + 1}`);
@@ -44,5 +48,5 @@ export function scrollToParagraph(pane: HTMLElement | null, paragraph: Paragraph
   const top = pageBox.top + Math.min(...anchor.rects.map((r) => r[1])) * pageBox.height;
   const bottom = pageBox.top + Math.max(...anchor.rects.map((r) => r[3])) * pageBox.height;
   if (top >= paneBox.top && bottom <= paneBox.bottom) return;
-  pane.scrollBy({ top: top - paneBox.top - paneBox.height * 0.25, behavior: "smooth" });
+  pane.scrollBy({ top: top - paneBox.top - paneBox.height * 0.25, behavior });
 }

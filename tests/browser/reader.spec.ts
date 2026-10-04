@@ -138,10 +138,40 @@ test("a mistaken review grade and removal can be undone", async ({ page }, info)
 test("page navigation resumes the page without a stale selected passage overriding it", async ({
   page,
 }) => {
+  // Restoring a saved page must wait for the initial fit, especially on a phone.
+  await page.addInitScript(() => {
+    document.addEventListener(
+      "scrollend",
+      (event) => {
+        if (event.target instanceof Element && event.target.matches(".pdf-viewer"))
+          document.documentElement.dataset.pdfScrollEnded = "true";
+      },
+      true,
+    );
+    if (localStorage.getItem("paper-reader:user-data")) return;
+    localStorage.setItem(
+      "paper-reader:user-data",
+      JSON.stringify({
+        version: 2,
+        review: {},
+        annotations: {},
+        reading: {
+          "neutral-atom-compilation": {
+            page: 2,
+            paragraphId: null,
+            variant: "it-expert",
+            updatedAt: new Date().toISOString(),
+          },
+        },
+      }),
+    );
+  });
   await page.goto(`paper/${slug}?view=pdf`);
   await expect(page.locator(".pdf-page canvas").first()).toBeVisible();
-  await page.locator(".paragraph-overlay button").first().click();
   const number = page.getByRole("textbox", { name: "Pagina del PDF" });
+  await expect(page.locator("html")).toHaveAttribute("data-pdf-scroll-ended", "true");
+  await expect(number).toHaveValue("2");
+  await page.locator(".paragraph-overlay button").first().click();
   await number.fill("2");
   await number.press("Enter");
   await expect
@@ -155,6 +185,7 @@ test("page navigation resumes the page without a stale selected passage overridi
     )
     .toBe(2);
   await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-pdf-scroll-ended", "true");
   await expect(number).toHaveValue("2");
 });
 

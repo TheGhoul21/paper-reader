@@ -8,22 +8,35 @@ export function usePdfViewport(
   pane: HTMLElement | null,
 ) {
   const [scale, setScale] = useState(1.5);
+  const [layoutReady, setLayoutReady] = useState(false);
   const [fitMode, setFitMode] = useState<FitMode>("width");
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
-    if (!pane || !nativeSize || fitMode === "none") return;
+    if (!pane || !nativeSize) {
+      setLayoutReady(false);
+      return;
+    }
+    if (fitMode === "none") {
+      setLayoutReady(true);
+      return;
+    }
     const apply = () => {
       const style = getComputedStyle(pane);
       const width =
         pane.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
       const height =
         pane.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-      if (width <= 0 || height <= 0) return;
+      if (width <= 0 || height <= 0) {
+        setLayoutReady(false);
+        return;
+      }
       setScale(
         fitMode === "width"
           ? width / nativeSize.width
           : Math.min(width / nativeSize.width, height / nativeSize.height),
       );
+      // Restore against the fitted geometry, never the temporary default scale.
+      setLayoutReady(true);
     };
     const observer = new ResizeObserver(apply);
     observer.observe(pane);
@@ -53,14 +66,15 @@ export function usePdfViewport(
       cancelAnimationFrame(frame);
     };
   }, [doc, scale, pane]);
-  const jumpToPage = (page: number) => {
+  const jumpToPage = (page: number, behavior: ScrollBehavior = "smooth") => {
     if (!doc || !Number.isFinite(page)) return;
     const target = Math.min(doc.numPages, Math.max(1, Math.round(page)));
-    pane?.querySelector(`#page-${target}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    pane?.querySelector(`#page-${target}`)?.scrollIntoView({ behavior, block: "start" });
     setCurrentPage(target);
   };
   return {
     scale,
+    layoutReady,
     fitMode,
     currentPage,
     setFitMode,
