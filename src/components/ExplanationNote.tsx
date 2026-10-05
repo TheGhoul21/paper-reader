@@ -175,13 +175,10 @@ export default function ExplanationNote({
           {active && readingContext && (
             <details className="reading-context">
               <summary>Contesto e percorso della sezione</summary>
-              <div className="reading-context-label">In concreto</div>
               <p>{pickVariant(readingContext.step.meaning, variant)}</p>
               {readingContext.step.diagram && (
                 <ReadingDiagram diagram={readingContext.step.diagram} variant={variant} />
               )}
-              <div className="reading-context-label">Perché questo passaggio</div>
-              <p>{pickVariant(readingContext.step.purpose, variant)}</p>
               <button
                 type="button"
                 className="reading-guide-jump"

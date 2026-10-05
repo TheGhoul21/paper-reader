@@ -22,7 +22,7 @@ I testi dell'interfaccia descrivono contenuti e azioni. Per richiesta dell'utent
 
 ## Durante: una tappa, un'idea
 
-La colonna centrale contiene posizione, scopo, idea da mettere a fuoco, spiegazioni, eventuale diagramma e domanda di confronto. Il percorso a sinistra permette di raggiungere le sezioni; il contesto a destra ricorda dove si è diretti. Sul telefono il percorso è espandibile e il contesto segue il testo.
+La colonna centrale contiene posizione, titolo, contesto scientifico, spiegazioni, eventuale diagramma e domanda di verifica. Il percorso a sinistra permette di raggiungere le sezioni; il contesto a destra contiene l'obiettivo della sezione. Sul telefono il percorso è espandibile e il contesto segue il testo. Il razionale editoriale `purpose` resta nei dati per i manutentori; dal 5 ottobre non viene mostrato nelle tappe, nelle note PDF o nella guida PDF.
 
 Le definizioni si aprono nel punto d'uso e permettono di ritrovare il passaggio che introduce il concetto, esplorare termini correlati e aggiungerlo al ripasso. Originale e approfondimenti si aprono su richiesta. Gli approfondimenti caricano il renderer soltanto quando vengono aperti. Una tappa molto lunga mostra inizialmente quattro passaggi e rende espliciti gli altri passaggi espandibili; i collegamenti diretti aprono anche questi ultimi.
 

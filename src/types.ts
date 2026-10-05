@@ -185,6 +185,6 @@ export interface ReadingStep {
   meaning: Record<string, string>;
   /** Optional explanatory image in public/, with a caption at each reading level. */
   diagram?: { path: string; caption: Record<string, string> };
-  /** Why this passage is needed in the section's argument. */
+  /** Editorial rationale for the step's role; retained in the data, not rendered to readers. */
   purpose: Record<string, string>;
 }

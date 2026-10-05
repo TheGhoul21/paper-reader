@@ -359,11 +359,6 @@
   margin-bottom: 22px;
   line-height: 1.6;
 }
-.guided-lesson-purpose {
-  color: var(--muted);
-  font-size: 0.95rem;
-  margin: 0 0 26px;
-}
 .guided-grounding {
   margin: 28px 0;
 }

@@ -61,7 +61,6 @@ export default function ReadingStep({
         <h1 tabIndex={-1} data-guided-heading>
           {pickVariant(stop.step.title, variant)}
         </h1>
-        <p className="guided-lesson-purpose">{pickVariant(stop.step.purpose, variant)}</p>
         <div className="guided-grounding">
           <span className="guided-eyebrow">In breve</span>
           <ReadingText text={pickVariant(stop.step.meaning, variant)} tools={tools} />

@@ -57,7 +57,7 @@ export default function ReadingGuide({
         >
           <h2>{pickVariant(section.title, variant)}</h2>
           <div className="reading-guide-goal">
-            <div className="reading-context-label">Dove va questa sezione</div>
+            <div className="reading-context-label">Obiettivo della sezione</div>
             <p>{pickVariant(section.goal, variant)}</p>
           </div>
           <ol className="reading-guide-steps">
@@ -78,9 +78,8 @@ export default function ReadingGuide({
                     <h3>{pickVariant(step.title, variant)}</h3>
                     {current && <span className="reading-guide-current">Sei qui</span>}
                   </div>
-                  <p>{pickVariant(step.purpose, variant)}</p>
                   <details className="reading-guide-meaning">
-                    <summary>In concreto</summary>
+                    <summary>Contesto</summary>
                     <p>{pickVariant(step.meaning, variant)}</p>
                     {step.diagram && <ReadingDiagram diagram={step.diagram} variant={variant} />}
                   </details>
@@ -99,7 +98,7 @@ export default function ReadingGuide({
           </ol>
           {section.leadsTo && numbers.has(section.leadsTo.paragraphId) && (
             <div className="reading-guide-next">
-              <div className="reading-context-label">Cosa succede dopo</div>
+              <div className="reading-context-label">Sezione successiva</div>
               <p>{pickVariant(section.leadsTo.why, variant)}</p>
               <button
                 className="reading-guide-jump"
