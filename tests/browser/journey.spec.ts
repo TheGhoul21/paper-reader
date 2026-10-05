@@ -1,6 +1,88 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("figure 2 exposes the actual parity changes, original image and source return", async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(
+    "paper/optimizing-atom-transport-gate-count-and-depth-with?stage=read&step=logical-interactions&v=it-intermediate",
+  );
+  const figure = page.getByRole("figure", { name: "Figura 2 · pagina 2", exact: true });
+  await expect(figure).toHaveCount(1);
+  const timeline = figure.getByRole("slider", { name: "Passaggio del circuito" });
+  await expect(timeline).toHaveValue("0");
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".twine-labels dd")).toHaveText([
+    "ℓ₁ℓ₂",
+    "ℓ₂",
+    "ℓ₃",
+    "ℓ₄",
+    "ℓ₅",
+    "ℓ₆",
+  ]);
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".twine-labels dd")).toHaveText([
+    "ℓ₁ℓ₂",
+    "ℓ₁",
+    "ℓ₃",
+    "ℓ₄",
+    "ℓ₅",
+    "ℓ₆",
+  ]);
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(figure.locator(".twine-labels dd")).toHaveText(["ℓ₆", "ℓ₅", "ℓ₄", "ℓ₃", "ℓ₂", "ℓ₁"]);
+  await figure.getByRole("button", { name: "(b) Quadrato", exact: true }).click();
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(figure.locator(".twine-labels dd")).toHaveText(["ℓ₁", "ℓ₄", "ℓ₃", "ℓ₆", "ℓ₅", "ℓ₂"]);
+  await expect(figure.locator(".twine-pair-count")).toHaveText("Coppie comparse: 15 / 15");
+  await figure.getByRole("button", { name: "(c) Scala", exact: true }).click();
+  await figure.getByRole("button", { name: "Riproduci", exact: true }).click();
+  await expect(timeline).not.toHaveValue("0");
+  await figure.getByRole("button", { name: "Pausa", exact: true }).click();
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(figure.locator(".twine-labels dd")).toHaveText(["ℓ₆", "ℓ₅", "ℓ₄", "ℓ₃", "ℓ₂", "ℓ₁"]);
+  await expect(figure.locator(".twine-pair-count")).toHaveText("Coppie comparse: 15 / 15");
+  await figure.screenshot({ path: `test-results/${info.project.name}-figure2-animation.png` });
+  await expect(figure.locator(".twine-gate.is-active")).toHaveClass(/twine-role-decoder/);
+  if (info.project.name === "mobile")
+    expect(
+      await figure.locator(".twine-circuit-scroll").evaluate((el) => el.scrollLeft),
+    ).toBeGreaterThan(0);
+  await figure.locator(".reading-figure-source > summary").click();
+  await expect
+    .poll(() =>
+      figure
+        .locator(".reading-figure-original img")
+        .evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThanOrEqual(1200);
+  const enlarge = figure.getByRole("button", { name: "Ingrandisci figura originale" });
+  await enlarge.click();
+  await expect(figure.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(enlarge).toBeFocused();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await figure.getByRole("link", { name: "Apri figura nel PDF ↗" }).click();
+  await expect(page).toHaveURL(/p=p0018/);
+  await expect(page.locator(".paragraph-badge-pdf.is-active").first()).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Pagina del PDF" })).toHaveValue("2");
+  await page.getByRole("link", { name: "← Torna al percorso" }).click();
+  expect(new URL(page.url()).searchParams.get("step")).toBe("logical-interactions");
+  await page.goto(
+    "paper/optimizing-atom-transport-gate-count-and-depth-with?stage=read&step=ladder-layout&v=it-expert",
+  );
+  await expect(figure.getByRole("button", { name: "(c) Scala", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(errors).toEqual([]);
+});
+
 test("a guided journey keeps doubts, reflection and resume after the final step", async ({
   page,
 }, info) => {

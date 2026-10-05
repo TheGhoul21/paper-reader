@@ -1,9 +1,11 @@
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { verifyFigureImages } from "./figure-data.mjs";
 
 // Explicit sequence, usable by a maintainer and by CI. Never edits the source data.
 const papers = JSON.parse(readFileSync("papers/index.json", "utf8"));
 for (const { slug } of papers) {
+  verifyFigureImages(`papers/${slug}`);
   for (const [command, args] of [
     [
       "python3",

@@ -2,6 +2,7 @@
 @import "./styles/reader.css";
 @import "./styles/review.css";
 @import "./styles/guided.css";
+@import "./styles/figures.css";
 
 :root {
   color-scheme: light dark;

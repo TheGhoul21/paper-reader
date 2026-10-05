@@ -58,8 +58,11 @@ export default function Toolbar({
   const location = useLocation();
   const showLanguage = new Set(variants.map((item) => item.language)).size > 1;
   const librarySearch: unknown = location.state?.librarySearch;
+  const libraryPath = location.state?.libraryPath === "/catalog" ? "/catalog" : "/";
   const libraryUrl =
-    typeof librarySearch === "string" && librarySearch ? `/?${librarySearch}` : "/";
+    typeof librarySearch === "string" && librarySearch
+      ? `${libraryPath}?${librarySearch}`
+      : libraryPath;
   const [searchOpen, setSearchOpen] = useState(false);
   const [pageDraft, setPageDraft] = useState(String(viewport.currentPage));
   const [pageError, setPageError] = useState("");

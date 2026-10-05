@@ -1,74 +1,86 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import PaperThumbnail from "../components/PaperThumbnail";
-import { pickTldr } from "../components/TldrStrip";
-import { SearchIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
-import type { LibraryEntry, Variant } from "../types";
-import { papersUrl } from "../lib/paths";
+import { useDeferredValue, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import CatalogSearch from "../components/catalog/CatalogSearch";
+import CatalogPaperCard from "../components/catalog/CatalogPaperCard";
+import { ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
+import {
+  catalogConcepts,
+  catalogFilters,
+  createCatalogSearch,
+  languageLabel,
+  LEVEL_LABELS,
+  LEVEL_ORDER,
+  paginationPages,
+} from "../lib/catalog";
+import { useCatalog } from "../lib/useCatalog";
 import { useUserData } from "../lib/storage";
-import { parseLibrary } from "../lib/papers";
-import { useDueCount } from "../lib/review";
-import { guidedUrl } from "../lib/guidedReading";
 
-const PAGE_SIZE = 12;
-
-const LEVEL_LABELS: Record<Variant["level"], string> = {
-  beginner: "Base",
-  intermediate: "Intermedio",
-  expert: "Esperto",
-};
-
-const LEVEL_ORDER: Variant["level"][] = ["beginner", "intermediate", "expert"];
-
-type SortKey = "recent" | "title" | "pages";
-
-const SORTERS: Record<SortKey, (a: LibraryEntry, b: LibraryEntry) => number> = {
-  recent: (a, b) => b.importedAt.localeCompare(a.importedAt),
-  title: (a, b) => a.title.localeCompare(b.title, "it", { sensitivity: "base" }),
-  pages: (a, b) => a.pageCount - b.pageCount,
-};
-
-let languageDisplay: Intl.DisplayNames | null;
-try {
-  languageDisplay = new Intl.DisplayNames(["it"], { type: "language" });
-} catch {
-  languageDisplay = null;
-}
-
-function languageLabel(code: string): string {
-  const name = languageDisplay?.of(code);
-  if (!name) return code.toUpperCase();
-  return name.charAt(0).toUpperCase() + name.slice(1);
-}
-
-function formatAuthors(authors: string[]): string {
-  if (authors.length <= 3) return authors.join(", ");
-  return `${authors.slice(0, 3).join(", ")} et al.`;
-}
-
-function firstSentence(text: string): string {
-  return text.split(/(?<=[.!?])\s+/)[0];
-}
+const PAGE_SIZE = 20;
 
 export default function Library() {
-  const [papers, setPapers] = useState<LibraryEntry[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [params, setParams] = useSearchParams();
-  const query = params.get("q") ?? "";
-  const language = params.get("language") ?? "all";
-  const levelValue = params.get("level");
-  const level = LEVEL_ORDER.includes(levelValue as Variant["level"])
-    ? (levelValue as Variant["level"])
-    : "all";
-  const sortValue = params.get("sort");
-  const sortBy: SortKey =
-    sortValue && Object.hasOwn(SORTERS, sortValue) ? (sortValue as SortKey) : "recent";
-  const requestedPage = Number(params.get("page"));
-  const page = Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+  const { catalog, error, retry } = useCatalog();
   const {
     data: { reading, journeys },
   } = useUserData();
-  const [attempt, setAttempt] = useState(0);
+  const [params, setParams] = useSearchParams();
+  const [filtersOpen, setFiltersOpen] = useState(
+    () => window.matchMedia("(min-width: 601px)").matches,
+  );
+  const filters = useMemo(() => catalogFilters(params), [params]);
+  const query = useDeferredValue(filters.query);
+  const search = useMemo(() => (catalog ? createCatalogSearch(catalog) : null), [catalog]);
+  const results = useMemo(() => search?.({ ...filters, query }) ?? [], [search, query, filters]);
+  const concepts = useMemo(() => (catalog ? catalogConcepts(catalog) : []), [catalog]);
+  const languages = useMemo(
+    () =>
+      catalog
+        ? [
+            ...new Set(
+              catalog.papers.flatMap((paper) => paper.variants.map((variant) => variant.language)),
+            ),
+          ].sort()
+        : [],
+    [catalog],
+  );
+  const levels = useMemo(
+    () =>
+      LEVEL_ORDER.filter((level) =>
+        catalog?.papers.some((paper) => paper.variants.some((variant) => variant.level === level)),
+      ),
+    [catalog],
+  );
+  const pageCount = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
+  const requestedPage = Number(params.get("page"));
+  const page = Math.min(
+    Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1,
+    pageCount,
+  );
+  const items = results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const activeFilters = [
+    ...(filters.language !== "all"
+      ? [{ key: "language", label: languageLabel(filters.language) }]
+      : []),
+    ...(filters.level !== "all"
+      ? [{ key: "level", label: LEVEL_LABELS[filters.level as keyof typeof LEVEL_LABELS] }]
+      : []),
+    ...(filters.concept !== "all"
+      ? [
+          {
+            key: "concept",
+            label:
+              concepts.find((concept) => concept.id === filters.concept)?.term ?? filters.concept,
+          },
+        ]
+      : []),
+    ...(filters.guide !== "all"
+      ? [
+          {
+            key: "guide",
+            label: filters.guide === "guided" ? "Con percorso a tappe" : "Senza percorso a tappe",
+          },
+        ]
+      : []),
+  ];
   function changeFilter(key: string, value: string) {
     const next = new URLSearchParams(params);
     if (value && value !== "all") next.set(key, value);
@@ -76,284 +88,201 @@ export default function Library() {
     if (key !== "page") next.delete("page");
     setParams(next, { replace: true });
   }
-  const dueCount = useDueCount();
-
-  useEffect(() => {
-    const controller = new AbortController();
-    setError(null);
-    fetch(papersUrl("index.json"), { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-        return res.json();
-      })
-      .then((value: unknown) => {
-        if (!controller.signal.aborted) setPapers(parseLibrary(value));
-      })
-      .catch((err: unknown) => {
-        if (!controller.signal.aborted) setError(String(err));
-      });
-    return () => controller.abort();
-  }, [attempt]);
-
-  const languages = useMemo(() => {
-    if (!papers) return [];
-    return Array.from(new Set(papers.map((p) => p.language))).sort();
-  }, [papers]);
-
-  const levelsPresent = useMemo(() => {
-    if (!papers) return [];
-    const present = new Set<Variant["level"]>();
-    for (const p of papers) for (const v of p.variants) present.add(v.level);
-    return LEVEL_ORDER.filter((l) => present.has(l));
-  }, [papers]);
-
-  const filtered = useMemo(() => {
-    if (!papers) return [];
-    const q = query.trim().toLowerCase();
-    return papers.filter((p) => {
-      if (language !== "all" && p.language !== language) return false;
-      if (level !== "all" && !p.variants.some((v) => v.level === level)) return false;
-      if (!q) return true;
-      return (
-        p.title.toLowerCase().includes(q) ||
-        p.authors.some((a) => a.toLowerCase().includes(q)) ||
-        Object.values(p.tldr ?? {}).some((summary) =>
-          `${summary.problem} ${summary.idea}`.toLowerCase().includes(q),
-        )
-      );
-    });
-  }, [papers, query, language, level]);
-
-  const sorted = useMemo(() => [...filtered].sort(SORTERS[sortBy]), [filtered, sortBy]);
-
-  const pageCount = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
-  const currentPage = Math.min(page, pageCount);
-  const pageItems = sorted.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-
+  function changePage(next: number) {
+    changeFilter("page", String(next));
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
   if (error)
     return (
       <div className="state-message" role="alert">
-        <p>Impossibile caricare la libreria: {error}</p>
-        <button onClick={() => setAttempt((n) => n + 1)}>Riprova</button>
+        <p>Impossibile caricare il catalogo: {error}</p>
+        <button onClick={retry}>Riprova</button>
       </div>
     );
-  if (!papers) return <p className="state-message">Caricamento…</p>;
-  if (papers.length === 0) {
-    return (
-      <p className="state-message">
-        La libreria è ancora vuota. I paper aggiunti compariranno qui.
-      </p>
-    );
-  }
-  const latestJourney = Object.entries(journeys ?? {})
-    .filter(([slug]) => papers.some((p) => p.slug === slug))
-    .sort((a, b) => b[1].updatedAt.localeCompare(a[1].updatedAt))[0];
-  const resumePaper = latestJourney && papers.find((p) => p.slug === latestJourney[0]);
-
+  if (!catalog) return <p className="state-message">Caricamento…</p>;
   return (
-    <div className="library">
+    <div className="library library-catalog">
       <div className="library-hero">
-        <h1 className="library-hero-title">Libreria</h1>
+        <h1 className="library-hero-title">Catalogo</h1>
       </div>
-      {resumePaper && latestJourney && (
-        <section className="library-continue">
-          <div>
-            <span className="library-eyebrow">Lettura da riprendere</span>
-            <h2>{resumePaper.title}</h2>
-            <p>
-              {latestJourney[1].phase === "summary"
-                ? "La tua sintesi e i punti da rivedere"
-                : `${latestJourney[1].explored.length} tappe esplorate · ${latestJourney[1].doubts.length} da rivedere`}
-            </p>
-          </div>
-          <Link
-            to={guidedUrl(resumePaper.slug, latestJourney[1])}
-            state={{ librarySearch: params.toString() }}
-          >
-            Riprendi il percorso →
-          </Link>
-        </section>
-      )}
-
-      {dueCount > 0 && (
-        <Link to="/review" className="review-banner">
-          <strong>{dueCount}</strong> da ripassare oggi <span aria-hidden>→</span>
-        </Link>
-      )}
-
       <div className="library-controls">
-        <div className="library-search">
-          <SearchIcon className="library-search-icon" />
-          <input
-            type="text"
-            className="library-search-input"
-            aria-label="Cerca paper per titolo, autore o problema"
-            placeholder="Cerca un problema, un titolo o un autore…"
-            value={query}
-            onChange={(e) => changeFilter("q", e.target.value)}
-          />
-          {query && (
-            <button
-              className="library-search-clear"
-              onClick={() => changeFilter("q", "")}
-              aria-label="Cancella ricerca"
-            >
-              <CloseIcon width={14} height={14} />
-            </button>
-          )}
-        </div>
-
+        <CatalogSearch query={filters.query} onQuery={(value) => changeFilter("q", value)} />
+        <select
+          className="library-select"
+          value={filters.sort}
+          onChange={(event) => changeFilter("sort", event.target.value)}
+          aria-label="Ordina"
+        >
+          <option value="relevance">Pertinenza</option>
+          <option value="recent">Aggiunti di recente</option>
+          <option value="title">Titolo A–Z</option>
+          <option value="pages">Meno pagine</option>
+        </select>
+      </div>
+      <details
+        className="catalog-filter-panel"
+        id="catalog-filters"
+        open={filtersOpen}
+        onToggle={(event) => setFiltersOpen(event.currentTarget.open)}
+      >
+        <summary>Filtri{activeFilters.length ? ` · ${activeFilters.length} attivi` : ""}</summary>
         <div className="library-filters">
           {languages.length > 1 && (
-            <select
-              className="library-select"
-              value={language}
-              onChange={(e) => changeFilter("language", e.target.value)}
-              aria-label="Filtra per lingua"
-            >
-              <option value="all">Tutte le lingue</option>
-              {languages.map((l) => (
-                <option key={l} value={l}>
-                  {languageLabel(l)}
-                </option>
-              ))}
-            </select>
+            <label>
+              Lingua delle spiegazioni
+              <select
+                className="library-select"
+                value={filters.language}
+                onChange={(event) => changeFilter("language", event.target.value)}
+              >
+                <option value="all">Tutte le lingue</option>
+                {languages.map((language) => (
+                  <option key={language} value={language}>
+                    {languageLabel(language)}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
-
-          {levelsPresent.length > 1 && (
+          <div className="catalog-level-filter">
+            <span>Livello delle spiegazioni</span>
             <div className="library-level-chips" role="group" aria-label="Filtra per livello">
               <button
-                aria-pressed={level === "all"}
-                className={`library-chip ${level === "all" ? "is-active" : ""}`}
+                className={`library-chip ${filters.level === "all" ? "is-active" : ""}`}
+                aria-pressed={filters.level === "all"}
                 onClick={() => changeFilter("level", "all")}
               >
-                Tutti i livelli
+                Tutti
               </button>
-              {levelsPresent.map((l) => (
+              {levels.map((level) => (
                 <button
-                  key={l}
-                  aria-pressed={level === l}
-                  className={`library-chip ${level === l ? "is-active" : ""}`}
-                  onClick={() => changeFilter("level", l)}
+                  key={level}
+                  className={`library-chip ${filters.level === level ? "is-active" : ""}`}
+                  aria-pressed={filters.level === level}
+                  onClick={() => changeFilter("level", level)}
                 >
-                  {LEVEL_LABELS[l]}
+                  {LEVEL_LABELS[level]}
                 </button>
               ))}
             </div>
-          )}
-
-          <select
-            className="library-select"
-            value={sortBy}
-            onChange={(e) => changeFilter("sort", e.target.value)}
-            aria-label="Ordina"
-          >
-            <option value="recent">Più recenti</option>
-            <option value="title">Titolo A-Z</option>
-            <option value="pages">Meno pagine</option>
-          </select>
+          </div>
+          <label>
+            Concetto
+            <select
+              className="library-select catalog-concept-select"
+              value={filters.concept}
+              onChange={(event) => changeFilter("concept", event.target.value)}
+            >
+              <option value="all">Tutti i concetti</option>
+              {[...concepts]
+                .sort((a, b) => a.term.localeCompare(b.term, "it"))
+                .map((concept) => (
+                  <option key={concept.id} value={concept.id}>
+                    {concept.term} ({concept.count})
+                  </option>
+                ))}
+            </select>
+          </label>
+          {catalog.papers.some((paper) => !paper.guideSteps) &&
+            catalog.papers.some((paper) => paper.guideSteps) && (
+              <label>
+                Percorso
+                <select
+                  className="library-select"
+                  value={filters.guide}
+                  onChange={(event) => changeFilter("guide", event.target.value)}
+                >
+                  <option value="all">Tutti i paper</option>
+                  <option value="guided">Con percorso a tappe</option>
+                  <option value="pdf">Senza percorso a tappe</option>
+                </select>
+              </label>
+            )}
         </div>
-      </div>
-
-      <p className="library-results-count">
-        {sorted.length === papers.length
-          ? `${sorted.length} risultati`
-          : `${sorted.length} di ${papers.length} risultati`}
-      </p>
-
-      {sorted.length === 0 ? (
-        <div className="state-message">
-          <p>Nessun paper trovato. Prova un altro termine o rimuovi i filtri.</p>
-          <button className="guided-secondary" onClick={() => setParams({}, { replace: true })}>
-            Mostra tutti i paper
+      </details>
+      {activeFilters.length > 0 && (
+        <div className="catalog-active-filters" aria-label="Filtri attivi">
+          {activeFilters.map((filter) => (
+            <button
+              key={filter.key}
+              onClick={() => changeFilter(filter.key, "all")}
+              aria-label={`Rimuovi filtro ${filter.label}`}
+            >
+              {filter.label} <span aria-hidden="true">×</span>
+            </button>
+          ))}
+          <button
+            onClick={() => {
+              const next = new URLSearchParams(params);
+              for (const { key } of activeFilters) next.delete(key);
+              next.delete("page");
+              setParams(next, { replace: true });
+            }}
+          >
+            Rimuovi filtri
           </button>
         </div>
-      ) : (
-        <ul className="library-grid">
-          {pageItems.map((p) => {
-            const summary = pickTldr(p.tldr, p.language);
-            return (
-              <li key={p.slug} className="library-card">
-                <Link
-                  to={`/paper/${p.slug}${level !== "all" ? `?v=${encodeURIComponent(p.variants.find((v) => v.level === level)?.key ?? p.variants[0].key)}` : ""}`}
-                  state={{ librarySearch: params.toString() }}
-                  className="library-card-link"
-                >
-                  <PaperThumbnail
-                    imageUrl={papersUrl(`${p.slug}/source/thumbnail.png`)}
-                    label={p.title}
-                  />
-                  <div className="library-card-body">
-                    {journeys?.[p.slug] && (
-                      <span className="library-resume">
-                        Già iniziato · {journeys[p.slug].explored.length} tappe esplorate
-                      </span>
-                    )}
-                    <h2 className="library-card-title">{p.title}</h2>
-                    <div className="library-card-badges">
-                      <span className="library-badge">{p.pageCount} pagine</span>
-                      <span className="library-badge">{languageLabel(p.language)}</span>
-                      {Array.from(new Set(p.variants.map((v) => v.level))).map((l) => (
-                        <span key={l} className={`library-badge library-badge-level-${l}`}>
-                          {LEVEL_LABELS[l]}
-                        </span>
-                      ))}
-                    </div>
-                    {summary && (
-                      <div className="library-tldr">
-                        <p>
-                          <span>Il problema</span>
-                          {firstSentence(summary.problem)}
-                        </p>
-                        <p>
-                          <span>L'idea</span>
-                          {firstSentence(summary.idea)}
-                        </p>
-                      </div>
-                    )}
-                    <span className="library-explore">
-                      Esplora il paper <span aria-hidden="true">→</span>
-                    </span>
-                  </div>
-                </Link>
-                <div className="library-card-footer">
-                  <span className="library-authors">{formatAuthors(p.authors)}</span>
-                  <Link to={`/paper/${p.slug}?view=pdf`}>
-                    {reading?.[p.slug]
-                      ? `PDF · riprendi p. ${reading[p.slug].page}`
-                      : "PDF originale"}{" "}
-                    ↗
-                  </Link>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
       )}
-
+      <p className="library-results-count" role="status" aria-live="polite" aria-atomic="true">
+        {results.length} paper
+        {results.length
+          ? ` · ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, results.length)}`
+          : ""}
+        {query !== filters.query ? " · Ricerca…" : ""}
+      </p>
+      {items.length ? (
+        <ul className="library-grid catalog-results" aria-busy={query !== filters.query}>
+          {items.map((paper) => (
+            <CatalogPaperCard
+              key={paper.slug}
+              paper={paper}
+              language={filters.language}
+              level={filters.level}
+              libraryPath="/catalog"
+              librarySearch={params.toString()}
+              reading={reading?.[paper.slug]}
+              started={journeys?.[paper.slug]?.explored.length}
+              headingLevel={2}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div className="state-message">
+          <p>Nessun paper trovato.</p>
+          <button onClick={() => setParams({}, { replace: true })}>Mostra tutti i paper</button>
+        </div>
+      )}
       {pageCount > 1 && (
         <nav className="library-pagination" aria-label="Paginazione">
           <button
             className="library-page-btn"
-            onClick={() => changeFilter("page", String(Math.max(1, currentPage - 1)))}
-            disabled={currentPage === 1}
+            onClick={() => changePage(page - 1)}
+            disabled={page === 1}
             aria-label="Pagina precedente"
           >
             <ChevronLeftIcon />
           </button>
-          {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
-            <button
-              key={n}
-              className={`library-page-btn ${n === currentPage ? "is-active" : ""}`}
-              onClick={() => changeFilter("page", String(n))}
-            >
-              {n}
-            </button>
-          ))}
+          {paginationPages(page, pageCount).map((item) =>
+            typeof item === "number" ? (
+              <button
+                key={item}
+                className={`library-page-btn ${item === page ? "is-active" : ""}`}
+                aria-current={item === page ? "page" : undefined}
+                aria-label={`Pagina ${item}`}
+                onClick={() => changePage(item)}
+              >
+                {item}
+              </button>
+            ) : (
+              <span key={item} className="library-page-gap" aria-hidden="true">
+                …
+              </span>
+            ),
+          )}
           <button
             className="library-page-btn"
-            onClick={() => changeFilter("page", String(Math.min(pageCount, currentPage + 1)))}
-            disabled={currentPage === pageCount}
+            onClick={() => changePage(page + 1)}
+            disabled={page === pageCount}
             aria-label="Pagina successiva"
           >
             <ChevronRightIcon />

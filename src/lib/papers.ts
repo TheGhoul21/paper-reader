@@ -233,6 +233,49 @@ export function parsePaper(
   const st = structure as PaperStructure | null;
   if (st) {
     if (!variantTexts(st.thesis)) invalid("structure thesis");
+    if (st.figures !== undefined) {
+      if (!Array.isArray(st.figures)) invalid("figures");
+      const figureIds = new Set<string>();
+      for (const figure of st.figures) {
+        if (
+          !record(figure) ||
+          !nonempty(figure.id) ||
+          figureIds.has(figure.id) ||
+          !nonempty(figure.label) ||
+          !Number.isInteger(figure.page) ||
+          figure.page < 0 ||
+          figure.page >= m.pageCount ||
+          !Array.isArray(figure.rect) ||
+          figure.rect.length !== 4 ||
+          figure.rect.some((n) => !Number.isFinite(n) || n < 0 || n > 1) ||
+          figure.rect[0] >= figure.rect[2] ||
+          figure.rect[1] >= figure.rect[3] ||
+          typeof figure.image !== "string" ||
+          !/^figures\/[a-z0-9][a-z0-9-]*\.png$/.test(figure.image) ||
+          !/^[a-f0-9]{64}$/.test(String(figure.sourceSha256)) ||
+          figure.sourceSha256 !== m.sourceSha256 ||
+          !variantTexts(figure.caption) ||
+          !ids.has(figure.captionParagraph) ||
+          !ps.some(
+            (p) =>
+              p.id === figure.captionParagraph &&
+              paragraphAnchors(p).some((a) => a.page === figure.page),
+          ) ||
+          !Array.isArray(figure.references) ||
+          !figure.references.length ||
+          figure.references.some(
+            (r) =>
+              !record(r) ||
+              !ids.has(r.paragraphId) ||
+              (r.panel !== undefined && !["a", "b", "c"].includes(r.panel)),
+          ) ||
+          new Set(figure.references.map((r) => r.paragraphId)).size !== figure.references.length ||
+          (figure.animation !== undefined && figure.animation !== "parity-twine")
+        )
+          invalid("figure");
+        figureIds.add(figure.id);
+      }
+    }
     const claims = new Set(st.claims.map((claim) => claim?.id));
     if (claims.size !== st.claims.length) invalid("duplicate claims");
     for (const c of st.claims) {

@@ -916,5 +916,56 @@
         }
       ]
     }
+  ],
+  "figures": [
+    {
+      "id": "figure-2",
+      "label": "Figura 2",
+      "page": 1,
+      "rect": [
+        0.515,
+        0.061,
+        0.925,
+        0.399
+      ],
+      "image": "figures/figure-2.png",
+      "sourceSha256": "92eaf33303ef144b379735f3b94aed240f8f8671f2f27331635ea496163cc00f",
+      "caption": {
+        "it-intermediate": "(a) Layout lineare, (b) quadrato e (c) a scala. Le DCNOT nere formano i backbone, le CNOT grigie collegano i rami, quelle rosse decodificano le etichette singole. Le distanze orizzontali del disegno non indicano i tempi reali di esecuzione.",
+        "it-expert": "(a) Layout lineare, (b) quadrato e (c) a scala. Le DCNOT nere formano i backbone, le CNOT grigie collegano i rami, quelle rosse decodificano le etichette singole. Le distanze orizzontali del disegno non indicano i tempi reali di esecuzione."
+      },
+      "captionParagraph": "p0018",
+      "references": [
+        {
+          "paragraphId": "p0018",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0022",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0023",
+          "panel": "b"
+        },
+        {
+          "paragraphId": "p0024",
+          "panel": "c"
+        },
+        {
+          "paragraphId": "p0027",
+          "panel": "b"
+        },
+        {
+          "paragraphId": "p0124",
+          "panel": "c"
+        },
+        {
+          "paragraphId": "p0130",
+          "panel": "c"
+        }
+      ],
+      "animation": "parity-twine"
+    }
   ]
 }

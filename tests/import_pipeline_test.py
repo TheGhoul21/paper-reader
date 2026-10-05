@@ -26,6 +26,7 @@ def module(name, path):
 resolver = module("resolver", ".claude/skills/import-paper/scripts/resolve_source.py")
 merger = module("merger", ".claude/skills/import-paper/scripts/merge_passages.py")
 thumbnails = module("thumbnails", "scripts/render-thumbnails.py")
+figures = module("figures", "scripts/render-figures.py")
 
 
 class ImportTests(unittest.TestCase):
@@ -129,6 +130,34 @@ class ImportTests(unittest.TestCase):
             (source / "paper.pdf").write_bytes(b"replacement")
             with self.assertRaisesRegex(ValueError, "PDF changed"):
                 thumbnails.render_thumbnail(folder)
+
+    def test_figure_cache_tracks_source_page_and_crop_without_changing_the_pdf(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / "demo"
+            source = folder / "source"
+            source.mkdir(parents=True)
+            with pymupdf.open() as doc:
+                doc.new_page(width=200, height=200).insert_text((30, 30), "Figure")
+                doc.save(source / "paper.pdf")
+            original = (source / "paper.pdf").read_bytes()
+            figure = {"id": "figure-1", "image": "figures/figure-1.png", "page": 0,
+                      "rect": [0, 0, 0.5, 0.5], "sourceSha256": hashlib.sha256(original).hexdigest()}
+            structure = folder / "structure.json"
+            structure.write_text(json.dumps({"figures": [figure]}))
+            self.assertEqual(figures.render_figures(folder), 1)
+            image = folder / figure["image"]
+            width, height = struct.unpack(">II", image.read_bytes()[16:24])
+            self.assertEqual((width, height), (1200, 1200))
+            self.assertEqual(figures.render_figures(folder), 0)
+            figure["rect"] = [0, 0, 0.5, 0.25]
+            structure.write_text(json.dumps({"figures": [figure]}))
+            self.assertEqual(figures.render_figures(folder), 1)
+            self.assertEqual(struct.unpack(">II", image.read_bytes()[16:24]), (1200, 600))
+            self.assertEqual((source / "paper.pdf").read_bytes(), original)
+            figure["sourceSha256"] = "0" * 64
+            structure.write_text(json.dumps({"figures": [figure]}))
+            with self.assertRaisesRegex(ValueError, "source changed"):
+                figures.render_figures(folder)
 
 
 if __name__ == "__main__":

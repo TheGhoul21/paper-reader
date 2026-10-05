@@ -30,6 +30,8 @@ Se aggiorni le dipendenze mentre Vite è aperto, ferma il server e riavvialo con
 
 ## Lettura guidata
 
+La homepage mostra ricerca, fino a tre letture da riprendere, concetti del glossario e quattro paper aggiunti di recente. Il [catalogo](https://theghoul21.github.io/paper-reader/catalog) è separato: ricerca per titolo, autore, concetto, DOI o arXiv, filtri e risultati compatti. I vecchi link alla homepage con filtri continuano a funzionare. La [scelta del catalogo statico](docs/catalog-experience-2026-10-05.md) descrive dati, limiti e verifiche.
+
 L'utente ha scelto il percorso A, ora implementato come ingresso principale. `/paper/<slug>` apre l'orientamento; `?stage=read&step=<id>` raggiunge una tappa e `?stage=summary` il riepilogo. `?view=pdf` apre la fonte; i vecchi link `?p=<id>` mantengono il comportamento PDF. Dal percorso si torna alla stessa tappa dopo il confronto con l'originale.
 
 Per usare il server locale sulla porta 5199: `npm run dev -- --port 5199 --strictPort`. Apri [DAScut](http://localhost:5199/paper/dascut). La [descrizione dell'esperienza](docs/guided-reading-experience-2026-10-04.md) documenta scelta, funzioni e limiti editoriali. L'ampiezza delle spiegazioni è indicata all'ingresso e nella sintesi: il numero di tappe percorse non certifica la comprensione dell'intero PDF.
@@ -39,6 +41,7 @@ Per usare il server locale sulla porta 5199: `npm run dev -- --port 5199 --stric
 | Area                                    | Ingresso                                                                                      |
 | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Libreria, lettore, ripasso              | `src/pages/`                                                                                  |
+| Homepage, catalogo e ricerca            | `src/pages/Home.tsx`, `Library.tsx`, `src/lib/catalog.ts`, `useCatalog.ts`                    |
 | Orientamento, tappe e sintesi           | `src/pages/GuidedReading.tsx`, `src/components/guided/`                                       |
 | Sessione e salvataggio del percorso     | `src/lib/useGuidedReading.ts`, regole pure in `guidedReading.ts`                              |
 | Composizione del lettore                | `src/components/PdfViewer.tsx`                                                                |
@@ -49,7 +52,12 @@ Per usare il server locale sulla porta 5199: `npm run dev -- --port 5199 --stric
 | Posizione e preferenze di lettura       | `src/lib/readingProgress.ts`                                                                  |
 | Stili                                   | `src/index.css` e `src/styles/` per schermata                                                 |
 | Contenuti                               | `papers/<slug>/`                                                                              |
+| Figure originali e animazione delle PTN | `src/components/figures/`, modello in `src/lib/parityTwine.ts`                                |
+
+`npm run catalog-index` rigenera l'indice del catalogo dopo modifiche ai metadati, glossari o percorsi. La build lo rigenera automaticamente. L'indice è derivato dai dati curati; non va modificato a mano.
 
 Leggi [CONTRIBUTING.md](CONTRIBUTING.md) per modificare codice o dati, [il modello del dominio](CONTEXT.md) per il vocabolario e [la guida di sviluppo](docs/development.md) per formati, invarianti e importazione manuale.
+
+La figura 2 di _Optimizing Atom Transport, Gate-Count and Depth with Parity Twine_ è disponibile nelle tappe che la citano: i circuiti lineare, quadrato e a scala si possono percorrere una CNOT alla volta o riprodurre. L'immagine originale resta ingrandibile e collegata alla pagina PDF. I ritagli sono dichiarati in `structure.json` e si rigenerano con `uv run scripts/render-figures.py <slug>`; non vengono estratti automaticamente da confini stimati.
 
 La pipeline verifica il progetto sulle pull request. Il push su `main` pubblica la build verificata su GitHub Pages. L'esecuzione locale dei comandi non pubblica il sito.

@@ -49,15 +49,29 @@ test("real PDF, panel navigation, editing and reading recovery under the product
 test("library keeps the level preference and has no horizontal overflow", async ({
   page,
 }, info) => {
-  await page.goto("./?sort=__proto__&page=1.5");
+  await page.goto("catalog?sort=__proto__&page=1.5");
   await expect(page.locator(".library-card-link").first()).toBeVisible();
-  await page.goto("./");
+  await page.goto("catalog");
+  await expect(page.locator(".library-card-link").first()).toBeVisible();
+  if (
+    !(await page
+      .locator(".catalog-filter-panel")
+      .evaluate((element) => (element as HTMLDetailsElement).open))
+  )
+    await page.locator(".catalog-filter-panel > summary").click();
   await page.getByRole("button", { name: "Base", exact: true }).click();
   await page.locator(".library-card-link").first().click();
   await expect(page.getByRole("combobox", { name: "Livello di spiegazione" })).toHaveValue(
     /beginner/,
   );
   await page.getByRole("link", { name: "Torna alla libreria" }).click();
+  await expect(page.locator(".library-card-link").first()).toBeVisible();
+  if (
+    !(await page
+      .locator(".catalog-filter-panel")
+      .evaluate((element) => (element as HTMLDetailsElement).open))
+  )
+    await page.locator(".catalog-filter-panel > summary").click();
   await expect(page.getByRole("button", { name: "Base", exact: true })).toHaveAttribute(
     "aria-pressed",
     "true",

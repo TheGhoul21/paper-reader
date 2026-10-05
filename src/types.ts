@@ -164,6 +164,24 @@ export interface PaperStructure {
   claims: ArgumentClaim[];
   /** Optional section guides: what the objects mean and why each passage is here. */
   readingGuide?: ReadingSection[];
+  /** Reviewed crops from the source PDF, linked to the passages that cite them. */
+  figures?: PaperFigure[];
+}
+
+export interface PaperFigure {
+  id: string;
+  label: string;
+  /** Zero-based source page and normalized crop, with the same origin as paragraph anchors. */
+  page: number;
+  rect: [number, number, number, number];
+  /** Path inside this paper's folder. Generated from the original PDF, never redrawn. */
+  image: string;
+  sourceSha256: string;
+  caption: Record<string, string>;
+  captionParagraph: string;
+  references: { paragraphId: string; panel?: "a" | "b" | "c" }[];
+  /** Optional authored reconstruction. The original image remains available. */
+  animation?: "parity-twine";
 }
 
 export interface ReadingSection {

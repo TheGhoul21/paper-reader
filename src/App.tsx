@@ -21,6 +21,9 @@ export default function App() {
               paper <span className="app-title-accent">reader</span>
             </span>
           </Link>
+          <NavLink to="/catalog" className="app-nav-link app-nav-catalog">
+            Catalogo
+          </NavLink>
           <a
             className="app-nav-link app-nav-request"
             href={paperRequestUrl()}

@@ -28,14 +28,19 @@ export default function GuidedReading({
   const preferences = useReaderPreferences();
   const location = useLocation();
   const librarySearch: unknown = location.state?.librarySearch;
+  const libraryPath = location.state?.libraryPath === "/catalog" ? "/catalog" : "/";
   const libraryUrl =
-    typeof librarySearch === "string" && librarySearch ? `/?${librarySearch}` : "/";
+    typeof librarySearch === "string" && librarySearch
+      ? `${libraryPath}?${librarySearch}`
+      : libraryPath;
   const [concept, setConcept] = useState<OpenConcept | null>(null);
   useEffect(() => {
     setConcept(null);
   }, [location.key]);
   const matcher = useMemo(() => buildConceptMatcher(data.concepts), [data.concepts]);
   const tools: ReadingTools = {
+    slug: data.meta.slug,
+    figures: data.structure?.figures ?? [],
     variant,
     matcher,
     onConcept: (id, anchor, paragraphId) => setConcept({ id, anchor, paragraphId }),

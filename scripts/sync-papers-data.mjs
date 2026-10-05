@@ -3,6 +3,7 @@
 import { cpSync, rmSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import "./build-concepts-index.mjs"; // regenerate papers/concepts-index.json first, so the copy is never stale
+import "./build-catalog-index.mjs";
 
 const root = process.cwd();
 const src = join(root, "papers");

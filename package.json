@@ -14,6 +14,7 @@
     "postbuild": "node scripts/spa-fallback.mjs",
     "preview": "vite preview",
     "concepts-index": "node scripts/build-concepts-index.mjs",
+    "catalog-index": "node scripts/build-catalog-index.mjs",
     "test:integration": "vitest run",
     "test:browser": "playwright test",
     "lint": "eslint src",

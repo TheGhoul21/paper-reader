@@ -1,0 +1,330 @@
+.reading-figure {
+  margin: 24px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  padding: 20px;
+  min-width: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.reading-figure > figcaption > strong {
+  font-size: 1rem;
+}
+.reading-figure > figcaption > span {
+  margin-left: 12px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.reading-figure > figcaption > p {
+  margin: 10px 0 20px;
+}
+.reading-figure button {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--fg);
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+}
+.reading-figure button:disabled {
+  opacity: 0.45;
+}
+.twine-panels,
+.twine-playback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.twine-panels button[aria-pressed="true"],
+.twine-playback button:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.twine-description {
+  min-height: 3.4em;
+}
+.twine-circuit-scroll {
+  overflow: auto;
+  max-width: 100%;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 0;
+}
+.twine-circuit-scroll svg {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  color: var(--fg);
+}
+.twine-circuit-scroll text {
+  fill: currentColor;
+  font-family: Georgia, serif;
+  font-size: 16px;
+}
+.twine-circuit-scroll .twine-axis {
+  font:
+    11px system-ui,
+    sans-serif;
+  fill: var(--muted);
+}
+.twine-wire {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.twine-band {
+  fill: #7998ff;
+  opacity: 0.22;
+}
+.twine-animation.is-playing .twine-playhead {
+  transition: transform 650ms ease;
+}
+.twine-playhead line {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 3 4;
+  opacity: 0.7;
+}
+.twine-gate {
+  stroke: var(--twine-role-color, var(--fg));
+  stroke-width: 1.5;
+}
+.twine-gate.is-active {
+  stroke: var(--twine-role-color, var(--fg));
+  stroke-width: 3;
+}
+.twine-control {
+  fill: var(--twine-role-color, var(--fg));
+}
+.twine-gate.is-active .twine-control {
+  fill: var(--twine-role-color, var(--fg));
+}
+.twine-target {
+  fill: var(--card-bg);
+}
+.twine-gate.is-past {
+  opacity: 0.45;
+}
+.twine-label.is-changed {
+  fill: var(--accent);
+  font-weight: bold;
+}
+.twine-animation.is-playing .twine-label.is-changed {
+  animation: twine-label-appear 450ms ease;
+}
+@keyframes twine-label-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.twine-notation {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.twine-timeline {
+  display: block;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.twine-timeline input {
+  display: block;
+  width: 100%;
+  min-height: 32px;
+  accent-color: var(--accent);
+}
+.twine-state {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 6px;
+  background: var(--reading-soft);
+}
+.twine-state > p {
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+.twine-labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+.twine-labels > div {
+  border-bottom: 2px solid transparent;
+}
+.twine-labels > .is-changed {
+  border-color: var(--accent);
+}
+.twine-labels dt {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.twine-labels dd {
+  margin: 4px 0;
+  font:
+    1.2rem Georgia,
+    serif;
+}
+.twine-pair-count {
+  font-size: 0.78rem;
+}
+.twine-pairs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+.twine-pairs li {
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  background: var(--card-bg);
+}
+.twine-pairs .is-seen {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.twine-role-backbone {
+  --twine-role-color: var(--fg);
+  color: var(--fg);
+}
+.twine-role-leg {
+  --twine-role-color: var(--muted);
+  color: var(--muted);
+}
+.twine-role-decoder {
+  --twine-role-color: #cf3847;
+  color: #cf3847;
+}
+.twine-path {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.twine-path > span {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.twine-path svg {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+.twine-path-edge {
+  stroke: var(--twine-role-color);
+  stroke-width: 2;
+}
+.twine-path-edge.is-active {
+  stroke: var(--accent);
+  stroke-width: 4;
+}
+.twine-path-edge.is-dashed {
+  stroke-dasharray: 5 5;
+}
+.twine-path-node circle {
+  fill: var(--card-bg);
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+.twine-path-node text {
+  fill: var(--fg);
+  font:
+    15px system-ui,
+    sans-serif;
+}
+.twine-path-node.is-target circle {
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: var(--reading-soft);
+}
+.twine-path-node.is-control circle {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.twine-path-node.is-control text {
+  fill: var(--on-accent);
+}
+.twine-legend {
+  display: flex;
+  gap: 10px 18px;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+  font-size: 0.72rem;
+}
+@media (prefers-color-scheme: dark) {
+  .twine-role-decoder {
+    --twine-role-color: #ff8894;
+    color: #ff8894;
+  }
+}
+.reading-figure-source {
+  margin-top: 20px;
+}
+.reading-figure-original img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 16px 0;
+  background: white;
+}
+.reading-figure-pdf {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 0.8rem;
+}
+.reading-figure-dialog {
+  width: min(1240px, calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: var(--fg);
+}
+.reading-figure-dialog::backdrop {
+  background: #0009;
+}
+.reading-figure-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: -16px;
+  background: var(--card-bg);
+  padding: 8px 0;
+}
+.reading-figure-dialog img {
+  display: block;
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+  background: white;
+}
+@media (max-width: 760px) {
+  .reading-figure {
+    padding: 14px;
+  }
+  .twine-labels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .twine-animation.is-playing .twine-playhead {
+    transition: none;
+  }
+  .twine-animation.is-playing .twine-label.is-changed {
+    animation: none;
+  }
+}

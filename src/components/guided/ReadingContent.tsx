@@ -3,10 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import { segmentText, type ConceptMatcher } from "../../lib/concepts";
 import { pickVariant } from "../../lib/structure";
 import { cardId, useReview } from "../../lib/review";
-import type { Paragraph } from "../../types";
+import type { PaperFigure, Paragraph } from "../../types";
+import ReadingFigure from "../figures/ReadingFigure";
 
 const DeepDive = lazy(() => import("../DeepDive"));
 export interface ReadingTools {
+  slug: string;
+  figures: PaperFigure[];
   variant: string;
   matcher: ConceptMatcher;
   onConcept: (id: string, anchor: { x: number; y: number }, paragraphId?: string) => void;
@@ -50,20 +53,27 @@ export function ReadingText({
 export function ReadingPassage({
   paragraph,
   tools,
+  figures = [],
 }: {
   paragraph: Paragraph;
   tools: ReadingTools;
+  figures?: { figure: PaperFigure; panel?: "a" | "b" | "c" }[];
 }) {
   const location = useLocation();
   const deepDive = paragraph.deepDive?.[tools.variant];
   const [deepOpen, setDeepOpen] = useState(false);
   return (
     <div className="guided-passage" id={`guided-p-${paragraph.id}`} tabIndex={-1}>
-      <ReadingText
-        text={pickVariant(paragraph.explanations, tools.variant)}
-        tools={tools}
-        paragraphId={paragraph.id}
-      />
+      {!figures.some(({ figure }) => figure.captionParagraph === paragraph.id) && (
+        <ReadingText
+          text={pickVariant(paragraph.explanations, tools.variant)}
+          tools={tools}
+          paragraphId={paragraph.id}
+        />
+      )}
+      {figures.map(({ figure, panel }) => (
+        <ReadingFigure key={figure.id} figure={figure} panel={panel} tools={tools} />
+      ))}
       <details className="guided-source">
         <summary>Confronta con il paper · pagina {paragraph.page + 1}</summary>
         <blockquote>{paragraph.sourceText}</blockquote>
@@ -97,17 +107,37 @@ export function ReadingPassages({
 }) {
   const visible = paragraphs.length > 6 ? paragraphs.slice(0, 4) : paragraphs;
   const extra = paragraphs.slice(visible.length);
+  // Show a cited figure once, beside its first linked passage in this step.
+  const figuresByPassage = new Map<string, { figure: PaperFigure; panel?: "a" | "b" | "c" }[]>();
+  for (const figure of tools.figures) {
+    const paragraph = paragraphs.find((p) => figure.references.some((r) => r.paragraphId === p.id));
+    if (!paragraph) continue;
+    const reference = figure.references.find((r) => r.paragraphId === paragraph.id)!;
+    const figures = figuresByPassage.get(paragraph.id) ?? [];
+    figures.push({ figure, panel: reference.panel });
+    figuresByPassage.set(paragraph.id, figures);
+  }
   return (
     <div className="guided-explanations">
       <h2>Spiegazioni</h2>
       {visible.map((paragraph) => (
-        <ReadingPassage key={paragraph.id} paragraph={paragraph} tools={tools} />
+        <ReadingPassage
+          key={paragraph.id}
+          paragraph={paragraph}
+          tools={tools}
+          figures={figuresByPassage.get(paragraph.id)}
+        />
       ))}
       {extra.length > 0 && (
         <details className="guided-extra-passages">
           <summary>Leggi gli altri {extra.length} passaggi di questa tappa</summary>
           {extra.map((paragraph) => (
-            <ReadingPassage key={paragraph.id} paragraph={paragraph} tools={tools} />
+            <ReadingPassage
+              key={paragraph.id}
+              paragraph={paragraph}
+              tools={tools}
+              figures={figuresByPassage.get(paragraph.id)}
+            />
           ))}
         </details>
       )}
