@@ -37,30 +37,38 @@ export default function LinkLayer({ doc, page, viewport, onJumpToPage, onCitatio
   useEffect(() => {
     let cancelled = false;
 
-    page.getAnnotations({ intent: "display" }).then(async (annotations: PdfLinkAnnotation[]) => {
-      const linkAnnotations = annotations.filter((a) => a.subtype === "Link" && a.rect);
-      const resolved = await Promise.all(
-        linkAnnotations.map(async (a, i): Promise<ResolvedLink | null> => {
-          const [vx0, vy0, vx1, vy1] = viewport.convertToViewportRectangle(a.rect!);
-          const left = Math.min(vx0, vx1);
-          const top = Math.min(vy0, vy1);
-          const width = Math.abs(vx1 - vx0);
-          const height = Math.abs(vy1 - vy0);
-          const key = `${page.pageNumber}-${i}`;
+    page
+      .getAnnotations({ intent: "display" })
+      .then(async (annotations: PdfLinkAnnotation[]) => {
+        // The viewer may have been closed while pdf.js was still answering.
+        if (cancelled) return;
+        const linkAnnotations = annotations.filter((a) => a.subtype === "Link" && a.rect);
+        const resolved = await Promise.all(
+          linkAnnotations.map(async (a, i): Promise<ResolvedLink | null> => {
+            const [vx0, vy0, vx1, vy1] = viewport.convertToViewportRectangle(a.rect!);
+            const left = Math.min(vx0, vx1);
+            const top = Math.min(vy0, vy1);
+            const width = Math.abs(vx1 - vx0);
+            const height = Math.abs(vy1 - vy0);
+            const key = `${page.pageNumber}-${i}`;
 
-          if (a.url) {
-            return { key, left, top, width, height, href: a.url };
-          }
-          if (!a.dest) return null;
+            if (a.url) {
+              return { key, left, top, width, height, href: a.url };
+            }
+            if (!a.dest) return null;
 
-          const target = await resolveLinkTarget(doc, a.dest);
-          if (!target) return null;
-          return { key, left, top, width, height, target };
-        }),
-      );
+            const target = await resolveLinkTarget(doc, a.dest);
+            if (!target) return null;
+            return { key, left, top, width, height, target };
+          }),
+        );
 
-      if (!cancelled) setLinks(resolved.filter((l): l is ResolvedLink => l !== null));
-    });
+        if (!cancelled) setLinks(resolved.filter((l): l is ResolvedLink => l !== null));
+      })
+      .catch((reason: unknown) => {
+        // Leaving the PDF terminates its worker and rejects pending requests.
+        if (!cancelled) console.error("PDF link annotations failed", reason);
+      });
 
     return () => {
       cancelled = true;

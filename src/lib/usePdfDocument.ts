@@ -26,7 +26,9 @@ export function usePdfDocument(url: string) {
       });
     return () => {
       cancelled = true;
-      void task.destroy();
+      task.destroy().catch((reason: unknown) => {
+        console.error("PDF document cleanup failed", reason);
+      });
     };
   }, [url, attempt]);
   return { doc, nativeSize, error, retry: () => setAttempt((n) => n + 1) };
