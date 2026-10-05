@@ -5,7 +5,7 @@ description: Import an academic paper (arXiv link/ID, direct PDF URL, or local P
 
 # import-paper
 
-Turns a paper into `papers/<slug>/{meta.json, paragraphs.json, source/paper.pdf}` — the data the reader web app (`src/`) reads. See `CLAUDE.md` for the data model.
+Turns a paper into `papers/<slug>/{meta.json, paragraphs.json, source/paper.pdf, figures/}` — the data the reader web app (`src/`) reads. See `CLAUDE.md` for the data model.
 
 Each paragraph can carry **multiple explanation variants** — one per (language, background level) combination — selectable in the reader. Canonical level keys: `beginner` (no background in the field), `intermediate` (adjacent-field grad level), `expert` (expert in this exact subfield). A variant key is `"<language>-<level>"`, e.g. `"it-beginner"`.
 
@@ -237,6 +237,62 @@ Cover the whole imported paper, including appendices, with a route through its a
 - For an existing paper, add the guide to `structure.json` using existing paragraph ids. Preserve claims, source text, coordinates, ordering and explanation variants.
 - Validate with `python3 .claude/skills/import-paper/scripts/check_paper.py <slug> --require-reading-guide` and `npm run test:reading-guide`.
 
+## 4h. Add the figures (`structure.json` → `figures`)
+
+The guided reading shows each declared figure once per guide step, beside the first passage of that step that references it. The figure's caption replaces the caption passage, which stays readable in the original. Every figure is a **static crop of the original PDF**; a few can also get an **interactive reconstruction** alongside the original. Existing examples: OneCanvas (figures 1–4, with fig. 1 interactive) and Parity Twine (figures 2, 7, 8, all interactive). The reference document is `docs/figures-2026-10-05.md`.
+
+### Static figures (every import)
+
+Declare every figure the argument uses: results, schemes of the method, diagrams the text refers to. Skip purely decorative figures, and leave tables out (they stay readable as passages). Coordinates come from the PDF and are always verified with your own eyes. Never estimate them.
+
+1. **Propose the crops**, after `paragraphs.json` exists:
+   ```
+   uv run .claude/skills/import-paper/scripts/find_figures.py <slug> --preview <scratchpad>/figures-<slug>
+   ```
+   For each caption `Figure N` / `Fig. N` it prints `{id, label, page, rect, captionParagraph?, captionText}`: the union of the drawings, images and labels stacked against the caption. `--preview` renders each crop exactly as the final render (1200 px). `"rect": null` means no drawing was found next to the caption (side captions, unusual layouts): find the figure on the page and write the rect by hand.
+2. **Look at every preview** (Read on the PNG). Nothing should be cut off (panel letters, axis titles, legends at the edges) and nothing extra included (captions, body text, page numbers). Fix the rect by hand when needed and render again. A full-width figure in a two-column paper, side-by-side panels and figures next to tables are the cases most likely to need a fix.
+3. **Declare** the entries in `structure.json` → `figures` (schema in `src/types.ts` `PaperFigure`, validated by `parsePaper` in `src/lib/papers.ts`):
+   ```json
+   { "id": "figure-2", "label": "Figura 2", "page": 1,
+     "rect": [0.515, 0.061, 0.925, 0.399],
+     "image": "figures/figure-2.png",
+     "sourceSha256": "<meta.json sourceSha256>",
+     "caption": { "it-intermediate": "…", "it-expert": "…" },
+     "captionParagraph": "p0018",
+     "references": [{ "paragraphId": "p0018" }, { "paragraphId": "p0022" }] }
+   ```
+   - `page` is zero-based. `rect` is normalized with a top-left origin, like the paragraph anchors. `image` must match `figures/<kebab>.png`. `sourceSha256` must equal the one in `meta.json`.
+   - `label` is in the language of the variants ("Figura 2"); sub-panel labels stay in the caption.
+   - `caption` has one entry per variant: the original caption rewritten for that level. Keep the paper's warnings ("distances do not represent times", "schematic", "fidelity range for f_CZ ∈ [0.99, 0.999]"). A rewrite must not invent claims the figure does not make.
+   - `captionParagraph` is the passage containing the caption, and it must have an anchor on `page`. `find_figures.py` suggests it; check it.
+   - `references`: the passages that discuss the figure, listed explicitly. Find them by searching `sourceText` for `Fig. N`, `Figure N`, `FIG. N` (and the panels `Fig. 2(b)`), but also include passages that describe it without the number. Put the `captionParagraph` among them. No duplicate ids. The UI never infers links from the text, so a missing reference means the figure is missing from that step.
+4. **Render** and inspect the final PNG:
+   ```
+   uv run scripts/render-figures.py <slug>
+   ```
+   It writes `figures/<id>.png` plus the `.sha256` stamp (PDF hash + page + rect + width). Commit both. `npm run validate:papers` (inside `npm run verify`) checks hash, stamp and PNG without Python. If the PDF changes, every figure must be reviewed again.
+5. Open a guide step that contains the figure (`npm run dev`, then `/paper/<slug>`, guided reading). Check the caption, "Ingrandisci figura originale", and the "Apri figura nel PDF ↗" link.
+
+### Interactive figures (optional, on request)
+
+An interactive reconstruction costs code (model + component + tests + documentation). Propose it, and build it only if the user agrees. Good candidates are figures that show a **process or a parameter**: a protocol made of steps (fig. 8 Parity Twine: CZ/CZSWAP transport), a circuit to step through gate by gate (fig. 2: Parity Twine networks), configurations changing over time (fig. 7a: QFT blocks), or a geometric transformation to explore (OneCanvas fig. 1: canvas projection). Bad candidates are plots of data (never rebuild curves from values estimated by eye), photographs and renders. If it is unclear which figure deserves it, ask once and say which one you would pick.
+
+Rules, taken from the existing figures:
+
+- **Grounded data.** Coordinates, gate sequences, labels and counts come from the PDF: the vector drawing (`page.get_drawings()` / `get_text("dict")` in PyMuPDF), the text, the tables. Cross-check them against what the paper states (e.g. the 15 pairs and final labels in fig. 2). When the reconstruction is schematic (OneCanvas: an invented room using the paper's formulas), the text of the figure says so explicitly. Data specific to a PDF declare its hash in the module.
+- **Faithful semantics.** Do not suggest what the figure does not say: no "timing" if the axis is not time, no physical trajectories where the paper shows only logical reordering. Keep the paper's conventions (indices, colors, panel names).
+- **Structure:**
+  - pure model in `src/lib/<name>.ts` (no React), with unit tests in `tests/<name>.test.mjs` (counts, invariants, the values stated in the paper);
+  - component `src/components/figures/<Name>Figure.tsx` in SVG, lazy-loaded in `ReadingFigure.tsx`, with a new branch on `figure.animation`;
+  - new key in the `PaperFigure.animation` union in `src/types.ts` **and** in the list accepted by `parsePaper` in `src/lib/papers.ts`;
+  - styles in `src/styles/figures.css`;
+  - for timed animations, reuse `FigurePlayback.tsx` + `useFigurePlayback.ts`. No autoplay; stop at the end and when the document is hidden; play/pause/step/timeline controls; under reduced motion, no transitions;
+  - for figures with panels, `references[].panel` (`a`/`b`/`c`) opens the relevant panel and `initialPanel` receives it;
+  - accessibility: real buttons with readable names (they are what the browser tests target), and visible text describing the current state.
+- In `structure.json`, add `"animation": "<key>"` to the figure, which keeps its static crop: the original stays available under "Mostra figura originale".
+- **Documentation:** add a section to the figures document in `docs/` (what the reconstruction models and what it does not, the data used and their source, the parameters) and a line in the README if the figure is a visible feature.
+- **Tests and visual QA:** add a Playwright scenario in `tests/browser/journey.spec.ts` (open the step, use the controls, check the visible state). Run `npm run verify` and `npm run test:browser`. Also look at it with your own eyes (screenshot of the step, desktop and mobile width) before committing.
+
 ## 5. Write meta.json and update the library index
 
 `papers/<slug>/meta.json`:
@@ -277,7 +333,7 @@ Readers request papers through GitHub issues (form `.github/ISSUE_TEMPLATE/paper
    It tries an arXiv id/URL in the text, then a DOI, then an arXiv title search (quoted title, or the text after "Authors (Year):"), and prints candidates with a title-similarity score, the arXiv licence, and whether the paper is already in the library. Below 0.8, confirm authors and year by hand. No arXiv hit: try the DOI / publisher page, then a web search (Google Scholar has no API); still nothing → comment asking for a link, add label `needs-link`, stop.
 3. **Duplicates**: already in the library at the requested level → comment with its link, label `duplicate`, close. Already there but not at that level/language → do **Adding a variant** below instead of a new import.
 4. **Licence** — the library republishes the PDF verbatim, so it must be redistributable: CC BY / CC BY-SA / CC0 (the arXiv abs page, or the publisher for open-access journals). arXiv's default `nonexclusive-distrib` licence is **not** enough: look for an open-access publisher version (e.g. Quantum, PRX/PR Research, EPTCS are CC BY) and import that URL instead; if none, comment explaining why, label `license-blocked`, close. Record the licence you relied on in the issue comment.
-5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, deep dives, reading guide, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py --require-reading-guide`, `check_concepts.mjs`).
+5. **Import** with the normal steps 2–5 (explanations, glossary, recall questions, argument map, TL;DR, deep dives, reading guide, figures, `meta.json`/`index.json`, `npm run concepts-index`) and the checkers (`check_paper.py --require-reading-guide`, `check_concepts.mjs`).
 6. **Close the loop**: commit with `Closes #<N>` in the message; comment on the issue with `https://theghoul21.github.io/paper-reader/paper/<slug>` (live after the deploy).
 
 ## Adding a variant to an already-imported paper
@@ -291,7 +347,7 @@ Given a slug that already exists and a new (language, level) not yet in its `met
 
 5. If the paper has a `concepts.json`, add the new variant's key to every concept's `definitions` too (same level discipline as step 4b), and add aliases in the new language if the variant is in a different language — otherwise terms won't be matched in the new explanations.
 
-6. Extend existing recall questions (`q`, `a`), argument-map thesis/titles/summaries, paragraph `leadsTo.why`, and every reading-guide text field (`title`, `goal`, `meaning`, `purpose`, `leadsTo.why`, diagram captions) for the new variant, preserving all IDs, guide paragraph membership and dependency graphs. Provide the TL;DR for a newly added language in both metadata and the manifest. Existing deep dives can be extended where useful; they may remain absent for a variant. Validate with `check_paper.py <slug> --require-reading-guide`, `check_concepts.mjs` and `check_deep_dives.mjs`.
+6. Extend existing recall questions (`q`, `a`), argument-map thesis/titles/summaries, paragraph `leadsTo.why`, every reading-guide text field (`title`, `goal`, `meaning`, `purpose`, `leadsTo.why`, diagram captions) and every figure `caption` for the new variant, preserving all IDs, guide paragraph membership and dependency graphs. Provide the TL;DR for a newly added language in both metadata and the manifest. Existing deep dives can be extended where useful; they may remain absent for a variant. Validate with `check_paper.py <slug> --require-reading-guide`, `check_concepts.mjs` and `check_deep_dives.mjs`.
 
 This is the cheap path — never regenerate `rects`/`page`/`order`/`sourceText` when only adding a variant.
 
@@ -303,5 +359,6 @@ Papers imported before step 4b existed have no `concepts.json` (the reader works
 
 - Don't hand-write `rects`/`page`/`order` — those come only from `extract_blocks.py`'s output (you may reorder/delete/merge entries, but positions must stay grounded in the actual extraction).
 - Don't build a notebook — leave `notebookSuggestion` instead.
+- Don't declare a figure crop you haven't looked at, and don't build an interactive figure the user hasn't agreed to, or one whose data are estimated by eye.
 - Don't skip the reading-order sanity check in step 3; a wrong order silently produces a confusing reader experience with no error.
 - Don't silently generate more than one variant — that's a real cost multiplier the user should knowingly opt into.
