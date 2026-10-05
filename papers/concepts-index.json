@@ -1,4 +1,22 @@
 {
+  "a100-equivalent": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "equivalenti A100",
+      "definedIn": "p0067",
+      "definition": "Un'unità per confrontare il calcolo di addestramento fatto su GPU diverse: le ore-GPU vengono moltiplicate per quanto quella GPU è più (o meno) potente di una NVIDIA A100 in teoria (A6000 ≈ 0,5, H100 ≈ 3). OneCanvas usa 259 ore equivalenti, SpaceMind 4.800 e SenseNova-SI 27.648."
+    }
+  ],
+  "ablation": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "ablazione",
+      "definedIn": "p0035",
+      "definition": "Esperimento in cui si toglie un componente alla volta (curriculum, embedding 3D, tela) a parità di tutto il resto, per misurare quanto contribuisce. Nella Tabella 4 il modello completo fa 71,3 su VSI-Bench, solo la tela 65,3 e il VLM di base 65,5: il guadagno viene dalla combinazione."
+    }
+  ],
   "addressing-layer": [
     {
       "slug": "neutral-atom-compilation",
@@ -70,6 +88,15 @@
       "term": "AOD",
       "definedIn": "p0034",
       "definition": "Acousto-Optic Deflector: genera le trappole laser mobili con cui si spostano gli atomi. Gli AOD bidimensionali incrociati muovono righe e colonne di atomi insieme, e sono ciò che rende possibili la CZSWAP e le traslazioni collettive di patch."
+    }
+  ],
+  "appearance-order": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "ordine di apparizione",
+      "definedIn": "p0086",
+      "definition": "Il compito di dire in che ordine alcuni oggetti compaiono per la prima volta nel video. Sulla tela il tempo è codificato solo dall'indice del fotogramma di ogni patch, quindi questo compito misura se il modello legge bene quell'asse; è anche il compito che crolla quando si rasterizza la tela."
     }
   ],
   "atom-loss": [
@@ -149,6 +176,15 @@
       "term": "backbone",
       "definedIn": "p0009",
       "definition": "Le due parti di una Twine chain: il \"backbone\" è la fila principale di qubit su cui corrono le porte DCNOT; i \"legs\" (rami) sono qubit laterali collegati al backbone, che richiedono solo CNOT singole. Layout con più connettività (scala, quadrato) hanno più rami, quindi meno porte a due qubit."
+    }
+  ],
+  "backprojection": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "retroproiezione",
+      "definedIn": "p0013",
+      "definition": "Portare una patch dell'immagine nel punto 3D della scena da cui proviene: con la profondità z e gli intrinseci si ricava il punto nel sistema della camera, x = (u − cx)·z/fx e y = (v − cy)·z/fy, poi la posa della camera lo trasforma in coordinate del mondo (Eq. 1). Il paper la chiama «lifting»."
     }
   ],
   "balance-compact": [
@@ -255,6 +291,33 @@
       "term": "fabric buffer-relay",
       "definedIn": "p0013",
       "definition": "L'\"infrastruttura di collegamento\" fissa del processore: una griglia regolare di atomi buffer disposta attorno agli atomi dato, attraverso cui qualunque coppia di qubit può interagire \"passandosi\" il segnale da buffer a buffer. È l'analogo delle piste di un circuito stampato: un costo fisso una volta sola, invece di muovere atomi a ogni porta."
+    }
+  ],
+  "camera-intrinsics": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "intrinseci",
+      "definedIn": "p0012",
+      "definition": "I parametri interni della camera stenopeica: lunghezze focali fx, fy (quanto «zooma») e centro ottico cx, cy (dove l'asse ottico incontra l'immagine). Insieme alla profondità permettono di trasformare un pixel in un punto 3D nel sistema della camera."
+    }
+  ],
+  "camera-pose": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "posa della camera",
+      "definedIn": "p0012",
+      "definition": "Dove si trova la camera e in che direzione guarda, espresso come rotazione più traslazione (una trasformazione rigida in SE(3)). Serve a portare i punti dal sistema della camera a quello comune della stanza. OneCanvas richiede le pose (vere o stimate) per ogni fotogramma; anche la posa di un agente può fare da centro della tela."
+    }
+  ],
+  "canvas-origin": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "origine della tela",
+      "definedIn": "p0014",
+      "definition": "Il punto c (con orientamento R) da cui si «guarda» la scena per costruire la panoramica. Si sceglie in base al compito: la posizione e la direzione dell'agente per domande dal suo punto di vista (SQA3D), la camera interrogata (SPBench), altrimenti il baricentro delle camere. Su SQA3D la scelta pesa: 65,3 con la posa dell'agente contro 61,2 col centro della scena."
     }
   ],
   "causal-flow": [
@@ -556,6 +619,15 @@
       "definition": "Un array in cui ogni sito della configurazione target è occupato dall'atomo giusto, senza buchi. La probabilità di ottenerlo cala esponenzialmente con il numero di atomi, perché ciascuno può perdersi durante il riordino, ed è per questo che per array di migliaia di atomi servono algoritmi veloci e attenti alle perdite."
     }
   ],
+  "depth-anything-3": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "Depth Anything 3",
+      "definedIn": "p0044",
+      "definition": "Un modello che stima profondità, pose e intrinseci della camera direttamente da normali immagini RGB. Il paper lo usa per mostrare che OneCanvas funziona anche senza sensori di profondità: sostituendo la geometria vera con la sua stima si perde meno di un punto e mezzo sui tre benchmark."
+    }
+  ],
   "directional-transport": [
     {
       "slug": "directional-transport-remote-cz",
@@ -572,6 +644,15 @@
       "term": "buffer disgiunti",
       "definedIn": "p0014",
       "definition": "Due porte possono usare il fabric nello stesso momento solo se passano da buffer diversi. Lo scheduler di BRIDGE-F prenota i buffer per ogni porta e ne evita i conflitti; il numero di catene contemporanee (\"cap\") è il parametro studiato in RQ5."
+    }
+  ],
+  "distractor-boxes": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "distrattori",
+      "definedIn": "p0076",
+      "definition": "Le 6-12 scatole in più messe in ogni esercizio del curriculum e mai citate nella domanda, ciascuna con una feature diversa. Servono a impedire che il modello trovi l'oggetto giusto solo perché è l'unico sulla tela o perché è «quello diverso»."
     }
   ],
   "double-pushout": [
@@ -635,6 +716,15 @@
       "definition": "Una tecnica che protegge i qubit inattivi applicando periodicamente impulsi che \"annullano\" gli effetti del rumore lento. Qui una bella coincidenza: le rotazioni globali alternate della QFT fanno già da sequenza di disaccoppiamento, e il modello assume che venga applicato in tutti i periodi di inattività."
     }
   ],
+  "em-at-1": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "EM@1",
+      "definedIn": "p0029",
+      "definition": "Exact Match: la percentuale di risposte che coincidono esattamente con quella corretta (EM@1). EM@R1 è una versione più tollerante che accetta riformulazioni equivalenti della risposta. Sono le metriche principali di SQA3D."
+    }
+  ],
   "enola": [
     {
       "slug": "argon-neutral-atom-compilation",
@@ -681,6 +771,15 @@
       "term": "zona di entanglement",
       "definedIn": "p0023",
       "definition": "L'area dove si eseguono le porte a due qubit con i laser di Rydberg. Nel paper è anche dove vengono costruiti i canali DT, con atomi a 4–8 μm di distanza."
+    }
+  ],
+  "equirectangular-projection": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "equirettangolare",
+      "definedIn": "p0015",
+      "definition": "Il modo di stendere una sfera su un rettangolo usato dai planisferi e dalle foto a 360°: l'asse orizzontale è la longitudine (da −180° a +180°), quello verticale la latitudine (da −90° a +90°). In OneCanvas serve solo a decidere le coordinate delle patch; non si genera nessuna immagine distorta."
     }
   ],
   "euler-decomposition": [
@@ -992,6 +1091,15 @@
       "definition": "Per C-Z tra due righe, (a₁,a₂) e (b₁,b₂) sono compatibili sse (a₁−b₁)(a₂−b₂) > 0, cioè le connessioni non si incrociano. Ordinando per la prima coordinata, ogni trasporto è una sottosequenza strettamente crescente della seconda; il minimo numero di trasporti si ottiene con un greedy in O(m log m), duale della più lunga sottosequenza non crescente."
     }
   ],
+  "inline-reference": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "riferimento inline",
+      "definedIn": "p0020",
+      "definition": "Il modo in cui le domande del curriculum indicano un oggetto: invece di scrivere «la sedia», si inserisce nel testo la stessa feature visiva che riempie la scatola sulla tela. Il modello deve trovare l'oggetto per somiglianza di contenuto, senza poter usare ciò che «sa» su sedie o porte."
+    }
+  ],
   "inside-out": [
     {
       "slug": "atommovr-rearrangement",
@@ -1143,6 +1251,33 @@
       "term": "operatori logici",
       "definedIn": "p0018",
       "definition": "La distinzione di base del paper: un operatore \"fisico\" è ciò che si applica davvero a un qubit del circuito (scritto senza barra, es. Z₂); il suo effetto \"logico\" è cosa fa all'informazione codificata (scritto con la barra, es. Z̄₁Z̄₂). Le etichette sono esattamente la traduzione dall'uno all'altro."
+    }
+  ],
+  "longitude-latitude": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "longitudine",
+      "definedIn": "p0015",
+      "definition": "Le due coordinate angolari di una patch sulla tela, calcolate dallo spostamento q = (qx, qy, qz) rispetto all'origine: longitudine θ = atan2(qx, qz) (angolo orizzontale, 0 = davanti) e latitudine φ = arctan(−qy / √(qx² + qz²)) (altezza sopra l'orizzonte; il segno meno perché nella camera y punta in basso). Finiscono negli assi larghezza e altezza della RoPE."
+    }
+  ],
+  "longitude-seam": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "giunzione della longitudine",
+      "definedIn": "p0061",
+      "definition": "Il punto dove la panoramica «si chiude» (−180° = +180°): due patch vicine nella stanza ma ai due lati della giunzione ricevono posizioni agli estremi opposti. Se la giunzione cade tra due oggetti vicini, l'errore sulla loro distanza sale da 0,14 a 1,23 m; ma succede raramente (1 domanda su 214) e si può evitare ruotando la tela."
+    }
+  ],
+  "lora": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "LoRA",
+      "definedIn": "p0023",
+      "definition": "Low-Rank Adaptation: invece di riaddestrare tutti i pesi del modello, si aggiungono piccole matrici di basso «rango» e si allenano solo quelle. Qui si usa un LoRA grande (rango 256) nella fase 1, lo si fonde nel modello, e poi se ne allena uno più piccolo (rango 64) nella fase 2, per non allontanarsi troppo da quanto appreso."
     }
   ],
   "lower-bound": [
@@ -1414,6 +1549,15 @@
       "definition": "Off-Resonant Modulated Driving: il tipo di impulso laser, modulato e fuori risonanza, che realizza ogni passo del relay. Ha una durata τp di 0.1–1 μs e una fedeltà F_relay per impulso."
     }
   ],
+  "panoramic-canvas": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "tela panoramica",
+      "definedIn": "p0014",
+      "definition": "La rappresentazione centrale del paper: un'unica «immagine» panoramica a 360° su cui vengono messe le patch di tutti i fotogrammi, ciascuna nella direzione (longitudine, latitudine) in cui la si vedrebbe dall'origine scelta. Non è una griglia di pixel: ogni patch resta un token a sé, in posizione continua, con la sua feature originale e un embedding della sua posizione 3D."
+    }
+  ],
   "par-hungarian": [
     {
       "slug": "atommovr-rearrangement",
@@ -1604,6 +1748,15 @@
       "definition": "Un impulso laser di durata calibrata che fa ruotare completamente lo stato tra due livelli: un impulso π scambia \"acceso\" e \"spento\" (es. |1⟩↔|r⟩), un impulso 2π fa un giro completo e torna allo stato iniziale, ma lasciando un segno meno. È proprio quel segno, applicato solo se l'eccitazione è vicina, a realizzare la CZ."
     }
   ],
+  "position-embedding-3d": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "embedding di posizione 3D",
+      "definedIn": "p0018",
+      "definition": "Un vettore aggiunto alla feature di ogni patch che dice dove si trova in metri rispetto all'origine, per recuperare la distanza persa mettendo tutto su una tela angolare. Usa seni e coseni a molte frequenze delle coordinate x, y, z, della distanza dal centro e della distanza orizzontale (136 numeri), passati in una piccola rete e sommati alla feature. Toglierlo peggiora soprattutto le misure, come la dimensione della stanza."
+    }
+  ],
   "powermove": [
     {
       "slug": "argon-neutral-atom-compilation",
@@ -1717,6 +1870,15 @@
       "definition": "Problemi di ottimizzazione binaria: QUBO con termini fino a due variabili (hamiltoniana di Ising con ZiZj), HUBO con termini di ordine superiore (ZiZjZk). Il QAOA per un QUBO completamente connesso richiede tutte le rotazioni a due corpi, quindi G2; un HUBO a tre corpi richiede G3. Su problemi sparsi i generatori completi sprecano etichette, ma sopra una densità di archi di circa 0.25–0.55 battono comunque i transpiler."
     }
   ],
+  "qwen3-vl": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "Qwen3-VL",
+      "definedIn": "p0013",
+      "definition": "Il VLM open-source usato come base (versione da 8 miliardi di parametri). Il suo encoder visivo trasforma ogni immagine in una griglia di patch; il suo modello linguistico usa una codifica di posizione 3D (tempo, altezza, larghezza) che OneCanvas riutilizza mettendoci dentro longitudine, latitudine e numero di fotogramma."
+    }
+  ],
   "rank-one-decomposition": [
     {
       "slug": "neutral-atom-compilation",
@@ -1724,6 +1886,15 @@
       "term": "decomposizione rank-one",
       "definedIn": "p0024",
       "definition": "M = Σₜ uₜvₜᵀ·Gₜ con uₜ∈{0,1}ᵐ, vₜ∈{0,1}ⁿ, Gₜ∈G e somma nella struttura di gruppo di G. Ogni termine è un addressing layer (o, per i C-Z, un trasporto), quindi il numero minimo di termini è la metrica di costo. A seconda di G diventa rango su GF(2), rango tensoriale su GF(2) o rango su Z4/Z8."
+    }
+  ],
+  "rasterization": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "rasterizzazione",
+      "definedIn": "p0016",
+      "definition": "Dividere la panoramica in celle fisse e ridurre a un solo valore quello che cade in ogni cella (media, il più vicino…). OneCanvas la evita: tiene ogni patch come token separato in posizione continua. In un test (B.2), rasterizzare anche finemente (celle di 1°) fa perdere 2,9 punti su VSI-Bench, quasi tutti sull'ordine di apparizione."
     }
   ],
   "reconfiguration": [
@@ -1814,6 +1985,15 @@
       "term": "rollout",
       "definedIn": "p0075",
       "definition": "Il modo in cui si creano i dati di addestramento: per un layer e un layout candidato si simula davvero, in modo lento e approfondito, il routing dei passi successivi e se ne misura il costo. Queste coppie (situazione, costo reale) insegnano alla GNN a stimare il costo senza simulare."
+    }
+  ],
+  "rope": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "3D-RoPE",
+      "definedIn": "p0017",
+      "definition": "Rotary Position Embedding: il modo in cui il modello sa «dove» sta ogni token, ruotando i vettori dell'attenzione di angoli che dipendono dalla posizione, così che l'attenzione tra due token dipenda dalla loro distanza. Qwen3-VL ne usa una versione con tre coordinate (tempo, altezza, larghezza). OneCanvas non la modifica: cambia solo i numeri che le dà, cioè frame, latitudine e longitudine."
     }
   ],
   "rydberg-antiblockade": [
@@ -1927,6 +2107,15 @@
       "definition": "Mettere un circuito dopo un altro facendoli sovrapporre nel tempo di s momenti, quando non ci sono porte in conflitto (Def. A.6). È lo strumento principale per ridurre la profondità: nel PTN ogni Parity Twine chain parte quattro momenti dopo la precedente invece di aspettarne la fine, e nel QAOA cicli successivi si incastrano alternando un generatore e il suo rovesciato (o aggiunto rovesciato)."
     }
   ],
+  "shortcut-learning": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "scorciatoie",
+      "definedIn": "p0019",
+      "definition": "Modi di rispondere giusto senza ragionare sull'input: dare la risposta più frequente per quel tipo di domanda, o usare ciò che si sa della classe di oggetto o di scena («i bagni sono piccoli»). Gli audit citati mostrano che su benchmark 3D noti un modello che legge solo il testo arriva vicino ai migliori. Il curriculum è costruito apposta per toglierle."
+    }
+  ],
   "shuttle-infidelity": [
     {
       "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
@@ -1952,6 +2141,15 @@
       "term": "simproc",
       "definedIn": "p0106",
       "definition": "\"Simplification procedure\": un piccolo programma in Quantomatic che applica automaticamente regole di riscrittura secondo una strategia. Si combinano in sequenza o in ciclo; l'ottimizzatore del paper è una combinazione di simproc."
+    }
+  ],
+  "situated-reasoning": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "situato",
+      "definedIn": "p0027",
+      "definition": "Ragionare dal punto di vista di qualcuno collocato nella scena: «se sei seduto sul letto, la finestra è alla tua sinistra?». Con OneCanvas basta centrare e orientare la tela sulla posa dell'agente: «sinistra» e «destra» diventano direttamente longitudini sulla tela."
     }
   ],
   "slm": [
@@ -1986,6 +2184,15 @@
       "definition": "Satisfiability Modulo Theories: una famiglia di solver che trovano soluzioni esatte a problemi di vincoli logici e aritmetici. È lento, ma qui viene usato solo offline per costruire la libreria di layout, quindi il suo costo non pesa sulla compilazione."
     }
   ],
+  "spatial-curriculum": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "curriculum",
+      "definedIn": "p0019",
+      "definition": "La prima fase di addestramento: esercizi generati al computer in cui si piazzano scatole su una tela vuota e si chiede di distanze, direzioni, percorsi, visibilità, conteggi e bounding box. La risposta si calcola dalla geometria, ed è bilanciata, quindi l'unico modo di rispondere bene è leggere davvero le posizioni. Toglierlo fa crollare soprattutto la pianificazione del percorso (da 60,8 a 45,4)."
+    }
+  ],
   "spatiotemporal-decoupling": [
     {
       "slug": "argon-neutral-atom-compilation",
@@ -1993,6 +2200,15 @@
       "term": "disaccoppiamento spaziotemporale",
       "definedIn": "p0014",
       "definition": "L'idea centrale di ARGON: invece di risolvere insieme \"dove mettere i gate\" (vincoli spaziali, fissi per un dato hardware) e \"come muovere gli atomi nel tempo\" (vincoli dinamici, dipendenti dal circuito), li separa. La parte spaziale si precalcola una volta sola offline, la parte temporale si affida a una rete neurale veloce. Così la compilazione passa da esponenziale a quasi istantanea."
+    }
+  ],
+  "spbench": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "SPBench",
+      "definedIn": "p0027",
+      "definition": "Benchmark di ragionamento spaziale con una parte a immagine singola e una multi-vista. OneCanvas non lo vede mai in addestramento (zero-shot) e ottiene 72,1, 4,8 punti sopra il secondo, con il guadagno più grande sulle domande multi-vista a scelta multipla."
     }
   ],
   "special-generator": [
@@ -2027,6 +2243,15 @@
       "term": "spider",
       "definedIn": "p0498",
       "definition": "I nodi dei diagrammi del calcolo ZX: gli spider verdi (Z) e rossi (X), ognuno con una fase. La regola principale (\"fusione degli spider\") dice che due spider dello stesso colore collegati si fondono in uno solo sommando le fasi, ed è quella che fa \"passare\" le porte attraverso i gadget."
+    }
+  ],
+  "sqa3d": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "SQA3D",
+      "definedIn": "p0027",
+      "definition": "Benchmark di domande «situate» su scene ScanNet: si descrive dove si trova e dove guarda un agente, e si fanno domande dal suo punto di vista (What, Is, How, Can, Which, Others). OneCanvas ottiene 65,3 EM@1, 2,3 punti sopra il precedente migliore, grazie soprattutto alla tela centrata sull'agente."
     }
   ],
   "square-grid": [
@@ -2198,6 +2423,15 @@
       "definition": "Il parametro τ che regola quanto facilmente BRIDGE-H approva uno spostamento. τ = 1 è il pareggio esatto; valori minori sono prudenti (meno spostamenti), maggiori sono aggressivi. Negli esperimenti la fedeltà media resta quasi invariata per i circuiti standard: la mobilità aiuta solo quelli con \"cambi di fase\" marcati come la QFT."
     }
   ],
+  "temporal-index": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "indice temporale",
+      "definedIn": "p0013",
+      "definition": "Il numero tᵢ del fotogramma da cui viene una patch (da 1 a K = 32). Viene messo sull'asse «tempo» della RoPE, così il modello sa ancora in che ordine sono state viste le cose, anche se tutte le patch stanno sulla stessa tela. È ciò che permette di rispondere a domande sull'ordine di apparizione."
+    }
+  ],
   "temporal-locality": [
     {
       "slug": "lazy-move-compilation-for-neutral-atom-quantum-computers",
@@ -2352,6 +2586,33 @@
       "definition": "Uno SWAP che non si esegue: si aggiorna solo, in software classico, quale qubit fisico porta quale etichetta. Sul grafo completo la posizione delle etichette non conta, quindi lo SWAP dentro ogni DCNOT si rende virtuale e la DCNOT diventa una sola CNOT: porte e profondità si dimezzano e si arriva a µ = 1."
     }
   ],
+  "vision-encoder": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "encoder visivo",
+      "definedIn": "p0013",
+      "definition": "La parte del VLM che trasforma un'immagine in una griglia di vettori di feature, uno per patch (quadratino). In OneCanvas resta congelato e vede sempre i fotogrammi originali in prospettiva: la tela cambia solo dove vengono messe le patch, non le feature."
+    }
+  ],
+  "vlm": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "VLM",
+      "definedIn": "p0001",
+      "definition": "Vision-Language Model: un modello che riceve immagini (o video) e testo e risponde in testo. È un modello linguistico a cui un encoder visivo fornisce «token visivi» da leggere insieme alle parole. Qui il VLM è Qwen3-VL-8B, addestrato su immagini 2D: il paper vuole farlo ragionare in 3D senza modificarlo."
+    }
+  ],
+  "vsi-bench": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "VSI-Bench",
+      "definedIn": "p0027",
+      "definition": "Benchmark di intelligenza spaziale da video con otto compiti: quattro numerici (conteggio, distanza assoluta, dimensione oggetto, dimensione stanza) e quattro a scelta multipla (distanza relativa, direzione relativa, percorso, ordine di apparizione). OneCanvas fa 71,3 di media, con il margine maggiore sul percorso."
+    }
+  ],
   "xyz-mapping": [
     {
       "slug": "prresearch-6xlb-l92j",
@@ -2359,6 +2620,15 @@
       "term": "XYZ",
       "definedIn": "p0167",
       "definition": "La conversione tra la notazione del paper (X e Z separate, Y come prodotto) e quella classica di Aaronson–Gottesman, che usa per ogni qubit una coppia di bit (x, z) più un segno, con Y rappresentata direttamente. Serve per confrontare il formalismo con i simulatori stabilizer esistenti."
+    }
+  ],
+  "z-buffer": [
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "z-buffer",
+      "definedIn": "p0050",
+      "definition": "Tecnica di rendering che, per ogni pixel, tiene solo la superficie più vicina all'osservatore e scarta quelle nascoste dietro. Una panoramica renderizzata così perde le superfici occluse; nel confronto controllato (B.2) addestrare su questa panoramica di pixel dà 52,1 contro 60,8 della tela di feature."
     }
   ],
   "z4-rank": [
@@ -2393,6 +2663,13 @@
       "term": "zero-shot",
       "definedIn": "p0115",
       "definition": "Usare il modello su casi mai visti in addestramento, senza riaddestrarlo. La GNN di ARGON, addestrata solo su array 16×16 e su circuiti Random/W-state, viene applicata a griglie 20×20 e 28×28 e a benchmark nuovi (QV, 3-Regular, QASMBench) mantenendo le prestazioni."
+    },
+    {
+      "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+      "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+      "term": "zero-shot",
+      "definedIn": "p0027",
+      "definition": "Valutare un modello su un benchmark senza averlo mai addestrato su dati di quel benchmark. Qui vale per SPBench: è il test più onesto della capacità di generalizzare, perché VSI-Bench e SQA3D sono invece simili ai dati di addestramento della fase 2."
     }
   ],
   "zoned-architecture": [

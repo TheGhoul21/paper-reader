@@ -148,5 +148,19 @@
       { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" }
     ],
     "tldr": {"it": {"problem": "Molti algoritmi quantistici richiedono di far interagire gruppi di qubit anche lontani tra loro, ma sul chip ogni qubit è collegato solo ad alcuni vicini. I metodi di oggi pagano questa distanza con molte operazioni in più, ognuna delle quali aggiunge errori.", "idea": "Si tiene traccia di quale combinazione di dati porta ogni qubit (le \"etichette di parità\") e si costruiscono catene di operazioni (Parity Twine) disegnate apposta sulla forma dei collegamenti del chip: una fila, una griglia, un reticolo a esagoni. Più collegamenti ci sono, più operazioni si risparmiano.", "result": "Servono molte meno operazioni dei metodi migliori noti, fino al minimo teorico quando tutti i qubit sono collegati, e i programmi non diventano più lunghi. Su chip reali (IQM) il programma QFT a 18 qubit dà ancora un risultato utile quando gli altri metodi danno solo rumore.", "why": "Vale per algoritmi importanti come QAOA, QFT e simulazione di sistemi fisici. Sui chip a fila unica resta un limite: scendere sotto un certo numero di operazioni sembra molto difficile."}}
+  },
+  {
+    "slug": "onecanvas-3d-scene-understanding-via-panoramic-reprojection",
+    "title": "OneCanvas: 3D Scene Understanding via Panoramic Reprojection",
+    "authors": ["Bartłomiej Baranowski", "Dave Zhenyu Chen", "Matthias Nießner"],
+    "importedAt": "2026-10-05T00:00:00Z",
+    "language": "it",
+    "background": "adjacent-field grad level",
+    "pageCount": 20,
+    "variants": [
+      { "key": "it-intermediate", "language": "it", "level": "intermediate", "label": "Italiano · Laurea in campo affine" },
+      { "key": "it-expert", "language": "it", "level": "expert", "label": "Italiano · Esperto nel sottocampo" }
+    ],
+    "tldr": {"it": {"problem": "I modelli di intelligenza artificiale che guardano immagini e rispondono a domande sono bravi con le foto, ma faticano con lo spazio: se vedono una stanza in un video, fotogramma dopo fotogramma, sbagliano facilmente quanto distano due mobili o da che parte girarsi per vedere la TV. Spesso rispondono «a intuito», come chi indovina le misure di una stanza solo dal fatto che è un bagno.", "idea": "Gli autori incollano tutti i pezzetti dei fotogrammi su un'unica foto panoramica a 360°, ciascuno nella direzione in cui lo si vedrebbe da un punto scelto, con attaccata un'etichetta che dice a che distanza si trova. Il modello legge questa panoramica come una normale immagine, senza bisogno di modificarlo. Prima di allenarlo su domande vere, lo esercitano con «quiz» generati al computer: scatole piazzate in posizioni note, con risposte che si possono ricavare solo guardando dove stanno.", "result": "Su tre gare di riferimento per il ragionamento spaziale il metodo è il migliore o tra i migliori, anche su una che non aveva mai visto in addestramento. Ci arriva usando da 19 a 100 volte meno potenza di calcolo dei concorrenti più vicini: circa tre giorni su 8 schede grafiche.", "why": "Interessa a chi costruisce robot, assistenti in realtà aumentata e agenti che si muovono negli ambienti. Il limite principale: serve sapere la profondità e la posizione della telecamera per ogni fotogramma, anche se si possono stimare da un altro modello perdendo poco. Resta più debole nel contare gli oggetti, e non è chiaro come funzioni in spazi molto grandi o all'aperto."}}
   }
 ]

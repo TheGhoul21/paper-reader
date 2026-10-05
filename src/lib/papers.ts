@@ -271,7 +271,9 @@ export function parsePaper(
           ) ||
           new Set(figure.references.map((r) => r.paragraphId)).size !== figure.references.length ||
           (figure.animation !== undefined &&
-            !["parity-twine", "oqft-blocks", "atom-transport"].includes(figure.animation))
+            !["parity-twine", "oqft-blocks", "atom-transport", "canvas-projection"].includes(
+              figure.animation,
+            ))
         )
           invalid("figure");
         figureIds.add(figure.id);

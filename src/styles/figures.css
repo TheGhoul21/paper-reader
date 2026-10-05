@@ -261,6 +261,148 @@
   list-style: none;
   font-size: 0.72rem;
 }
+.canvas-projection-views {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 16px;
+  margin: 16px 0;
+}
+.canvas-projection-view {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  min-width: 0;
+}
+.canvas-projection-view h4 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: normal;
+}
+.canvas-projection-view svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--fg);
+}
+.canvas-projection .twine-timeline {
+  margin-top: 12px;
+}
+.canvas-room,
+.canvas-pano {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+.canvas-axis {
+  stroke: var(--border);
+  stroke-dasharray: 3 3;
+}
+.canvas-cell {
+  stroke: var(--muted);
+  stroke-width: 0.5;
+  opacity: 0.5;
+}
+.canvas-seam,
+.canvas-seam-ray {
+  stroke: #cf3847;
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+.canvas-ray {
+  stroke: var(--obj-color, var(--muted));
+  stroke-width: 1;
+  opacity: 0.6;
+}
+.canvas-small {
+  font-size: 9px;
+  fill: currentColor;
+}
+.canvas-origin circle {
+  fill: var(--accent);
+}
+.canvas-origin line {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+.canvas-dot {
+  fill: var(--obj-color);
+  opacity: 0.75;
+}
+.canvas-dot.is-selected {
+  stroke: currentColor;
+  stroke-width: 2;
+  opacity: 1;
+}
+.canvas-token {
+  transition: transform 450ms ease-in-out;
+}
+.canvas-token circle {
+  fill: var(--obj-color, var(--muted));
+  stroke: var(--card-bg);
+  stroke-width: 1.5;
+}
+.canvas-token.is-mixed circle {
+  fill: var(--card-bg);
+  stroke: currentColor;
+  stroke-dasharray: 2 2;
+}
+.canvas-token text {
+  font-size: 8px;
+  font-weight: bold;
+  fill: white;
+}
+.canvas-token.is-mixed text {
+  fill: currentColor;
+}
+.canvas-token.is-selected circle {
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+.canvas-swatch {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  margin-right: 6px;
+  background: var(--obj-color);
+  vertical-align: -0.05em;
+}
+.canvas-obj-tv {
+  --obj-color: #3a6fc4;
+}
+.canvas-obj-sofa {
+  --obj-color: #2f8f5b;
+}
+.canvas-obj-table {
+  --obj-color: #c46a1f;
+}
+.canvas-obj-basket {
+  --obj-color: #8b4fb3;
+}
+.canvas-obj-lamp {
+  --obj-color: #a8862a;
+}
+.canvas-obj-door {
+  --obj-color: #c2384b;
+}
+.canvas-objects {
+  margin-top: 8px;
+}
+.canvas-seam-state,
+.canvas-selected {
+  font-size: 0.82rem;
+}
+.canvas-selected ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 760px) {
+  .canvas-projection-views {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 @media (prefers-color-scheme: dark) {
   .twine-role-decoder {
     --twine-role-color: #ff8894;
@@ -545,6 +687,9 @@
   }
   .transport-atom.is-moving {
     animation: none;
+  }
+  .canvas-token {
+    transition: none;
   }
   .twine-animation.is-playing .twine-playhead {
     transition: none;

@@ -1,6 +1,49 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("OneCanvas figure 1 projects the room onto the canvas, pools a grid and moves the seam", async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(
+    "paper/onecanvas-3d-scene-understanding-via-panoramic-reprojection?stage=read&step=representation-2&v=it-intermediate",
+  );
+  const figure = page.getByRole("figure", { name: "Figura 1 · pagina 1", exact: true });
+  await expect(figure).toBeVisible();
+  await expect(figure).toHaveCount(1);
+  await expect(
+    figure.getByRole("button", { name: "Centro della scena", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(figure.locator(".canvas-token")).toHaveCount(14);
+  await expect(figure.locator(".canvas-lost")).toHaveText("nessuna");
+  await expect(figure.locator(".canvas-seam-state")).toContainText("Porta");
+  await figure.getByRole("button", { name: "Griglia 10°", exact: true }).click();
+  await expect(figure.locator(".canvas-token")).toHaveCount(9);
+  await expect(figure.locator(".canvas-lost")).toContainText("Tavolo (2 → 4)");
+  await expect(figure.locator(".canvas-token.is-mixed")).toHaveCount(1);
+  await figure.getByRole("button", { name: "Posizioni continue", exact: true }).click();
+  await figure.getByRole("slider", { name: /Rotazione della tela/ }).fill("90");
+  await expect(figure.locator(".canvas-seam-state")).not.toContainText("Porta");
+  await figure.getByRole("button", { name: "Agente sul divano, verso la TV", exact: true }).click();
+  await expect(figure.locator(".canvas-seam-state")).toContainText("nessun oggetto");
+  await figure.getByRole("button", { name: "TV", exact: true }).click();
+  await expect(figure.locator(".canvas-selected li")).toHaveCount(3);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(figure.locator(".canvas-token").first()).toHaveCSS("transition-duration", "0s");
+  await figure.screenshot({ path: `test-results/${info.project.name}-onecanvas-figure1.png` });
+  await figure.locator(".reading-figure-source > summary").click();
+  await expect
+    .poll(() =>
+      figure
+        .locator(".reading-figure-original img")
+        .evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThanOrEqual(1200);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
+
 test("figure 7 follows each logical block and distinguishes QFT ordering from column transport", async ({
   page,
 }, info) => {

@@ -1,0 +1,1108 @@
+{
+ "thesis": {
+  "it-intermediate": "Per far ragionare in 3D un modello linguistico-visivo pre-addestrato non servono nuovi moduli né montagne di dati: basta mettere le patch di tutti i fotogrammi su un'unica tela panoramica, nella loro direzione vista da un'origine scelta e con la loro posizione metrica attaccata, e allenarlo prima con esercizi geometrici generati al computer. Così si ottiene lo stato dell'arte su tre benchmark spaziali con circa dieci volte meno calcolo.",
+  "it-expert": "La comprensione 3D di un VLM può nascere dalla sola preparazione dell'input: riparametrizzare gli ID MRoPE delle patch come (t, φ, θ) su una tela equirettangolare continua con origine libera, più un 3D PE additivo, e pre-addestrare su un curriculum procedurale anti-shortcut, dà SOTA su SQA3D e VSI-Bench e zero-shot su SPBench a ~19–107× meno compute dei metodi di accuratezza comparabile."
+ },
+ "claims": [
+  {
+   "id": "canvas",
+   "title": {
+    "it-intermediate": "Una tela panoramica unica, letta come un'immagine normale, dà al VLM un sistema di coordinate comune senza modificarlo.",
+    "it-expert": "Riparametrizzare gli ID MRoPE come (t, φ, θ) continui su una tela ERP con origine libera dà un frame unificato senza modifiche architetturali."
+   },
+   "summary": {
+    "it-intermediate": "Ogni patch viene portata in 3D con profondità e posa e messa alla sua longitudine/latitudine, senza griglia di pixel; la codifica di posizione nativa del modello riceve questi angoli e il numero del fotogramma. È la base di tutto il resto.",
+    "it-expert": "Lifting pinhole, q = Rᵀ(p − c), θ/φ continui su W/H, t su T, riscalati in [0, 100]; nessun raster né z-test, co-locati come token distinti. Prerequisito di tutti gli altri claim."
+   },
+   "statedIn": [
+    "p0006",
+    "p0016"
+   ],
+   "evidence": [
+    "p0013",
+    "p0015",
+    "p0017"
+   ],
+   "dependsOn": []
+  },
+  {
+   "id": "pe3d",
+   "title": {
+    "it-intermediate": "Un embedding della posizione 3D, sommato alle feature, restituisce la scala metrica che la tela angolare perde.",
+    "it-expert": "Il 3D PE additivo funge da canale metrico ausiliario: serve ai subtask metrici, non a quelli angolari."
+   },
+   "summary": {
+    "it-intermediate": "Sulla tela si conservano le direzioni ma non le distanze; l'embedding le reintroduce. Toglierlo peggiora soprattutto dimensione della stanza e distanza assoluta, lasciando invariati direzioni e categorie.",
+    "it-expert": "Fourier features su q, ‖q‖, r_xz → MLP → somma gated. Ablation: −3D PE tocca Abs.Dist (62,3 → 58,1) e Room (76,8 → 71,3), non Rel.Dir/App.Order."
+   },
+   "statedIn": [
+    "p0018"
+   ],
+   "evidence": [
+    "p0035",
+    "p0036"
+   ],
+   "dependsOn": [
+    "canvas"
+   ]
+  },
+  {
+   "id": "curriculum",
+   "title": {
+    "it-intermediate": "Un curriculum di scatole piazzate su una tela vuota insegna a leggere la geometria senza scorciatoie, e migliora soprattutto il ragionamento a più passi.",
+    "it-expert": "Il curriculum procedurale (feature reali, reference inline, marginali controllati) è il contributo maggiore dopo la tela: +15,4 su Route e guadagni metrici."
+   },
+   "summary": {
+    "it-intermediate": "Le risposte dipendono solo dalle posizioni delle scatole, che hanno feature casuali e vengono citate con la loro feature invece che col nome. Senza questa fase il percorso crolla da 60,8 a 45,4.",
+    "it-expert": "Motivato dalla dinamica del QA downstream (convergenza sul marginale per template). Box con feature dal pool, distrattori, label equiprobabili. Tab. 4: Pano+PE 68,5 → Full 71,3; Tab. 6: box sintetiche ≥ oggetti reali per nome."
+   },
+   "statedIn": [
+    "p0019",
+    "p0020"
+   ],
+   "evidence": [
+    "p0035",
+    "p0036"
+   ],
+   "dependsOn": [
+    "canvas"
+   ]
+  },
+  {
+   "id": "sota",
+   "title": {
+    "it-intermediate": "OneCanvas è il migliore su SQA3D e VSI-Bench e, senza addestramento specifico, su SPBench.",
+    "it-expert": "SOTA: SQA3D 65,3 EM@1 (+2,3), VSI-Bench 71,3 (+1,7), SPBench zero-shot 72,1 (+4,8), robusto ai seed."
+   },
+   "summary": {
+    "it-intermediate": "I guadagni sono più forti dove serve un riferimento unico (multi-vista, percorsi, domande dal punto di vista dell'agente); resta più debole nel contare. Tre ripetizioni con semi diversi superano tutte il precedente migliore.",
+    "it-expert": "Profilo coerente col meccanismo: MV-MCQ, Route, Which. Deboli Obj.Cnt e App.Order. Seed: 70,4 ± 0,6 / 65,1 ± 0,9 / 73,2 ± 0,3, tutti sopra il previous best."
+   },
+   "statedIn": [
+    "p0006",
+    "p0039"
+   ],
+   "evidence": [
+    "p0029",
+    "p0030",
+    "p0034",
+    "p0056"
+   ],
+   "dependsOn": [
+    "canvas",
+    "pe3d",
+    "curriculum"
+   ]
+  },
+  {
+   "id": "origin",
+   "title": {
+    "it-intermediate": "Centrare la tela sulla posa dell'agente rende il ragionamento «dal suo punto di vista» diretto, ed è ciò che produce il vantaggio su SQA3D.",
+    "it-expert": "L'origine agent-centred è responsabile del margine su SQA3D: 65,3 vs 61,2 con scene center, concentrato su Which/Can."
+   },
+   "summary": {
+    "it-intermediate": "Stesso modello, quattro origini: con la posa dell'agente 65,3, col centro della scena 61,2. Il guadagno è sulle domande che dipendono dal punto di vista; senza questa scelta il metodo sarebbe sotto il precedente migliore.",
+    "it-expert": "Tab. 5 inference-only. Which 72,6 vs 56,7; Is/How invariati. Senza agent pose OneCanvas (61,2) sarebbe sotto Ross3D (63,0)."
+   },
+   "statedIn": [
+    "p0031",
+    "p0037"
+   ],
+   "evidence": [
+    "p0038"
+   ],
+   "dependsOn": [
+    "canvas"
+   ]
+  },
+  {
+   "id": "continuous",
+   "title": {
+    "it-intermediate": "Tenere ogni patch come token separato in posizione continua conta: rasterizzare o renderizzare pixel peggiora i risultati.",
+    "it-expert": "Posizioni continue con co-locati distinti battono raster (−2,9, quasi tutto App.Order) e panorama di pixel renderizzato (−8,7 in short-run)."
+   },
+   "summary": {
+    "it-intermediate": "Con una griglia anche fine si perde soprattutto l'ordine di apparizione, perché ogni cella tiene un solo fotogramma; una panoramica di pixel fa 52,1 contro 60,8 delle feature.",
+    "it-expert": "B.2: la causa del calo raster è la cardinalità (un token/un T per cella), non il mean-pooling; il confronto pixel confonde z-buffer e re-encoding ERP. Seam a ±180° raro e mitigabile (B.5)."
+   },
+   "statedIn": [
+    "p0016",
+    "p0049"
+   ],
+   "evidence": [
+    "p0047",
+    "p0048",
+    "p0051",
+    "p0064"
+   ],
+   "dependsOn": [
+    "canvas"
+   ]
+  },
+  {
+   "id": "robust",
+   "title": {
+    "it-intermediate": "Il metodo regge con la geometria stimata dalle sole immagini e si trasferisce ad altri modelli di base.",
+    "it-expert": "Robustezza a geometria predetta da DA3 (−0,4/−1,3/−0,8) e portabilità a ERNIE (+6,1 matched short-run) e Qwen3.5."
+   },
+   "summary": {
+    "it-intermediate": "Sostituendo profondità e pose vere con quelle di Depth Anything 3 si perde poco e si resta sopra i concorrenti; su ERNIE la tela aggiunge 6,1 punti in un confronto breve. Ma vale per questo stimatore, non per ricostruzioni sbagliate.",
+    "it-expert": "Scope dichiarato: un estimatore, nessuna garanzia contro failure; ERNIE senza stage 1, solo Δ controllato; Qwen3.5 è stessa famiglia."
+   },
+   "statedIn": [
+    "p0028",
+    "p0045"
+   ],
+   "evidence": [
+    "p0058",
+    "p0059"
+   ],
+   "dependsOn": [
+    "sota"
+   ]
+  },
+  {
+   "id": "compute",
+   "title": {
+    "it-intermediate": "OneCanvas raggiunge questa accuratezza con un ordine di grandezza meno calcolo dei concorrenti più vicini.",
+    "it-expert": "Pareto: 259 A100-equiv GPU-h contro 4.800 (SpaceMind) e 27.648 (SenseNova-SI), claim limitato ai metodi ad accuratezza comparabile."
+   },
+   "summary": {
+    "it-intermediate": "Circa 65 ore su 8 GPU A6000. I metodi con accuratezza simile usano 19 e 107 volte di più (10 e 59 con un conto più prudente); quelli con calcolo simile sono 10 punti sotto.",
+    "it-expert": "Normalizzazione peak-BF16, upper bound; bandwidth-bound ~10×/59×. VLM-3R a compute simile −10,4 punti. Non è un vantaggio universale."
+   },
+   "statedIn": [
+    "p0072"
+   ],
+   "evidence": [
+    "p0067",
+    "p0071"
+   ],
+   "dependsOn": [
+    "sota"
+   ]
+  }
+ ],
+ "readingGuide": [
+  {
+   "id": "intro",
+   "title": {
+    "it-intermediate": "Introduzione · Perché serve una tela unica",
+    "it-expert": "Introduzione · Perché serve una tela unica"
+   },
+   "goal": {
+    "it-intermediate": "Capire quale difetto dei VLM 3D attuali OneCanvas vuole correggere e quali due contributi propone.",
+    "it-expert": "Fissare la diagnosi (geometria fornita ma non usata) e i due contributi: tela panoramica e curriculum."
+   },
+   "steps": [
+    {
+     "id": "intro-1",
+     "title": {
+      "it-intermediate": "La pipeline e i risultati in sintesi",
+      "it-expert": "La pipeline e i risultati in sintesi"
+     },
+     "paragraphs": [
+      "p0000",
+      "p0001",
+      "p0002"
+     ],
+     "meaning": {
+      "it-intermediate": "La Figura 1 mostra le patch dei fotogrammi portate in 3D e poi disposte su una panoramica vista da un punto scelto. La Figura 2 confronta l'accuratezza su SQA3D e SPBench e il calcolo di addestramento rispetto ai concorrenti.",
+      "it-expert": "Fig. 1: backprojection → frame comune → placement angolare continuo. Fig. 2: radar per question type (SQA3D, SPBench) e compute vs VSI-Bench, cioè i due assi del claim: accuratezza e costo."
+     },
+     "purpose": {
+      "it-intermediate": "Dà subito l'immagine della rappresentazione e il risultato da tenere a mente.",
+      "it-expert": "Dà subito l'immagine della rappresentazione e il risultato da tenere a mente."
+     }
+    },
+    {
+     "id": "intro-2",
+     "title": {
+      "it-intermediate": "Perché i modelli attuali non usano la geometria",
+      "it-expert": "Perché i modelli attuali non usano la geometria"
+     },
+     "paragraphs": [
+      "p0003",
+      "p0004",
+      "p0005"
+     ],
+     "meaning": {
+      "it-intermediate": "I VLM 3D partono da modelli addestrati su immagini 2D. Le due famiglie esistenti aggiungono encoder geometrici o scalano i dati spaziali; gli audit mostrano che un modello che legge solo la domanda arriva vicino ai migliori.",
+      "it-expert": "Backbone 2D senza inductive bias spaziale; fusione architetturale vs data scaling; audit text-only ⇒ shortcut di prior di domanda e scena."
+     },
+     "purpose": {
+      "it-intermediate": "Stabilisce il problema che sia la tela sia il curriculum affrontano.",
+      "it-expert": "Stabilisce il problema che sia la tela sia il curriculum affrontano."
+     }
+    },
+    {
+     "id": "intro-3",
+     "title": {
+      "it-intermediate": "La proposta: una tela, due contributi",
+      "it-expert": "La proposta: una tela, due contributi"
+     },
+     "paragraphs": [
+      "p0006",
+      "p0007",
+      "p0008"
+     ],
+     "meaning": {
+      "it-intermediate": "Ogni patch di ogni vista va in un punto 3D e poi sulla tela, alla direzione vista dall'origine; il numero di fotogramma resta come tempo. Il secondo contributo è un curriculum di esercizi geometrici generati sulla tela.",
+      "it-expert": "(θ, φ) → assi W/H di MRoPE, t → T; input single-image; curriculum procedurale anti-shortcut. Numeri: 65,3 / 71,3 / 72,1 con ~10× meno compute."
+     },
+     "purpose": {
+      "it-intermediate": "Elenca le due idee che il resto del paper costruisce e verifica.",
+      "it-expert": "Elenca le due idee che il resto del paper costruisce e verifica."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0009",
+    "why": {
+     "it-intermediate": "Come si collocano le altre soluzioni rispetto a questa: moduli aggiunti o immagini panoramiche renderizzate?",
+     "it-expert": "Differenze precise rispetto a fusione geometrica, ERP renderizzate e lift-then-project."
+    }
+   }
+  },
+  {
+   "id": "related",
+   "title": {
+    "it-intermediate": "Lavori correlati · Cosa aggiungono gli altri",
+    "it-expert": "Lavori correlati · Cosa aggiungono gli altri"
+   },
+   "goal": {
+    "it-intermediate": "Distinguere OneCanvas dai metodi che aggiungono moduli 3D e da quelli che usano immagini panoramiche renderizzate.",
+    "it-expert": "Posizionare il metodo: nessun modulo/loss/encoder aggiunto; nessun rendering ERP da re-encodare."
+   },
+   "steps": [
+    {
+     "id": "related-1",
+     "title": {
+      "it-intermediate": "Estensioni architetturali e schema del metodo",
+      "it-expert": "Estensioni architetturali e schema del metodo"
+     },
+     "paragraphs": [
+      "p0009",
+      "p0010"
+     ],
+     "meaning": {
+      "it-intermediate": "I metodi precedenti affiancano al modello linguistico encoder di nuvole di punti, codifiche ricavate dalla profondità o token 3D da modelli di ricostruzione. La Figura 3 mostra invece OneCanvas: encoder visivo congelato, patch sulla tela, adattamento LoRA del solo modello linguistico.",
+      "it-expert": "Point-cloud 3D-LLM, PE da depth, fusione di token da geometry foundation model (VLM-3R, SpaceMind, Ross3D…). Fig. 3: tower frozen, placement continuo, LoRA sull'LLM."
+     },
+     "purpose": {
+      "it-intermediate": "Rende esplicito che il contributo è nella preparazione dell'input.",
+      "it-expert": "Rende esplicito che il contributo è nella preparazione dell'input."
+     }
+    },
+    {
+     "id": "related-2",
+     "title": {
+      "it-intermediate": "Panoramiche e lift-then-project",
+      "it-expert": "Panoramiche e lift-then-project"
+     },
+     "paragraphs": [
+      "p0011"
+     ],
+     "meaning": {
+      "it-intermediate": "Altri lavori renderizzano immagini panoramiche e le fanno leggere al modello, oppure proiettano feature in una vista dall'alto. OneCanvas non genera immagini: l'encoder vede i fotogrammi originali e cambiano solo le posizioni delle patch, che restano tutte, anche quelle nascoste.",
+      "it-expert": "PanoGrounder/PanoEnv renderizzano ERP; BEV e LiftProj fanno lift-then-project. Qui niente distorsione nelle feature e niente z-buffer: co-locati e occlusi restano token."
+     },
+     "purpose": {
+      "it-intermediate": "Prepara la scelta delle posizioni continue verificata in B.2.",
+      "it-expert": "Prepara la scelta delle posizioni continue verificata in B.2."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0012",
+    "why": {
+     "it-intermediate": "Come si costruisce concretamente la tela a partire da immagini, profondità e pose?",
+     "it-expert": "Formule del lifting, della mappatura angolare e degli ID posizionali."
+    }
+   }
+  },
+  {
+   "id": "representation",
+   "title": {
+    "it-intermediate": "Metodo · Dalla patch alla tela",
+    "it-expert": "Metodo · Dalla patch alla tela"
+   },
+   "goal": {
+    "it-intermediate": "Seguire una patch dall'immagine al suo punto 3D, ai suoi angoli sulla tela e ai numeri di posizione che il modello riceve.",
+    "it-expert": "Ricostruire la mappa patch → (p, f, t) → (θ, φ) → ID MRoPE + 3D PE e il motivo di ogni scelta."
+   },
+   "steps": [
+    {
+     "id": "representation-1",
+     "title": {
+      "it-intermediate": "Input e sollevamento in 3D",
+      "it-expert": "Input e sollevamento in 3D"
+     },
+     "paragraphs": [
+      "p0012",
+      "p0013"
+     ],
+     "meaning": {
+      "it-intermediate": "L'input sono K immagini con profondità, intrinseci e posa. Ogni patch dell'encoder viene portata nel punto 3D della stanza con la formula della camera stenopeica e conserva la sua feature e il numero del fotogramma.",
+      "it-expert": "Back-projection pinhole per patch, T_k ∈ SE(3), convenzione OpenCV; P = {(p_i, f_i, t_i)} senza alcuna fusione multi-view."
+     },
+     "purpose": {
+      "it-intermediate": "Fornisce il punto 3D da cui dipende tutto il resto.",
+      "it-expert": "Fornisce il punto 3D da cui dipende tutto il resto."
+     }
+    },
+    {
+     "id": "representation-2",
+     "title": {
+      "it-intermediate": "Origine e coordinate sulla tela",
+      "it-expert": "Origine e coordinate sulla tela"
+     },
+     "paragraphs": [
+      "p0014",
+      "p0015"
+     ],
+     "meaning": {
+      "it-intermediate": "La tela è definita da un punto c e da un orientamento R scelti per il compito. Lo spostamento di ogni punto da c dà due angoli: longitudine (orizzontale) e latitudine (verticale). La distanza non è rappresentata dagli angoli.",
+      "it-expert": "(c, R) libero; q = Rᵀ(p − c), θ = atan2(q_x, q_z), φ = arctan(−q_y/r_xz). Proiezione centrale: si perde ‖q‖."
+     },
+     "purpose": {
+      "it-intermediate": "Definisce le coordinate che sostituiscono la griglia di pixel.",
+      "it-expert": "Definisce le coordinate che sostituiscono la griglia di pixel."
+     }
+    },
+    {
+     "id": "representation-3",
+     "title": {
+      "it-intermediate": "Perché niente griglia di pixel",
+      "it-expert": "Perché niente griglia di pixel"
+     },
+     "paragraphs": [
+      "p0016"
+     ],
+     "meaning": {
+      "it-intermediate": "Una griglia fonderebbe in una cella le superfici sovrapposte e le osservazioni ripetute. OneCanvas tiene ogni patch come token separato e lascia all'attenzione la gestione delle sovrapposizioni.",
+      "it-expert": "Nessuna riduzione per cella: co-locati disambiguati dal 3D PE, risoluzione delegata all'attention; costo lineare nei token."
+     },
+     "purpose": {
+      "it-intermediate": "Giustifica la scelta di design verificata in B.2.",
+      "it-expert": "Giustifica la scelta di design verificata in B.2."
+     }
+    },
+    {
+     "id": "representation-4",
+     "title": {
+      "it-intermediate": "Numeri di posizione ed embedding metrico",
+      "it-expert": "Numeri di posizione ed embedding metrico"
+     },
+     "paragraphs": [
+      "p0017",
+      "p0018"
+     ],
+     "meaning": {
+      "it-intermediate": "La codifica 3D-RoPE del modello resta identica: riceve longitudine, latitudine e fotogramma riscalati in [0, 100]. Le distanze in metri entrano come vettore sommato alla feature, calcolato con seni e coseni della posizione rispetto all'origine.",
+      "it-expert": "W ← θ, H ← φ, T ← t in [0, 100]; 3D PE di 136 canali (Fourier per asse, su ‖q‖ e r_xz, direzione) → MLP → gate, additivo in feature space."
+     },
+     "purpose": {
+      "it-intermediate": "Completa la rappresentazione: angoli nella posizione, metri nelle feature.",
+      "it-expert": "Completa la rappresentazione: angoli nella posizione, metri nelle feature."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0019",
+    "why": {
+     "it-intermediate": "Una volta costruita la tela, come si insegna al modello a leggerla davvero?",
+     "it-expert": "Il curriculum procedurale e lo schema di training a due stadi."
+    }
+   }
+  },
+  {
+   "id": "training",
+   "title": {
+    "it-intermediate": "Metodo · Insegnare a leggere la tela",
+    "it-expert": "Metodo · Insegnare a leggere la tela"
+   },
+   "goal": {
+    "it-intermediate": "Capire perché un pre-addestramento con scatole su tela vuota aiuta, e come le due fasi di LoRA si combinano.",
+    "it-expert": "Ricostruire la motivazione del curriculum, il meccanismo di reference inline e lo schema merge + adapter ridotto, con gli iperparametri."
+   },
+   "steps": [
+    {
+     "id": "training-1",
+     "title": {
+      "it-intermediate": "Il curriculum spaziale",
+      "it-expert": "Il curriculum spaziale"
+     },
+     "paragraphs": [
+      "p0019",
+      "p0020",
+      "p0021"
+     ],
+     "meaning": {
+      "it-intermediate": "Gli esercizi mettono scatole con feature reali prese a caso su una tela vuota e le citano nella domanda con la stessa feature invece che con un nome. Le risposte (distanze, direzioni, percorsi, visibilità, conteggi, bounding box) si ricavano solo dalle posizioni.",
+      "it-expert": "Supervisione con label causalmente geometriche; box con feature dal pool, reference inline (ID testuale + 3D PE); sei famiglie allineate a VSI-Bench/SPBench."
+     },
+     "purpose": {
+      "it-intermediate": "Spiega il secondo contributo e come elimina i prior di classe.",
+      "it-expert": "Spiega il secondo contributo e come elimina i prior di classe."
+     }
+    },
+    {
+     "id": "training-2",
+     "title": {
+      "it-intermediate": "Due fasi di addestramento",
+      "it-expert": "Due fasi di addestramento"
+     },
+     "paragraphs": [
+      "p0022",
+      "p0023",
+      "p0024"
+     ],
+     "meaning": {
+      "it-intermediate": "Prima si allena un adattatore LoRA grande sul solo curriculum, poi lo si fonde nel modello e se ne allena uno più piccolo sulle domande reali, per adattare il formato senza perdere la lettura geometrica.",
+      "it-expert": "Stage 1: r=256 + 3D PE sul curriculum; merge; stage 2: LoRA fresco r=64 su SQA3D/VSI-style/ViCA. Token embedding frozen."
+     },
+     "purpose": {
+      "it-intermediate": "Mostra come il curriculum viene preservato nell'adattamento.",
+      "it-expert": "Mostra come il curriculum viene preservato nell'adattamento."
+     }
+    },
+    {
+     "id": "training-3",
+     "title": {
+      "it-intermediate": "Dettagli di implementazione",
+      "it-expert": "Dettagli di implementazione"
+     },
+     "paragraphs": [
+      "p0025",
+      "p0026"
+     ],
+     "meaning": {
+      "it-intermediate": "Si usano 32 fotogrammi per scena; il centro della tela è la posa dell'agente per SQA3D, la camera interrogata per SPBench, altrimenti il baricentro delle camere. In addestramento posizione e rotazione della tela sono casuali. Seguono gli iperparametri di Qwen3-VL-8B e del LoRA.",
+      "it-expert": "K=32; origine per benchmark; risoluzioni 320×240 / 640×480; yaw random in training; lr, 3D PE normalizzato a ½ norma in stage 1, cap 200 patch, 6–12 distrattori, mix 70/15/15."
+     },
+     "purpose": {
+      "it-intermediate": "Fissa le condizioni sotto cui valgono i risultati.",
+      "it-expert": "Fissa le condizioni sotto cui valgono i risultati."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0027",
+    "why": {
+     "it-intermediate": "Quanto rende tutto questo sui benchmark spaziali?",
+     "it-expert": "Risultati su SQA3D, VSI-Bench e SPBench e loro profilo per subtask."
+    }
+   }
+  },
+  {
+   "id": "results",
+   "title": {
+    "it-intermediate": "Esperimenti · Risultati sui tre benchmark",
+    "it-expert": "Esperimenti · Risultati sui tre benchmark"
+   },
+   "goal": {
+    "it-intermediate": "Leggere dove OneCanvas guadagna e dove resta indietro su SQA3D, SPBench e VSI-Bench.",
+    "it-expert": "Verificare il claim SOTA e il profilo per subtask: forte su multi-view, route e situated; debole su counting e appearance order."
+   },
+   "steps": [
+    {
+     "id": "results-1",
+     "title": {
+      "it-intermediate": "Benchmark e geometria stimata",
+      "it-expert": "Benchmark e geometria stimata"
+     },
+     "paragraphs": [
+      "p0027",
+      "p0028"
+     ],
+     "meaning": {
+      "it-intermediate": "SQA3D chiede dal punto di vista di un agente, VSI-Bench ha otto compiti spaziali, SPBench è valutato senza addestramento specifico. Usando profondità e pose stimate dalle sole immagini si perde poco.",
+      "it-expert": "SPBench è l'unico test zero-shot; VSI-Bench è in-distribution via mix di stage 2. DA3 inference-only: −0,4/−1,3/−0,8."
+     },
+     "purpose": {
+      "it-intermediate": "Stabilisce cosa misura ciascun benchmark prima delle tabelle.",
+      "it-expert": "Stabilisce cosa misura ciascun benchmark prima delle tabelle."
+     }
+    },
+    {
+     "id": "results-2",
+     "title": {
+      "it-intermediate": "Le tre tabelle principali",
+      "it-expert": "Le tre tabelle principali"
+     },
+     "paragraphs": [
+      "p0029",
+      "p0030",
+      "p0031",
+      "p0032",
+      "p0033",
+      "p0034"
+     ],
+     "meaning": {
+      "it-intermediate": "SQA3D: 65,3 EM@1, con il margine maggiore sulle domande Which. SPBench: 72,1, soprattutto sulle multi-vista. VSI-Bench: 71,3, con grande margine sulla pianificazione del percorso; più deboli conteggio e ordine di apparizione.",
+      "it-expert": "Tab. 1–3: SQA3D 65,3 vs 63,0 (Which ≫, Is < Ross3D); SPBench 72,1 vs 67,3 (MV-MCQ 91,8); VSI 71,3 vs 69,6 (Route 60,8; Obj.Cnt e App.Order sotto i migliori)."
+     },
+     "purpose": {
+      "it-intermediate": "Fornisce l'evidenza del claim principale e i punti deboli da spiegare.",
+      "it-expert": "Fornisce l'evidenza del claim principale e i punti deboli da spiegare."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0035",
+    "why": {
+     "it-intermediate": "Quale componente è responsabile di quale guadagno?",
+     "it-expert": "Ablation di componenti e dell'origine."
+    }
+   }
+  },
+  {
+   "id": "ablations",
+   "title": {
+    "it-intermediate": "Esperimenti · Cosa conta davvero",
+    "it-expert": "Esperimenti · Cosa conta davvero"
+   },
+   "goal": {
+    "it-intermediate": "Attribuire i guadagni a tela, embedding 3D, curriculum e scelta dell'origine, e conoscere i limiti dichiarati.",
+    "it-expert": "Isolare i contributi (Tab. 4–5) e leggere le conclusioni insieme ai limiti."
+   },
+   "steps": [
+    {
+     "id": "ablations-1",
+     "title": {
+      "it-intermediate": "Togliere un componente alla volta",
+      "it-expert": "Togliere un componente alla volta"
+     },
+     "paragraphs": [
+      "p0035",
+      "p0036"
+     ],
+     "meaning": {
+      "it-intermediate": "Il curriculum fa crescere soprattutto la pianificazione del percorso; l'embedding 3D le misure metriche; la tela le relazioni tra parti diverse della scena. Il conteggio resta meglio nel modello di base.",
+      "it-expert": "Tab. 4 a capacità LoRA pareggiata: Route +15,4 dal curriculum, Room/Abs.Dist dal 3D PE, Rel.Dir dalla tela; counting peggiore, attribuito al layout shift."
+     },
+     "purpose": {
+      "it-intermediate": "Collega ciascun componente a un'abilità misurabile.",
+      "it-expert": "Collega ciascun componente a un'abilità misurabile."
+     }
+    },
+    {
+     "id": "ablations-2",
+     "title": {
+      "it-intermediate": "Dove mettere il centro della tela",
+      "it-expert": "Dove mettere il centro della tela"
+     },
+     "paragraphs": [
+      "p0037",
+      "p0038"
+     ],
+     "meaning": {
+      "it-intermediate": "Sullo stesso modello, centrare la tela sull'agente dà 65,3 su SQA3D contro circa 61 con altre origini; il guadagno è sulle domande che dipendono dal punto di vista.",
+      "it-expert": "Tab. 5 inference-only: agent pose 65,3, scene center 61,2, outside 59,8; il margine SOTA su SQA3D dipende da questa scelta."
+     },
+     "purpose": {
+      "it-intermediate": "Spiega il margine su SQA3D.",
+      "it-expert": "Spiega il margine su SQA3D."
+     }
+    },
+    {
+     "id": "ablations-3",
+     "title": {
+      "it-intermediate": "Conclusioni e limiti",
+      "it-expert": "Conclusioni e limiti"
+     },
+     "paragraphs": [
+      "p0039",
+      "p0040"
+     ],
+     "meaning": {
+      "it-intermediate": "La comprensione 3D diventa ragionamento 2D su una tela. Limiti: servono profondità e pose; una sola panoramica può non bastare per scene grandi o all'aperto; ogni nuova abilità richiede di scrivere un nuovo generatore di esercizi.",
+      "it-expert": "Sintesi + limiti dichiarati: dipendenza da depth/pose, trade-off di una singola panoramica globale, curriculum hand-authored."
+     },
+     "purpose": {
+      "it-intermediate": "Chiude il corpo principale con lo scope corretto.",
+      "it-expert": "Chiude il corpo principale con lo scope corretto."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0041",
+    "why": {
+     "it-intermediate": "Le scelte di design reggono ai controlli più mirati?",
+     "it-expert": "Controlli in appendice: contenuto del curriculum, geometria stimata, raster, seed, backbone, seam."
+    }
+   }
+  },
+  {
+   "id": "controls",
+   "title": {
+    "it-intermediate": "Appendici A–B · Controlli e robustezza",
+    "it-expert": "Appendici A–B · Controlli e robustezza"
+   },
+   "goal": {
+    "it-intermediate": "Verificare, uno per uno, i controlli che sostengono le scelte di design e capire che cosa ciascuno dimostra e cosa no.",
+    "it-expert": "Leggere ogni controllo con il suo protocollo (inference-only, short matched, full) e il suo scope."
+   },
+   "steps": [
+    {
+     "id": "controls-1",
+     "title": {
+      "it-intermediate": "Scatole sintetiche o oggetti reali",
+      "it-expert": "Scatole sintetiche o oggetti reali"
+     },
+     "paragraphs": [
+      "p0041",
+      "p0042"
+     ],
+     "meaning": {
+      "it-intermediate": "Popolare il curriculum con oggetti reali citati per nome dà 70,2 contro 71,3 delle scatole sintetiche: gli oggetti reali aiutano dove contano le dimensioni tipiche e peggiorano le relazioni.",
+      "it-expert": "Tab. 6: synthetic 71,3 vs scene-harvested 70,2; harvested meglio su Room/Obj.Size, peggio su Rel.Dist/App.Order."
+     },
+     "purpose": {
+      "it-intermediate": "Verifica la scelta dei riferimenti per feature.",
+      "it-expert": "Verifica la scelta dei riferimenti per feature."
+     }
+    },
+    {
+     "id": "controls-2",
+     "title": {
+      "it-intermediate": "Geometria stimata dalle immagini",
+      "it-expert": "Geometria stimata dalle immagini"
+     },
+     "paragraphs": [
+      "p0043",
+      "p0044",
+      "p0045",
+      "p0046"
+     ],
+     "meaning": {
+      "it-intermediate": "Con profondità e pose stimate da Depth Anything 3, senza riaddestrare, il modello perde meno di 1,5 punti e resta sopra i concorrenti; il risultato vale per questo stimatore.",
+      "it-expert": "Mappa dei protocolli di App. B; DA3 inference-only: 64,9/70,0/71,3 vs GT 65,3/71,3/72,1; scope limitato all'estimatore."
+     },
+     "purpose": {
+      "it-intermediate": "Risponde all'obiezione sul requisito di RGB-D e pose.",
+      "it-expert": "Risponde all'obiezione sul requisito di RGB-D e pose."
+     }
+    },
+    {
+     "id": "controls-3",
+     "title": {
+      "it-intermediate": "Posizioni continue contro griglie e pixel",
+      "it-expert": "Posizioni continue contro griglie e pixel"
+     },
+     "paragraphs": [
+      "p0047",
+      "p0048",
+      "p0049",
+      "p0050",
+      "p0051",
+      "p0052",
+      "p0053"
+     ],
+     "meaning": {
+      "it-intermediate": "Una griglia applicata al modello addestrato fa perdere quasi solo l'ordine di apparizione, perché ogni cella conserva un solo fotogramma. Una panoramica di pixel addestrata a parità di condizioni rende 8,7 punti meno. Il deficit sul conteggio non dipende da errori di profondità.",
+      "it-expert": "Raster: −2,9 di cui 2,8 da App.Order, causa la cardinalità; pixel z-buffer −8,7 (fattori confusi); depth coarsening fino a 8× non tocca il counting."
+     },
+     "purpose": {
+      "it-intermediate": "Fornisce l'evidenza per la scelta delle posizioni continue.",
+      "it-expert": "Fornisce l'evidenza per la scelta delle posizioni continue."
+     }
+    },
+    {
+     "id": "controls-4",
+     "title": {
+      "it-intermediate": "Semi e altri modelli di base",
+      "it-expert": "Semi e altri modelli di base"
+     },
+     "paragraphs": [
+      "p0054",
+      "p0055",
+      "p0056",
+      "p0057",
+      "p0058",
+      "p0059",
+      "p0060"
+     ],
+     "meaning": {
+      "it-intermediate": "Tre ripetizioni con semi diversi superano tutte i migliori precedenti. Su ERNIE la tela aggiunge 6,1 punti in un confronto breve; con Qwen3.5 la ricetta completa dà risultati simili.",
+      "it-expert": "Seed: 70,4 ± 0,6 / 65,1 ± 0,9 / 73,2 ± 0,3; ERNIE +6,1 matched 2k-step senza stage 1; Qwen3.5-9B 69,42/67,18/69,81."
+     },
+     "purpose": {
+      "it-intermediate": "Mostra stabilità e portabilità entro limiti dichiarati.",
+      "it-expert": "Mostra stabilità e portabilità entro limiti dichiarati."
+     }
+    },
+    {
+     "id": "controls-5",
+     "title": {
+      "it-intermediate": "La giunzione della longitudine",
+      "it-expert": "La giunzione della longitudine"
+     },
+     "paragraphs": [
+      "p0061",
+      "p0062",
+      "p0063",
+      "p0064"
+     ],
+     "meaning": {
+      "it-intermediate": "Dove la panoramica si chiude, direzioni vicine ricevono posizioni lontane. Se la giunzione cade tra due oggetti vicini l'errore di distanza cresce molto, ma il caso è raro e si evita ruotando la tela.",
+      "it-expert": "Seam a θ = ±π con ID non periodico; probe: 0,14 → 1,23 m a 15°, trascurabile oltre 60°, prevalenza 0,63%."
+     },
+     "purpose": {
+      "it-intermediate": "Quantifica l'artefatto principale della parametrizzazione.",
+      "it-expert": "Quantifica l'artefatto principale della parametrizzazione."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0065",
+    "why": {
+     "it-intermediate": "Da dove viene il «dieci volte meno calcolo»?",
+     "it-expert": "Metodologia della normalizzazione del compute."
+    }
+   }
+  },
+  {
+   "id": "compute",
+   "title": {
+    "it-intermediate": "Appendice C · Il conto del calcolo",
+    "it-expert": "Appendice C · Il conto del calcolo"
+   },
+   "goal": {
+    "it-intermediate": "Rifare i conti del confronto di calcolo e capire per quali concorrenti vale.",
+    "it-expert": "Verificare la normalizzazione A100-equiv, la sua versione bandwidth-bound e lo scope del claim."
+   },
+   "steps": [
+    {
+     "id": "compute-1",
+     "title": {
+      "it-intermediate": "Quanto costa OneCanvas",
+      "it-expert": "Quanto costa OneCanvas"
+     },
+     "paragraphs": [
+      "p0065",
+      "p0066"
+     ],
+     "meaning": {
+      "it-intermediate": "L'addestramento completo richiede circa 65 ore su 8 GPU A6000, cioè 259 ore equivalenti A100, contro 4.800 di SpaceMind e 27.648 di SenseNova-SI.",
+      "it-expert": "≈ 64,8 h × 8 A6000 = 518 GPU-h raw, 259 A100-equiv; Tab. 13 con i competitor."
+     },
+     "purpose": {
+      "it-intermediate": "Dà i numeri grezzi del confronto.",
+      "it-expert": "Dà i numeri grezzi del confronto."
+     }
+    },
+    {
+     "id": "compute-2",
+     "title": {
+      "it-intermediate": "Come si convertono le GPU",
+      "it-expert": "Come si convertono le GPU"
+     },
+     "paragraphs": [
+      "p0067",
+      "p0068",
+      "p0069",
+      "p0070",
+      "p0071"
+     ],
+     "meaning": {
+      "it-intermediate": "Le ore vengono moltiplicate per la potenza teorica rispetto a una A100 (A6000 ≈ 0,5, H100 ≈ 3). È un limite superiore; con un conto basato sulla velocità della memoria il vantaggio scende a 10 e 59 volte, ma resta.",
+      "it-expert": "Fattori TFLOPS BF16/312 arrotondati; upper bound peak; bandwidth-bound ~10×/59×; Tab. 14–15."
+     },
+     "purpose": {
+      "it-intermediate": "Rende verificabile il rapporto 19–107×.",
+      "it-expert": "Rende verificabile il rapporto 19–107×."
+     }
+    },
+    {
+     "id": "compute-3",
+     "title": {
+      "it-intermediate": "Per chi vale il confronto",
+      "it-expert": "Per chi vale il confronto"
+     },
+     "paragraphs": [
+      "p0072"
+     ],
+     "meaning": {
+      "it-intermediate": "Il vantaggio vale rispetto ai metodi con accuratezza simile; VLM-3R usa un calcolo simile ma è 10,4 punti sotto.",
+      "it-expert": "Pareto nella regione ad alta accuratezza, non vantaggio universale."
+     },
+     "purpose": {
+      "it-intermediate": "Delimita lo scope del claim di efficienza.",
+      "it-expert": "Delimita lo scope del claim di efficienza."
+     }
+    }
+   ],
+   "leadsTo": {
+    "paragraphId": "p0073",
+    "why": {
+     "it-intermediate": "Com'è fatto esattamente ciascun esercizio del curriculum?",
+     "it-expert": "Specifica dei task procedurali e dei controlli anti-shortcut."
+    }
+   }
+  },
+  {
+   "id": "curriculum-details",
+   "title": {
+    "it-intermediate": "Appendice D · Gli esercizi del curriculum",
+    "it-expert": "Appendice D · Gli esercizi del curriculum"
+   },
+   "goal": {
+    "it-intermediate": "Conoscere com'è costruito ogni esercizio e quale scorciatoia ciascun accorgimento elimina.",
+    "it-expert": "Ricostruire per ogni famiglia input, output e i vincoli di campionamento che controllano i marginali."
+   },
+   "steps": [
+    {
+     "id": "curriculum-details-1",
+     "title": {
+      "it-intermediate": "Regole comuni",
+      "it-expert": "Regole comuni"
+     },
+     "paragraphs": [
+      "p0073",
+      "p0074",
+      "p0075",
+      "p0076",
+      "p0077"
+     ],
+     "meaning": {
+      "it-intermediate": "Ogni famiglia pesa uguale. Sulla tela ci sono solo scatole, ciascuna riempita con una feature reale presa a caso da un archivio indipendente dalla scena, più 6-12 scatole distrattrici mai citate.",
+      "it-expert": "Family-flat weighting; tela vuota; box = patch nel volume con una feature dal pool scene-agnostic; distrattori con feature disgiunte."
+     },
+     "purpose": {
+      "it-intermediate": "Fissa i vincoli comuni a tutti gli esercizi.",
+      "it-expert": "Fissa i vincoli comuni a tutti gli esercizi."
+     }
+    },
+    {
+     "id": "curriculum-details-2",
+     "title": {
+      "it-intermediate": "Misure metriche",
+      "it-expert": "Misure metriche"
+     },
+     "paragraphs": [
+      "p0078",
+      "p0079",
+      "p0080"
+     ],
+     "meaning": {
+      "it-intermediate": "Distanza superficie-superficie tra due scatole, il più vicino tra quattro candidati, area di un pavimento a L o a T.",
+      "it-expert": "Regressione 1 decimale per distanza e area; closest-of-four con margine ≥ 5 cm."
+     },
+     "purpose": {
+      "it-intermediate": "Allena le abilità misurate da Abs.Dist, Rel.Dist e Room Size.",
+      "it-expert": "Allena le abilità misurate da Abs.Dist, Rel.Dist e Room Size."
+     }
+    },
+    {
+     "id": "curriculum-details-3",
+     "title": {
+      "it-intermediate": "Direzioni",
+      "it-expert": "Direzioni"
+     },
+     "paragraphs": [
+      "p0081",
+      "p0082",
+      "p0083",
+      "p0084"
+     ],
+     "meaning": {
+      "it-intermediate": "Un agente in una scatola guarda verso un'altra; si chiede dove sta una terza: a 2, 3 o 4 vie, a ore dell'orologio, oppure dal punto di vista di una camera reale.",
+      "it-expert": "World-frame (ref, fwd, target) con bin 2/3/4/clock; camera-frame con tela riorientata su una posa reale."
+     },
+     "purpose": {
+      "it-intermediate": "Allena le relazioni egocentriche usate da Rel.Dir, SQA3D e SPBench.",
+      "it-expert": "Allena le relazioni egocentriche usate da Rel.Dir, SQA3D e SPBench."
+     }
+    },
+    {
+     "id": "curriculum-details-4",
+     "title": {
+      "it-intermediate": "Navigazione",
+      "it-expert": "Navigazione"
+     },
+     "paragraphs": [
+      "p0085"
+     ],
+     "meaning": {
+      "it-intermediate": "Partenza, arrivo e da 1 a 4 punti intermedi; la risposta è la sequenza di svolte a sinistra o a destra (indietro solo alla prima).",
+      "it-expert": "N-turn route planning, fill-in MCQ, N ∈ {1..4} a peso uguale."
+     },
+     "purpose": {
+      "it-intermediate": "Allena il ragionamento a più passi che dà il guadagno su Route.",
+      "it-expert": "Allena il ragionamento a più passi che dà il guadagno su Route."
+     }
+    },
+    {
+     "id": "curriculum-details-5",
+     "title": {
+      "it-intermediate": "Osservabilità",
+      "it-expert": "Osservabilità"
+     },
+     "paragraphs": [
+      "p0086",
+      "p0087"
+     ],
+     "meaning": {
+      "it-intermediate": "Ordine di prima apparizione, costruito assegnando a mano gli indici dei fotogrammi; visibilità oltre un ostacolo, con le due risposte rese indistinguibili tranne che per la posizione dell'ostacolo.",
+      "it-expert": "Override dei T con start consecutivi; line-of-sight con soglia 10% e solo l'offset perpendicolare label-conditional."
+     },
+     "purpose": {
+      "it-intermediate": "Allena la lettura dell'asse temporale e della visibilità.",
+      "it-expert": "Allena la lettura dell'asse temporale e della visibilità."
+     }
+    },
+    {
+     "id": "curriculum-details-6",
+     "title": {
+      "it-intermediate": "Conteggi",
+      "it-expert": "Conteggi"
+     },
+     "paragraphs": [
+      "p0088",
+      "p0089",
+      "p0090",
+      "p0091"
+     ],
+     "meaning": {
+      "it-intermediate": "Contare le scatole uguali al riferimento, dire se il numero è pari o divisibile per tre (risposte equiprobabili), contarle su un lato dell'agente.",
+      "it-expert": "N uniforme; parity e divisibility con label bilanciate; count-by-side con target pesati 30/35/25/10."
+     },
+     "purpose": {
+      "it-intermediate": "Allena il conteggio per identità con marginali controllati.",
+      "it-expert": "Allena il conteggio per identità con marginali controllati."
+     }
+    },
+    {
+     "id": "curriculum-details-7",
+     "title": {
+      "it-intermediate": "Bounding box",
+      "it-expert": "Bounding box"
+     },
+     "paragraphs": [
+      "p0092"
+     ],
+     "meaning": {
+      "it-intermediate": "Per 2-4 scatole indicate con lettere, il modello scrive centro e dimensioni in metri di ciascuna, dalla più vicina alla più lontana.",
+      "it-expert": "AABB 3D per referente in ordine near-to-far: readout metrico assoluto dal 3D PE."
+     },
+     "purpose": {
+      "it-intermediate": "Allena la lettura di coordinate assolute.",
+      "it-expert": "Allena la lettura di coordinate assolute."
+     }
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "figure-1",
+   "label": "Figura 1",
+   "page": 0,
+   "rect": [
+    0.15,
+    0.338,
+    0.85,
+    0.527
+   ],
+   "image": "figures/figure-1.png",
+   "sourceSha256": "cbdaa9b595155b1664ac5e8d3933ce3a8081dabc2a9a40302860c078531dd6ca",
+   "caption": {
+    "it-intermediate": "OneCanvas (1) porta in 3D le feature delle patch di ogni fotogramma, (2) le raccoglie in un unico sistema di riferimento centrato su un punto di vista scelto e (3) mette ogni patch sulla tela panoramica nella sua posizione angolare continua; il VLM legge la tela come una sola immagine. Lo schema interattivo usa una stanza inventata per mostrare i calcoli; l'originale è sotto.",
+    "it-expert": "Backprojection per patch → frame comune centrato su un viewpoint scelto → placement a (θ, φ) continui sulla tela equirettangolare, letta dal VLM come singola immagine. Lo schema interattivo applica le formule di §3.2 (e i controlli di B.2 e B.5) a una scena inventata; non ricostruisce la scena della figura."
+   },
+   "captionParagraph": "p0000",
+   "references": [
+    {
+     "paragraphId": "p0000"
+    },
+    {
+     "paragraphId": "p0015"
+    },
+    {
+     "paragraphId": "p0049"
+    },
+    {
+     "paragraphId": "p0061"
+    }
+   ],
+   "animation": "canvas-projection"
+  },
+  {
+   "id": "figure-2",
+   "label": "Figura 2",
+   "page": 1,
+   "rect": [
+    0.168,
+    0.083,
+    0.832,
+    0.296
+   ],
+   "image": "figures/figure-2.png",
+   "sourceSha256": "cbdaa9b595155b1664ac5e8d3933ce3a8081dabc2a9a40302860c078531dd6ca",
+   "caption": {
+    "it-intermediate": "(a) Accuratezza su SQA3D per tipo di domanda e (b) accuratezza su SPBench senza addestramento specifico, nei grafici radar contro i concorrenti più vicini. (c) Calcolo di addestramento (ore-GPU equivalenti A100, scala logaritmica) contro accuratezza su VSI-Bench.",
+    "it-expert": "(a) Radar per question type su SQA3D; (b) radar zero-shot su SPBench (MV/SI); (c) compute di training in A100-equiv GPU-h (log) vs VSI-Bench."
+   },
+   "captionParagraph": "p0002",
+   "references": [
+    {
+     "paragraphId": "p0002"
+    },
+    {
+     "paragraphId": "p0072"
+    }
+   ]
+  },
+  {
+   "id": "figure-3",
+   "label": "Figura 3",
+   "page": 3,
+   "rect": [
+    0.155,
+    0.083,
+    0.847,
+    0.2605
+   ],
+   "image": "figures/figure-3.png",
+   "sourceSha256": "cbdaa9b595155b1664ac5e8d3933ce3a8081dabc2a9a40302860c078531dd6ca",
+   "caption": {
+    "it-intermediate": "Panoramica del metodo: le immagini multi-vista passano nell'encoder visivo congelato di Qwen3-VL, le patch sollevate in 3D finiscono in posizioni continue su una panoramica equirettangolare condivisa e il VLM, adattato con LoRA, la legge con i suoi normali strati di attenzione.",
+    "it-expert": "RGB-D multi-view → vision tower Qwen3-VL frozen → lifting → placement continuo sulla tela ERP → LLM (LoRA) con attention nativa."
+   },
+   "captionParagraph": "p0010",
+   "references": [
+    {
+     "paragraphId": "p0010"
+    },
+    {
+     "paragraphId": "p0012"
+    }
+   ]
+  },
+  {
+   "id": "figure-4",
+   "label": "Figura 4",
+   "page": 6,
+   "rect": [
+    0.153,
+    0.083,
+    0.847,
+    0.207
+   ],
+   "image": "figures/figure-4.png",
+   "sourceSha256": "cbdaa9b595155b1664ac5e8d3933ce3a8081dabc2a9a40302860c078531dd6ca",
+   "caption": {
+    "it-intermediate": "Le due fasi di addestramento: nella prima LoRA ed embedding 3D imparano sugli esercizi con oggetti piazzati su una tela vuota; nella seconda l'adattatore viene fuso nel modello e se ne allena uno più piccolo sulle domande reali. Gli embedding dei token restano congelati.",
+    "it-expert": "Stage 1: LoRA + 3D PE sul curriculum su tela vuota con reference inline; stage 2: merge e LoRA ridotto su QA reale. Token embedding frozen in entrambi."
+   },
+   "captionParagraph": "p0024",
+   "references": [
+    {
+     "paragraphId": "p0024"
+    }
+   ]
+  }
+ ]
+}

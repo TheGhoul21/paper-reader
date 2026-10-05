@@ -63,7 +63,9 @@ test("concept links, filters, direct reload and source comparison retain the cat
   await page.getByRole("searchbox").fill("nessun-risultato-esistente");
   await expect(page.getByText("Nessun paper trovato.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Mostra tutti i paper" }).click();
-  await expect(page.locator(".catalog-results .library-card")).toHaveCount(11);
+  await expect(page.locator(".catalog-results .library-card")).toHaveCount(
+    JSON.parse(readFileSync("papers/index.json", "utf8")).length,
+  );
 });
 
 test("thousands of catalog entries keep results and pagination bounded", async ({ page }, info) => {

@@ -8,6 +8,7 @@ import type { ReadingTools } from "../guided/ReadingContent";
 const ParityTwineFigure = lazy(() => import("./ParityTwineFigure"));
 const OqftBlocksFigure = lazy(() => import("./OqftBlocksFigure"));
 const AtomTransportFigure = lazy(() => import("./AtomTransportFigure"));
+const CanvasProjectionFigure = lazy(() => import("./CanvasProjectionFigure"));
 
 export default function ReadingFigure({
   figure,
@@ -31,6 +32,8 @@ export default function ReadingFigure({
       <OqftBlocksFigure />
     ) : figure.animation === "atom-transport" ? (
       <AtomTransportFigure initialPanel={panel} />
+    ) : figure.animation === "canvas-projection" ? (
+      <CanvasProjectionFigure />
     ) : null;
   const original = (
     <div className="reading-figure-original">
