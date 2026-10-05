@@ -312,6 +312,224 @@
   height: auto;
   background: white;
 }
+.figure-description {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 16px 0;
+}
+.figure-stage-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+.figure-stage-tabs button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+.oqft-drawing,
+.transport-drawing {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 16px 0;
+  padding: 12px;
+}
+.oqft-drawing svg,
+.transport-drawing svg {
+  display: block;
+  width: 100%;
+  max-width: 470px;
+  margin: 0 auto;
+}
+.oqft-slot {
+  fill: var(--reading-soft);
+  stroke: var(--border);
+  stroke-dasharray: 3 4;
+}
+.oqft-block-A,
+.oqft-color-A {
+  --block-color: #805282;
+}
+.oqft-block-B,
+.oqft-color-B {
+  --block-color: #ca354a;
+}
+.oqft-block-C,
+.oqft-color-C {
+  --block-color: #29704c;
+}
+.oqft-block-D,
+.oqft-color-D {
+  --block-color: #935810;
+}
+.oqft-block > rect {
+  fill: var(--card-bg);
+  stroke: var(--block-color);
+  stroke-width: 2;
+}
+.oqft-block.is-active > rect {
+  stroke-width: 4;
+}
+.oqft-block.is-selected > rect {
+  stroke-dasharray: 6 3;
+}
+.oqft-block text {
+  fill: var(--block-color);
+  font:
+    bold 24px system-ui,
+    sans-serif;
+}
+.oqft-block .oqft-block-title {
+  font-size: 17px;
+}
+.oqft-block circle {
+  fill: var(--reading-soft);
+}
+.oqft-block.is-transported {
+  transition: transform 900ms ease-in-out;
+}
+.oqft-block-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.oqft-block-selector button {
+  border-bottom: 3px solid var(--block-color);
+}
+.oqft-block-selector button[aria-pressed="true"] {
+  outline: 2px solid var(--block-color);
+  outline-offset: 2px;
+}
+.figure-operation {
+  color: var(--accent);
+  margin-top: 8px !important;
+}
+.oqft-selected-state {
+  margin-top: 14px !important;
+}
+.transport-drawing svg text {
+  fill: var(--fg);
+  font:
+    20px system-ui,
+    sans-serif;
+}
+.transport-drawing svg .transport-path-label {
+  font-size: 18px;
+  fill: var(--muted);
+}
+.transport-drawing svg .transport-zone-label {
+  font-size: 22px;
+}
+.transport-drawing svg .transport-atom text {
+  font-size: 26px;
+}
+.transport-trap {
+  fill: none;
+  stroke: #4672bd;
+  stroke-width: 1.5;
+}
+.transport-track {
+  stroke: var(--border);
+  stroke-dasharray: 3 4;
+}
+.transport-path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+.transport-atom.is-moving {
+  animation: transport-atom-move 900ms ease-in-out;
+}
+@keyframes transport-atom-move {
+  0% {
+    transform: translate(225px, var(--atom-from-y));
+  }
+  25% {
+    transform: translate(285px, var(--atom-from-y));
+  }
+  75% {
+    transform: translate(285px, var(--atom-to-y));
+  }
+  100% {
+    transform: translate(225px, var(--atom-to-y));
+  }
+}
+.transport-atom > circle {
+  fill: var(--card-bg);
+  stroke: var(--fg);
+  stroke-width: 2;
+}
+.transport-atom-A > circle {
+  fill: var(--reading-soft);
+}
+.transport-atom > .transport-mobile-trap {
+  fill: none;
+  stroke: #cf3847;
+  stroke-width: 3;
+  stroke-dasharray: 4 2;
+}
+.transport-mobile-legend {
+  color: #b32b3b;
+}
+.transport-interaction {
+  fill: var(--accent);
+  opacity: 0.2;
+}
+.transport-drawing svg .transport-cz-label {
+  fill: var(--accent);
+  font-weight: bold;
+}
+.transport-counts,
+.transport-atom-state {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.transport-counts dt,
+.transport-atom-state dt {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.transport-counts dd,
+.transport-atom-state dd {
+  margin: 4px 0;
+  font-weight: bold;
+}
+.figure-model-details {
+  margin: 20px 0 0;
+  font-size: 0.8rem;
+}
+@media (prefers-color-scheme: dark) {
+  .oqft-block-A,
+  .oqft-color-A {
+    --block-color: #d5a7d7;
+  }
+  .oqft-block-B,
+  .oqft-color-B {
+    --block-color: #ff94a4;
+  }
+  .oqft-block-C,
+  .oqft-color-C {
+    --block-color: #97d3ad;
+  }
+  .oqft-block-D,
+  .oqft-color-D {
+    --block-color: #edbf77;
+  }
+  .transport-trap {
+    stroke: #97b8f1;
+  }
+  .transport-mobile-legend {
+    color: #ff94a4;
+  }
+  .transport-atom > .transport-mobile-trap {
+    stroke: #ff94a4;
+  }
+}
 @media (max-width: 760px) {
   .reading-figure {
     padding: 14px;
@@ -321,6 +539,13 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .oqft-block.is-transported,
+  .transport-atom {
+    transition: none;
+  }
+  .transport-atom.is-moving {
+    animation: none;
+  }
   .twine-animation.is-playing .twine-playhead {
     transition: none;
   }

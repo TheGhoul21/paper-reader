@@ -966,6 +966,112 @@
         }
       ],
       "animation": "parity-twine"
+    },
+    {
+      "id": "figure-7",
+      "label": "Figura 7",
+      "page": 10,
+      "rect": [
+        0.078,
+        0.06,
+        0.918,
+        0.326
+      ],
+      "image": "figures/figure-7.png",
+      "sourceSha256": "92eaf33303ef144b379735f3b94aed240f8f8671f2f27331635ea496163cc00f",
+      "caption": {
+        "it-intermediate": "(a) Costruzione della QFT ottimistica e riordino dei blocchi. (b) Stime di fedeltà al variare del numero di qubit e della dimensione dei blocchi, consultabili nell’immagine originale.",
+        "it-expert": "(a) Costruzione della QFT ottimistica e riordino dei blocchi. (b) Stime di fedeltà al variare del numero di qubit e della dimensione dei blocchi, consultabili nell’immagine originale."
+      },
+      "captionParagraph": "p0127",
+      "references": [
+        {
+          "paragraphId": "p0125",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0127",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0128",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0130",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0131",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0132",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0134",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0129",
+          "panel": "a"
+        }
+      ],
+      "animation": "oqft-blocks"
+    },
+    {
+      "id": "figure-8",
+      "label": "Figura 8",
+      "page": 15,
+      "rect": [
+        0.098,
+        0.06,
+        0.918,
+        0.402
+      ],
+      "image": "figures/figure-8.png",
+      "sourceSha256": "92eaf33303ef144b379735f3b94aed240f8f8671f2f27331635ea496163cc00f",
+      "caption": {
+        "it-intermediate": "Trasporto degli atomi per (a) una CZ e (b) una CZSWAP nell’architettura mobile dell’Appendice A.",
+        "it-expert": "Trasporto degli atomi per (a) una CZ e (b) una CZSWAP nell’architettura mobile dell’Appendice A."
+      },
+      "captionParagraph": "p0227",
+      "references": [
+        {
+          "paragraphId": "p0047",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0056",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0057",
+          "panel": "b"
+        },
+        {
+          "paragraphId": "p0223",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0224",
+          "panel": "b"
+        },
+        {
+          "paragraphId": "p0227",
+          "panel": "a"
+        },
+        {
+          "paragraphId": "p0228",
+          "panel": "b"
+        },
+        {
+          "paragraphId": "p0229",
+          "panel": "b"
+        }
+      ],
+      "animation": "atom-transport"
     }
   ]
 }

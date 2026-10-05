@@ -181,7 +181,7 @@ export interface PaperFigure {
   captionParagraph: string;
   references: { paragraphId: string; panel?: "a" | "b" | "c" }[];
   /** Optional authored reconstruction. The original image remains available. */
-  animation?: "parity-twine";
+  animation?: "parity-twine" | "oqft-blocks" | "atom-transport";
 }
 
 export interface ReadingSection {

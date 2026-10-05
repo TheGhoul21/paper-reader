@@ -6,6 +6,8 @@ import type { PaperFigure } from "../../types";
 import type { ReadingTools } from "../guided/ReadingContent";
 
 const ParityTwineFigure = lazy(() => import("./ParityTwineFigure"));
+const OqftBlocksFigure = lazy(() => import("./OqftBlocksFigure"));
+const AtomTransportFigure = lazy(() => import("./AtomTransportFigure"));
 
 export default function ReadingFigure({
   figure,
@@ -22,6 +24,14 @@ export default function ReadingFigure({
   const [imageFailed, setImageFailed] = useState(false);
   const caption = pickVariant(figure.caption, tools.variant);
   const imageUrl = papersUrl(`${tools.slug}/${figure.image}`);
+  const animation =
+    figure.animation === "parity-twine" ? (
+      <ParityTwineFigure initialPanel={panel} />
+    ) : figure.animation === "oqft-blocks" ? (
+      <OqftBlocksFigure />
+    ) : figure.animation === "atom-transport" ? (
+      <AtomTransportFigure initialPanel={panel} />
+    ) : null;
   const original = (
     <div className="reading-figure-original">
       {imageFailed ? (
@@ -43,11 +53,9 @@ export default function ReadingFigure({
         <span>Pagina {figure.page + 1}</span>
         <p>{caption}</p>
       </figcaption>
-      {figure.animation === "parity-twine" ? (
+      {animation ? (
         <>
-          <Suspense fallback={<p>Caricamento animazione…</p>}>
-            <ParityTwineFigure initialPanel={panel} />
-          </Suspense>
+          <Suspense fallback={<p>Caricamento animazione…</p>}>{animation}</Suspense>
           <details className="reading-figure-source">
             <summary>Mostra figura originale</summary>
             {original}

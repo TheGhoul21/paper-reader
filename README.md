@@ -60,4 +60,6 @@ Leggi [CONTRIBUTING.md](CONTRIBUTING.md) per modificare codice o dati, [il model
 
 La figura 2 di _Optimizing Atom Transport, Gate-Count and Depth with Parity Twine_ è disponibile nelle tappe che la citano: i circuiti lineare, quadrato e a scala si possono percorrere una CNOT alla volta o riprodurre. L'immagine originale resta ingrandibile e collegata alla pagina PDF. I ritagli sono dichiarati in `structure.json` e si rigenerano con `uv run scripts/render-figures.py <slug>`; non vengono estratti automaticamente da confini stimati.
 
+Nello stesso paper sono interattive anche la figura 7(a), con le sei configurazioni dei blocchi QFT, e la figura 8, con i protocolli di trasporto CZ e CZSWAP. I modelli puri sono in `src/lib/oqftBlocks.ts` e `atomTransport.ts`. Comandi, pausa e riproduzione sono condivisi tramite `FigurePlayback.tsx` e `useFigurePlayback.ts`. La [documentazione delle figure](docs/figures-2026-10-05.md) distingue il riordino logico dagli spostamenti fisici e riporta i parametri del modello.
+
 La pipeline verifica il progetto sulle pull request. Il push su `main` pubblica la build verificata su GitHub Pages. L'esecuzione locale dei comandi non pubblica il sito.

@@ -1,4 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useFigurePlayback } from "../../lib/useFigurePlayback";
+import FigurePlayback from "./FigurePlayback";
 import {
   parityLabel,
   twineCircuit,
@@ -169,33 +171,13 @@ function CircuitDrawing({ circuit, step }: { circuit: TwineCircuit; step: number
 
 export default function ParityTwineFigure({ initialPanel = "a" }: { initialPanel?: TwinePanel }) {
   const [panel, setPanel] = useState(initialPanel);
-  const [step, setStep] = useState(0);
-  const [playing, setPlaying] = useState(false);
+
   const circuit = useMemo(() => twineCircuit(panel), [panel]);
+  const total = circuit.gates.length;
+  const playback = useFigurePlayback(total);
+  const { step, playing, goTo } = playback;
   const snapshot = twineSnapshot(circuit, step);
   const pairOptions = twinePairs(6);
-  const sliderId = useId();
-  const total = circuit.gates.length;
-  useEffect(() => {
-    if (!playing) return;
-    const timer = window.setTimeout(() => {
-      const next = Math.min(step + 1, total);
-      setStep(next);
-      if (next === total) setPlaying(false);
-    }, 1000);
-    return () => window.clearTimeout(timer);
-  }, [playing, step, total]);
-  useEffect(() => {
-    const pause = () => {
-      if (document.hidden) setPlaying(false);
-    };
-    document.addEventListener("visibilitychange", pause);
-    return () => document.removeEventListener("visibilitychange", pause);
-  }, []);
-  function goTo(next: number) {
-    setPlaying(false);
-    setStep(Math.max(0, Math.min(next, total)));
-  }
   const active = snapshot.active;
   const before = active ? twineSnapshot(circuit, step - 1).labels : [];
   return (
@@ -232,37 +214,7 @@ export default function ParityTwineFigure({ initialPanel = "a" }: { initialPanel
         ● controllo · ⊕ bersaglio. Ogni DCNOT è mostrata come due CNOT. La riproduzione segue le
         porte del disegno e non misura la profondità del circuito.
       </p>
-      <div className="twine-playback" role="group" aria-label="Comandi animazione">
-        <button
-          onClick={() => {
-            if (step === total) setStep(0);
-            setPlaying((value) => !value);
-          }}
-        >
-          {playing ? "Pausa" : step === total ? "Riproduci dall’inizio" : "Riproduci"}
-        </button>
-        <button disabled={step === 0} onClick={() => goTo(step - 1)}>
-          Indietro
-        </button>
-        <button disabled={step === total} onClick={() => goTo(step + 1)}>
-          Avanti
-        </button>
-        <button disabled={step === 0 && !playing} onClick={() => goTo(0)}>
-          Ricomincia
-        </button>
-      </div>
-      <label className="twine-timeline" htmlFor={sliderId}>
-        Passaggio {step} / {total}
-        <input
-          id={sliderId}
-          aria-label="Passaggio del circuito"
-          type="range"
-          min="0"
-          max={total}
-          value={step}
-          onChange={(e) => goTo(Number(e.target.value))}
-        />
-      </label>
+      <FigurePlayback playback={playback} total={total} label="Passaggio del circuito" />
       <div className="twine-state" role="status" aria-live={playing ? "off" : "polite"}>
         {active ? (
           <p>

@@ -54,17 +54,19 @@ export function ReadingPassage({
   paragraph,
   tools,
   figures = [],
+  captionReplaced = false,
 }: {
   paragraph: Paragraph;
   tools: ReadingTools;
   figures?: { figure: PaperFigure; panel?: "a" | "b" | "c" }[];
+  captionReplaced?: boolean;
 }) {
   const location = useLocation();
   const deepDive = paragraph.deepDive?.[tools.variant];
   const [deepOpen, setDeepOpen] = useState(false);
   return (
     <div className="guided-passage" id={`guided-p-${paragraph.id}`} tabIndex={-1}>
-      {!figures.some(({ figure }) => figure.captionParagraph === paragraph.id) && (
+      {!captionReplaced && (
         <ReadingText
           text={pickVariant(paragraph.explanations, tools.variant)}
           tools={tools}
@@ -117,6 +119,11 @@ export function ReadingPassages({
     figures.push({ figure, panel: reference.panel });
     figuresByPassage.set(paragraph.id, figures);
   }
+  const replacedCaptions = new Set(
+    [...figuresByPassage.values()].flatMap((figures) =>
+      figures.map(({ figure }) => figure.captionParagraph),
+    ),
+  );
   return (
     <div className="guided-explanations">
       <h2>Spiegazioni</h2>
@@ -126,6 +133,7 @@ export function ReadingPassages({
           paragraph={paragraph}
           tools={tools}
           figures={figuresByPassage.get(paragraph.id)}
+          captionReplaced={replacedCaptions.has(paragraph.id)}
         />
       ))}
       {extra.length > 0 && (
@@ -137,6 +145,7 @@ export function ReadingPassages({
               paragraph={paragraph}
               tools={tools}
               figures={figuresByPassage.get(paragraph.id)}
+              captionReplaced={replacedCaptions.has(paragraph.id)}
             />
           ))}
         </details>

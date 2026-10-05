@@ -1,6 +1,135 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("figure 7 follows each logical block and distinguishes QFT ordering from column transport", async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(
+    "paper/optimizing-atom-transport-gate-count-and-depth-with?stage=read&step=twine-optimistic-qft-2&v=it-intermediate",
+  );
+  const figure = page.getByRole("figure", { name: "Figura 7 · pagina 11", exact: true });
+  await expect(figure).toBeVisible();
+  await expect(figure).toHaveCount(1);
+  // The full caption is represented once, even when its first reference precedes it.
+  await expect(page.locator("#guided-p-p0127 > p")).toHaveCount(0);
+  await figure.getByRole("button", { name: "Blocco B", exact: true }).click();
+  await expect(figure.locator(".oqft-selected-state")).toContainText("6 · 8 · 5 · 7");
+  const timeline = figure.getByRole("slider", { name: "Passaggio del riordino" });
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".figure-operation")).toHaveText("Ordine logico · QFT");
+  await expect(figure.locator(".oqft-selected-state")).toContainText("7 · 5 · 8 · 6");
+  await expect(figure.locator(".oqft-block.is-transported")).toHaveCount(0);
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".oqft-selected-state")).toContainText("6 · 8 · 5 · 7");
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".figure-operation")).toHaveText("Spostamento fisico di una colonna");
+  await expect(figure.locator(".oqft-block.is-transported")).toHaveCount(2);
+  await expect(figure.locator(".oqft-selected-state")).toContainText("6 · 8 · 5 · 7");
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(figure.locator(".oqft-final-order")).toContainText(
+    "B–A nella prima riga, D–C nella seconda",
+  );
+  await expect(figure.locator(".oqft-block.is-transported")).toHaveCount(0);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await figure.getByRole("button", { name: "Indietro", exact: true }).click();
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".oqft-block-A")).toHaveCSS("transition-duration", "0s");
+  await figure.screenshot({ path: `test-results/${info.project.name}-figure7-blocks.png` });
+  await figure.locator(".reading-figure-source > summary").click();
+  await expect
+    .poll(() =>
+      figure
+        .locator(".reading-figure-original img")
+        .evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThanOrEqual(1200);
+  await figure.getByRole("link", { name: "Apri figura nel PDF ↗" }).click();
+  await expect(page).toHaveURL(/p=p0127/);
+  await expect(page.getByRole("textbox", { name: "Pagina del PDF" })).toHaveValue("11");
+  await expect(page.locator(".paragraph-badge-pdf.is-active").first()).toBeVisible();
+  await page.getByRole("link", { name: "← Torna al percorso" }).click();
+  await expect(figure).toBeVisible();
+  expect(new URL(page.url()).searchParams.get("step")).toBe("twine-optimistic-qft-2");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
+
+test("figure 8 contrasts CZ and CZSWAP transport, counters and original source", async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(
+    "paper/optimizing-atom-transport-gate-count-and-depth-with?stage=read&step=twine-entangling-2&v=it-intermediate",
+  );
+  const figure = page.getByRole("figure", { name: "Figura 8 · pagina 16", exact: true });
+  await expect(figure).toBeVisible();
+  await expect(figure.getByRole("button", { name: "(a) CZ", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".transport-atom-A")).toHaveClass(/is-mobile/);
+  const timeline = figure.getByRole("slider", { name: "Passaggio del trasporto" });
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(figure.locator(".transport-counts dd")).toHaveText(["1", "2", "2", "0", "24 µm"]);
+  await expect(figure.locator(".transport-final-state")).toContainText(
+    "A nella zona di A, B nella zona di B",
+  );
+  await figure.getByRole("button", { name: "(b) CZSWAP", exact: true }).click();
+  await expect(timeline).toHaveValue("0");
+  await figure.getByRole("button", { name: "Riproduci", exact: true }).click();
+  await expect(timeline).not.toHaveValue("0");
+  await figure.getByRole("button", { name: "Pausa", exact: true }).click();
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(figure.locator(".transport-counts dd")).toHaveText(["1", "4", "2", "4", "32 µm"]);
+  await expect(figure.locator(".transport-final-state")).toContainText(
+    "B nella zona di A, A nella zona di B",
+  );
+  await expect(figure.locator(".transport-atom.is-mobile")).toHaveCount(0);
+  // Rewind the last drop and transport: B passes beside A, using the schematic lane.
+  await figure.getByRole("button", { name: "Indietro", exact: true }).click();
+  await figure.getByRole("button", { name: "Indietro", exact: true }).click();
+  await expect(figure.locator(".transport-atom-B")).toHaveClass(/is-moving/);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await figure.getByRole("button", { name: "Avanti", exact: true }).click();
+  await expect(figure.locator(".transport-atom-B")).toHaveCSS("animation-name", "none");
+  await timeline.focus();
+  await timeline.press("End");
+  await figure.locator(".figure-model-details > summary").click();
+  await expect(figure.locator(".figure-model-details")).toContainText("48 µm");
+  await figure.screenshot({
+    path: `test-results/${info.project.name}-figure8-transport.png`,
+    animations: "disabled",
+  });
+  await figure.locator(".reading-figure-source > summary").click();
+  await figure.getByRole("button", { name: "Ingrandisci figura originale" }).click();
+  await expect(figure.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(figure.getByRole("button", { name: "Ingrandisci figura originale" })).toBeFocused();
+  await figure.getByRole("link", { name: "Apri figura nel PDF ↗" }).click();
+  await expect(page).toHaveURL(/p=p0227/);
+  await expect(page.getByRole("textbox", { name: "Pagina del PDF" })).toHaveValue("16");
+  await expect(page.locator(".paragraph-badge-pdf.is-active").first()).toBeVisible();
+  await page.getByRole("link", { name: "← Torna al percorso" }).click();
+  expect(new URL(page.url()).searchParams.get("step")).toBe("twine-entangling-2");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.goto(
+    "paper/optimizing-atom-transport-gate-count-and-depth-with?stage=read&step=twine-appendices-1&v=it-expert",
+  );
+  await expect(figure).toBeVisible();
+  await expect(figure.getByRole("button", { name: "(a) CZ", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(errors).toEqual([]);
+});
+
 test("figure 2 exposes the actual parity changes, original image and source return", async ({
   page,
 }, info) => {

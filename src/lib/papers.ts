@@ -270,7 +270,8 @@ export function parsePaper(
               (r.panel !== undefined && !["a", "b", "c"].includes(r.panel)),
           ) ||
           new Set(figure.references.map((r) => r.paragraphId)).size !== figure.references.length ||
-          (figure.animation !== undefined && figure.animation !== "parity-twine")
+          (figure.animation !== undefined &&
+            !["parity-twine", "oqft-blocks", "atom-transport"].includes(figure.animation))
         )
           invalid("figure");
         figureIds.add(figure.id);
