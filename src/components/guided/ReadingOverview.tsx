@@ -59,14 +59,14 @@ export default function ReadingOverview({
               <p>{summary.problem}</p>
               <h3>La proposta degli autori</h3>
               <p>{summary.idea}</p>
+              {summary.why && (
+                <>
+                  <h3>Motivazione del lavoro</h3>
+                  <p>{summary.why}</p>
+                </>
+              )}
             </details>
           </div>
-        )}
-        {summary?.why && (
-          <details className="guided-why">
-            <summary>Motivazione del lavoro</summary>
-            <p>{summary.why}</p>
-          </details>
         )}
         <details className="guided-level-preview">
           <summary>Livello delle spiegazioni</summary>

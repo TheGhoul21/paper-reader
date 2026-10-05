@@ -237,10 +237,12 @@
   margin: 0 0 24px;
   font-size: 1.15rem;
 }
-.guided-why,
+.guided-start-question > details,
 .guided-level-preview {
-  margin-top: 24px;
   font-size: 0.9rem;
+}
+.guided-level-preview {
+  margin-top: 16px;
 }
 .guided-level-preview small {
   color: var(--muted);
