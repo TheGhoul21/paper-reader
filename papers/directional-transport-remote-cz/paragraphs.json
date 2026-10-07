@@ -172,7 +172,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Annuncio della proposta: un framework di compilazione DT-aware che bilancia i due aspetti (velocità del DT, costo di setup) tramite classificazione intelligente delle coppie CZ e pianificazione dinamica (continua nel paragrafo successivo).",
+      "it-intermediate": "Gli autori presentano la loro soluzione: un compilatore che conosce il trasporto direzionale (DT-aware) e cerca un equilibrio tra la velocità delle CZ remote via DT e il costo di preparare i canali. Lo fa in due modi: classifica ogni coppia CZ, decidendo se conviene eseguirla con il DT o spostando gli atomi con l'AOD, e gestisce i canali DT in modo dinamico, adattandoli mentre il circuito procede (i dettagli sono nel blocco successivo).",
       "it-expert": "Enunciato della proposta: compilatore DT-aware che ottiene il bilanciamento AOD/DT tramite classificazione intelligente delle coppie CZ (DT-eligible vs direct-AOD) — anticipa il criterio formalizzato in Sez. 4."
     },
     "section": "1. Introduzione"
@@ -381,8 +381,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il DT non sostituisce l'AOD, i due meccanismi restano strettamente accoppiati: tutte le operazioni di Rydberg avvengono comunque dentro la zona di entanglement, e i canali DT vanno prima costruiti fisicamente trasportando ancilla e qubit selezionati sui siti del canale. L'AOD si occupa degli spostamenti tra zone e della costruzione dei canali, mentre il DT esegue (il paragrafo continua a pagina successiva).",
-      "it-expert": "Chiarisce la divisione dei compiti: DT e AOD restano accoppiati, non alternativi. Le operazioni Rydberg restano confinate all'entanglement zone; i canali DT vanno costruiti fisicamente prima (trasporto di ancilla/qubit sui siti). AOD = movimento zona-a-zona + costruzione canale; DT = esecuzione dell'hop veloce (continua a pagina successiva)."
+      "it-intermediate": "Il trasporto direzionale (DT) non sostituisce le pinzette mobili AOD: i due meccanismi lavorano insieme. Tutte le operazioni di Rydberg avvengono comunque nella zona di entanglement, e un canale DT esiste solo dopo che ancilla e qubit scelti sono stati portati fisicamente sui siti del canale. Quindi l'AOD sposta gli atomi tra le zone e costruisce i canali; il DT, una volta costruito il canale, trasferisce rapidamente l'eccitazione lungo di esso (il blocco successivo spiega come il compilatore sfrutta questa divisione).",
+      "it-expert": "Divisione dei compiti: DT e AOD sono accoppiati, non alternativi. Le operazioni Rydberg restano confinate nella entanglement zone e i canali DT vanno costruiti prima, trasportando ancilla e qubit selezionati sui siti del canale. AOD = movimento zona-a-zona e costruzione dei canali; DT = trasferimento veloce dell'eccitazione lungo il canale già costruito, che rende possibile la CZ remota."
     },
     "section": "3. Motivation",
     "recall": [
@@ -413,8 +413,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...il trasferimento rapido dell'eccitazione lungo il percorso già costruito. Il compilatore statico DT-aware presentato di seguito coordina proprio questo flusso di lavoro misto AOD+DT, concentrando il trasporto lento in una fase di configurazione iniziale, così che l'esecuzione vera e propria del circuito sia dominata dai rapidi hop DT e dagli impulsi locali di Rydberg.",
-      "it-expert": "Continua da pagina precedente: DT esegue il trasferimento rapido lungo il percorso pre-costruito. Il \"compilatore statico DT-aware\" (oggetto della Sez. 4) è definito qui per la prima volta: il suo ruolo è concentrare tutto il trasporto lento nella fase di setup, lasciando che l'esecuzione a runtime sia dominata da hop DT e impulsi Rydberg locali."
+      "it-intermediate": "Conclude la descrizione di come lavorano insieme i due meccanismi. Le pinzette mobili AOD spostano gli atomi tra le zone e li mettono in fila per costruire un canale. Il trasporto direzionale (DT) poi passa velocemente l'eccitazione di Rydberg lungo quel canale già pronto, così una porta CZ può agire tra qubit lontani. Spostare atomi è lento, far correre l'eccitazione è veloce. Il compilatore statico che il paper presenta subito dopo sfrutta questa differenza: concentra gli spostamenti lenti in una fase di preparazione iniziale, così durante l'esecuzione del circuito restano quasi solo i passaggi DT rapidi e gli impulsi di Rydberg locali.",
+      "it-expert": "Completa la divisione dei compiti: una volta che l'AOD ha costruito il canale, il DT esegue il trasferimento rapido dell'eccitazione lungo il percorso. Qui compare per la prima volta il \"compilatore statico DT-aware\" (oggetto della Sez. 4): concentra tutto il trasporto lento nella fase di setup, così che a runtime l'esecuzione sia dominata da hop DT e impulsi Rydberg locali."
     },
     "section": "3. Motivation"
   },
@@ -738,7 +738,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...permettendo di popolare i canali durante la configurazione iniziale senza interferire col movimento dei qubit. A differenza di ZAP, che ricalcola piazzamenti intermedi con simulated annealing per ogni segmento, qui la configurazione dei canali si calcola una volta sola e resta statica per tutta l'esecuzione. Segue una fase di migrazione \"in blocco\" prima di ogni operazione a due qubit: un router traduce la differenza tra mappatura attuale e target in primitive hardware (attiva, sposta/parcheggia, disattiva), su un grafo di conflitti tra i movimenti; un algoritmo greedy seleziona il maggior numero possibile di movimenti paralleli senza conflitti. Quando non basta un solo passo, si ricorre a una sequenza a più stadi che garantisce movimenti senza collisioni.",
+      "it-intermediate": "Il paragrafo conclude la preparazione dei canali DT e descrive come il compilatore sposta gli atomi. I canali vengono collocati in anticipo nella zona di entanglement, in posizioni libere scelte con lo stesso modello di costo usato per piazzare i qubit. Così si possono riempire durante la configurazione iniziale senza ostacolare il movimento dei qubit. A differenza di ZAP, che ricalcola le posizioni intermedie con simulated annealing per ogni segmento del circuito, qui la disposizione dei canali si calcola una volta sola e resta fissa per tutta l'esecuzione.\n\nPrima di qualunque porta a due qubit il compilatore sposta tutti gli atomi verso la disposizione di partenza. Per farlo traduce la differenza tra la posizione attuale e quella desiderata in comandi hardware: attivare una trappola mobile, spostarla o parcheggiarla, disattivarla. Costruisce poi un grafo dei conflitti, in cui due spostamenti sono collegati se causerebbero una collisione o competerebbero per la stessa trappola AOD. A ogni passo sceglie, con un metodo greedy, il più grande insieme di spostamenti senza conflitti (un insieme indipendente massimale), che si possono eseguire in parallelo. Quando questo non basta, usa una sequenza a più fasi in cui alcuni qubit vengono parcheggiati temporaneamente su righe SLM ausiliarie: così non ci sono collisioni e l'hardware non resta bloccato.",
       "it-expert": "A differenza del simulated-annealing ricalcolato di ZAP per ogni segmento, qui la configurazione dei canali DT è calcolata una volta e trattata come risorsa di routing statica. Fase di bulk migration pre-runtime: router traduce il delta placement→target in primitive (activate/move-park/deactivate); conflict graph su qubit-move e DT-channel-move; scheduling greedy MIS massimizza il parallelismo AOD per round. Fallback esplicito a sequenza multi-stage (Activate→Park→BigMove→Park→Deactivate) quando il MIS single-pass non basta — garantisce assenza di collisioni/deadlock a livello hardware."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
@@ -776,7 +776,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Titolo del blocco: perché la QFT richiede canali dinamici e perché gli AOD restano comunque essenziali. Introduce il confronto tra circuiti tipo QFT e circuiti tipo Ising/QAOA, che pongono richieste molto diverse sullo scheduling del trasporto (continua nel paragrafo successivo).",
+      "it-intermediate": "Apre la spiegazione del perché la QFT richiede canali DT dinamici e perché le pinzette mobili AOD restano comunque indispensabili. Il punto di partenza è che i circuiti di tipo QFT e quelli di tipo Ising/QAOA chiedono cose molto diverse alla pianificazione del trasporto degli atomi: il confronto è sviluppato nel blocco successivo.",
       "it-expert": "Titolo di paragrafo: motivazione per canali dinamici nella QFT + ruolo residuo di AOD. Anticipa il confronto strutturale QFT vs Ising/QAOA sviluppato di seguito."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
@@ -902,7 +902,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...la distanza e penalità che favoriscono il riuso, risolvendo un problema di assegnazione a costo minimo con l'algoritmo ungherese. I vettori di movimento risultanti vengono poi schedulati in parallelo con un routing AOD basato su insiemi indipendenti massimali. Se nessun ramo fattibile soddisfa sia i vincoli di movimento sia quelli di interazione, il compilatore usa un percorso DT più lungo a due tratti oppure declassa la coppia ad AOD diretto — così la \"dorsale\" DT resta stabile tra gli stage, pur adattandosi ai pattern che si spostano nel tempo tipici della QFT. Si distinguono anche due classi di risorse fisiche: atomi ancilla \"volanti\" (che seguono il modello FPQA usato in Q-Pilot: qualsiasi atomo AOD non impegnato può diventare ancilla temporaneo, instradato e poi restituito alla zona di stoccaggio) e qubit \"pre-uso\".",
+      "it-intermediate": "Questo passaggio descrive come il compilatore dinamico per la QFT assegna gli atomi ancilla ai canali DT e cosa fa quando un canale non si può costruire. Per ogni sito del canale calcola un costo che dipende dalla distanza da percorrere e premia il riuso di atomi già vicini. Poi risolve l'abbinamento ancilla–siti con il minimo costo totale, usando l'algoritmo ungherese. Gli spostamenti che ne risultano vengono eseguiti in parallelo dove non entrano in conflitto.\n\nTra uno stadio e il successivo il canale non viene ricostruito da zero: le parti ancora valide restano dove sono e si aggiornano solo quelle in conflitto. Se non esiste un ramo che rispetti i vincoli sia di movimento sia di interazione, il compilatore usa un canale DT più lungo a due tratti, oppure esegue la coppia con il trasporto AOD diretto. In questo modo la struttura dei canali resta stabile anche se, come nella QFT, le coppie che devono interagire cambiano da uno stadio all'altro.\n\nInfine introduce le due risorse con cui si costruisce un canale. Le ancilla \"volanti\" sono atomi su siti AOD che non contengono informazione logica: come nel modello FPQA di Q-Pilot, vengono attivati, usati per mediare la CZ remota e poi riportati nella zona di stoccaggio per essere riusati. L'altra risorsa sono i qubit \"pre-uso\", descritti subito dopo.",
       "it-expert": "Cost matrix con penalità di distanza e riuso, risolta via matching ungherese; mosse risultanti schedulate in parallelo via routing AOD MIS-based. Meccanismi di robustezza: endpoint rebalancing e cross-stage reuse (solo le sezioni in conflitto vengono aggiornate); fallback esplicito a TwoLegDT o demotion a direct-AOD quando nessun branch è fattibile — mantiene stabile il DT backbone nonostante i pattern QFT che slittano nel tempo. Tassonomia delle risorse fisiche: flying ancilla (modello FPQA di Q-Pilot [29]) vs pre-use qubit (vedi blocco successivo)."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
@@ -940,7 +940,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Tra gli ancilla volanti si distinguono due ruoli: ancilla di canale, che occupano la dorsale DT attiva in uno stage e formano i siti fisici lungo cui si propaga l'eccitazione, e ancilla di riserva, che restano inattivi ma sono posizionati in modo da poter essere incorporati nel percorso DT a basso costo, fornendo un pool di siti pronti quando (il paragrafo continua).",
+      "it-intermediate": "Le ancilla \"volanti\" (atomi temporanei portati dalle pinzette AOD) hanno due ruoli. Le ancilla di canale occupano il canale DT attivo durante uno stadio con porte a due qubit: sono i siti lungo cui viaggia l'eccitazione di Rydberg. Le ancilla di riserva restano inattive, ma sono parcheggiate dove l'AOD può aggiungerle al canale con poco movimento. Così, quando i qubit attivi cambiano e il canale va allungato, accorciato o deviato, ci sono già siti di relay pronti all'uso (la fine della frase è in fondo alla pagina successiva, sotto la Fig. 6).",
       "it-expert": "Sotto-tassonomia dei flying ancilla: channel ancilla (occupano attivamente la dorsale DT dello stage corrente) vs reserve ancilla (idle ma posizionati per incorporazione a basso costo AOD) — buffer di siti relay pre-posizionati per assorbire i cambi di topologia tra stage senza mosse AOD costose."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT",
@@ -1061,8 +1061,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 6: confronto delle prestazioni tra il compilatore statico e quello dinamico proposti, su benchmark QFT di diverse dimensioni. Segue un frammento isolato sull'adattamento dinamico del canale: quando cambiano i qubit attivi, il canale DT può dover essere esteso, accorciato o rifatto passare altrove.",
-      "it-expert": "Fig. 6: static vs dynamic compiler, QFT benchmarks a scala variabile. Frammento residuo (continuazione della descrizione del DT-Aware Compiler Flow): manutenzione adattiva del canale — extend/shorten/reroute in risposta a qubit che diventano attivi/inattivi tra stage, coerente con l'incremental update già descritto per l'anchor-column selection."
+      "it-intermediate": "Il blocco contiene due cose. La didascalia della Figura 6 presenta il confronto tra il compilatore statico e quello dinamico proposti, su benchmark QFT di dimensioni diverse. Sotto la figura c'è la fine di una frase della pagina precedente, sulle ancilla di riserva: servono per i casi in cui, quando cambiano i qubit attivi, il canale DT va allungato, accorciato o fatto passare attorno ai nuovi qubit.",
+      "it-expert": "Fig. 6: static vs dynamic compiler su benchmark QFT di dimensione variabile. Il frammento sotto la figura chiude la frase sulle reserve ancilla (Sez. 4.3): forniscono relay sites pronti quando il canale va esteso, accorciato o reinstradato attorno a qubit appena attivati."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },

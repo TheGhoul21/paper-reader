@@ -821,8 +821,8 @@
     ],
     "sourceText": "coupling[5],[10],givingthreechannelswithdistinctblockade radii. The buffer-relay fabric requires that thesesatisfy",
     "explanations": {
-      "it-intermediate": "Frammento di continuazione (la frase inizia nella pagina precedente): si riferisce a tre canali di accoppiamento con raggi di blocco distinti, che il fabric buffer-relay richiede soddisfino certe disuguaglianze geometriche — introdotte subito dopo nell'Eq. (6).",
-      "it-expert": "Raccordo verso l'Eq. (6): tre canali di accoppiamento a raggio di blocco distinto (Rb-Rb, Rb-Cs, Cs-Cs) che devono soddisfare vincoli geometrici specifici."
+      "it-intermediate": "Completa la descrizione della connettività selettiva. Le risonanze di Förster tra rubidio (Rb, atomi dati) e cesio (Cs, atomi buffer) rafforzano l'interazione Rb–Cs e indeboliscono quella Rb–Rb. Si ottengono così tre canali di interazione, Rb–Rb, Rb–Cs e Cs–Cs, ciascuno con un proprio raggio di blockade, cioè la distanza entro cui due atomi non possono essere eccitati insieme. Perché la rete di relay funzioni, questi raggi devono rispettare alcune disuguaglianze rispetto alle distanze tra gli atomi: sono l'Eq. (6) che segue.",
+      "it-expert": "Chiude la frase sulle risonanze di Förster Rb–Cs: si ottengono tre canali (Rb–Rb, Rb–Cs, Cs–Cs) con raggi di blockade distinti, che il buffer-relay fabric richiede soddisfino le disuguaglianze geometriche dell'Eq. (6)."
     },
     "section": "II-B. Buffer-Atom-Mediated Gates"
   },
@@ -3554,8 +3554,8 @@
     ],
     "sourceText": "of subsequent relays (Figure 6), whereas uniformly scatteredinteractions gain nothing. We therefore decompose the suiteper circuit (Table III) and then drill into the most responsivecase, qft_n18, in detail.",
     "explanations": {
-      "it-intermediate": "Frammento di continuazione: \"...dei relay successivi (Figura 6), mentre interazioni uniformemente sparse non guadagnano nulla. Scompongono quindi la suite per circuito (Tabella III) e poi approfondiscono il caso più responsivo, qft_n18, in dettaglio.\"",
-      "it-expert": "Raccordo: interazioni clusterizzate temporalmente beneficiano del move (Fig. 6), interazioni sparse no — motiva il drill-down su qft_n18 che segue."
+      "it-intermediate": "Spiega quali circuiti traggono vantaggio dal movimento. Un circuito ne beneficia quando le sue interazioni a lungo raggio sono raggruppate nel tempo: in quel caso un solo spostamento di un atomo accorcia i relay di tutte le porte successive di quel gruppo (Figura 6). Se invece le interazioni sono sparse in modo uniforme, spostare un atomo non fa guadagnare nulla. Per questo gli autori analizzano la suite circuito per circuito (Tabella III) e poi studiano in dettaglio il caso che risponde meglio, qft_n18.",
+      "it-expert": "Chiude il criterio di movement-responsiveness: il guadagno arriva solo se le interazioni a lungo raggio sono temporalmente clusterizzate, così che un singolo move accorcia i relay di un intero cluster (Fig. 6); interazioni uniformemente sparse non ne traggono beneficio. Da qui la decomposizione per circuito (Tab. III) e il drill-down su qft_n18."
     },
     "section": "V-B. Fixed Baseline Profile (RQ1)"
   },
@@ -5038,8 +5038,8 @@
     ],
     "sourceText": "separately because they attribute behavior across several exper-iments rather than answering one scaling or mobility question.",
     "explanations": {
-      "it-intermediate": "Frammento di continuazione: \"...separatamente perché attribuiscono il comportamento attraverso diversi esperimenti invece di rispondere a una singola domanda di scaling o mobilità\" — motiva perché gli studi di ablation sono trattati come sezione a parte.",
-      "it-expert": "Motivazione del trattamento separato degli ablation: attribuiscono comportamento cross-esperimento, non rispondono a un singolo RQ di scaling/mobilità."
+      "it-intermediate": "Spiega perché gli studi di ablazione hanno una sezione a parte. Non rispondono a una singola domanda di ricerca su scalabilità o mobilità, come le sezioni precedenti. Servono invece a capire, attraverso più esperimenti, quale meccanismo del compilatore è responsabile di ciascun miglioramento: per esempio quanto conta il posizionamento che tiene conto della mobilità rispetto a una disposizione fissa ingenua.",
+      "it-expert": "Motiva il trattamento separato delle ablation: fanno attribution dei guadagni ai singoli meccanismi attraverso più esperimenti, invece di rispondere a una singola RQ di scaling o mobilità."
     },
     "section": "V-H. Ablation Studies"
   },
@@ -5596,8 +5596,8 @@
     ],
     "sourceText": "routing and scheduling pipeline so that the compiler dy-namically re-routes around lost atoms. Third, heterogeneousarchitectures may pair neutral atoms as high-density quantummemory with other processors while still relying on relay-based coordination. Fourth, scaling to 1,000+ qubits willtest whether the CBO and ML-assisted synthesis pipelinecontinues to deliver favorable depth-fidelity trade-offs at largerproblem sizes.",
     "explanations": {
-      "it-intermediate": "La pipeline di routing e scheduling, così che il compilatore ri-instradi dinamicamente attorno agli atomi persi. Terzo, architetture eterogenee potrebbero abbinare atomi neutri come memoria quantistica ad alta densità con altri processori, continuando a basarsi sul coordinamento via relay. Quarto, scalare a 1000+ qubit testerà se la pipeline CBO e la sintesi assistita da ML continuano a offrire trade-off favorevoli profondità-fedeltà a dimensioni di problema maggiori.",
-      "it-expert": "Direzioni future 2 (continua)-4: (2) re-routing dinamico attorno ad atomi persi via erasure detection; (3) architetture eterogenee (atomi neutri come memoria ad alta densità + altri processori, coordinati via relay); (4) scaling a 1000+ qubit come test di robustezza per la pipeline CBO+ML — la direzione più direttamente legata alla validità futura dei risultati presentati."
+      "it-intermediate": "Prosegue l'elenco delle direzioni future. Il secondo punto, iniziato nel blocco precedente, è integrare nel routing e nello scheduling il rilevamento in tempo reale degli atomi persi (erasure), così che il compilatore possa instradare le operazioni attorno agli atomi mancanti. Terzo, in architetture eterogenee gli atomi neutri potrebbero fare da memoria quantistica ad alta densità accanto ad altri processori, sempre coordinati tramite relay. Quarto, arrivare a più di 1000 qubit mostrerà se il posizionamento CBO e la sintesi assistita da ML continuano a dare buoni compromessi tra profondità e fedeltà su problemi più grandi.",
+      "it-expert": "Direzioni future 2–4: (2) erasure-aware compilation, con re-routing dinamico attorno ad atomi persi; (3) architetture eterogenee, con atomi neutri come memoria ad alta densità accanto ad altri processori e coordinamento via relay; (4) scaling a 1000+ qubit come test di tenuta della pipeline CBO + sintesi ML sul trade-off depth-fidelity."
     },
     "section": "VII. Outlook and Future Work"
   },

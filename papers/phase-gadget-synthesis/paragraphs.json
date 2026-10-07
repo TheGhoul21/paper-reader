@@ -70,7 +70,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Molto lavoro sull'ottimizzazione dei circuiti si concentra sul ridurre il \"T-count\" (un parametro importante per il calcolo fault-tolerant). Qui invece, poiché si considerano circuiti fisici reali non ancora fault-tolerant, le metriche di interesse sono la profondità totale del circuito e il numero di porte a due qubit, perché minimizzarle è un buon proxy per minimizzare il tasso di errore complessivo. Il contributo originale è una nuova tecnica di ottimizzazione dei circuiti (continua nel paragrafo successivo).",
+      "it-intermediate": "Molti lavori sull'ottimizzazione dei circuiti cercano di ridurre il \"T-count\", cioè il numero di porte T, che conta soprattutto nel calcolo fault-tolerant. Questo paper invece lavora con circuiti fisici, eseguiti direttamente sull'hardware attuale. Qui le misure che contano sono la profondità totale e il numero di porte a due qubit: ridurle è un buon modo indiretto per ridurre gli errori complessivi. Il contributo nuovo è una tecnica di ottimizzazione basata su strutture chiamate Pauli gadget, presentata nel blocco successivo.",
       "it-expert": "Distinzione di metrica esplicita rispetto alla letteratura fault-tolerant-oriented (T-count [2,8,19,23]): qui l'obiettivo è NISQ-oriented, depth e 2-qubit gate count come proxy per l'error rate fisico. Framing importante perché guida tutte le scelte di design successive (le metriche di Sez. 6 sono depth/2-qubit count, non T-count)."
     },
     "section": "1. Introduction",
@@ -172,7 +172,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "In t|ket⟩, i circuiti sono rappresentati internamente come \"mappe non planari\", una generalizzazione dei grafi diretti in cui gli archi che arrivano a ogni vertice sono ordinati (per gestire operazioni non commutative come la ∧X). A differenza di liste di operazioni o timeline discrete, questa rappresentazione conserva solo la connettività delle operazioni, astraendo via permutazioni dei qubit e informazioni di tempo. L'ottimizzatore di t|ket⟩ è composto da più strategie di riscrittura chiamate \"pass\" (continua nel paragrafo successivo).",
+      "it-intermediate": "In t|ket⟩ i circuiti sono rappresentati internamente come \"mappe non planari\": grafi diretti in cui gli archi che entrano in ogni vertice hanno un ordine, così si possono rappresentare operazioni in cui l'ordine dei qubit conta, come la ∧X (CNOT). A differenza di una lista di operazioni o di una sequenza di passi temporali, questa rappresentazione registra solo come le operazioni sono collegate, senza fissare né la permutazione dei qubit né i tempi. L'ottimizzatore lavora su questa struttura con più strategie di riscrittura, chiamate pass, che si possono combinare tra loro.",
       "it-expert": "Rappresentazione interna: non-planar maps (generalizzazione di digrafi con ordinamento degli archi incidenti, per catturare operazioni non commutative come ∧X). Scelta di design significativa: si conserva solo la connettività (non permutazioni di qubit né timing) — un'astrazione più libera di operation-list o timeframe discreti, che abilita pattern-matching strutturale indipendente dal layout fisico."
     },
     "section": "2. Circuit Optimisations"
@@ -191,7 +191,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...possono essere combinate per ottenere la trasformazione di circuito desiderata. I passi elementari di riscrittura sono calcolati con il metodo del \"double pushout\" (una tecnica di teoria delle categorie per la riscrittura di grafi), anche se il pattern matching vero e proprio è di solito implementato con un algoritmo di ricerca su misura, per ragioni di efficienza.",
+      "it-intermediate": "I pass di t|ket⟩ si possono combinare per ottenere la trasformazione voluta del circuito. Ogni singolo passo di riscrittura segue il metodo \"double pushout\", una tecnica di teoria delle categorie per sostituire un pezzo di grafo con un altro. Per trovare dove applicare una regola, però, t|ket⟩ usa di solito un algoritmo di ricerca scritto apposta, perché è più veloce.",
       "it-expert": "Motore di riscrittura: double pushout [17] (formalismo standard di graph rewriting categoriale) per la semantica delle regole, ma il matching effettivo usa un algoritmo di ricerca custom per efficienza — distinzione tra fondamento teorico e implementazione ingegneristica pragmatica."
     },
     "section": "2. Circuit Optimisations"
@@ -229,8 +229,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Se il circuito contiene una lunga sequenza di porte che agiscono sugli stessi due qubit, si può applicare la decomposizione KAK (o di Cartan), che dà una forma canonica che richiede al massimo (continua nel paragrafo successivo).",
-      "it-expert": "Decomposizione KAK/Cartan [9,31] per sequenze dense a due qubit — forma canonica con bound superiore sul numero di ∧X necessari (continua)."
+      "it-intermediate": "Quando un circuito contiene una lunga sequenza di porte che agiscono sempre sugli stessi due qubit, si può applicare la decomposizione KAK (o di Cartan). Questa riscrive l'intero blocco in una forma canonica che richiede al più tre porte ∧X, qualunque sia la lunghezza della sequenza originale.",
+      "it-expert": "Decomposizione KAK/Cartan [9,31] per sequenze dense su due qubit: forma canonica con al più tre ∧X, indipendentemente dalla lunghezza del blocco originale."
     },
     "section": "2. Circuit Optimisations"
   },
@@ -248,7 +248,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...tre porte ∧X. Anche quando sono permesse rotazioni arbitrarie, i circuiti reali includono sottocircuiti Clifford significativi. In particolare, t|ket⟩ usa regole tratte da un lavoro precedente per ridurre qualsiasi coppia di porte ∧X separate solo da porte Clifford a singolo qubit — anche se esiste una letteratura molto ampia sui circuiti Clifford applicabile qui. Nelle sezioni seguenti si descrive una tecnica nuova per ottimizzare una nuova classe di sottocircuiti multi-qubit, chiamati phase gadget e Pauli gadget.",
+      "it-intermediate": "Dopo la decomposizione KAK, che riduce ogni blocco su due qubit ad al più tre porte ∧X, il paragrafo passa ai sottocircuiti Clifford. Anche quando sono permesse rotazioni arbitrarie, i circuiti reali contengono parti Clifford importanti. t|ket⟩ usa regole tratte da [18] per eliminare coppie di ∧X separate solo da porte Clifford a un qubit, e in questo ambito esiste una letteratura molto ampia. Il paper invece introduce una tecnica nuova per ottimizzare una classe diversa di sottocircuiti su più qubit: i phase gadget e i Pauli gadget.",
       "it-expert": "Bound KAK: al più 3 ∧X per coppia di qubit densamente interagenti. Osservazione pragmatica: i circuiti reali hanno sottocircuiti Clifford sostanziali; t|ket⟩ applica regole ad-hoc per ∧X separati da Clifford a singolo qubit [18], pur riconoscendo che l'ottimizzazione Clifford generale è un campo a sé [1,16,29] non pienamente sfruttato qui. Transizione esplicita verso il contributo originale: phase gadget e Pauli gadget, oggetto delle Sez. 3-4."
     },
     "section": "2. Circuit Optimisations"
@@ -585,7 +585,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...per alcune funzioni booleane lineari fⱼ. Per confronto, i circuiti \"phase-polynomial\" C (la classe di circuiti costruibili da porte ∧X e T) possono essere rappresentati con una formula simile ma con una permutazione booleana reversibile g al posto dell'identità (formula 2).",
+      "it-intermediate": "La formula (1) del blocco precedente dice che un circuito fatto solo di phase gadget Z lascia invariato ogni stato della base computazionale, aggiungendo soltanto una fase. La fase è una somma pesata di funzioni booleane lineari fⱼ dei bit d'ingresso, cioè di XOR di alcuni bit. Per confronto, anche i circuiti \"phase-polynomial\" (quelli costruiti solo con ∧X e T) aggiungono una fase dello stesso tipo, ma in più permutano i bit dello stato (formula 2).",
       "it-expert": "Definizione standard di phase-polynomial circuit C (classe generata da {∧X,T} [3]): U_C|x⟩ = e^{iπΣⱼfⱼ(x)}|g(x)⟩ (Eq. 2), con g funzione booleana reversibile lineare — generalizzazione della forma diagonale-pura (Eq. 1) con una permutazione finale, il caso standard trattato dalla letteratura phase-polynomial."
     },
     "section": "4. Pauli Gadgets"
@@ -604,7 +604,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...per funzioni booleane lineari fⱼ e una funzione reversibile lineare g. Esiste già un'ampia letteratura sui circuiti phase-polynomial e sulle relative tecniche di ottimizzazione.",
+      "it-intermediate": "Chiude la definizione della formula (2): in un circuito phase-polynomial le fⱼ sono funzioni booleane lineari (XOR di alcuni bit) e g è una funzione lineare reversibile, che permuta gli stati della base. Rispetto ai circuiti di soli phase gadget c'è quindi in più questa permutazione. Esiste già un'ampia letteratura su come ottimizzare i circuiti phase-polynomial: gli autori si collegano a quel filone, ma lo estendono nei blocchi successivi ai Pauli gadget.",
       "it-expert": "Rimando esplicito alla letteratura phase-polynomial esistente [2,4,26] — il paper si posiziona come estensione di quel framework ai Pauli gadget, non come sostituto."
     },
     "section": "4. Pauli Gadgets"
@@ -699,7 +699,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "In generale, i Pauli gadget creano difficoltà per i metodi di ottimizzazione basati sui circuiti phase-polynomial, perché non tutte le coppie di operatori di evoluzione di Pauli commutano (esempio più semplice: e^(-iαX) e e^(-iβZ) non danno lo stesso risultato di e^(-iγZ) e e^(-iδX) per angoli non degeneri). Si generalizzano quindi i risultati della sezione precedente alle interazioni tra Pauli gadget. Proposizione 4.2: dati due tensori di Pauli P e Q, o commutano per ogni scelta di angoli, oppure (il paragrafo continua).",
+      "it-intermediate": "I Pauli gadget complicano i metodi di ottimizzazione basati sui phase-polynomial, perché due esponenziali di operatori di Pauli non sempre commutano. Per esempio e^(−iαX) seguito da e^(−iβZ) non si può riscrivere come una rotazione Z seguita da una rotazione X, salvo angoli banali. Gli autori estendono quindi i risultati precedenti alle interazioni tra due Pauli gadget. La Proposizione 4.2 dice che, dati due tensori di Pauli P e Q, ci sono solo due casi: o commutano per qualunque angolo, oppure, come per le rotazioni di Eulero, una sequenza P-Q-P si può sempre riscrivere come una sequenza Q-P-Q con altri angoli (Eq. 4, nel blocco successivo).",
       "it-expert": "Ostacolo centrale che motiva la Sez. 4: i Pauli gadget non godono della stessa libertà di riordinamento dei phase gadget puri (controesempio elementare: X e Z non commutano come esponenziali). Proposizione 4.2 anticipa la dicotomia strutturale che sarà provata rigorosamente: o commutazione totale, o relazione di Eulero (formalizzata nel Teorema 4.10) — il vero cuore teorico del paper."
     },
     "section": "4. Pauli Gadgets",
@@ -788,7 +788,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 3: un esempio della corrispondenza tra operatori di evoluzione di Pauli e phase gadget. Si introduce qui una notazione grafica più compatta: i riquadri verdi (continua nel paragrafo successivo).",
+      "it-intermediate": "Didascalia della Figura 3: mostra con un esempio come un operatore di evoluzione di Pauli corrisponde a un phase gadget e introduce, a destra, una notazione grafica più compatta per i Pauli gadget. La spiegazione dei colori di questa notazione è nel blocco successivo.",
       "it-expert": "Fig. 3: corrispondenza Pauli-evolution-operator ↔ phase gadget, con introduzione della notazione grafica compatta a colori (continua nel blocco successivo)."
     },
     "section": "4. Pauli Gadgets"
@@ -813,7 +813,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...i riquadri verdi, rossi e bicolore rappresentano rispettivamente il Pauli gadget che agisce su un qubit nella base Z, X, o Y. Si formano a partire da un phase gadget sui qubit (che genera tutte le interazioni di tipo Z), coniugando poi opzionalmente i qubit con porte Hadamard per la base X, o con porte X(π/2) per la base Y. I qubit banali (identità) vengono omessi dalla rappresentazione grafica.",
+      "it-intermediate": "Spiega la notazione compatta della Figura 3. Su ogni qubit, un riquadro verde indica che il Pauli gadget agisce in base Z, uno rosso in base X, uno a due colori in base Y. Il gadget si costruisce partendo da un phase gadget, che produce l'interazione di tipo Z su tutti i qubit coinvolti. Poi, sui qubit che devono agire in base X, lo si racchiude tra due Hadamard; su quelli in base Y, tra rotazioni X(π/2). I qubit su cui il gadget non agisce (identità) non vengono disegnati.",
       "it-expert": "Codice colore della notazione compatta: verde=Z, rosso=X, bicolore=Y — costruiti coniugando il phase gadget-Z sottostante con Hadamard (per X) o X(π/2) (per Y), coerentemente con la Def. 4.1/regola ricorsiva di U(s). I qubit su cui il gadget agisce come identità sono omessi graficamente — convenzione che semplifica la lettura delle Figure 4-5 successive."
     },
     "section": "4. Pauli Gadgets"
@@ -965,7 +965,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Dimostrazione (per semplicità si assume che nessun simbolo di s o t sia l'identità): si costruisce U in due strati. Il primo strato corrisponde a U(s) della Definizione 4.1: per il Lemma 4.3, queste porte possono attraversare il Pauli gadget e cancellarsi con le loro inverse. Analogamente, una porta ∧X sui primi due qubit può attraversare il gadget grazie al Lemma 4.4. Il secondo strato di U è una catena di porte ∧X che ripete questo processo per convertire il gadget su t in uno su Z seguito da t. L'ultima ∧X della catena ha come target il qubit (|s|+1)-esimo, corrispondente a t₁. Se t₁=X, la ∧X commuta attraverso senza estendere il gadget, quindi (continua nel paragrafo successivo).",
+      "it-intermediate": "Dimostrazione del Lemma 4.5, che mostra come estendere un Pauli gadget su t a uno sulla stringa più lunga st, coniugandolo con una U Clifford. Per semplicità si assume che nessun simbolo di s o t sia l'identità. U si costruisce in due strati. Il primo strato è U(s) della Definizione 4.1: per il Lemma 4.3 queste porte attraversano il gadget e si cancellano con le loro inverse in U†. Il secondo strato è una catena di porte ∧X che, una alla volta, allunga il gadget di un qubit (Lemma 4.4). L'ultima ∧X della catena ha come target il qubit (|s|+1)-esimo, quello su cui agisce t₁. Se t₁ = X, quella ∧X commuta con il gadget senza estenderlo: il blocco successivo spiega come si risolve questo caso.",
       "it-expert": "Struttura della dimostrazione: U in due strati. Strato 1 = U(s) di Def. 4.1, che commuta attraverso il gadget e si cancella con l'inverso via Lemma 4.3. Strato 2 = catena di ∧X che sfrutta il Lemma 4.4 per \"assorbire\" iterativamente i simboli di s in Z-padding davanti a t, con un caso speciale per t₁=X che richiede porte single-qubit ausiliarie per il cambio di base. Costruzione esplicita e algoritmica, non solo un argomento di esistenza."
     },
     "section": "4. Pauli Gadgets"
@@ -1022,7 +1022,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...potrebbero servire ulteriori porte a singolo qubit per mappare t₁ verso Z e viceversa. Componendo questi strati si ottiene una U che può attraversare il gadget e cancellarsi con la sua inversa, lasciando il Pauli gadget sulla stringa completa st.",
+      "it-intermediate": "Conclude la dimostrazione del Lemma 4.5. Se il primo simbolo t₁ della stringa è X (o Y), l'ultima ∧X della catena commuterebbe con il gadget senza allungarlo. Per evitarlo si aggiungono porte a un qubit attorno a quella ∧X, che portano t₁ in base Z e poi la riportano indietro. Mettendo insieme i due strati si ottiene una U che attraversa il gadget I^|s| ⊗ P(α,t) e si cancella con U†, lasciando proprio il gadget P(α,st) sulla stringa completa.",
       "it-expert": "Conclusione della costruzione: la composizione dei due strati dà una U che attraversa I^{|s|}⊗P(α,t) e si cancella con U†, realizzando esattamente P(α,st) — chiude la dimostrazione del Lemma 4.5."
     },
     "section": "4. Pauli Gadgets"
@@ -1041,7 +1041,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Osservazione 4.6: come mostrato in Figura 2, la parte ∧X di U può essere costruita in modo più efficiente come albero bilanciato, o in un'altra configurazione che permetta cancellazioni successive di porte. Corollario 4.7: se t è una sottostringa propria di s, allora esiste un'unitaria U e una permutazione π tali che (il paragrafo continua).",
+      "it-intermediate": "Osservazione 4.6: la parte di ∧X dentro U non deve per forza essere una catena. Come mostrato nella Sezione 2, si può costruire come un albero bilanciato, che ha profondità minore, o in un'altra forma che faciliti cancellazioni di porte più avanti nel circuito. Il Corollario 4.7 applica poi il Lemma 4.5 al caso in cui t è una sottostringa propria di s: esistono una U e una permutazione π dei qubit che riscrivono il gadget su s come un gadget più piccolo coniugato da U (la formula è nel blocco successivo).",
       "it-expert": "Remark 4.6: la parte ∧X di U (Lemma 4.5) eredita la stessa ottimizzazione albero-vs-ladder di Fig. 2 — il risultato di Sez. 3 si applica direttamente qui. Corollario 4.7: caso speciale per t sottostringa propria di s, con U e permutazione π espliciti (base per la prova del Lemma 4.9)."
     },
     "section": "4. Pauli Gadgets"
@@ -1230,7 +1230,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...quindi si assumerà che s e t non abbiano sottostringa comune non banale. Supponiamo ora che sᵢ=Y e tᵢ=X: applicando il Lemma 4.3 si può sostituire sᵢ con un nodo Z coniugando con X(π/2); poiché le rotazioni X commutano con i nodi X, questa unitaria può essere spostata fuori da entrambi i gadget.",
+      "it-intermediate": "Siamo nella dimostrazione del Lemma 4.9, che cerca di ridurre al minimo la sovrapposizione tra due Pauli gadget consecutivi. Con l'equazione (5) la loro parte comune più lunga r viene spostata fuori, in U_r. Da qui si può quindi assumere che s e t non abbiano più sottostringhe comuni non banali. Si considera poi un qubit i su cui s ha Y e t ha X. Per il Lemma 4.3 si può trasformare la Y di s in una Z coniugando con rotazioni X(π/2). Poiché le rotazioni X commutano con i nodi X di t, queste rotazioni si possono portare fuori da entrambi i gadget.",
       "it-expert": "Riduzione tecnica: sᵢ=Y,tᵢ=X → sostituzione di sᵢ con Z via coniugazione X(π/2) (Lemma 4.3); la commutazione X-rotation/X-node permette di estrarre l'unitaria fuori da entrambi i gadget, riducendo il caso Y-X al caso Z-X già gestibile."
     },
     "section": "4. Pauli Gadgets"
@@ -1458,7 +1458,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...dove s' e t' hanno intersezione al più 1. Se la loro intersezione è banale, o se entrambi i gadget agiscono sul qubit comune nella stessa base (Corollario 4.8), allora commutano, da cui si ottiene la relazione del blocco successivo.",
+      "it-intermediate": "Nella dimostrazione del teorema sulle coppie di Pauli gadget, il Lemma 4.9 ha già riscritto i due gadget come U;P(α,s′);P(β,t′);U†, dove s′ e t′ si sovrappongono al più su un qubit. Si distinguono allora due casi. Se non si sovrappongono affatto, o se sul qubit comune agiscono nella stessa base (Corollario 4.8), i due gadget commutano e si possono scambiare di posto (Eq. 9, nel blocco successivo). L'altro caso è trattato subito dopo.",
       "it-expert": "Caso (i) del teorema: intersezione banale, o stessa base sul qubit comune (Corollario 4.8) → commutazione diretta, dando il caso (i) del Teorema 4.10 immediatamente."
     },
     "section": "4. Pauli Gadgets"
@@ -1496,7 +1496,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Altrimenti i gadget non devono necessariamente commutare, ma vale l'equazione di Eulero. Senza perdita di generalità si assume che s sia tutta di simboli Z e t tutta di simboli X. Nel caso |s|=|t|=2, si procede come segue (il paragrafo continua).",
+      "it-intermediate": "È il secondo caso della dimostrazione: i due gadget agiscono sul qubit comune in basi diverse e quindi in generale non commutano. Vale però l'analogo dell'equazione di Eulero (Eq. 4): la sequenza si può riscrivere scambiando i ruoli dei due gadget, con angoli nuovi. Senza perdere generalità si assume che s contenga solo Z e t solo X. Il caso più semplice, |s| = |t| = 2, è svolto graficamente nell'equazione (10) che segue.",
       "it-expert": "Caso (ii): intersezione non banale e basi diverse → equazione di Eulero, non commutazione. WLOG s=Z...Z, t=X...X. Caso base esplicito |s|=|t|=2 sviluppato di seguito."
     },
     "section": "4. Pauli Gadgets"
@@ -1515,7 +1515,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Questo passaggio applica il Lemma 4.4 per decomporre i Pauli gadget e commutare le porte ∧X, seguito dalla regola (EU) e sostanzialmente invertendo la procedura. Il ragionamento si generalizza a stringhe s e t più lunghe (il paragrafo continua).",
+      "it-intermediate": "Commenta la derivazione grafica (10) per il caso con due qubit per gadget. Si usa il Lemma 4.4 per scomporre i Pauli gadget e spostare le porte ∧X, poi si applica la regola (EU) dello ZX-calculus (l'equazione di Eulero) e infine si ripete la procedura al contrario per ricomporre i gadget. Per stringhe s e t più lunghe si fa lo stesso, usando il Lemma 4.5 per ridurre prima ciascun gadget a quel caso piccolo (Eq. 11).",
       "it-expert": "Schema dimostrativo per il caso base |s|=|t|=2: decomposizione via Lemma 4.4 + regola (EU) + inversione della procedura — poi generalizzato per induzione a stringhe s,t più lunghe, completando la dimostrazione del Teorema 4.10."
     },
     "section": "4. Pauli Gadgets"
@@ -1591,8 +1591,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Le \"scale\" di ∧X in questo circuito corrispondono a phase gadget, quindi si comincia identificandole e ri-sintetizzandole in modo ottimale per ridurre la profondità ed esporre più ∧X al resto (il paragrafo continua a pagina successiva).",
-      "it-expert": "Applicazione pratica: identificazione dei ∧X-ladder come phase gadget, seguita da ri-sintesi ottimale (Sez. 3) per ridurre depth ed esporre più ∧X a ottimizzazioni successive (continua a pagina successiva)."
+      "it-intermediate": "Nel circuito di esempio (un pezzo dell'ansatz Unitary Coupled Cluster per H₂) le \"scale\" di porte ∧X sono in realtà phase gadget. L'ottimizzazione comincia quindi riconoscendo queste scale e risintetizzandole nel modo migliore. Questo riduce la profondità e rende più ∧X raggiungibili dalle altre ottimizzazioni sul resto del circuito.",
+      "it-expert": "Primo passo dell'esempio: riconoscere i ∧X-ladder come phase gadget e risintetizzarli in modo ottimale (Sez. 3), riducendo la depth ed esponendo più ∧X alle ottimizzazioni successive (commutazione e regole Clifford) sul resto del circuito."
     },
     "section": "5. Optimisation Example"
   },
@@ -1686,7 +1686,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il set di test usato consiste in una piccola selezione di circuiti di chimica computazionale quantistica: circuiti variazionali per stimare lo stato fondamentale di piccole molecole (H2, LiH, CH2, C2H4) con l'approccio Unitary Coupled Cluster, usando diverse mappature dei qubit (Jordan-Wigner, Parity, Bravyi-Kitaev) e basi chimiche (sto-3g, 6-31g, cc-pvDZ, cc-pvTZ). Gran parte di ogni circuito è generata trotterizzando un operatore esponenziato, quindi molti phase/Pauli gadget compaiono naturalmente (il paragrafo continua).",
+      "it-intermediate": "Il benchmark è una piccola raccolta di circuiti di chimica quantistica: circuiti variazionali per stimare lo stato fondamentale di piccole molecole (H₂, LiH, CH₂, C₂H₄) con il metodo Unitary Coupled Cluster. Variano la mappatura dai fermioni ai qubit (Jordan-Wigner, Parity, Bravyi-Kitaev) e la base chimica (sto-3g, 6-31g, cc-pvDZ, cc-pvTZ). Gran parte di ogni circuito nasce dalla trotterizzazione di un operatore esponenziale, quindi contiene naturalmente molti phase gadget e Pauli gadget: è il caso ideale per la tecnica del paper.",
       "it-expert": "Benchmark set: circuiti UCC variazionali per H2/LiH/CH2/C2H4, con mappature qubit multiple (Jordan-Wigner [21], Parity [10], Bravyi-Kitaev [11]) e basi chimiche variabili (sto-3g...cc-pvTZ) — copertura sistematica dello spazio di configurazione tipico della chimica quantistica su NISQ. La generazione via Trotterizzazione garantisce che i circuiti contengano naturalmente phase/Pauli gadget — il caso d'uso ideale per cui la tecnica è stata progettata, non un benchmark artificiale."
     },
     "section": "6. Results"
@@ -1736,7 +1736,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...(continua da prima della tabella). Questi circuiti sono stati tutti generati usando il pacchetto Qiskit Chemistry, e i file QASM sono disponibili online.",
+      "it-intermediate": "Conclude la descrizione del benchmark, interrotta dalla Tabella 1: poiché i circuiti nascono dalla trotterizzazione, contengono molti phase gadget e Pauli gadget. Tutti i circuiti sono stati generati con il pacchetto Qiskit Chemistry e i file QASM sono pubblicati online, quindi gli esperimenti si possono riprodurre.",
       "it-expert": "Provenienza dei circuiti: generati con Qiskit Chemistry [20], file QASM pubblicati (vedi nota successiva)."
     },
     "section": "6. Results"
@@ -1787,8 +1787,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Questi risultati empirici servivano solo a confrontare la pura ottimizzazione del circuito, senza imporre vincoli architetturali. Si lascia per lavori futuri l'analisi di come queste tecniche influenzino (il paragrafo continua).",
-      "it-expert": "Scope limitation esplicita: nessun vincolo architetturale imposto — i risultati misurano solo l'ottimizzazione \"astratta\", non l'effetto su un dispositivo reale con connettività limitata (continua)."
+      "it-intermediate": "Gli autori precisano un limite degli esperimenti: confrontano solo l'ottimizzazione del circuito in astratto, senza vincoli sull'hardware, cioè supponendo che ogni qubit possa interagire con ogni altro. Resta da studiare come queste tecniche influenzino l'instradamento del circuito su un dispositivo reale con connettività limitata (il blocco successivo spiega perché non è banale).",
+      "it-expert": "Limite esplicito: nessun vincolo architetturale, quindi i risultati misurano solo l'ottimizzazione astratta e non l'effetto su un dispositivo con connettività limitata. L'impatto sul routing è lasciato a lavori futuri."
     },
     "section": "6. Results"
   },
@@ -1825,7 +1825,7 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "...la facilità di instradare il circuito per rispettare una data mappa di connettività dei qubit. Questo non è banale per i cambiamenti più macroscopici, come identificare e ri-sintetizzare i phase gadget, che possono cambiare il grafo di interazione da una semplice linea a un albero. Lavori recenti sugli alberi di Steiner potrebbero essere utili per sintetizzare i singoli phase gadget in modo consapevole dell'architettura del dispositivo.",
+      "it-intermediate": "Il lavoro futuro indicato dagli autori: capire come queste ottimizzazioni influenzano la facilità di instradare il circuito su un dispositivo con una data mappa di connettività tra qubit. Non è banale, perché le trasformazioni più grandi, come riconoscere e risintetizzare i phase gadget, possono cambiare la forma del grafo delle interazioni, per esempio da una semplice linea a un albero. Lavori recenti sugli alberi di Steiner potrebbero servire a sintetizzare ogni phase gadget tenendo conto della connettività del dispositivo.",
       "it-expert": "Limite riconosciuto: l'effetto sul routing (conformità a una connectivity map data) non è banale, perché la ri-sintesi phase-gadget cambia la topologia di interazione (linea→albero) — un trade-off gate-count/depth vs. routing-friendliness non analizzato qui. Direzione futura indicata: sintesi Steiner-tree-based [22,27] per una ri-sintesi architecture-aware dei phase gadget."
     },
     "section": "6. Results"

@@ -125,7 +125,7 @@
     ],
     "sourceText": "and spatiotemporal characteristics of gate-based NISQ devices. Through integrated Python-based circuit partitioning, scheduling, and execution, the framework reduces computational and spatiotemporal overheads while improving Makespan, quantum fidelity, and system throughput. This paper makes the following contributions (Sec. 3):",
     "explanations": {
-      "it-beginner": "...e alle caratteristiche nel tempo e nello spazio dei dispositivi quantistici NISQ (quelli attuali, rumorosi e con pochi qubit). Grazie a un sistema integrato in Python per dividere, pianificare ed eseguire i circuiti, il framework riduce questi costi extra e migliora tempo totale di esecuzione, fedeltà e velocità con cui il sistema porta a termine i lavori."
+      "it-beginner": "Qui si chiude la descrizione dell'idea centrale: il sistema non esegue tutti i circuiti nello stesso modo, ma organizza il lavoro in base alla forma del circuito e alle caratteristiche della macchina, cioè a quanto tempo richiedono le operazioni e a dove si trovano i qubit sul chip. I computer quantistici attuali (detti NISQ) hanno pochi qubit e commettono errori, quindi questo adattamento conta. Il sistema, scritto in Python, fa tre cose: divide il circuito in parti, decide in che ordine e dove eseguirle, e poi le esegue. Secondo gli autori così si spreca meno tempo di calcolo, si riduce il tempo totale di esecuzione, i risultati sono più affidabili e la macchina completa più lavori. Subito dopo il paper elenca i propri contributi."
     }
   },
   {

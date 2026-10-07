@@ -870,7 +870,7 @@
     "sourceText": "From a system architecture perspective, the core advantage ofthis offline methodology is twofold. First, it mathematically boundsthe required Rydberg excitation stages by maximizing static ILP,thereby securing baseline physical fidelity [34]. Second, it com-pletely eradicates the compile-time combinatorial search space,",
     "section": "3.1 Offline Spatial Layout Library Construction",
     "explanations": {
-      "it-intermediate": "Il vantaggio di questa metodologia offline è duplice: primo, limita matematicamente gli stage di eccitazione Rydberg richiesti massimizzando l'ILP statico, garantendo la fedeltà fisica di base; secondo, elimina completamente lo spazio di ricerca combinatorio a tempo di compilazione (continua a pagina successiva)."
+      "it-intermediate": "Gli autori indicano due vantaggi del preparare le disposizioni offline. Primo: scegliendo disposizioni che massimizzano il parallelismo statico tra le porte (ILP, instruction-level parallelism), si limita il numero di fasi di eccitazione di Rydberg necessarie, e quindi si garantisce una fedeltà fisica di base. Secondo: durante la compilazione non bisogna più esplorare l'enorme spazio di tutte le disposizioni possibili, perché si sceglie da una libreria già pronta e verificata sull'hardware (il blocco successivo completa questo punto)."
     }
   },
   {
@@ -1038,7 +1038,7 @@
     "sourceText": "We adopt a GNN rather than traditional search heuristics fortwo fundamental architectural reasons. First, GNNs natively en-code both the physical geometry of the atom array and the evolvinglogical topology, enabling the structural awareness required forlong-horizon routing predictions. Second, this end-to-end modelfundamentally transforms the system overhead distribution. Evalu-ating deep routing topologies is inherently high-overhead; however,the neural paradigm absorbs this computational burden entirelyduring the offline dataset construction phase. Consequently, layout",
     "section": "3.2 GNN-Guided Predictive Placement",
     "explanations": {
-      "it-intermediate": "Perché una GNN e non euristiche di ricerca tradizionali: (1) le GNN codificano nativamente sia la geometria fisica dell'array sia la topologia logica evolutiva, dando la consapevolezza strutturale necessaria per previsioni di instradamento a lungo raggio; (2) il modello end-to-end sposta l'overhead computazionale della valutazione di topologie di instradamento profonde interamente nella fase offline di costruzione del dataset (continua a pagina successiva)."
+      "it-intermediate": "Gli autori scelgono una rete neurale su grafi (GNN) invece delle classiche euristiche di ricerca per due motivi. Primo: una GNN rappresenta in modo naturale sia la geometria fisica dell'array di atomi sia il grafo logico delle interazioni, che cambia da un passo all'altro; questo serve a prevedere che effetto avrà una scelta di disposizione sull'instradamento molti passi più avanti. Secondo: cambia dove si spende il calcolo. Valutare a fondo le possibili sequenze di instradamento è costoso, ma con la rete neurale questo costo si paga tutto offline, quando si costruisce il dataset di addestramento. La conseguenza per la compilazione è descritta nel blocco successivo."
     },
     "recall": [
       {
@@ -1067,7 +1067,7 @@
     "sourceText": "evaluation is reduced to a constant-time neural forward pass, al-lowing the compiler to strictly satisfy practical compilation latencyconstraints.",
     "section": "3.2 GNN-Guided Predictive Placement",
     "explanations": {
-      "it-intermediate": "...la valutazione a tempo di compilazione si riduce quindi a un singolo passo di inferenza neurale a tempo costante, rispettando i vincoli pratici di latenza."
+      "it-intermediate": "Questa è la conseguenza pratica della scelta di usare una rete neurale su grafi (GNN): il lavoro costoso, cioè valutare molte possibili disposizioni e il loro instradamento, si fa una volta sola, offline, mentre si costruisce il dataset di addestramento. Durante la compilazione vera e propria resta solo da far passare il circuito nella rete, un calcolo dal costo fisso che non cresce con il numero di disposizioni da confrontare. Per questo il compilatore riesce a stare nei tempi richiesti nell'uso reale."
     }
   },
   {
@@ -2188,7 +2188,7 @@
     "sourceText": "library provides sufficient spatial diversity without introducing anexponential evaluation bottleneck.",
     "section": "4.5 Compilation Ablation and Generalization Study",
     "explanations": {
-      "it-intermediate": "...senza introdurre un collo di bottiglia di valutazione esponenziale — a conferma che la libreria di layout precalcolata è sufficientemente diversificata da non limitare l'efficacia della selezione neurale."
+      "it-intermediate": "Conclude la discussione sui tempi di compilazione. La libreria di disposizioni preparata offline contiene abbastanza varietà da coprire griglie e raggi diversi, ma non è così grande da rendere lenta la ricerca durante la compilazione: il numero di candidati da valutare non esplode quando l'hardware cresce. Per questo il tempo misurato nella Fig. 12 resta di pochi secondi."
     }
   },
   {
@@ -2289,7 +2289,7 @@
     "sourceText": "Impact on Compilation Time. We further evaluated the im-pact of varying hardware parameters on compile-time overheadusing the dense Random gates benchmark. Fig. 12a demonstratesthe compilation time as the physical hardware grid scales from16 × 16 to 28 × 28. Although larger grids expand the discrete candi-date pool and kinematic routing space, the compilation time scales",
     "section": "4.6 Scalability of the Offline Library and Overhead Analysis",
     "explanations": {
-      "it-intermediate": "Impatto sul tempo di compilazione: valutano l'effetto della variazione dei parametri hardware sull'overhead di compile-time usando il denso benchmark Random gates. Fig. 12a mostra il tempo di compilazione al crescere della griglia hardware da 16×16 a 28×28 — nonostante griglie più grandi espandano il pool di candidati discreti e lo spazio di instradamento cinematico, il tempo scala efficientemente (continua a pagina successiva)."
+      "it-intermediate": "Gli autori misurano quanto cambia il tempo di compilazione al variare dei parametri hardware, usando il benchmark Random gates, che contiene molte porte. Nella Fig. 12a la griglia di atomi cresce da 16×16 a 28×28. Una griglia più grande offre più disposizioni candidate e più modi di muovere gli atomi, quindi in principio la compilazione dovrebbe rallentare. Il blocco successivo riporta i tempi misurati, che restano comunque bassi."
     }
   },
   {
@@ -2307,7 +2307,7 @@
     "sourceText": "efficiently, remaining below 5 seconds for Random gate circuits upto 50 qubits. Similarly, Fig. 12b illustrates the evaluation overheadwhen expanding the interaction and restriction radii (𝑅𝑖𝑛𝑡and 𝑅𝑟).The compilation time exhibits robust scaling, staying under 3.5 sec-onds across all tested radii configurations for the 50-qubit Randomcircuits. These empirical results confirm that the decoupled offline",
     "section": "4.6 Scalability of the Offline Library and Overhead Analysis",
     "explanations": {
-      "it-intermediate": "...restando sotto i 5 secondi per circuiti Random fino a 50 qubit. Fig. 12b mostra l'overhead al variare dei raggi di interazione e restrizione (Rint, Rr): il tempo resta sotto 3.5 secondi per tutte le configurazioni testate su circuiti Random a 50 qubit — confermando che la libreria offline disaccoppiata scala in modo robusto rispetto a entrambe le dimensioni hardware."
+      "it-intermediate": "Il paragrafo misura quanto tempo richiede la compilazione quando l'hardware diventa più grande. Una griglia più ampia offre più posizioni possibili e più modi di spostare gli atomi, quindi ci si aspetterebbe che compilare diventi molto più lento. Invece, nella Fig. 12a, passando da 16×16 a 28×28 il tempo resta sotto i 5 secondi per circuiti Random fino a 50 qubit. La Fig. 12b fa la stessa prova aumentando i raggi di interazione (R_int) e di esclusione (R_r): con circuiti Random a 50 qubit si resta sotto i 3,5 secondi. Gli autori ne concludono che separare la costruzione della libreria (offline) dalla compilazione (online) mantiene il tempo di compilazione basso."
     }
   },
   {
@@ -2451,7 +2451,7 @@
     "sourceText": "data-driven explorations. While ARGON targets dense monolithicarchitectures, full zoned systems and FTQC stacks additionallyrequire storage management and inter-zone traffic orchestration,where ARGON naturally serves as an entangling-region schedulingprimitive within these broader system stacks.",
     "section": "5. Discussion and Conclusion",
     "explanations": {
-      "it-intermediate": "...ulteriori esplorazioni data-driven. Mentre ARGON mira ad architetture monolitiche dense, i sistemi a zone completi e gli stack fault-tolerant (FTQC) richiedono anche gestione dello storage e orchestrazione del traffico inter-zona, dove ARGON può servire naturalmente come primitiva di scheduling per le regioni di entangling all'interno di questi stack di sistema più ampi."
+      "it-intermediate": "Chiude la discussione su come ARGON possa servire oltre questo paper. Le disposizioni precalcolate dipendono solo da regole fisiche locali, quindi possono diventare un dataset utile per altri studi guidati dai dati. ARGON è pensato per architetture \"monolitiche\", in cui gli atomi stanno in un'unica regione densa. Le architetture a zone e gli stack per il calcolo fault-tolerant (FTQC) devono anche gestire la memoria e il traffico di atomi tra zone diverse, cosa che ARGON non fa. In quei sistemi, secondo gli autori, ARGON può comunque occuparsi della programmazione delle operazioni nella zona in cui avvengono le interazioni."
     }
   },
   {

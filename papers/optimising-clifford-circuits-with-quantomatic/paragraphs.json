@@ -747,7 +747,7 @@
     ],
     "sourceText": "corresponding ZX-calculus term, and sound, meaning that any equation derivable in the calculus is true inits standard Hilbert space interpretation.",
     "explanations": {
-      "it-intermediate": "...termine corrispondente dello ZX-calculus, e sound (corretto), nel senso che ogni equazione derivabile nel calcolo è vera nella sua interpretazione standard negli spazi di Hilbert.",
+      "it-intermediate": "Completa le proprietà fondamentali dello ZX-calculus annunciate nel paragrafo precedente. Universale significa che ogni mappa lineare può essere scritta come un diagramma ZX. Sound (corretto) significa che le regole non sbagliano mai: se due diagrammi risultano uguali usando le regole, allora rappresentano davvero la stessa mappa negli spazi di Hilbert. È la garanzia che serve a un ottimizzatore: ogni riscrittura fatta con le regole produce un circuito equivalente all'originale.",
       "it-expert": "Proprietà di soundness: ogni derivazione formale nel calcolo corrisponde a un'uguaglianza vera semanticamente (in fdHilb) — garanzia di correttezza fondamentale per usare il calculus come sistema di riscrittura affidabile."
     }
   },
@@ -1401,7 +1401,7 @@
     ],
     "sourceText": "where n is the number of red vertices in the left hand side diagram.The proof is given in Appendix C.",
     "explanations": {
-      "it-intermediate": "...dove n è il numero di vertici rossi nel diagramma di sinistra. La dimostrazione è fornita nell'Appendice C.",
+      "it-intermediate": "Chiude l'enunciato del Lemma 3.5, la regola per cambiare colore a una parte del diagramma. Nella formula compare n, cioè il numero di vertici rossi nel diagramma di sinistra: serve a calcolare come cambiano le fasi quando si scambiano i colori. La dimostrazione è nell'Appendice C. Il lemma verrà usato più volte nelle dimostrazioni della Sezione 4.",
       "it-expert": "Parametro n del Lemma 3.5 = conteggio dei vertici rossi coinvolti (determina lo shift di fase α+nπ/2 nel colore cambiato) — proof rimandata ad App. C per non appesantire il flusso principale."
     }
   },
@@ -1740,7 +1740,7 @@
     ],
     "sourceText": "This extends to the whole PROP in the usual way. Further we have the following:",
     "explanations": {
-      "it-intermediate": "Questo si estende all'intera PROP nel modo usuale. Inoltre vale quanto segue:",
+      "it-intermediate": "La traduzione T da circuiti Clifford a diagrammi ZX è stata definita solo sulle porte di base. Questa frase dice che si estende a qualunque circuito nel modo standard: si traduce ogni porta e si compongono i pezzi in sequenza e in parallelo esattamente come nel circuito (è questo che significa estenderla all'intera PROP). Il risultato annunciato subito dopo (Proposizione 4.2) garantisce che la traduzione conserva il significato: circuito e diagramma rappresentano la stessa operazione.",
       "it-expert": "Estensione funtoriale standard di T a tutta la PROP Cliff."
     }
   },
@@ -2019,7 +2019,7 @@
     ],
     "sourceText": "• its vertices form an alternating sequence of Z(α) and X(β) vertices, where none of the labels arezero;",
     "explanations": {
-      "it-intermediate": "• i suoi vertici formano una sequenza alternata di vertici Z(α) e X(β), dove nessuna delle etichette è zero;",
+      "it-intermediate": "È la prima delle due proprietà della forma a cui il Lemma 4.5 riduce ogni diagramma \"a linea\" (con un solo ingresso e una sola uscita, in fila). Lungo la linea i vertici alternano i due colori, Z(α) e X(β), e nessuno ha fase zero. Questo è naturale: due vertici vicini dello stesso colore si possono fondere con la regola spider, e un vertice con fase zero si può eliminare. La seconda proprietà, sui vertici di Pauli, è nel blocco successivo.",
       "it-expert": "Proprietà 1 della forma Pauli-standard: sequenza alternata Z/X, tutte le etichette non nulle (niente vertici 'invisibili')."
     }
   },
@@ -2333,7 +2333,7 @@
     ],
     "sourceText": "where the ﬁrst and last steps use Lemma 3.5. The other three cases are established using very similarreasoning.",
     "explanations": {
-      "it-intermediate": "...dove il primo e l'ultimo passo usano il Lemma 3.5 (la regola di cambio colore vista prima). Gli altri tre casi sono stabiliti con un ragionamento molto simile.",
+      "it-intermediate": "Chiude la dimostrazione del Lemma 4.6, che elenca equazioni per scambiare i colori di sequenze di tre vertici. Per la prima serie di equazioni la catena di riscritture usa, al primo e all'ultimo passo, il Lemma 3.5 (la regola di cambio colore). Gli altri tre casi si dimostrano allo stesso modo, cambiando solo i segni delle fasi.",
       "it-expert": "Riuso esplicito del Lemma 3.5 (color-change) nei passi chiave; gli altri 3 casi dell'orbita seguono per simmetria/ragionamento analogo (non ripetuto per esteso)."
     }
   },
@@ -2478,7 +2478,7 @@
     ],
     "sourceText": "∗→t2 where t2 is in Pauli standard formand has strictly fewer vertices than t1. Hence we obtain the result by induction.",
     "explanations": {
-      "it-intermediate": "...∗↔t2 dove t2 è in forma Pauli-standard e ha strettamente meno vertici di t1. Si ottiene quindi il risultato per induzione.",
+      "it-intermediate": "Conclude la dimostrazione alternativa della Proposizione 4.4, che riduce ogni circuito Clifford a un qubit a una delle forme minime dell'insieme C1. Nel caso di diagrammi con almeno quattro vertici e senza vertici di Pauli, si scambiano i colori di tre vertici (Lemma 4.6), poi si fondono i vertici con le regole spider e identità e si torna in forma Pauli-standard (Lemma 4.5). Il diagramma t2 che si ottiene è ancora in forma Pauli-standard e ha strettamente meno vertici di t1. Poiché il numero di vertici diminuisce a ogni passo, l'induzione su questo numero conclude la dimostrazione.",
       "it-expert": "Chiusura per induzione forte sul numero di vertici — completa la dimostrazione costruttiva alternativa di Prop. 4.4, fornendo così l'ALGORITMO (non solo l'esistenza) cercato."
     }
   },
@@ -3257,7 +3257,7 @@
     ],
     "sourceText": "rewrites which replace circuits with circuits, and thus stay at all times within the class of circuits.",
     "explanations": {
-      "it-intermediate": "...riscritture che sostituiscono circuiti con circuiti, e quindi restano in ogni momento all'interno della classe dei circuiti — questo è il vincolo di design fondamentale dell'ottimizzatore: ogni singola regola usata deve mappare circuiti in circuiti.",
+      "it-intermediate": "La maggior parte dei diagrammi ZX non corrisponde a un circuito, e anche partendo da un circuito le regole generali dello ZX-calculus possono portare a diagrammi che non lo sono più. Gli autori non provano a ritrovare un circuito a partire da un diagramma qualunque. Sapendo che l'ingresso è un circuito, usano soltanto riscritture che trasformano circuiti in circuiti. Così ogni passo dell'ottimizzazione produce ancora un circuito eseguibile. È il vincolo di progetto centrale dell'ottimizzatore: ogni regola usata deve trasformare circuiti in circuiti.",
       "it-expert": "Vincolo di design: l'intero rule-set dell'optimiser deve essere 'circuit-preserving' per costruzione (non solo l'assioma astratto dello ZX-calculus, ma la scelta CURATA di un sotto-insieme di derivate che restano sempre circuit-like)."
     }
   },
@@ -3452,7 +3452,7 @@
     ],
     "sourceText": "where v ∼u means that u and v are adjacent in the graph.",
     "explanations": {
-      "it-intermediate": "...dove v∼u significa che u e v sono adiacenti nel grafo (relazione usata nelle condizioni formali del flusso causale, non riportate qui per esteso).",
+      "it-intermediate": "Precisa la notazione della definizione di flusso causale appena data: v ∼ u significa che u e v sono adiacenti, cioè collegati da un arco nel grafo. Con questa notazione le condizioni dicono che ogni vertice v è collegato al suo successore f(v) (F1), viene prima di esso nell'ordine ≺ (F2), e viene prima anche di tutti gli altri vicini di f(v) (F3). Il flusso causale serve a riconoscere quali diagrammi si possono leggere come circuiti.",
       "it-expert": "Notazione ausiliaria (adiacenza ∼) usata nelle condizioni formali complete della Def. 6.3 (qui parzialmente omesse dal testo estratto)."
     }
   },
@@ -3690,7 +3690,7 @@
     ],
     "sourceText": "Our optimiser can be summarised as the repeated alternation of two phases:",
     "explanations": {
-      "it-intermediate": "Il loro ottimizzatore può essere riassunto come l'alternanza ripetuta di due fasi:",
+      "it-intermediate": "Introduce la struttura dell'ottimizzatore: due fasi che si ripetono a turno. La prima, la semplificazione, applica ovunque possibile regole che riducono sempre la dimensione del diagramma. La seconda, la commutazione, sposta le porte di Pauli verso gli ingressi e avvicina le CNOT e TONC che agiscono sugli stessi due qubit, così che la semplificazione successiva trovi nuove occasioni per ridurre il circuito.",
       "it-expert": "Struttura algoritmica top-level: ciclo a 2 fasi, ripetuto fino a convergenza."
     },
     "recall": [
@@ -3785,8 +3785,8 @@
     ],
     "sourceText": "2 ) gates with S, V and Paulis as appropriate. The single qubit gates are then “tidied up” by a ﬁnalpass.",
     "explanations": {
-      "it-intermediate": "...con S, V e Pauli come appropriato. I gate a singolo qubit vengono poi 'riordinati' da un passaggio finale — questa normalizzazione preliminare riduce il numero di casi che le regole successive devono gestire esplicitamente.",
-      "it-expert": "...con S,V,Pauli (riduce lo spazio dei simboli da gestire); un passaggio finale 'tidy-up' riordina i gate 1-qubit residui — tutto ciò serve a mantenere il rule-set principale (Appendice D) piccolo e gestibile."
+      "it-intermediate": "Descrive la preparazione del circuito prima dell'ottimizzazione. Per avere meno regole da gestire, una fase iniziale sostituisce tutte le Hadamard e le rotazioni Z(−π/2) e X(−π/2) con combinazioni di S, V e porte di Pauli. In questo modo il nucleo dell'ottimizzatore lavora con meno tipi di porte. Alla fine, un ultimo passaggio riordina e semplifica le porte a un qubit rimaste.",
+      "it-expert": "Preprocessing: H, Z(−π/2) e X(−π/2) vengono riscritti con S, V e Pauli, così il rule-set principale (Appendice D) resta piccolo e gestibile. Un pass finale di tidy-up normalizza i gate a 1 qubit residui dopo le fasi di simplification e commutation."
     }
   },
   {
@@ -4201,7 +4201,7 @@
     ],
     "sourceText": "corresponds to the control qubit, while the lower (x) is the target qubit. We could also consider the CNOTwith control and target reversed, which we denote TONC. TONC:==",
     "explanations": {
-      "it-intermediate": "...corrisponde al qubit di controllo, mentre quello inferiore (x) è il qubit target. Si potrebbe anche considerare il CNOT con controllo e target invertiti, che si denota TONC.",
+      "it-intermediate": "Nella rappresentazione ZX della CNOT già vista nella Sezione 4, il vertice superiore, di tipo Z, corrisponde al qubit di controllo e quello inferiore, di tipo X, al qubit target. Si può considerare anche la CNOT con controllo e target scambiati, che gli autori chiamano TONC, e il suo diagramma è lo stesso con i colori invertiti. La distinzione serve subito dopo, per scrivere lo SWAP come CNOT ∘ TONC ∘ CNOT.",
       "it-expert": "Def. TONC: CNOT con ruoli controllo/target invertiti (notazione ad hoc del paper, 'CNOT' al contrario)."
     }
   },

@@ -90,7 +90,7 @@
     ],
     "sourceText": "algorithms. We compare ﬂow tracking with other methods thattrack Clifford circuits [26–30], categorizing them as eitherco- or contravariant Clifford tracking, and include a method tosimultaneously do both efﬁciently within this formalism. Asan application, ﬂow tracking allows one to utilize auxiliaryqubits for the reduction of the circuit depth and the identiﬁ-cation of easily implementable logical multiqubit operationsin stabilizer codes. The parity ﬂow formalism can be usedequivalently as either labels directly written on the quantumcircuit or the (combined) ﬂow tableau. In the main text, wedescribe the formalism in its label form and show its useful-ness in circuit design, while the Appendixes give the rigorousdeﬁnitions and proofs mainly using the tableau form.",
     "explanations": {
-      "it-intermediate": "...algoritmi. Si confronta il tracking del flusso con altri metodi che tracciano circuiti Clifford, categorizzandoli come tracking Clifford 'covariante' o 'controvariante', e si include un metodo per fare entrambi simultaneamente ed efficientemente all'interno di questo formalismo. Come applicazione, il tracking del flusso permette di utilizzare qubit ausiliari per ridurre la profondità del circuito e identificare operazioni logiche multi-qubit facilmente implementabili nei codici stabilizer. Il formalismo del flusso di parità può essere usato equivalentemente come etichette scritte direttamente sul circuito quantistico oppure come il tableau di flusso (combinato). Nel testo principale si descrive il formalismo nella sua forma a etichette e se ne mostra l'utilità nella progettazione di circuiti, mentre le Appendici forniscono le definizioni rigorose e le dimostrazioni usando principalmente la forma a tableau.",
+      "it-intermediate": "Il formalismo serve sia a capire sia a progettare circuiti e algoritmi. Gli autori lo confrontano con altri metodi per seguire i circuiti Clifford, che dividono in due famiglie, covarianti e controvarianti, e propongono un modo efficiente per fare entrambe le cose insieme. Come applicazione mostrano che il tracciamento permette di usare qubit ausiliari per ridurre la profondità dei circuiti e di trovare operazioni logiche su più qubit facili da implementare nei codici stabilizzatori. Il formalismo ha due forme equivalenti: etichette scritte direttamente sul circuito, oppure una tabella, il tableau di flusso. Il testo principale usa le etichette e ne mostra l'utilità pratica; le appendici danno definizioni e dimostrazioni rigorose, soprattutto nella forma a tableau.",
       "it-expert": "Roadmap completa: confronto sistematico con tracking co-/contravariante esistente [26-30] (formalizzato in §III); metodo unificato per tracciare ENTRAMBI efficientemente in un solo tableau (novità centrale, §III + App. B); applicazione a stabilizer code con qubit ausiliari (§IV); dualità label-form (main text, human-readable) vs tableau-form (Appendici, machine/proof-friendly) — le due notazioni portano la stessa informazione."
     }
   },
@@ -166,7 +166,7 @@
     ],
     "sourceText": "would have had before this gate. This effect can be trackedby assigning a Z label to qubit 2, which contains the indicesof ai appearing in its state [see Eq. (1)]. For this example,these indices would be {1, 2}. The transformation on Pauli Xeigenstates (|0⟩x = |+⟩and |1⟩x = |−⟩) is calculated similarlyas CNOT1,2|a1⟩x|a2⟩x = |a1 ⊕a2⟩x|a2⟩x and analogous labelscan be deﬁned for the X operators of each qubit (here {1, 2}as the X label of qubit 1).",
     "explanations": {
-      "it-intermediate": "...che avrebbe avuto prima di questo gate. Questo effetto può essere tracciato assegnando un'etichetta Z al qubit 2, che contiene gli indici di ai che compaiono nel suo stato [vedi Eq. (1)]. Per questo esempio, questi indici sarebbero {1,2}. La trasformazione sugli autostati di Pauli X (|0⟩x=|+⟩ e |1⟩x=|−⟩) si calcola in modo analogo, e etichette analoghe possono essere definite per gli operatori X di ciascun qubit.",
+      "it-intermediate": "Dopo una CNOT₁,₂ il qubit 2 contiene la parità a₁ ⊕ a₂, quindi una rotazione Z applicata al qubit 2 ha lo stesso effetto che una rotazione Z₁Z₂ avrebbe avuto prima della porta. Per tenerne conto si assegna al qubit 2 un'etichetta Z con gli indici dei bit aᵢ presenti nel suo stato [Eq. (1)], qui {1, 2}. Per gli autostati di X (|0⟩ₓ = |+⟩, |1⟩ₓ = |−⟩) il ragionamento è analogo, ma la CNOT agisce al contrario: CNOT₁,₂|a₁⟩ₓ|a₂⟩ₓ = |a₁ ⊕ a₂⟩ₓ|a₂⟩ₓ. Si definiscono così anche etichette X per ogni qubit; in questo esempio l'etichetta X del qubit 1 diventa {1, 2}.",
       "it-expert": "Definizione operativa della Z-label (qui: {1,2} per qubit 2) e della X-label analoga (via base X, |+⟩/|−⟩) — le due famiglie di etichette (X e Z) tracciate in parallelo formano la base dell'intero schema."
     }
   },
@@ -217,7 +217,7 @@
     ],
     "sourceText": "1,2Z2CNOT1,2 = ¯Z1 ¯Z2 and CNOT†1,2X1CNOT1,2 = ¯X1 ¯X2 arealso described by the X and Z labels introduced above. Notethat throughout this manuscript, operators that are physicallyapplied to an encoded state are denoted without a bar, whiletheir logical effects are denoted with a bar. By interpretingthe labels on an operator level, it is easy to extend the labeltracking to arbitrary Clifford circuits.",
     "explanations": {
-      "it-intermediate": "...1,2Z2CNOT1,2 = Z̄1Z̄2 e CNOT†1,2X1CNOT1,2 = X̄1X̄2 sono anch'esse descritte dalle etichette X e Z introdotte sopra. Si noti che in tutto il manoscritto, gli operatori applicati fisicamente a uno stato codificato sono denotati senza barra, mentre il loro effetto logico è denotato con una barra. Interpretando le etichette a livello di operatore, è facile estendere il tracking delle etichette a circuiti Clifford arbitrari.",
+      "it-intermediate": "Le etichette X e Z introdotte con gli stati descrivono anche come la CNOT trasforma gli operatori di Pauli: CNOT†₁,₂ Z₂ CNOT₁,₂ = Z̄₁Z̄₂ e CNOT†₁,₂ X₁ CNOT₁,₂ = X̄₁X̄₂. Convenzione usata in tutto l'articolo: un operatore applicato fisicamente si scrive senza barra, il suo effetto logico con la barra. Leggendo le etichette come operatori, invece che come stati, il tracciamento si estende facilmente a qualunque circuito Clifford.",
       "it-expert": "Convenzione notazionale chiave (usata in tutto il paper): P = operatore FISICO applicato, P̄ = suo effetto LOGICO — l'estensione da 'tracciare stati' a 'tracciare operatori' (via conjugazione) è ciò che permette la generalizzazione da CNOT-only a Clifford arbitrario nel blocco successivo."
     }
   },
@@ -291,7 +291,7 @@
     ],
     "sourceText": "P) = C†PC.Note that we usually omit the superscript that indicates thepreceding Clifford circuit on the label, except when strictlynecessary. In order to efﬁciently and iteratively track thecomplete Pauli group P on n qubits, one needs to choosean independent set of 2n + 1 generators [27] and track thelabels for those. In our case, we choose to track the labelsof all single-qubit X and Z operators (and iI, on whichany Clifford transformation acts trivially), and any appearingPauli operator will be described in terms of these gener-ators gm ∈{iI, Xj, Zj | j = 1, . . . , n}. Other generating setsalso form a valid choice for expressing and tracking Paulioperators, for example, all single-qubit X, Y , and Z operators[26]. However, our choice of independent generators, alsoused for example in Refs. [34,35], allows us to uniquelywrite each Pauli operator as a vector such that the vectorpresentation is isomorphic to the Pauli group (PropositionA2). With this choice of generators, a label ℓP consists ofa phase iκ with κ ∈{0, 1, 2, 3} and two sets of indices forthe appearing X and Z operators. We write a label as ℓP =iκ⟨¯X indices⟩¯Z indices = iκ⟨j1 j2 · · ·⟩k1k2 · · ·, and the logicalPauli operator ¯P corresponding to label ℓP is ¯P(ℓP) = iκ \u0002 \u0002 ¯Xj ¯Zk.(2) ⟨j⟩∈ℓP k∈ℓP",
     "explanations": {
-      "it-intermediate": "...P) = C†PC. Si noti che di solito si omette l'apice che indica il circuito Clifford precedente sull'etichetta, tranne quando strettamente necessario. Per tracciare in modo efficiente e iterativo l'intero gruppo di Pauli P su n qubit, bisogna scegliere un insieme indipendente di 2n+1 generatori e tracciare le etichette per quelli. Nel caso in esame, si sceglie di tracciare le etichette di tutti gli operatori X e Z a singolo qubit (e iI, su cui ogni trasformazione Clifford agisce trivialmente), e ogni operatore di Pauli che compare sarà descritto in termini di questi generatori g_m∈{iI,Xj,Zj|j=1,...,n}. Altri insiemi generatori sono anch'essi una scelta valida... ...per esempio, tutti gli operatori X, Y, e Z a singolo qubit. Tuttavia, la scelta di generatori indipendenti fatta qui, usata anche ad esempio in lavori precedenti, permette di scrivere univocamente ogni operatore di Pauli come un vettore tale che la rappresentazione vettoriale sia isomorfa al gruppo di Pauli (Proposizione A2). Con questa scelta di generatori, un'etichetta ℓ_P consiste in una fase i^κ con κ∈{0,1,2,3} e due insiemi di indici per gli operatori X e Z che compaiono. Si scrive un'etichetta come ℓ_P=i^κ⟨X̄ indici⟩Z̄ indici, e l'operatore di Pauli logico P̄ corrispondente all'etichetta ℓ_P è dato dall'Equazione (2): P̄(ℓ_P)=i^κ ∏X̄j∏Z̄k.",
+      "it-intermediate": "Un'etichetta aggiornata dopo un circuito Clifford C descrive l'effetto logico P̄ di un operatore di Pauli P applicato dopo C, cioè la coniugazione P → C†PC; di solito l'apice che indica C si omette. Per seguire in modo efficiente tutto il gruppo di Pauli su n qubit basta seguire un insieme indipendente di 2n + 1 generatori [27]. Gli autori scelgono gli operatori X e Z di ogni qubit più iI (che nessun Clifford modifica), e scrivono ogni altro operatore di Pauli come prodotto di questi generatori. Si potrebbero usare anche altri insiemi, per esempio X, Y e Z di ogni qubit [26], ma questa scelta associa a ogni operatore di Pauli un unico vettore, e la rappresentazione vettoriale è isomorfa al gruppo di Pauli (Proposizione A2). Un'etichetta ℓ_P è quindi formata da una fase i^κ, con κ ∈ {0,1,2,3}, e da due insiemi di indici, quelli degli X e quelli degli Z. Si scrive ℓ_P = i^κ⟨j₁ j₂ ⋯⟩k₁k₂⋯, e l'operatore logico corrispondente è P̄(ℓ_P) = i^κ ∏X̄ⱼ ∏Z̄ₖ (Eq. 2).",
       "it-expert": "Scelta dei generatori tracciati: {iI, Xj, Zj}_{j=1..n} (2n+1 generatori, il minimo indipendente per il gruppo di Pauli su n qubit [27]) — scelta specifica motivata nel blocco successivo (isomorfismo univoco con rappresentazione vettoriale, Prop. A2), alternativa ad es. a {X,Y,Z}_j [26]. Vantaggio della scelta di generatori: isomorfismo univoco Pauli-group↔vettore (Prop. A2, dimostrata in App. A) — struttura formale della label: fase i^κ (κ∈Z4) + due set di indici ⟨X-indices⟩, Z-indices. Eq. (2): P̄(ℓ_P)=i^κ∏_{⟨j⟩∈ℓ}X̄j·∏_{k∈ℓ}Z̄k — formula di ricostruzione dell'operatore dalla label."
     },
     "recall": [
@@ -342,7 +342,7 @@
     ],
     "sourceText": "¯P expressed in the tracked generators in standard order, it isstraightforward to read off the corresponding unique label.",
     "explanations": {
-      "it-intermediate": "...P̄ espresso nei generatori tracciati in ordine standard, è immediato leggere l'etichetta unica corrispondente.",
+      "it-intermediate": "Gli operatori di Pauli si scrivono sempre in ordine standard, con tutti gli X a sinistra e tutti gli Z a destra. Così ogni operatore ha una sola etichetta: dato un operatore P̄ scritto con i generatori in ordine standard, si legge direttamente la sua etichetta.",
       "it-expert": "Conseguenza pratica dell'ordine standard: lettura diretta della label da un operatore già in forma standard, senza calcoli aggiuntivi."
     }
   },
@@ -435,7 +435,7 @@
     ],
     "sourceText": "′gj := ℓC2C1gj.The new label is calculated as follows: We ﬁrst decompose thecorresponding Clifford conjugation of gj by C2 into a productof the chosen generators as 2gjC2 = iκ′ \u0002 C† gm,(3) gm∈G",
     "explanations": {
-      "it-intermediate": "...gj := ℓ^(C2C1)_gj. La nuova etichetta si calcola come segue: si decompone prima la coniugazione Clifford corrispondente di gj tramite C2 in un prodotto dei generatori scelti, come nell'Equazione (3): C2†gjC2 = i^κ' ∏gm (per gm nel sottoinsieme G).",
+      "it-intermediate": "Spiega come si aggiorna un'etichetta quando si aggiunge un nuovo circuito Clifford. Dopo un primo circuito C₁ ogni generatore gⱼ ha un'etichetta ℓ^{C₁}_{gⱼ}; aggiungendo C₂ diventa ℓ′_{gⱼ} := ℓ^{C₂C₁}_{gⱼ}. Il primo passo è scomporre la coniugazione di gⱼ tramite C₂ nei generatori scelti: C₂† gⱼ C₂ = i^κ′ ∏_{gₘ ∈ G} gₘ (Eq. 3), cioè una fase per un prodotto di alcuni generatori.",
       "it-expert": "Eq. (3): C2†gjC2=i^κ'∏_{gm∈G}gm — decomposizione della conjugazione di UN generatore tramite C2 in un prodotto di generatori (via Pauli decomposition [36]), il passo computazionale chiave dell'update."
     }
   },
@@ -514,7 +514,7 @@
     ],
     "sourceText": "resulting in a phase iκ′ and a subset G of the generators,which can be computed via Pauli decomposition [36]. We thencalculate the Pauli operator described by ℓ ′gj as ′gj ) = iκ′ \u0002 \u0003 \u0004 ¯P(ℓ ¯P ℓC1 ,(4) gm gm∈G",
     "explanations": {
-      "it-intermediate": "...risultando in una fase i^κ' e un sottoinsieme G dei generatori, che può essere calcolato tramite decomposizione di Pauli. Si calcola poi l'operatore di Pauli descritto da ℓ'_gj come nell'Equazione (4): P̄(ℓ'_gj)=i^κ'∏P̄(ℓ^C1_gm) per gm in G.",
+      "it-intermediate": "Secondo passo dell'aggiornamento delle etichette. La scomposizione dell'Eq. (3) dà una fase i^κ′ e un sottoinsieme G di generatori, e si calcola con la decomposizione di Pauli [36]. La nuova etichetta descrive allora l'operatore P̄(ℓ′_{gⱼ}) = i^κ′ ∏_{gₘ ∈ G} P̄(ℓ^{C₁}_{gₘ}) (Eq. 4): basta moltiplicare gli effetti logici, già noti, dei generatori che compaiono nella scomposizione.",
       "it-expert": "Eq. (4): P̄(ℓ'_gj)=i^κ'∏_{gm∈G}P̄(ℓ^C1_gm) — combina la decomposizione (Eq. 3) con le label GIÀ note da C1, ottenendo la nuova label senza dover ricalcolare la conjugazione completa C2C1 da zero."
     }
   },
@@ -634,8 +634,8 @@
     ],
     "sourceText": "2 ¯Pj, it can be written as an alternating sequence of Cliffordoperations Cj and single-qubit Pauli rotations Rj as",
     "explanations": {
-      "it-intermediate": "...si può scrivere come una sequenza alternata di operazioni Clifford Cj e rotazioni di Pauli a singolo qubit Rj.",
-      "it-expert": "...struttura alternata Clifford/Pauli-rotation — setup per l'Eq. (5) che segue."
+      "it-intermediate": "Scomponendo un'unitaria U in rotazioni di Pauli R̄ⱼ(θ) = exp(iθP̄ⱼ/2), la si può scrivere come una sequenza alternata di circuiti Clifford Cⱼ e rotazioni di Pauli su un solo qubit Rⱼ: U = ⋯ C₃R₂C₂R₁C₁ (Eq. 5). Le etichette dicono quale rotazione logica realizza ciascuna rotazione fisica Rⱼ.",
+      "it-expert": "Decomposizione di U in Pauli rotations R̄ⱼ(θ) = e^{iθP̄ⱼ/2} riscritta come alternanza di Clifford Cⱼ e rotazioni single-qubit Rⱼ: setup dell'Eq. (5), su cui si legge l'effetto logico di ogni Rⱼ dalle etichette."
     }
   },
   {
@@ -704,7 +704,7 @@
     ],
     "sourceText": "˜Cj (i.e., encoding, rotating, and decoding [37]). Rather, ina given encoding, one can continue from there to directlyimplement the next operator via recoding, as the subsequent",
     "explanations": {
-      "it-intermediate": "...cioè senza ripetere ogni volta codifica, rotazione e decodifica. Invece, restando nella codifica corrente, si può implementare direttamente l'operatore successivo tramite una \"ricodifica\", perché le etichette dicono già quale effetto logico avrà la prossima rotazione.",
+      "it-intermediate": "Con questa rappresentazione non serve sintetizzare ogni rotazione su più qubit da sola, cioè codificare con un circuito Clifford completo C̃ⱼ, ruotare e poi decodificare [37]. Si può invece restare nella codifica attuale e passare direttamente alla rotazione successiva con una \"ricodifica\", perché le etichette successive si ricavano da quelle più recenti (Eq. 6).",
       "it-expert": "Alternativa al pattern encode–rotate–decode per ogni termine: si resta nell'encoding corrente e si passa al successivo per recoding, leggendo dalle label l'effetto della rotazione seguente."
     }
   },
@@ -742,7 +742,7 @@
     ],
     "sourceText": "labels can be derived from the latest labels:",
     "explanations": {
-      "it-intermediate": "...le etichette possono essere derivate dalle etichette più recenti:",
+      "it-intermediate": "Completa l'idea della ricodifica: le etichette dopo il passo successivo si ottengono da quelle più recenti, senza ripartire dall'inizio del circuito. Nell'Eq. (6) che segue ogni rotazione logica è scritta come una rotazione fisica coniugata dai soli circuiti Clifford che separano due codifiche consecutive.",
       "it-expert": "Transizione all'Eq. (6): mostrare esplicitamente come si applica la decomposizione dell'Eq. (5) usando le label correnti."
     }
   },
@@ -878,7 +878,7 @@
     ],
     "sourceText": "where the coefﬁcients a ¯P are real numbers indicating the statecomponents and the sum is over the Pauli operator basis[40]. Then, a Clifford circuit C1 acting on this quantum stateperforms a covariant transformation of the basis according to 1 = C1ρC† a ¯PC1 ¯PC† 1.(8) ¯P",
     "explanations": {
-      "it-intermediate": "...dove i coefficienti a_P̄ sono numeri reali che indicano le componenti dello stato, e la somma è sugli operatori della base di Pauli. Allora, un circuito Clifford C1 che agisce su questo stato quantistico esegue una trasformazione covariante della base secondo l'Equazione (8): C1ρC1† = Σ a_P̄ C1P̄C1†.",
+      "it-intermediate": "Nell'Eq. (7) lo stato ρ è scritto come somma sugli operatori di Pauli, ρ = Σ a_P̄ P̄, dove i coefficienti reali a_P̄ sono le componenti dello stato in questa base [40]. Un circuito Clifford C₁ trasforma lo stato come C₁ρC₁† = Σ a_P̄ C₁P̄C₁† (Eq. 8): i coefficienti restano uguali e cambiano gli operatori di base. È il tracciamento covariante, quello del tableau di Clifford usuale.",
       "it-expert": "Eq. (8): C1ρC1†=Σ_P̄ a_P̄(C1P̄C1†) — la trasformazione 'covariante' agisce sulla BASE (ogni P̄ viene trasformato), lasciando i coefficienti a_P̄ invariati — questa è la definizione operativa di 'covariante' usata in tutto il paper."
     }
   },
@@ -960,7 +960,7 @@
     ],
     "sourceText": "1 = P. While the restriction toonly generators makes the tracking computationally efﬁcient,it also obscures the information required for the inverse map,i.e., mapping physical operators to logical ones.",
     "explanations": {
-      "it-intermediate": "...=P. Sebbene la restrizione ai soli generatori renda il tracking computazionalmente efficiente, questo oscura anche l'informazione necessaria per la mappa inversa, cioè mappare operatori fisici a operatori logici.",
+      "it-intermediate": "Nel tracciamento covariante si seguono solo i generatori, e un operatore logico P̄ si trasforma in quello fisico scomponendolo nei generatori: C₁P̄C₁† = ∏ C₁ḡⱼC₁† = P. Seguire solo i generatori rende il calcolo efficiente, ma nasconde l'informazione necessaria per la mappa inversa, quella che va dagli operatori fisici a quelli logici, che è proprio ciò che servirebbe per interpretare una rotazione fisica.",
       "it-expert": "Limite chiave del tracking covariante-solo-generatori: efficiente per logico→fisico, ma NON dà accesso diretto a fisico→logico — questo è ESATTAMENTE il gap che il parity flow formalism (tracking controvariante) colma, motivando l'intera Sezione III."
     },
     "recall": [
@@ -1041,7 +1041,7 @@
     ],
     "sourceText": "1 is given by the inverse transformation on the statecomponents as 1 = C1ρC† 1PC1P.(9) aC† P",
     "explanations": {
-      "it-intermediate": "...è dato dalla trasformazione inversa sulle componenti dello stato, come nell'Equazione (9): a_{C1†PC1} = a_P — cioè, nel tracking controvariante sono i COEFFICIENTI a cambiare (etichettati dal nuovo operatore fisico), non gli operatori di base.",
+      "it-intermediate": "Nel tracciamento controvariante di C₁ρC₁† si guarda la trasformazione inversa sulle componenti dello stato: a_{C₁†PC₁} = a_P (Eq. 9). Qui restano fissi gli operatori fisici P e cambiano i coefficienti: la componente dello stato lungo il nuovo operatore fisico P è quella che prima stava lungo C₁†PC₁. È la direzione che dice quale effetto logico ha un operatore applicato fisicamente.",
       "it-expert": "Eq. (9): a_{C1†PC1}=a_P — nel tracking controvariante sono gli INDICI dei coefficienti a trasformarsi (via C1†PC1), non gli operatori di base stessi — trasformazione 'duale' rispetto a quella covariante (Eq. 8)."
     }
   },
@@ -1298,7 +1298,7 @@
     ],
     "sourceText": "1, but then C†1PC1 must be computed separately, resulting inan increasing computational cost for each appended Cliffordgate. A similar argument holds for using inward conjugationto do covariant tracking. Note that prepending C2 to C1, ratherthan appending, swaps the preferred conjugation to inwardconjugation for contravariant tracking and outward conjuga-tion for covariant tracking. For a more thorough discussionon the various choices of iteratively tracking added Cliffordcircuits and the resulting conjugation required, see Fig. 8.",
     "explanations": {
-      "it-intermediate": "...ma allora C1†PC1 deve essere calcolato separatamente, risultando in un costo computazionale crescente per ogni gate Clifford aggiunto. Un argomento simile vale per l'uso della coniugazione verso l'interno per fare tracking covariante. Si noti che anteporre C2 a C1, invece di posporlo, scambia la coniugazione preferita in coniugazione verso l'interno per il tracking controvariante e verso l'esterno per il tracking covariante. Per una discussione più approfondita sulle varie scelte per tracciare iterativamente i circuiti Clifford aggiunti e la coniugazione risultante richiesta, si veda la Fig. 8.",
+      "it-intermediate": "Spiega perché ciascun tipo di tracciamento ha una coniugazione \"naturale\". Nel tracciamento controvariante si potrebbe aggiornare con la coniugazione verso l'esterno, ma allora C₁†PC₁ va ricalcolato a parte e il costo cresce a ogni porta Clifford aggiunta. Lo stesso vale per la coniugazione verso l'interno nel tracciamento covariante. Se invece C₂ viene messo prima di C₁ anziché dopo, le scelte si invertono: verso l'interno per il controvariante, verso l'esterno per il covariante. La Fig. 8 discute tutte le combinazioni.",
       "it-expert": "Conclusione: usare la conjugazione 'sbagliata' costa O(gate aggiunti) extra lavoro per ogni step (nessun riuso incrementale) — motiva fortemente la scelta outward/covariant e inward/contravariant fatte nel paper. Nota su prepend vs append (simmetria speculare) e rimando a Fig. 8 per la discussione visuale completa."
     }
   },
@@ -1408,7 +1408,7 @@
     ],
     "sourceText": "1R1C1, ¯R2 = C†1C†2R2C2C1, etc.Although numerous methods track covariant Cliffordtransformations [26] or contravariant Clifford transformations[24] (see Remark B14 for details), we propose a methodto efﬁciently track both transformations in a single tableau(already hinted at in Ref. [29]). To keep track of both theco- and contravariant transformations of the Pauli group, onecould naively track them in parallel with both the Clifford andthe ﬂow tableau. Alternatively, one could track only one ofthe tableaus and invert it after each time step to get the other(see Proposition B8). However, using the symplectic propertyof the tableaus, we propose a more efﬁcient method to trackboth mappings. For this purpose, we consider the situationthat the ﬂow labels ℓXk and ℓZk from contravariant trackingare given and demonstrate how to obtain the inverse transfor-mations from the ﬂow labels directly. That is, the covarianttransformation of the generators is given by C ¯XjC† = iη j\u0002 \u0002 Zk,(12) Xk k: j∈ℓZk k: j∈ℓXk C ¯ZjC† = iη⟨j⟩\u0002 \u0002 Xk Zk(13) k: ⟨j⟩∈ℓZk k: ⟨j⟩∈ℓXk",
     "explanations": {
-      "it-intermediate": "...R1C1, R̄2=C1†C2†R2C2C1, ecc. Sebbene numerosi metodi tracciano trasformazioni Clifford covarianti o trasformazioni Clifford controvarianti (vedi Osservazione B14 per dettagli), si propone un metodo per tracciare efficientemente entrambe le trasformazioni in un unico tableau (già accennato in un lavoro precedente). Per tenere traccia sia delle trasformazioni covarianti sia controvarianti del gruppo di Pauli, si potrebbe ingenuamente tracciarle in parallelo con sia il tableau di Clifford sia quello di flusso. In alternativa, si potrebbe tracciare solo uno dei due tableau e invertirlo dopo ogni passo temporale per ottenere l'altro (vedi Proposizione B8). Tuttavia, usando la proprietà simplettica dei tableau, si propone un metodo più efficiente per tracciare entrambe le mappature. Per questo scopo, si considera la situazione in cui le etichette di flusso ℓ_Xk e ℓ_Zk dal tracking controvariante sono date, e si dimostra come ottenere le trasformazioni inverse direttamente dalle etichette di flusso. Cioè, la trasformazione covariante dei generatori è data dalle Equazioni (12) e (13): C X̄jC† e C Z̄jC† espressi come prodotti di operatori fisici Z e X pesati da una fase i^η, dove i prodotti sono presi sugli indici k tali che j appartenga all'etichetta Z o X corrispondente.",
+      "it-intermediate": "Il tracciamento controvariante dà il significato logico di ogni rotazione fisica: R̄₁ = C₁†R₁C₁, R̄₂ = C₁†C₂†R₂C₂C₁ e così via. Molti metodi seguono solo le trasformazioni covarianti [26] o solo quelle controvarianti [24] (Osservazione B14). Gli autori propongono di seguirle entrambe in un unico tableau, come accennato in [29]. Le alternative semplici sono tenere due tableau in parallelo, oppure tenerne uno e invertirlo a ogni passo (Proposizione B8). Sfruttando la proprietà simplettica dei tableau si può fare meglio: partendo dalle etichette di flusso ℓ_{Xₖ}, ℓ_{Zₖ} del tracciamento controvariante si leggono direttamente le trasformazioni inverse. Le Eq. (12)-(13) danno C X̄ⱼ C† e C Z̄ⱼ C† come prodotti di operatori fisici X e Z, con una fase i^η, presi sui qubit k nelle cui etichette compare l'indice j.",
       "it-expert": "IL contributo metodologico centrale della sezione: tracciare covariante+controvariante SIMULTANEAMENTE in un solo tableau efficiente, invece delle due alternative ovvie ma costose (tracciare due tableau in parallelo, oppure invertire un tableau ogni step — costo O(n³) per inversione, motivo del prossimo passaggio). Eq. (12)-(13): CX̄jC†=i^{ηj}∏_{k:j∈ℓZk}Zk∏_{k:j∈ℓXk}Xk (e analoga per Z̄j) — formula ESPLICITA che ricostruisce la trasformazione covariante DIRETTAMENTE dalle label controvarianti (ℓXk, ℓZk) già tracciate, senza bisogno di un tableau separato — l'idea tecnica chiave del metodo combinato."
     }
   },
@@ -1476,7 +1476,7 @@
     ],
     "sourceText": "these Clifford phases. Consequently, when appending Ht, theClifford phases update according to η j →η j ⊕2if j ∈ℓXtandj ∈ℓZt,(14) η⟨j⟩→η⟨j⟩⊕2if ⟨j⟩∈ℓXtand⟨j⟩∈ℓZt,(15) and when appending St according to η j →η j ⊕1if j ∈ℓZt,(16) η⟨j⟩→η⟨j⟩⊕1if ⟨j⟩∈ℓZt,(17)",
     "explanations": {
-      "it-intermediate": "...queste fasi Clifford. Di conseguenza, quando si aggiunge Ht, le fasi Clifford si aggiornano secondo le Equazioni (14)-(15) (con un incremento di 2 se certe condizioni sugli indici sono soddisfatte), e quando si aggiunge St secondo le Equazioni (16)-(17) (con un incremento di 1).",
+      "it-intermediate": "Le fasi i^η delle Eq. (12)-(13), dette fasi di Clifford, vanno aggiornate a ogni porta. Quando si aggiunge una Hadamard Hₜ, ηⱼ aumenta di 2 (modulo 4) se j compare sia nell'etichetta X sia nell'etichetta Z del qubit t, e lo stesso vale per η⟨j⟩ (Eq. 14-15). Quando si aggiunge una porta S sul qubit t, ηⱼ e η⟨j⟩ aumentano di 1 se l'indice compare nell'etichetta Z del qubit t (Eq. 16-17). Bastano queste regole semplici per mantenere anche la trasformazione inversa senza invertire il tableau.",
       "it-expert": "Update rule esplicite per H (Eq. 14-15, incremento di 2 mod 4) e S (Eq. 16-17, incremento di 1 mod 4) — regole concrete, analoghe a quelle di p0029 ma per le fasi Clifford ausiliarie del metodo combinato."
     }
   },
@@ -1597,7 +1597,7 @@
     ],
     "sourceText": "•a can be omitted from thelabel ℓXa for interpreting its logical effect. The Clifford phases ⟨iη⟨1⟩· · · ⟩iη1 · · · are tracked on top of the circuit according to Eq. (16). (c) Theresulting encoding of the circuit in (b) showing the stabilizer at the time step of the rotations. The circles show the three qubits, labeled with thenonstabilizer-violating logical operators (i.e., no crossed indices) corresponding to the local physical operators on the corners of the triangle.The triangle indicates that the stabilizer ¯Xa is mapped to X1Z2Ya by covariant tracking, revealing that the logical operator on Ya must be equalto the logical operator that corresponds to operator X1Z2.",
     "explanations": {
-      "it-intermediate": "...poiché •a può essere omesso dall'etichetta ℓ_Xa nell'interpretare il suo effetto logico. Le fasi Clifford sono tracciate sopra il circuito secondo l'Eq. (16). (c) La codifica risultante del circuito in (b), che mostra lo stabilizzatore nel momento delle rotazioni. I cerchi mostrano i tre qubit, etichettati con gli operatori logici che non violano lo stabilizzatore corrispondenti agli operatori fisici locali sui vertici del triangolo. Il triangolo indica che lo stabilizzatore X̄a viene mappato a X1Z2Ya tramite tracking covariante, rivelando che l'operatore logico su Ya deve essere uguale all'operatore logico corrispondente all'operatore X1Z2.",
+      "it-intermediate": "Seconda parte della didascalia di Fig. 2. In (b), una rotazione Y fisica sul qubit ausiliario a realizza l'operatore logico −Ȳ₁Ȳ₂, perché l'indice stabilizzato •a si può togliere dall'etichetta X del qubit a quando se ne legge l'effetto logico. Le fasi di Clifford ⟨i^η⟨1⟩⋯⟩i^η₁⋯ sono annotate sopra il circuito secondo l'Eq. (16). In (c) è mostrata la codifica che ne risulta, con lo stabilizzatore al momento delle rotazioni. I cerchi rappresentano i tre qubit, ciascuno con gli operatori logici che non violano lo stabilizzatore (cioè senza indici barrati) associati agli operatori fisici locali ai vertici del triangolo. Il triangolo indica che, con il tracciamento covariante, lo stabilizzatore X̄ₐ diventa X₁Z₂Yₐ: quindi l'operatore logico realizzato da Yₐ coincide con quello realizzato da X₁Z₂.",
       "it-expert": "Continuazione caption Fig. 2(c): visualizzazione grafica (triangolo, cerchi per qubit) di come il tracking COVARIANTE (X̄a↦X1Z2Ya) rivela l'equivalenza logica tra operatori fisici diversi sullo stesso stabilizer — esempio concreto dell'uso combinato co-/contravariante annunciato in p0065."
     }
   },
@@ -1616,7 +1616,7 @@
     ],
     "sourceText": "in a state outside the code space, which would invalidate thetrivial action of the omitted auxiliary label. Codes obtainedby encoding circuits consisting only of CNOT gates and qubitsinitialized in the |0⟩state result in parity codes in which thestabilizers, labels, and label indices are of the same Pauli type[41]. Tracking the (empty) labels during the encoding circuitof such codes can reveal a large set of locally implementablelogical multiqubit operations. As a prominent example, theLechner-Hauke-Zoller layout [45,46] encodes k logical qubitsin n = k(k + 1)/2 physical qubits, such that each possible pairof logical qubit indices is represented on one of the physicalqubit labels. This allows one to implement all pairwise logicalRZZ rotations via physical single-qubit RZ rotations in a singletime step.",
     "explanations": {
-      "it-intermediate": "...in uno stato al di fuori dello spazio del codice, il che invaliderebbe l'azione banale dell'etichetta ausiliaria omessa. I codici ottenuti da circuiti di codifica consistenti solo di gate CNOT e qubit inizializzati nello stato |0⟩ risultano in codici di parità in cui gli stabilizzatori, le etichette, e gli indici delle etichette sono dello stesso tipo di Pauli. Tracciare le etichette (vuote) durante il circuito di codifica di tali codici può rivelare un ampio insieme di operazioni logiche multi-qubit localmente implementabili. Come esempio prominente, il layout Lechner-Hauke-Zoller codifica k qubit logici in n=k(k+1)/2 qubit fisici, tale che ogni possibile coppia di indici di qubit logici è rappresentata su una delle etichette dei qubit fisici. Questo permette di implementare tutte le rotazioni logiche RZZ a coppie tramite rotazioni RZ fisiche a singolo qubit in un unico passo temporale.",
+      "it-intermediate": "Un qubit ausiliario inizializzato in |0⟩ non ha un'etichetta X vuota: una rotazione X lo porterebbe fuori dallo spazio del codice, e allora l'etichetta ausiliaria non si potrebbe più ignorare. I codici ottenuti con circuiti di codifica fatti solo di CNOT e qubit inizializzati in |0⟩ sono codici di parità: stabilizzatori, etichette e indici sono tutti dello stesso tipo di Pauli [41]. Seguire le etichette, inizialmente vuote, durante la codifica rivela molte operazioni logiche su più qubit che si possono eseguire con operazioni locali. Un esempio noto è il layout di Lechner-Hauke-Zoller [45, 46]: codifica k qubit logici in n = k(k+1)/2 qubit fisici, in modo che ogni coppia di qubit logici compaia nell'etichetta di un qubit fisico. Così tutte le rotazioni logiche R_ZZ tra coppie si eseguono in un solo passo, con rotazioni R_Z su singoli qubit fisici.",
       "it-expert": "Caso CNOT-only ⟹ 'parity code' (stabilizer/label/indici tutti dello stesso tipo Pauli) — esempio di punta: architettura Lechner-Hauke-Zoller (LHZ, l'architettura 'parity' su cui si basa l'azienda co-fondata da Lechner stesso, coautore) con n=k(k+1)/2 qubit fisici per k logici, che rende OGNI coppia RZZ logica implementabile in UN solo timestep via RZ fisiche — il caso d'uso di punta dell'intero formalismo, direttamente collegato al lavoro precedente del gruppo [45,46]."
     },
     "recall": [
@@ -1699,7 +1699,7 @@
     ],
     "sourceText": "×a in Fig. 2(b). This results in Fig. 2(c), along withsingle-qubit labels that do not violate this stabilizer.",
     "explanations": {
-      "it-intermediate": "...con la croce ×a nella Fig. 2(b). Il risultato è la Fig. 2(c), insieme alle etichette dei singoli qubit che non violano questo stabilizzatore.",
+      "it-intermediate": "Conclude l'esempio della Fig. 2. Con le etichette del qubit ausiliario a, che contengono l'indice destabilizzato ×a in Fig. 2(b), l'Eq. (12) dà la trasformazione dello stabilizzatore: C X̄ₐ C† = X₁Z₂Yₐ. Il risultato è la Fig. 2(c), che mostra lo stabilizzatore insieme alle etichette dei singoli qubit che non lo violano.",
       "it-expert": "Marcatura ×a in Fig. 2(b), da cui la Fig. 2(c) con le label single-qubit compatibili con lo stabilizzatore."
     }
   },
@@ -1775,7 +1775,7 @@
     ],
     "sourceText": "assist in quantum circuit design by revealing different waysto implement the same logical operations in stabilizer codes. ACKNOWLEDGMENTS",
     "explanations": {
-      "it-intermediate": "...e, più in generale, aiutare a progettare circuiti mostrando modi diversi di implementare le stesse operazioni logiche nei codici stabilizer. Segue la sezione dei ringraziamenti. Ringraziamenti e informazioni sui finanziamenti: gli autori ringraziano diversi colleghi per commenti e discussioni utili. Il lavoro è stato sostenuto da NextGenerationEU, dall'Austrian Science Fund, dal programma QuantERA II dell'Unione Europea, dal programma Horizon Europe, e dall'Austrian Research Promotion Agency.",
+      "it-intermediate": "Ultima frase del riepilogo: le etichette aiutano anche a progettare circuiti, perché mostrano modi diversi di realizzare la stessa operazione logica in un codice stabilizzatore. Segue la sezione dei ringraziamenti: gli autori ringraziano diversi colleghi per commenti e discussioni. Il lavoro è stato finanziato da NextGenerationEU, dall'Austrian Science Fund, dal programma europeo QuantERA II, da Horizon Europe e dall'Austrian Research Promotion Agency.",
       "it-expert": "Chiusura del summary: rivela implementazioni alternative delle stesse operazioni logiche nei codici stabilizer. Segue: Acknowledgments. Acknowledgements + funding: FFG/Quantum Austria, FWF (10.55776/F71), QuantERA II (Horizon 2020, GA 101017733), Horizon Europe PASQuanS2.1 (GA 101113690), FFG Basisprogramm — finanziamento misto accademico/industriale austriaco, coerente con le affiliazioni miste degli autori."
     }
   },
@@ -2006,7 +2006,7 @@
     ],
     "sourceText": "where the index of ¯Xj, etc. denotes that the single-qubit op-erator X, etc. acts on the jth qubit and we use a bar on topof the Pauli operators to denote the logical operators as willbe explained later (Appendix B). We use the brackets ⟨⟩todifferentiate between the ¯X and the ¯Z labels and add the colorsas an additional visual guide. Using either the brackets or thecolors would be enough to give a unique meaning to such aﬂow label, but removing brackets and color would make thenotation ambigious; e.g., ¯P = −¯X1 ¯X2 ¯Z3 and ¯P′ = −¯X1 ¯Z2 ¯Z3 donot correspond to the same label −123 but to −⟨12⟩3 versus−⟨1⟩23 [48].",
     "explanations": {
-      "it-intermediate": "...dove l'indice di X̄j, ecc., denota che l'operatore a singolo qubit X, ecc., agisce sul j-esimo qubit, e si usa una barra sopra gli operatori di Pauli per denotare gli operatori logici, come verrà spiegato più avanti (Appendice B). Si usano le parentesi ⟨⟩ per differenziare tra le etichette X̄ e Z̄, aggiungendo i colori come ulteriore ausilio visivo. Usare o le parentesi o i colori sarebbe sufficiente a dare un significato univoco a tale etichetta di flusso, ma rimuovere sia parentesi sia colore renderebbe la notazione ambigua... ...ad esempio, P̄=−X̄1X̄2Z̄3 e P̄′=−X̄1Z̄2Z̄3 non corrispondono alla stessa etichetta −123 ma a −⟨12⟩3 contro −⟨1⟩23 [nota 48].",
+      "it-intermediate": "Spiega la notazione dell'esempio appena dato, ℓ = −⟨12⟩3, che corrisponde a P̄ = −X̄₁X̄₂Z̄₃. L'indice di X̄ⱼ indica il qubit su cui agisce l'operatore; la barra indica un operatore logico (Appendice B). Le parentesi ⟨⟩ separano gli indici X da quelli Z, e i colori sono un aiuto visivo in più. Basterebbero le parentesi o i colori, ma senza nessuno dei due la notazione diventa ambigua: −X̄₁X̄₂Z̄₃ e −X̄₁Z̄₂Z̄₃ si scriverebbero entrambi −123, mentre le etichette corrette sono −⟨12⟩3 e −⟨1⟩23 [48].",
       "it-expert": "Chiarimento sulla necessità delle parentesi: senza ⟨⟩ (o colore), la notazione sarebbe ambigua — dimostrato dall'esempio esplicito del blocco successivo (due operatori diversi che condividerebbero la stessa stringa di cifre nude). Esempio esplicito di ambiguità: senza le parentesi, sia −X̄1X̄2Z̄3 sia −X̄1Z̄2Z̄3 collasserebbero sulla stringa '−123' — le parentesi (o il colore) sono strettamente necessarie per l'univocità."
     }
   },
@@ -2147,7 +2147,7 @@
     ],
     "sourceText": "which we ﬁx as its standard form. This follows from the factthat the Pauli group is generated by g0 = iI, g⟨j⟩= ¯Xj andgj = ¯Zj, and their commutativity properties. Its “vector form” is then the element ϱ( ¯P) := (κ|ξ|ζ) ∈Z4 × Fn 2 × Fn2 .(A3)",
     "explanations": {
-      "it-intermediate": "...che si fissa come sua forma standard. Questo segue dal fatto che il gruppo di Pauli è generato da g0=iI, g⟨j⟩=X̄j e gj=Z̄j, e dalle loro proprietà di commutatività. La sua 'forma vettoriale' è quindi l'elemento ϱ(P̄):=(κ|ξ|ζ)∈Z4×F2^n×F2^n (Equazione A3).",
+      "it-intermediate": "Ogni operatore di Pauli si può scrivere in un solo modo come una fase i^κ, seguita da un prodotto di X̄ⱼ e poi da un prodotto di Z̄ⱼ (Eq. A2): questa è la sua forma standard. È possibile perché il gruppo di Pauli è generato da iI, X̄ⱼ e Z̄ⱼ, e le regole di commutazione permettono di riordinare qualunque prodotto in questo modo. La \"forma vettoriale\" dell'operatore è allora ϱ(P̄) := (κ|ξ|ζ) ∈ Z₄ × F₂ⁿ × F₂ⁿ (Eq. A3): l'esponente della fase e due vettori di bit che dicono su quali qubit compaiono X e Z.",
       "it-expert": "Eq. (A3): mappa ϱ(P̄)=(κ|ξ|ζ)∈Z4×F2^n×F2^n — la rappresentazione VETTORIALE dell'operatore di Pauli (fase in Z4, due vettori binari per X/Z) — questa è la 'symplectic/binary representation' standard della letteratura stabilizer (Gottesman, Aaronson-Gottesman), qui derivata rigorosamente dalla standard form."
     }
   },
@@ -2222,7 +2222,7 @@
     ],
     "sourceText": "2\u0005→supp(ζ) := { j|ζj = 1} =: ζ ⊂{1, . . . , n},(A4)",
     "explanations": {
-      "it-intermediate": "...↦supp(ζ):={j|ζj=1}=:ζ⊂{1,...,n} (Equazione A4).",
+      "it-intermediate": "Parte dell'Eq. (A4), che collega la forma vettoriale all'etichetta di flusso. Come il vettore ξ corrisponde all'insieme degli indici ⟨j⟩ con ξⱼ = 1, così il vettore ζ ∈ F₂ⁿ corrisponde al suo supporto, l'insieme degli indici j con ζⱼ = 1. Un vettore di bit diventa quindi semplicemente la lista dei qubit su cui compare Z, cioè gli indici scritti nell'etichetta.",
       "it-expert": "Eq. (A4): supp(ζ) analogo per la parte Z̄ (indici nudi, senza parentesi, coerente con la convenzione di p0022)."
     }
   },
@@ -2307,7 +2307,7 @@
     ],
     "sourceText": "where only the indices of the nontrivial Pauli operators thatactually appear in the product are written down making thenotation dense n\u0002 n\u0002 j =: iκ \u0002 ¯P = iκ · ¯X ξj ¯Zζj gm = ¯P(ℓ),(A5) j · j=1 j=1 m∈ℓ",
     "explanations": {
-      "it-intermediate": "...dove solo gli indici degli operatori di Pauli non banali che compaiono effettivamente nel prodotto vengono scritti, rendendo la notazione densa (Equazione A5): P̄=i^κ·∏X̄j^ξj·∏Z̄j^ζj=i^κ∏gm (per m nell'etichetta ℓ).",
+      "it-intermediate": "Nell'etichetta si scrivono solo gli indici dei fattori di Pauli che compaiono davvero nel prodotto, e questo rende la notazione compatta. L'Eq. (A5) mette insieme le tre scritture: P̄ = i^κ ∏ X̄ⱼ^ξⱼ ∏ Z̄ⱼ^ζⱼ = i^κ ∏_{m ∈ ℓ} gₘ = P̄(ℓ), cioè forma standard, prodotto dei generatori elencati nell'etichetta ℓ, e operatore associato all'etichetta.",
       "it-expert": "Eq. (A5): riscrittura di P̄ come prodotto SOLO sui generatori effettivamente presenti (m∈ℓ) — la formalizzazione precisa della 'densità' della notazione a label (niente indici ridondanti per operatori identità)."
     }
   },
@@ -2458,7 +2458,7 @@
     ],
     "sourceText": "jth vector of the canonical basis. The ﬂow label notationis optimized for handwriting in analyzing a circuit and the“vector form” is optimized for group theory and calculations,while the Pauli operators are the objects of interest.",
     "explanations": {
-      "it-intermediate": "...j-esimo vettore della base canonica. Le tre notazioni hanno scopi diversi: le etichette di flusso sono comode da scrivere a mano su un circuito, la forma vettoriale è comoda per i calcoli e la teoria dei gruppi, e gli operatori di Pauli sono gli oggetti di cui ci interessa davvero l'effetto.",
+      "it-intermediate": "La Tabella I confronta le notazioni equivalenti (eⱼ è il j-esimo vettore della base canonica). Ognuna ha un uso diverso: le etichette di flusso sono comode da scrivere a mano quando si analizza un circuito, la forma vettoriale è adatta ai calcoli e alla teoria dei gruppi, e gli operatori di Pauli sono gli oggetti di cui interessa davvero l'effetto.",
       "it-expert": "e_j = j-esimo vettore canonico. Label per l'annotazione (anche manuale), vector form per calcolo e teoria dei gruppi, operatori come oggetti d'interesse."
     }
   },
@@ -2532,8 +2532,8 @@
     ],
     "sourceText": "into a group isomorphism by deﬁning a compatible groupoperation ⊛on the group Z4 × Fn",
     "explanations": {
-      "it-intermediate": "...in un isomorfismo di gruppo, definendo un'operazione ⊛ compatibile sull'insieme Z₄ × F₂ⁿ × F₂ⁿ, in modo che moltiplicare operatori di Pauli corrisponda a \"moltiplicare\" (con ⊛) le loro forme vettoriali.",
-      "it-expert": "…promossa a isomorfismo di gruppo definendo su Z₄ × F₂ⁿ × F₂ⁿ un'operazione ⊛ compatibile con il prodotto di Pauli."
+      "it-intermediate": "La corrispondenza ϱ tra operatori di Pauli e vettori (κ|ξ|ζ) è biunivoca (Eq. A6). Per renderla un isomorfismo di gruppo serve un'operazione ⊛ sull'insieme Z₄ × F₂ⁿ × F₂ⁿ scelta in modo compatibile: moltiplicare due operatori di Pauli deve corrispondere a combinare con ⊛ le loro forme vettoriali. La definizione di ⊛ è data subito dopo (Definizione A1).",
+      "it-expert": "La biiezione ϱ : P̄ → Z₄ × F₂ⁿ × F₂ⁿ (Eq. A6) diventa un isomorfismo di gruppo definendo sul codominio un'operazione ⊛ compatibile con il prodotto di Pauli (Definizione A1)."
     }
   },
   {
@@ -2613,7 +2613,7 @@
     ],
     "sourceText": "where ⊕4 denotes addition modulo 4 in the ring Z4, ⊕2 de-notes addition modulo 2 in the ﬁeld F2 and, · denotes standardmatrix multiplication.",
     "explanations": {
-      "it-intermediate": "...dove ⊕4 indica addizione modulo 4 nell'anello Z4, ⊕2 indica addizione modulo 2 nel campo F2, e · indica la moltiplicazione matriciale standard — chiarimento della notazione usata nella Definizione A1.",
+      "it-intermediate": "Spiega i simboli della Definizione A1, l'operazione ⊛ (Eq. A7): (κ₁|ξ₁|ζ₁) ⊛ (κ₂|ξ₂|ζ₂) = (κ₁ ⊕₄ κ₂ ⊕₄ 2ζ₁·ξ₂ᵀ | ξ₁ ⊕₂ ξ₂ | ζ₁ ⊕₂ ζ₂). ⊕₄ è la somma modulo 4 nell'anello Z₄, usata per la fase; ⊕₂ è la somma modulo 2 nel campo F₂, cioè lo XOR delle parti X e Z; il punto è il normale prodotto tra matrici. Il termine 2ζ₁·ξ₂ᵀ aggiunge un segno meno per ogni Z del primo operatore che deve scavalcare un X del secondo per tornare in forma standard.",
       "it-expert": "Chiarimento notazionale: ⊕4 = addizione in Z4, ⊕2 = addizione in F2, · = prodotto matriciale standard (usato nel termine di correzione ζ1·ξ2ᵀ)."
     }
   },
@@ -2819,7 +2819,7 @@
     ],
     "sourceText": "i.e., only the exponents are written down, which makes thegroup isomorphism ϱ sort of a generalized logarithm. In theﬂow label notation, this corresponds to the set-theoretic oper-ations in Fig. 3.",
     "explanations": {
-      "it-intermediate": "...cioè si scrivono solo gli esponenti, il che rende l'isomorfismo di gruppo ϱ una sorta di 'logaritmo generalizzato'. Nella notazione delle flow label, questo corrisponde alle operazioni insiemistiche di Figura 3 — un modo intuitivo di pensare a ϱ: trasforma un prodotto (moltiplicativo) di operatori in una somma (additiva) di 'etichette'.",
+      "it-intermediate": "La forma vettoriale scrive solo gli esponenti: per questo l'isomorfismo ϱ si comporta come una specie di logaritmo generalizzato, che trasforma un prodotto di operatori in una somma di vettori (con la correzione di fase dell'operazione ⊛). Nella notazione a etichette, la stessa operazione corrisponde alle operazioni tra insiemi mostrate in Fig. 3.",
       "it-expert": "Interpretazione concettuale: ϱ funge da 'logaritmo generalizzato' (trasforma prodotto in P̄ in somma in G) — le operazioni insiemistiche di Fig. 3 sono la controparte grafica di questa struttura logaritmica."
     }
   },
@@ -2895,7 +2895,7 @@
     ],
     "sourceText": "2 of G,we choose to use the Z4 component.",
     "explanations": {
-      "it-intermediate": "...(le parti X e Z) di G, si sceglie di usare la componente Z4 (cioè si mantiene κ come elemento di Z4 nella notazione principale, riservando la rappresentazione a 2 bit solo per l'implementazione).",
+      "it-intermediate": "La fase κ ∈ Z₄ si potrebbe rappresentare come un numero a due bit, ignorando il riporto sul terzo bit (che corrisponde a ridurre modulo 4). Ma questo si confonderebbe facilmente con le operazioni bit a bit sulle altre due componenti, le parti X e Z in F₂ⁿ. Per questo gli autori tengono κ come elemento di Z₄.",
       "it-expert": "Scelta notazionale finale: κ resta in Z4 nella notazione 'ufficiale' (la rappresentazione a 2 bit è solo un dettaglio implementativo)."
     }
   },
@@ -3069,7 +3069,7 @@
     ],
     "sourceText": "ζ \u0005−→(κ|ξ|ζ)(A12)is a group isomorphism. ξ ¯Z ¯P = iκ ¯X",
     "explanations": {
-      "it-intermediate": "...(ripetizione della definizione esplicita di ϱ vista in precedenza, in preparazione della dimostrazione che è un isomorfismo di gruppo).",
+      "it-intermediate": "Enunciato della Proposizione A2: la mappa ϱ, che associa a P̄ = i^κ X̄^ξ Z̄^ζ il vettore (κ|ξ|ζ) (Eq. A12), è un isomorfismo di gruppo tra il gruppo di Pauli e G = Z₄ × F₂ⁿ × F₂ⁿ con l'operazione ⊛. In pratica, calcolare con i vettori e l'operazione ⊛ equivale esattamente a moltiplicare operatori di Pauli.",
       "it-expert": "Ripetizione della definizione esplicita di ϱ (Eq. A12), enunciato completo di Prop. A2 prima della prova."
     }
   },
@@ -3337,7 +3337,7 @@
     ],
     "sourceText": "for natural numbers a ∈N and ¯P ∈¯P with ϱ( ¯P) = (κ|ξ|ζ),then we can of course write ¯Pa = ¯P · · · · · ¯P\u0005\u0006\u0007\ba \u0005→(κ|ξ|ζ) ⊛· · · ⊛(κ|ξ|ζ)\u0005\u0006\u0007\ba \u0010\u0010\u0010aζ ζ · ξT \u0010\u0010\u0010aξ \u0011 \u000f \u000ea .(A13) = aκ ⊕4 2 · 2",
     "explanations": {
-      "it-intermediate": "...numeri naturali a∈N e P̄∈P̄ con ϱ(P̄)=(κ|ξ|ζ), allora si può ovviamente scrivere P̄^a=P̄·...·P̄ (a volte) ↦(κ|ξ|ζ)⊛...⊛(κ|ξ|ζ) (a volte), il che dà una formula esplicita (Eq. A13) per il risultato di questa 'moltiplicazione ripetuta'.",
+      "it-intermediate": "Prima idea per definire le potenze nella forma vettoriale. Per un intero a ≥ 0 e un operatore P̄ con ϱ(P̄) = (κ|ξ|ζ), la potenza P̄^a è il prodotto di a copie di P̄, quindi corrisponde ad applicare ⊛ a a copie di (κ|ξ|ζ). L'Eq. (A13) dà il risultato esplicito: la fase vale aκ più un termine di correzione che dipende da ζ·ξᵀ, mentre le parti X e Z si ottengono moltiplicando per a. Il blocco successivo mostra che questa definizione non rispetta tutti gli assiomi di una moltiplicazione scalare.",
       "it-expert": "Eq. A13: formula esplicita per a·(κ|ξ|ζ):=ϱ(P̄^a) ottenuta applicando ⊛ ripetutamente a volte — coinvolge una somma quadratica in a (dal termine di correzione bilineare che si accumula ad ogni applicazione)."
     }
   },
@@ -3413,7 +3413,7 @@
     ],
     "sourceText": "¯Pa · ¯Pb = ¯Pa+b, ( ¯Pa)b = ¯Pab, and ¯P1 = ¯P and are thereforefulﬁlled a(κ|ξ|ζ), since ¯P always commutes with itself.",
     "explanations": {
-      "it-intermediate": "...P̄^a·P̄^b=P̄^(a+b), (P̄^a)^b=P̄^(ab), e P̄^1=P̄, e sono quindi soddisfatti per a(κ|ξ|ζ), poiché P̄ commuta sempre con se stesso (questi altri tre assiomi restano validi anche se la distributività fallisce).",
+      "it-intermediate": "Conclude la verifica della prima idea. La distributività (P̄Q̄)^a = P̄^a Q̄^a fallisce quando P̄ e Q̄ non commutano. Gli altri tre assiomi della moltiplicazione per uno scalare, cioè P̄^a·P̄^b = P̄^(a+b), (P̄^a)^b = P̄^(ab) e P̄¹ = P̄, valgono invece sempre, perché un operatore commuta con se stesso. Il problema è quindi solo la distributività.",
       "it-expert": "Gli altri 3 assiomi (P^a·P^b=P^{a+b}, (P^a)^b=P^{ab}, P^1=P) restano validi (banalmente, un operatore commuta sempre con se stesso) — solo la distributività tra operatori DIVERSI fallisce."
     }
   },
@@ -3463,7 +3463,7 @@
     ],
     "sourceText": "= I, which is only true for Pauli operators with orderat most 2 and false if ¯P ∈P has ord( ¯P) = 4, e.g., ¯P = iX.",
     "explanations": {
-      "it-intermediate": "...=I, il che è vero solo per operatori di Pauli con ordine al massimo 2, e falso se P̄∈P ha ordine 4, ad esempio P̄=iX — quindi anche l'Idea 2 fallisce (in generale) per operatori di ordine 4.",
+      "it-intermediate": "Seconda idea: limitare gli esponenti a 0 e 1, cioè lavorare in F₂. Così la distributività vale, ma si crea un altro problema. In F₂ si ha 1 ⊕ 1 = 0, quindi dovrebbe valere P̄² = P̄⁰ = I. Questo è vero solo per gli operatori di Pauli di ordine al più 2 ed è falso per quelli di ordine 4, come iX: neanche questa idea funziona per tutto il gruppo.",
       "it-expert": "Idea 2 FALLISCE per operatori di ordine 4 (es. iX): P̄²≠I in quel caso, contraddicendo l'assunzione implicita di F2-linearità — la restrizione a F2 non basta a salvare la costruzione per il gruppo intero."
     }
   },
@@ -3589,7 +3589,7 @@
     ],
     "sourceText": "2 ,we deﬁne Q(ϱ) as the strictly upper triangular part (strup forshort) of the m × m matrix ϱT ϱ, i.e., Q(ϱ) := strup(ϱT ϱ): ⎛ ⎞",
     "explanations": {
-      "it-intermediate": "...cioè Q(ϱ):=strup(ϱᵀϱ), la matrice i cui elementi (i,j) sopra la diagonale sono i prodotti ϱᵢϱⱼ, e zero altrove (diagonale inclusa) — la forma esplicita della matrice è mostrata nell'Eq. A14.",
+      "it-intermediate": "Definizione A2: per un vettore riga di bit ϱ = (ϱ₁, …, ϱₘ) ∈ F₂ᵐ si definisce Q(ϱ) come la parte strettamente triangolare superiore (\"strup\") della matrice m×m ϱᵀϱ, cioè Q(ϱ) := strup(ϱᵀϱ). L'elemento (i, j) con i < j vale ϱᵢϱⱼ, tutti gli altri, diagonale compresa, valgono zero (la matrice è scritta nell'Eq. A14). Questa matrice serve a scrivere in forma compatta le correzioni di fase quando si moltiplicano molti operatori di Pauli.",
       "it-expert": "Eq. A14: forma esplicita di Q(ϱ) — elementi (i,j) con i<j pari a ϱᵢϱⱼ, zero per i≥j (triangolare superiore stretta)."
     }
   },
@@ -3676,7 +3676,7 @@
     ],
     "sourceText": "2 that has azeroth element, we deﬁne Q(ϱ) by the exact above deﬁnition;i.e., the zeroth element gets omitted. For any Pauli operator",
     "explanations": {
-      "it-intermediate": "...P̄∈P̄ con 'forma vettoriale' ϱ(P̄)=(κ|ξ|ζ), si definisce la matrice triangolare 2n×2n Q(P̄):=Q((ξ|ζ)) — cioè si applica la costruzione Q alla concatenazione delle parti X e Z (ignorando la fase κ).",
+      "it-intermediate": "Estende la definizione di Q: se il vettore ha anche una componente zero, come la fase in (κ|ξ|ζ) ∈ Z₄ × F₂ᵐ, Q si calcola nello stesso modo ignorando quella componente. Per un operatore di Pauli P̄ con forma vettoriale (κ|ξ|ζ) si pone quindi Q(P̄) := Q((ξ|ζ)), una matrice triangolare 2n × 2n che dipende solo dalle parti X e Z.",
       "it-expert": "Applicazione a un singolo Pauli: Q(P̄):=Q((ξ|ζ)) — matrice 2n×2n costruita dalla concatenazione ξ|ζ, base per la formula del prodotto di più Pauli (Corollario A1 che segue)."
     }
   },
@@ -4099,7 +4099,7 @@
     ],
     "sourceText": "where [ ¯P] is the equivalence class of ¯P in ˜P, is a vector spaceisomorphism. (A17)",
     "explanations": {
-      "it-intermediate": "...dove [P̄] è la classe di equivalenza di P̄ in P̃ (il quoziente per le fasi) — chiarimento della notazione usata nell'enunciato della Proposizione A3.",
+      "it-intermediate": "Completa l'enunciato della Proposizione A3. Se si ignorano le fasi, cioè si considerano uguali due operatori che differiscono solo per un fattore i^κ, ogni classe di equivalenza [P̄] nel quoziente P̃ corrisponde al vettore (ξ|ζ). La proposizione dice che questa mappa è un isomorfismo di spazi vettoriali su F₂: senza fase, moltiplicare operatori di Pauli equivale a sommare vettori di bit.",
       "it-expert": "Chiarimento notazionale: [P̄]∈P̃ = classe di P̄ modulo fattori di fase iᵏ."
     }
   },
@@ -4217,7 +4217,7 @@
     ],
     "sourceText": "ϱ( ¯P) = ϱ( ¯P1 · · · ¯Pm) = ϱ( ¯P1) ⊛· · · ⊛ϱ( ¯Pm) = (κ1|ξ1|ζ1) ⊛· · · ⊛(κm|ξm|ζm).(A19)",
     "explanations": {
-      "it-intermediate": "...ϱ(P̄)=ϱ(P̄1···P̄m)=ϱ(P̄1)⊛···⊛ϱ(P̄m)=(κ1|ξ1|ζ1)⊛···⊛(κm|ξm|ζm) (Eq. A19) — applicazione diretta della proprietà di omomorfismo al prodotto di m operatori.",
+      "it-intermediate": "Primo passo della dimostrazione. Poiché ϱ è un omomorfismo di gruppo, la forma vettoriale di un prodotto di m operatori è il prodotto ⊛ delle singole forme vettoriali: ϱ(P̄₁⋯P̄ₘ) = ϱ(P̄₁) ⊛ ⋯ ⊛ ϱ(P̄ₘ) = (κ₁|ξ₁|ζ₁) ⊛ ⋯ ⊛ (κₘ|ξₘ|ζₘ) (Eq. A19). Da qui si ricava la formula esplicita per la fase del prodotto.",
       "it-expert": "Eq. A19: applicazione della proprietà di omomorfismo al prodotto di m fattori — passo preparatorio per estrarre la 'parte lineare' (ignorando la fase) nel blocco successivo."
     }
   },
@@ -4593,7 +4593,7 @@
     ],
     "sourceText": "1, 2, or 4: For every ¯P ∈¯P, we have ¯P2 = ¯P · ¯P \u0005→2 · (κ|ξ|ζ) 2κ ⊕4 2ζ · ξT |0|0\u0004 \u0003 = \u0005→i2κ⊕42ζ·ξT I = (−1)κ⊕2ζ·ξT I(A24) and therefore ¯P4 = I and ord( ¯P) divides 4.",
     "explanations": {
-      "it-intermediate": "...1, 2, o 4: per ogni P̄∈P̄, si ha P̄²↦(un calcolo esplicito che mostra che il quadrato di qualsiasi Pauli è sempre ±I), e quindi P̄⁴=I e ord(P̄) divide 4 — dimostrazione diretta che l'ordine di un operatore di Pauli è sempre un divisore di 4, quindi 1, 2 o 4.",
+      "it-intermediate": "Osservazione A8: il gruppo di Pauli è finito, quindi ogni suo elemento ha ordine finito, e in effetti l'ordine è sempre 1, 2 o 4. Calcolando P̄² con l'operazione ⊛ si ottiene (2κ ⊕₄ 2ζ·ξᵀ | 0 | 0), cioè P̄² = (−1)^(κ ⊕₂ ζ·ξᵀ) I (Eq. A24): il quadrato di un operatore di Pauli è sempre +I o −I. Ne segue P̄⁴ = I, quindi l'ordine divide 4.",
       "it-expert": "Eq. A24: calcolo esplicito P̄²=(±1)I (il quadrato di qualunque Pauli è sempre proporzionale all'identità, con segno determinato da κ⊕2ζ·ξᵀ) ⟹ P̄⁴=I ⟹ ord(P̄)|4, quindi ord(P̄)∈{1,2,4}."
     }
   },
@@ -4631,7 +4631,7 @@
     ],
     "sourceText": "4κ ⊕2 ζ · ξT = 1i ¯X = i1 ¯X 1 ¯Z0,−¯X ¯Z = i2 ¯X 1 ¯Z1",
     "explanations": {
-      "it-intermediate": "...ordine 4 corrisponde alla condizione κ⊕2ζ·ξᵀ=1, con esempi come iX̄ e −X̄Z̄ — completamento della tabella dei casi per l'ordine di un operatore di Pauli.",
+      "it-intermediate": "Ultima riga della tabella sull'ordine degli operatori di Pauli: un operatore ha ordine 4 quando κ ⊕₂ ζ·ξᵀ = 1, cioè quando il suo quadrato è −I. Esempi sono iX̄ = i¹X̄¹Z̄⁰ e −X̄Z̄ = i²X̄¹Z̄¹. Le righe precedenti coprono l'ordine 1 (solo l'identità) e l'ordine 2 (per esempio X̄ e Ȳ).",
       "it-expert": "Completamento tabella: condizione per ord=4 (κ⊕2ζ·ξᵀ=1), esempi iX̄, −X̄Z̄."
     }
   },
@@ -4726,7 +4726,7 @@
     ],
     "sourceText": "2 × Fn2 × F2 →G = Z4 × Fn2 × Fn2 isgiven by ψ(ξ, ζ, δ) := (2δ + ζ · ξT |ξ|ζ).",
     "explanations": {
-      "it-intermediate": "...data da ψ(ξ,ζ,δ):=(2δ+ζ·ξᵀ|ξ|ζ) — la formula esplicita di conversione dalla notazione con segno δ alla fase κ della notazione ϱ.",
+      "it-intermediate": "Definisce la mappa ψ che collega le due notazioni per gli operatori Hermitiani. ψ prende la parte X ξ, la parte Z ζ e un bit di segno δ, e restituisce ψ(ξ, ζ, δ) := (2δ + ζ·ξᵀ | ξ | ζ) ∈ G = Z₄ × F₂ⁿ × F₂ⁿ. In pratica converte la notazione XYZ, che tiene solo un segno ±, nella fase κ della forma vettoriale ϱ: ogni Y contribuisce un fattore i, da cui il termine ζ·ξᵀ.",
       "it-expert": "Eq.: ψ(ξ,ζ,δ):=(2δ+ζ·ξᵀ|ξ|ζ) — formula di conversione esplicita, il segno δ (±1, notazione XYZ) diventa la fase κ=2δ+ζ·ξᵀ (notazione ϱ)."
     }
   },
@@ -4764,7 +4764,7 @@
     ],
     "sourceText": "¯P⩽2 \u0010→¯P and the presentation ϱ. In particular, the map ψ isinjective, but not surjective with image G⩽2 = ϱ( ¯P⩽2) ⊊G.",
     "explanations": {
-      "it-intermediate": "...dell'inclusione ı:P̄≤2→P̄ e della presentazione ϱ. In particolare, la mappa ψ è iniettiva, ma NON suriettiva, con immagine G≤2=ϱ(P̄≤2)⊊G — quindi la notazione XYZ 'vede' solo una parte del gruppo G, esattamente il sottoinsieme corrispondente agli operatori Hermitiani.",
+      "it-intermediate": "Il diagramma commuta: passare per la notazione XYZ e poi applicare ψ dà lo stesso risultato che includere gli operatori Hermitiani P̄_{≤2} in tutto il gruppo e poi applicare ϱ. In particolare ψ è iniettiva ma non suriettiva: la sua immagine G_{≤2} = ϱ(P̄_{≤2}) è un sottoinsieme proprio di G. La notazione XYZ descrive quindi solo gli operatori di ordine al più 2, cioè quelli Hermitiani, e non quelli come iX̄.",
       "it-expert": "Proprietà chiave di ψ: iniettiva ma non suriettiva, immagine = G≤2 (sottoinsieme corrispondente a P̄≤2) — la notazione XYZ è strutturalmente più limitata di ϱ, coprendo solo gli operatori Hermitiani."
     }
   },
@@ -4923,7 +4923,7 @@
     ],
     "sourceText": "2 and ˜ϱ :→Fn2 × Fn2 deﬁned on the quotient group ˜P =¯P/⟨iI⟩induced by r resp. ϱ, i.e., forgetting the phase factor,coincide.",
     "explanations": {
-      "it-intermediate": "...F2^n×F2^n definite sul gruppo quoziente P̃=P̄/⟨iI⟩ (chiarimento della notazione usata nel Corollario A2 appena enunciato).",
+      "it-intermediate": "Corollario A2: se si dimentica la fase, cioè si lavora nel quoziente P̃ = P̄/⟨iI⟩, le due notazioni coincidono. Sia la notazione XYZ sia la forma vettoriale associano allora a ogni operatore lo stesso vettore in F₂ⁿ × F₂ⁿ. Le differenze tra le due notazioni riguardano quindi solo la fase.",
       "it-expert": "(chiarimento notazionale per Corollario A2)."
     }
   },
@@ -5093,7 +5093,7 @@
     ],
     "sourceText": "+ ¯Y \u0005→(1, 1, 0) = (1, 0, 0) ⊕2 (0, 1, 0) \u0005→¯X · ¯Z,(A28) (A26) (0, 1)if ¯Pj = ¯Zj,",
     "explanations": {
-      "it-intermediate": "...+Ȳ↦(1,1,0)=(1,0,0)⊕2(0,1,0)↦X̄·Z̄ (Eq. A28/A26) — il controesempio esplicito: sommare le codifiche di X̄ e Z̄ dà la codifica di Ȳ solo per coincidenza, ma il prodotto reale X̄·Z̄ è proporzionale a Ȳ con un fattore di fase (i o −i), che la somma 'ingenua' non cattura correttamente in generale.",
+      "it-intermediate": "Mostra perché la notazione XYZ non è compatibile con la somma naturale dei vettori. Se +Ȳ si codifica come (1, 1, 0), +X̄ come (1, 0, 0) e +Z̄ come (0, 1, 0), allora sommare i vettori di X̄ e Z̄ dà quello di Ȳ. Ma il prodotto vero è X̄·Z̄ = −iȲ, non Ȳ: la somma dei vettori perde il fattore di fase (Eq. A28). Per ogni qubit la codifica XYZ usa (1,0) per X̄, (0,1) per Z̄ e (1,1) per Ȳ (Eq. A26).",
       "it-expert": "Eq. A26/A28: controesempio esplicito — (1,0,0)⊕(0,1,0)=(1,1,0) 'corrisponderebbe' a Ȳ, ma il prodotto VERO X̄·Z̄=∓iȲ ha un fattore di fase che la somma ingenua ignora — dimostra concretamente la non-linearità di r rispetto alla struttura additiva naïve."
     }
   },
@@ -5178,7 +5178,7 @@
     ],
     "sourceText": "only the third case needs to be considered in order to computethe phase κ; this case occurs ζ · ξT times, leading to n\u0002 n\u0002 ¯P = (−1)δ · iζ·ξT ¯X ξj j ¯Zζj ¯X ξj j ¯Zζj j = i2δ+ζ·ξT j .(A27) j=1 j=1",
     "explanations": {
-      "it-intermediate": "...solo il terzo caso deve essere considerato per calcolare la fase κ; questo caso si verifica ζ·ξᵀ volte, portando alla formula finale P̄=i^(2δ+ζ·ξᵀ)·(prodotto dei fattori X e Z per ogni qubit) — Eq. A27, il passo tecnico finale della conversione tra le due notazioni.",
+      "it-intermediate": "Conclude la conversione dalla notazione XYZ alla forma standard. Riscrivendo ogni fattore come X̄^ξⱼ Z̄^ζⱼ, solo il caso Ȳⱼ = iX̄ⱼZ̄ⱼ produce un fattore di fase. Questo caso si presenta ζ·ξᵀ volte, una per ogni qubit con Y. Si ottiene quindi P̄ = (−1)^δ i^(ζ·ξᵀ) ∏ X̄ⱼ^ξⱼ Z̄ⱼ^ζⱼ = i^(2δ + ζ·ξᵀ) ∏ X̄ⱼ^ξⱼ Z̄ⱼ^ζⱼ (Eq. A27), che è proprio la formula della mappa ψ.",
       "it-expert": "Eq. A27: derivazione finale della formula di conversione, isolando il conteggio dei casi 'anticommutanti' (ζ·ξᵀ volte) che contribuiscono alla fase — completa il calcolo iniziato in p0185."
     }
   },
@@ -5228,7 +5228,7 @@
     ],
     "sourceText": "Recall the following (anti)commutativity properties ofPauli operators:",
     "explanations": {
-      "it-intermediate": "...suriettiva). ∎ Si richiamano ora le seguenti proprietà di (anti)commutatività degli operatori di Pauli, che serviranno nel seguito.",
+      "it-intermediate": "Apre la sezione sulla (anti)commutatività, ricordando le proprietà degli operatori di Pauli che servono nel seguito. La prima, enunciata subito dopo, è che due operatori di Pauli o commutano o anticommutano, a seconda che sia pari o dispari il numero di qubit su cui i loro fattori anticommutano.",
       "it-expert": "Chiusura formale della prova. Transizione a un richiamo delle proprietà di (anti)commutatività di Pauli, in preparazione della struttura simplettica introdotta subito dopo."
     }
   },
@@ -5660,7 +5660,7 @@
     ],
     "sourceText": "Then, the inverse matrix can be easily calculated by \u0018 DTBT \u0019 ˜F −1 = .(A31) CTAT The following are equivalent:",
     "explanations": {
-      "it-intermediate": "Allora, la matrice inversa si può calcolare facilmente come F̃⁻¹=(Dᵀ Bᵀ; Cᵀ Aᵀ) (Eq. A31). Seguono alcune condizioni equivalenti:",
+      "it-intermediate": "Proposizione sulle matrici simplettiche. Se F̃ = (A B; C D), con blocchi n×n, è simplettica, la sua inversa si calcola subito senza eliminazione di Gauss: F̃⁻¹ = (Dᵀ Bᵀ; Cᵀ Aᵀ) (Eq. A31). La proposizione elenca poi condizioni equivalenti alla simpletticità, scritte direttamente in termini dei blocchi (per esempio ADᵀ + BCᵀ = I con BAᵀ e CDᵀ simmetriche).",
       "it-expert": "Eq. A31: formula esplicita per F̃⁻¹ in termini dei blocchi trasposti — caso speciale della teoria simplettica standard (l'inversa di una matrice simplettica ha una forma a blocchi particolarmente semplice)."
     }
   },
@@ -6081,7 +6081,7 @@
     ],
     "sourceText": "now pulling back the action of P to its induced action on | ¯ψ⟩(see question marks in Fig. 5).",
     "explanations": {
-      "it-intermediate": "...ora 'tirando indietro' (pulling back) l'azione di P alla sua azione indotta su |ψ̄⟩ (vedi i punti interrogativi in Fig. 5).",
+      "it-intermediate": "È la seconda domanda considerata nell'appendice. Se dopo il circuito Clifford C si applica una rotazione di Pauli fisica R_P, si vuole sapere che cosa fa sullo stato logico. Bisogna quindi riportare indietro (pullback) l'azione dell'operatore fisico P alla corrispondente azione sullo stato logico |ψ̄⟩ prima del circuito: sono i punti interrogativi della Fig. 5. Algebricamente è C†PC.",
       "it-expert": "Pullback: 'tirare indietro' l'azione da post-circuito a pre-circuito, illustrato in Fig. 5."
     }
   },
@@ -6157,7 +6157,7 @@
     ],
     "sourceText": "and the practical side of calculating the tableaus in an iterativemanner are covered (see Example B1).",
     "explanations": {
-      "it-intermediate": "...e infine il lato pratico del calcolo iterativo dei tableau (vedi Esempio B1).",
+      "it-intermediate": "Conclude la panoramica dell'Appendice B. Prima si descrive l'azione del gruppo di Clifford sul gruppo di Pauli: coniugazione covariante e controvariante, circuito o circuito inverso, porte aggiunte prima o dopo. Poi si introducono i tableau di flusso e di Clifford, che rappresentano queste azioni come le matrici rappresentano le mappe lineari. Infine si mostra in pratica come calcolare i tableau in modo iterativo, porta dopo porta (Esempio B1).",
       "it-expert": "Chiusura della roadmap: calcolo iterativo pratico rimandato a Example B1."
     }
   },
@@ -6264,7 +6264,7 @@
     ],
     "sourceText": "Note that both conjugation types give group homomor-phisms; i.e., they are compatible with the multiplication ofPauli operators:",
     "explanations": {
-      "it-intermediate": "Si noti che entrambi i tipi di coniugazione danno omomorfismi di gruppo, cioè sono compatibili con la moltiplicazione di operatori di Pauli:",
+      "it-intermediate": "Entrambi i tipi di coniugazione, C P̄ C† e C† P C, sono omomorfismi di gruppo: l'immagine di un prodotto di operatori di Pauli è il prodotto delle immagini. Per esempio C(P̄·Q̄)C† = C P̄ C† · C Q̄ C† (Eq. B4), perché in mezzo C†C si cancella. Basta quindi conoscere l'azione sui generatori per conoscerla su tutto il gruppo.",
       "it-expert": "Entrambe le coniugazioni sono omomorfismi di gruppo (compatibili con la moltiplicazione) — proprietà dimostrata esplicitamente nel blocco successivo."
     }
   },
@@ -6468,7 +6468,7 @@
     ],
     "sourceText": "are covariant group homomorphisms in their second compo-nent, i.e., for a ﬁxed Clifford unitary C ∈Cℓand two Paulioperators ¯P, ¯Q ∈¯P, we have C∗( ¯P · ¯Q) = C∗¯P · C∗¯Q and forP, Q ∈P, we have C∗(P · Q) = C∗P · C∗Q.",
     "explanations": {
-      "it-intermediate": "...sono omomorfismi di gruppo covarianti nella loro seconda componente, cioè per un'unitaria di Clifford fissata C∈Cℓ e due operatori di Pauli P̄,Q̄∈P̄, si ha C∗(P̄·Q̄)=C∗P̄·C∗Q̄, e analogamente per il pullback.",
+      "it-intermediate": "Proposizione B1, prima parte. Il pushforward C_*P̄ := C P̄ C† e il pullback C^*P := C†PC sono entrambi omomorfismi covarianti nel loro secondo argomento. Fissato C, l'immagine di un prodotto è il prodotto delle immagini, nello stesso ordine: C_*(P̄·Q̄) = C_*P̄ · C_*Q̄ e C^*(P·Q) = C^*P · C^*Q.",
       "it-expert": "Prop. B1 chiusura: covarianza nella SECONDA componente (l'operatore di Pauli) per C fissato — proprietà già vista (omomorfismo, p0234-235), qui formalizzata come proposizione completa."
     }
   },
@@ -6542,7 +6542,7 @@
     ],
     "sourceText": "while the pullback is contravariant in the ﬁrst component, i.e.,for two Clifford unitaries C1,C2 ∈Cℓand P ∈P: (C2 · C1)∗P = C1 ∗(C2 ∗P).(B10) (b)",
     "explanations": {
-      "it-intermediate": "...mentre il pullback è contravariante nella prima componente, cioè (C2·C1)*P=C1*(C2*P) (Eq. B10) — analogo per il pullback di Eq. B6.",
+      "it-intermediate": "Proposizione B1, seconda parte: cosa succede se si cambia il circuito. Il pushforward è covariante nel primo argomento: (C₂C₁)_*P̄ = C₂_*(C₁_*P̄) (Eq. B9), quindi si applicano i circuiti nello stesso ordine del tempo. Il pullback invece è controvariante: (C₂C₁)^*P = C₁^*(C₂^*P) (Eq. B10), quindi l'ordine si inverte e si applica prima l'ultimo circuito.",
       "it-expert": "Contravarianza nella prima componente per il pullback (Eq. B10) — analogo di Eq. B6."
     }
   },
@@ -6655,7 +6655,7 @@
     ],
     "sourceText": "∗P(2) for the pullback [see boldarrows in panel (a)]. This shows that the pushforward is naturallycalculated in an iterative manner in the forward direction of time,while the pullback is naturally calculated iteratively in the backwarddirection of time.",
     "explanations": {
-      "it-intermediate": "...risp. applicare iterativamente C1* a P^(1)=C2*P^(2) per il pullback (vedi frecce in grassetto nel pannello a). Questo mostra che il pushforward si calcola naturalmente in modo iterativo nella direzione IN AVANTI del tempo, mentre il pullback si calcola naturalmente in modo iterativo nella direzione ALL'INDIETRO del tempo.",
+      "it-intermediate": "Didascalia della Fig. 6(b). Per il circuito composto C₂C₁, il pushforward si ottiene applicando C₂_* a P⁽¹⁾ = C₁_*P⁽⁰⁾, mentre il pullback si ottiene applicando C₁^* a P⁽¹⁾ = C₂^*P⁽²⁾ (frecce in grassetto nel pannello a). Quindi il pushforward si calcola naturalmente passo per passo andando avanti nel tempo, il pullback andando indietro.",
       "it-expert": "Punto chiave pratico/computazionale: pushforward → iterazione forward-in-time naturale; pullback → iterazione backward-in-time naturale — questo determina quale dei due convenga usare a seconda di come si vuole scandire il circuito (utile per implementazioni, motiva la scelta successiva su append/prepend)."
     }
   },
@@ -6674,7 +6674,7 @@
     ],
     "sourceText": "while in the case of the pullback the adding of C†",
     "explanations": {
-      "it-intermediate": "...mentre nel caso del pullback, l'aggiunta di C†_{λ+1} e C_{λ+1} deve avvenire all'INTERNO del 'sandwich' (la struttura a strati C†...C†PC...C).",
+      "it-intermediate": "Spiega cosa succede aggiungendo una porta C_{λ+1} alla fine di un circuito. Per il pushforward basta coniugare il risultato già calcolato, cioè aggiungere C_{λ+1} e C†_{λ+1} all'esterno. Per il pullback, invece, C†_{λ+1} e C_{λ+1} vanno inseriti all'interno della struttura a \"sandwich\" C†⋯C† P C⋯C, a contatto con P (Eq. B13 nel blocco successivo).",
       "it-expert": "Contrasto operativo: per il pullback, estendere il circuito richiede inserire i nuovi fattori DENTRO il prodotto sandwich esistente (non semplicemente in coda), operazione meno 'naturale' iterativamente."
     }
   },
@@ -6723,7 +6723,7 @@
     ],
     "sourceText": "λ+1 and Cλ+1has to happen on the inside of the “sandwich”: λ+1P) = C† 1 · · ·C†λ(C† C∗(C∗ λ+1PCλ+1)Cλ · · ·C1.(B13) (B11)",
     "explanations": {
-      "it-intermediate": "...formalizzato in Eq. B13: C*(C*_{λ+1}P) = C†1···C†λ(C†_{λ+1}PC_{λ+1})Cλ···C1 — la struttura a sandwich con l'inserimento centrale esplicito.",
+      "it-intermediate": "Formula del pullback quando si aggiunge la porta C_{λ+1} alla fine del circuito: C^*(C^*_{λ+1}P) = C₁†⋯C_λ† (C†_{λ+1} P C_{λ+1}) C_λ⋯C₁ (Eq. B13). La nuova porta finisce al centro del sandwich, a contatto con P. Per questo il risultato già calcolato non si può riusare direttamente, e conviene aggiornare i tableau in un altro modo.",
       "it-expert": "Eq. B13: forma esplicita del pullback con inserimento centrale — illustra concretamente la non-naturalità iterativa menzionata sopra."
     }
   },
@@ -6792,7 +6792,7 @@
     ],
     "sourceText": "at time λ = 0, while the time steps i = 1, 2 are after the corre-sponding circuit Ci. Figure 6 shows the co- and contravarianceof the pushforward and the pullback in the circuit model. b. Appending versus prepending gate",
     "explanations": {
-      "it-intermediate": "...al tempo λ=0, mentre i passi temporali i=1,2 sono dopo il corrispondente circuito Ci. La Figura 6 mostra la co- e contravarianza del pushforward e del pullback nel modello a circuito. Sottosezione 'b. Appendere vs anteporre un gate'.",
+      "it-intermediate": "Precisa la convenzione sui tempi. Nel circuito composto C₂C₁ gli operatori logici P̄ corrispondono a P⁽⁰⁾ al tempo λ = 0, mentre i tempi λ = 1, 2 sono quelli subito dopo i circuiti C₁ e C₂. Così non si deve chiamare l'uscita fisica del primo circuito \"ingresso logico\" del secondo. La Fig. 6 mostra la covarianza del pushforward e la controvarianza del pullback nel modello a circuito. Inizia poi la sottosezione b, su cosa cambia se una porta viene aggiunta alla fine del circuito o anteposta all'inizio.",
       "it-expert": "Chiusura convenzione notazionale + transizione a sub-b, Appending versus prepending gate."
     }
   },
@@ -6948,7 +6948,7 @@
     ],
     "sourceText": "images of the pullback change, appending the action of theprepended gate, which is naturally iterative. c. Circuit versus inverse circuit",
     "explanations": {
-      "it-intermediate": "...mentre le immagini del pullback cambiano, anteponendo l'azione del gate anteposto, il che È naturalmente iterativo. Sottosezione 'c. Circuito vs circuito inverso'.",
+      "it-intermediate": "Conclude il ragionamento su quale calcolo è \"naturalmente iterativo\". Se una porta viene anteposta all'inizio del circuito, gli operatori fisici alla fine restano gli stessi, mentre le loro immagini tramite pullback cambiano: alla trasformazione già calcolata si aggiunge semplicemente l'azione della nuova porta. In questo caso quindi è il pullback a potersi aggiornare passo per passo. Inizia poi la sottosezione c, che confronta l'uso del circuito con quello del circuito inverso.",
       "it-expert": "Chiusura della spiegazione concettuale (simmetrico al caso pushforward/append). Transizione a sub-c, Circuit versus inverse circuit."
     }
   },
@@ -6992,7 +6992,7 @@
     ],
     "sourceText": "and vice versa(C†)∗¯P = (C†)† ¯P(C†) = C ¯PC† = C∗¯P,",
     "explanations": {
-      "it-intermediate": "...e viceversa (C†)∗P̄=(C†)†P̄(C†)=CP̄C†=C∗P̄ — la simmetria completa.",
+      "it-intermediate": "Sostituire un circuito C con il suo inverso C† scambia i due tipi di coniugazione. Il pullback attraverso C† coincide con il pushforward attraverso C (Eq. B14), e viceversa (C†)_*P̄ = (C†)P̄(C†)† = C P̄ C† = C_*P̄. Per questo il tableau di Clifford di C† è il tableau inverso di quello di C: le due rappresentazioni contengono la stessa informazione, letta in direzioni opposte.",
       "it-expert": "Simmetria completa dello scambio C↔C† (pull↔push in entrambe le direzioni)."
     }
   },
@@ -7143,7 +7143,7 @@
     ],
     "sourceText": "which also shows that the pullback and the pushforward areinverse to each other:",
     "explanations": {
-      "it-intermediate": "...il che mostra anche che pullback e pushforward sono inversi l'uno dell'altro:",
+      "it-intermediate": "Le formule esplicite per la CNOT (Eq. B15), in cui pushforward e pullback agiscono in modo speculare su ξ e ζ, mostrano anche un fatto generale: pullback e pushforward sono l'uno l'inverso dell'altro. Applicare a un operatore prima uno e poi l'altro lo riporta a sé stesso, come mostrano le Eq. (B16)-(B17) che seguono.",
       "it-expert": "Conseguenza immediata: pull e push sono inverse funzionali l'una dell'altra (dimostrato esplicitamente nel blocco successivo)."
     }
   },
@@ -7199,7 +7199,7 @@
     ],
     "sourceText": "note the reversed ordering of the two matrices at • because ofthe contravariance.",
     "explanations": {
-      "it-intermediate": "...si noti l'ordine invertito delle due matrici nel passaggio marcato con •, a causa della contravarianza.",
+      "it-intermediate": "Commento alle Eq. (B16)-(B17), che dimostrano che pullback e pushforward sono inversi l'uno dell'altro. Nel passaggio segnato con • i due circuiti compaiono in ordine invertito, CC† invece di C†C. Il motivo è la controvarianza del pullback: componendo due pullback, l'ordine dei circuiti si rovescia.",
       "it-expert": "Nota tecnica: l'inversione d'ordine nel passaggio marcato è precisamente una manifestazione della contravarianza del pullback (coerente con Eq. B10)."
     }
   },
@@ -7762,7 +7762,7 @@
     ],
     "sourceText": "· Zζ11 · · · Zζc⊕2ζtc· · · Zζtt · · · Zζn n = iκX ξ⊕2ξcetZζ⊕2ζtec.(B20)",
     "explanations": {
-      "it-intermediate": "...ottenendo il risultato finale iκ X^(ξ⊕₂ξce_t) Z^(ζ⊕₂ζte_c) = Eq. B20, che coincide esattamente con la formula generale data in Eq. B15.",
+      "it-intermediate": "Ultimo passaggio della verifica della formula per la CNOT. Spostando i fattori X e Z per riportarli in forma standard, l'esponente di X sul target diventa ξ_c ⊕ ξ_t e quello di Z sul controllo diventa ζ_c ⊕ ζ_t, mentre la fase non cambia. Si ottiene i^κ X^(ξ ⊕₂ ξ_c e_t) Z^(ζ ⊕₂ ζ_t e_c) (Eq. B20), cioè esattamente la regola generale dell'Eq. (B15): la CNOT copia la parte X del controllo sul target e la parte Z del target sul controllo.",
       "it-expert": "Eq. B20: risultato finale del calcolo esplicito, coincide con Eq. B15 — chiude la verifica diretta per CNOT."
     }
   },
@@ -7837,7 +7837,7 @@
     ],
     "sourceText": "t . Since we haveto swap them back in order to get back to the standard form,we get an additional −1 in the phase iff both operators arepresent, i.e., iff ξt = ζt = 1. This phase correction is exactlythe ⊕42ξtζt of the proposition, while the addition of (ξt ⊕2ζt )et to ξ and ζ leads to canceling the existing ξt (resp. ζt) andreplacing it by ζt (resp. ξt).",
     "explanations": {
-      "it-intermediate": "...poiché li si deve riscambiare per tornare alla forma standard, si ottiene un −1 addizionale in fase se e solo se entrambi gli operatori sono presenti, cioè se ξ_t=ζ_t=1. Questa correzione di fase è esattamente il ⊕₄2ξ_tζ_t della proposizione, mentre l'aggiunta di (ξ_t⊕₂ζ_t)e_t a ξ e ζ porta a cancellare la ξ_t (risp. ζ_t) esistente e sostituirla con ζ_t (risp. ξ_t).",
+      "it-intermediate": "Verifica della formula per la Hadamard Hₜ. Hₜ lascia invariato quasi tutto l'operatore, ma sul qubit t sostituisce X^ξₜ con Z^ξₜ e Z^ζₜ con X^ζₜ. Per tornare alla forma standard, con X prima di Z, bisogna scambiare di nuovo i due fattori: se sono presenti entrambi (ξₜ = ζₜ = 1) lo scambio produce un segno −1. È proprio la correzione ⊕₄ 2ξₜζₜ della proposizione. Aggiungere (ξₜ ⊕₂ ζₜ)eₜ a ξ e a ζ, invece, cancella il vecchio bit e lo sostituisce con l'altro, cioè scambia ξₜ e ζₜ.",
       "it-expert": "Giustificazione della correzione di fase ⊕₄2ξ_tζ_t: nasce dal RIORDINO necessario per tornare alla forma standard dopo lo scambio X↔Z — presente solo quando entrambe le componenti sono attive (caso Y)."
     }
   },
@@ -7932,7 +7932,7 @@
     ],
     "sourceText": "λ+1P and plug this into the expression C∗Q (see Fig. 6with C2 = Cλ+1 and C1 = C). In order to give a nice way ofcalculating the pullback for appending a gate, we consider thetableau form thatcorresponds to choosing a nice generator setof the Pauli group (see Corollary B13).",
     "explanations": {
-      "it-intermediate": "...(vedi Fig. 6 con C2=C_{λ+1} e C1=C). Per dare un modo comodo di calcolare il pullback quando si appende un gate, si considera la forma a tableau che corrisponde a scegliere un buon insieme di generatori del gruppo di Pauli (vedi Corollario B13).",
+      "it-intermediate": "Il pullback non si aggiorna in modo iterativo quando si aggiunge una porta alla fine. Per calcolare (C_{λ+1}C)^*P bisognerebbe prima calcolare Q = C^*_{λ+1}P e poi applicare C^* a Q (Fig. 6 con C₂ = C_{λ+1} e C₁ = C), ripartendo ogni volta dall'inizio. Per avere un modo comodo di farlo, gli autori usano la forma a tableau, che corrisponde a scegliere un insieme di generatori del gruppo di Pauli adatto allo scopo (Corollario B13).",
       "it-expert": "Soluzione al problema: la rappresentazione a TABLEAU (introdotta subito dopo, B.2) risolve proprio questo problema pratico — motivazione diretta per l'introduzione dei tableau che segue."
     }
   },
@@ -8228,7 +8228,7 @@
     "sourceText": "P by switch-ing from the “vector” form to the label form, writing the twolabels ℓC Xj and ℓC",
     "explanations": {
       "it-intermediate": "La conversione dal tableau alle etichette cambia soltanto la forma della rappresentazione. Per ciascun qubit j, la riga associata a Xj diventa l'etichetta sopra il filo e quella associata a Zj diventa l'etichetta sotto. Supporti e fasi rimangono gli stessi, così la lettura grafica e quella tabellare descrivono lo stesso pullback.",
-      "it-expert": "...conversione vettore↔label: ℓ^C_Xj sopra e ℓ^C_Zj sotto la linea del qubit j (notazione grafica usata in Fig. 1 del testo principale)."
+      "it-expert": "Dal flow tableau si ottengono le flow labels ℓ^C_P passando dalla forma vettoriale a quella a etichette: ℓ^C_{Xⱼ} si scrive sopra e ℓ^C_{Zⱼ} sotto la linea del qubit j, come nella notazione grafica di Fig. 1 del testo principale."
     }
   },
   {
@@ -8246,7 +8246,7 @@
     ],
     "sourceText": "Z j above and below the jth qubit line.Remark B2. Storing a Clifford or a ﬂow tableau in a binaryway, i.e., storing the Z4 components as 2-bit binary numbers,results in (2 + 2n) · (2n + 1) = O(n2) bits.",
     "explanations": {
-      "it-intermediate": "...Zj sopra e sotto la linea del qubit j. Osservazione B2: memorizzare un tableau di Clifford o di flusso in forma binaria (le componenti Z4 come numeri binari a 2 bit) richiede (2+2n)(2n+1)=O(n²) bit — questo mostra che la rappresentazione a tableau è compatta (polinomiale in n), non esponenziale.",
+      "it-intermediate": "Le due etichette ℓ^C_{Xⱼ} e ℓ^C_{Zⱼ} si scrivono sopra e sotto la linea del qubit j nel circuito. Osservazione B2: un tableau di Clifford o di flusso salvato in binario, con le componenti in Z₄ come numeri a 2 bit, occupa (2 + 2n)(2n + 1) = O(n²) bit. La rappresentazione cresce quindi solo quadraticamente con il numero di qubit, non esponenzialmente come lo stato quantistico.",
       "it-expert": "Remark B2: storage O(n²) bit per tableau (componenti Z4 su 2 bit) — efficienza di memoria analoga al tableau stabilizer classico, cruciale per la trattabilità computazionale rivendicata dal paper."
     }
   },
@@ -8507,7 +8507,7 @@
     ],
     "sourceText": "operators, which is deﬁned by \u0013 = (0II0) and extended toG by disregarding the phase.",
     "explanations": {
-      "it-intermediate": "...definito dalla matrice a blocchi standard [[0,I],[I,0]], estesa a G ignorando la fase — questo è lo strumento algebrico standard per verificare se due operatori di Pauli commutano o anticommutano.",
+      "it-intermediate": "Richiama il prodotto interno simplettico ω tra vettori (ξ|ζ) ∈ F₂ⁿ × F₂ⁿ, introdotto nella sezione sulla (anti)commutatività. È definito dalla matrice a blocchi (0 I; I 0) e si estende a G ignorando la fase. Il suo valore dice se due operatori di Pauli commutano (0) o anticommutano (1).",
       "it-expert": "ω definito dalla forma simplettica standard [[0,I],[I,0]] su F2^{2n}, estesa a G trascurando la fase — strumento standard per commutatività in teoria degli stabilizer."
     }
   },
@@ -8862,7 +8862,7 @@
     ],
     "sourceText": "ϱ ⊛M := ϱ0 · m0 ⊛ϱ1 · m1 ⊛· · · ⊛ϱ2n · m2n, with · deﬁned in Eq. (A13).",
     "explanations": {
-      "it-intermediate": "...ϱ⊛M := ϱ0·m0 ⊛ ϱ1·m1 ⊛ ··· ⊛ ϱ_2n·m_2n, con · definito nell'Eq. A13 — la formula esplicita del prodotto vettore-matrice.",
+      "it-intermediate": "Definizione B4: il prodotto tra un \"vettore\" ϱ = (ϱ₀|ϱ₁⋯ϱ_2n) e una \"matrice\" M con righe mᵢ ∈ G si definisce come ϱ ⊛ M := ϱ₀·m₀ ⊛ ϱ₁·m₁ ⊛ ⋯ ⊛ ϱ_2n·m_2n, dove · è la potenza dell'Eq. (A13). È l'analogo del prodotto vettore-matrice dell'algebra lineare: ogni componente di ϱ dice quante volte prendere la riga corrispondente, e le righe si combinano con ⊛ invece che con la somma.",
       "it-expert": "Formula esplicita Eq. B27-equivalente: ϱ⊛M come somma-⊛ pesata delle righe, coefficienti tramite l'operazione · di Eq. A13."
     }
   },
@@ -8919,7 +8919,7 @@
     ],
     "sourceText": "0of the Paulioperator P0 = ϱ−1(m0), it is not the ⊛product of ϱ0 and m0corresponding to the product iϱ0I · P0 (see idea 4 of RemarkA5), especially ϱ0 · e0 = (ϱ0 · 1|0|0), which is not equal toϱ0 ⊛e0 = (ϱ0 ⊕4 1|0|0).",
     "explanations": {
-      "it-intermediate": "...del operatore di Pauli P0=ϱ^{-1}(m0); NON è il prodotto ⊛ di ϱ0 e m0 (che corrisponderebbe invece a i^ϱ0·I·P0, vedi idea 4 di Remark A5) — in particolare ϱ0·e0=(ϱ0·1|0|0), che non è uguale a ϱ0⊛e0.",
+      "it-intermediate": "Avvertenza sulla notazione. Nel prodotto ϱ ⊛ M, il termine ϱ₀·m₀ indica la potenza P₀^ϱ₀ dell'operatore P₀ = ϱ⁻¹(m₀). Non è il prodotto ⊛ tra ϱ₀ e m₀, che corrisponderebbe a moltiplicare P₀ per la fase i^ϱ₀ (idea 4 dell'Osservazione A5). Per esempio ϱ₀·e₀ = (ϱ₀·1|0|0), che è diverso da ϱ₀ ⊛ e₀ = (ϱ₀ ⊕₄ 1|0|0).",
       "it-expert": "Distinzione cruciale: ϱ0·m0 (elevamento a potenza) ≠ ϱ0⊛m0 (prodotto ⊛, idea 4 di Remark A5) — un'ambiguità notazionale su cui il paper attira esplicitamente l'attenzione per evitare errori d'implementazione."
     }
   },
@@ -9024,7 +9024,7 @@
     ],
     "sourceText": "where · is the standard vector-matrix multiplication and ⎞ ⎛ ξ1T ⎟⎠. ⎜⎝ ...ξ2nT s = (ζ1 · · · ζ2n)Q(ϱ)",
     "explanations": {
-      "it-intermediate": "...dove · è la moltiplicazione vettore-matrice standard e s è definito tramite un prodotto che coinvolge le componenti ξ_i e la matrice Q(ϱ) definita più avanti.",
+      "it-intermediate": "Corollario B6: se la riga zero di M contiene solo una fase, cioè m₀ = (κ₀|0|0), il prodotto ϱ ⊛ M si calcola con la normale moltiplicazione vettore-matrice, più una correzione di segno: ϱ ⊛ M = 2s ⊛ ϱ·M (Eq. B27). La correzione s si ottiene da una forma quadratica che usa la matrice Q(ϱ) tra il vettore delle parti Z (ζ₁, …, ζ_2n) e le parti X ξᵢ delle righe. In pratica si fa algebra lineare ordinaria e poi si aggiusta il segno.",
       "it-expert": "Definizione esplicita di s = (ζ1···ζ2n)·Q(ϱ)·(ξ1,...,ξ2n)^T — forma quadratica che calcola la correzione di fase."
     }
   },
@@ -9176,7 +9176,7 @@
     ],
     "sourceText": "the ﬁrst component is well deﬁned in Z4 and the sums in theother two components are well deﬁned in F2 since ξ0 and ζ0vanish.",
     "explanations": {
-      "it-intermediate": "...la prima componente è ben definita in Z₄ e le somme nelle altre due sono ben definite in F₂, perché le parti X e Z della riga zero sono nulle.",
+      "it-intermediate": "Inizio della dimostrazione del Corollario B6. La normale moltiplicazione vettore-matrice ϱ·M è ben definita anche se le componenti vivono in insiemi diversi. La prima componente, la fase, è una somma in Z₄; le altre due sono somme in F₂. Questo funziona perché la riga zero di M ha parti X e Z nulle (ξ₀ = ζ₀ = 0), quindi la fase ϱ₀ non finisce mai nelle componenti binarie.",
       "it-expert": "Prima componente ben definita in Z₄, le altre due in F₂ perché ξ₀ = ζ₀ = 0."
     }
   },
@@ -9472,7 +9472,7 @@
     ],
     "sourceText": "where we factored out the element 2s = (2s|0|0), which is inthe centralizer of G. This expression without the 2s is the sameas ϱ · M in Eq. (B28), i.e., we are left with showing that ⎞ ⎛ T...ξik ξi1 ⎟⎠ ⎜⎝ s = (ζi1 · · · ζik) · Q(1) · T ⎞ ⎛ ξ1T ⎟⎠.(B30) ⎜⎝ ...ξ2nT = (ζ1 · · · ζ2n) · Q(ϱ) · By deﬁnition, ⎛ ⎞",
     "explanations": {
-      "it-intermediate": "...dove si è fattorizzato l'elemento 2s=(2s|0|0), che è nel centralizzatore di G. Questa espressione, senza il fattore 2s, è la stessa di ϱ·M nell'Eq. B28 — cioè resta da mostrare l'identità sulla forma quadratica s (Eq. B30).",
+      "it-intermediate": "Nella dimostrazione si raccoglie il fattore 2s = (2s|0|0): è un segno globale, e poiché commuta con tutto il gruppo G si può portare fuori. Quello che resta è proprio il prodotto ordinario ϱ·M dell'Eq. (B28). Resta da mostrare che la correzione s è data dalla forma quadratica dell'Eq. (B30), cioè dalla somma dei segni prodotti dagli scambi tra le parti Z e X delle righe selezionate.",
       "it-expert": "Fattorizzazione di 2s (centrale in G) lasciando esattamente ϱ·M (Eq. B28) come resto — riduce la dimostrazione a verificare l'identità per s (Eq. B30)."
     }
   },
@@ -9552,7 +9552,7 @@
     ],
     "sourceText": "therefore, the formal quadratic form with Q calculates thesum of all phase contributions (ϱiζi)(ϱ jξ j)T with 0 < i < j,showing that Eq. (B30) is true.■Remark B6. Alternatively, the sign correction s can bewritten as ⎞ ⎛",
     "explanations": {
-      "it-intermediate": "...quindi la forma quadratica formale con Q calcola la somma di tutti i contributi di fase (ϱ_iζ_i)(ϱ_jξ_j)^T con 0<i<j, mostrando che l'Eq. B30 è vera — chiude la dimostrazione del Corollario B6.",
+      "it-intermediate": "Chiude la dimostrazione del Corollario B6. La matrice Q(ϱ) (Eq. B31) ha elementi ϱᵢϱⱼ solo sopra la diagonale, quindi la forma quadratica costruita con Q somma tutti i contributi di fase (ϱᵢζᵢ)(ϱⱼξⱼ)ᵀ con 0 < i < j. Sono esattamente i segni che nascono riordinando il prodotto delle righe scelte, quindi l'Eq. (B30) è vera. L'Osservazione B6 che segue riscrive s in un'altra forma.",
       "it-expert": "Interpretazione di Q: somma su tutte le coppie i<j dei contributi di fase incrociati — dimostra Eq. B30, chiudendo Cor. B6."
     }
   },
@@ -9608,7 +9608,7 @@
     ],
     "sourceText": "where the stated product in the strict sense is undeﬁned;instead of ϱ ∈G, we have to take its phaseless part ˜ϱ =(ϱ1 · · · ϱn|ϱn+1 · · · ϱ2n) ∈Fn",
     "explanations": {
-      "it-intermediate": "...dove il prodotto scritto non è definito in senso stretto: al posto del \"vettore\" ϱ in G si deve usare la sua parte senza fase ϱ̃, che è un vero vettore binario.",
+      "it-intermediate": "Osservazione B6: la correzione s si può anche scrivere come s = ϱ · strup(ζᵢξⱼᵀ) · ϱᵀ (Eq. B32). Questa scrittura però non è un prodotto ben definito in senso stretto, perché ϱ contiene anche la fase in Z₄. Al posto di ϱ va usata la sua parte senza fase ϱ̃ = (ϱ₁⋯ϱ_2n) ∈ F₂^2n, che è un vero vettore binario.",
       "it-expert": "Il prodotto scritto non è definito su G: va usata la parte phaseless ϱ̃ ∈ F₂²ⁿ."
     }
   },
@@ -9757,7 +9757,7 @@
     ],
     "sourceText": "where · is the regular matrix multiplication and the sign cor-rection s can be formally written as ⎞ ⎛ T...ξ2n ξ1 ⎟⎠.(B34) ⎜⎝ s = (ζ1, . . . , ζ2n) · Q(P) · T",
     "explanations": {
-      "it-intermediate": "...dove · è la normale moltiplicazione matrice-vettore e la correzione di segno s si scrive formalmente come forma quadratica con la matrice Q(P) (Eq. B34).",
+      "it-intermediate": "Proposizione di rappresentazione per il tableau di flusso: la forma vettoriale del pullback C^*P si ottiene moltiplicando ϱ(P) per il tableau F(C), ϱ(C^*P) = ϱ(P) ⊛ F(C) = 2s ⊛ ϱ(P)·F(C) (Eq. B33). Qui · è la normale moltiplicazione matriciale e la correzione di segno s è la forma quadratica dell'Eq. (B34), costruita con Q(P). In pratica il tableau agisce come una matrice, più un segno da correggere.",
       "it-expert": "· = prodotto matriciale standard; correzione di segno s = (ζ₁…ζ₂ₙ)·Q(P)·(ξ₁…ξ₂ₙ)ᵀ (Eq. B34)."
     }
   },
@@ -10024,7 +10024,7 @@
     ],
     "sourceText": "where · is the regular matrix multiplication and the sign cor-rection s can be formally written as ⎞ ⎛ x1T ⎟⎠.(B38) ⎜⎝ ...x2nT s = (z1, . . . , z2n) · Q( ¯P) ·",
     "explanations": {
-      "it-intermediate": "...dove · è la normale moltiplicazione matriciale e la correzione di segno s si scrive di nuovo come forma quadratica con Q(P̄) (Eq. B38).",
+      "it-intermediate": "Proposizione analoga per il tableau di Clifford: la forma vettoriale del pushforward C_*P̄ è ϱ(C_*P̄) = ϱ(P̄) ⊛ T(C) = 2s ⊛ ϱ(P̄)·T(C) (Eq. B37). Anche qui · è la normale moltiplicazione matriciale e la correzione di segno s è una forma quadratica con Q(P̄) (Eq. B38), costruita però con le righe del tableau di Clifford.",
       "it-expert": "Correzione di segno s = (z₁…z₂ₙ)·Q(P̄)·(x₁…x₂ₙ)ᵀ (Eq. B38)."
     }
   },
@@ -10068,7 +10068,7 @@
     ],
     "sourceText": "Note the different directions of the pullback and the push-forward, mapping physical to logical Paulis resp. logical tophysical Paulis.",
     "explanations": {
-      "it-intermediate": "...con formula esplicita analoga (Eq. B37-B38) per il pullback tramite il tableau di Clifford. Queste due proposizioni di rappresentazione danno gli analoghi desiderati del diagramma commutativo (B21) per mappe lineari (Eq. B39). Si noti la diversa direzione tra pullback e pushforward, che mappano rispettivamente operatori fisici a logici e logici a fisici.",
+      "it-intermediate": "Le due proposizioni di rappresentazione danno l'analogo del diagramma commutativo (B21) per le mappe lineari: come una matrice rappresenta una mappa lineare, i tableau rappresentano le coniugazioni (diagramma B39). Va notata la direzione opposta delle due mappe. Il pullback, rappresentato dal tableau di flusso, va dagli operatori fisici a quelli logici; il pushforward, rappresentato dal tableau di Clifford, va da quelli logici a quelli fisici.",
       "it-expert": "Chiusura di §B.2: Prop. B4+B5 completano il quadro — insieme danno il diagramma commutativo Eq. B39 (analogo del caso lineare) per pullback (fisico→logico, via F) e pushforward (logico→fisico, via T), le due direzioni duali del tracking, pronte per essere composte iterativamente in §B.3-B.4."
     }
   },
@@ -10635,7 +10635,7 @@
     ],
     "sourceText": "i can be calculated bythe formal quadratic form ⎞ ⎛ T...ξ2nT ξ1 ⎟⎠,(B43) ⎜⎝ s′ i = (ζ1 · · · ζ2n) · Q( f ′ i ) ·",
     "explanations": {
-      "it-intermediate": "...i possono essere calcolate tramite la forma quadratica formale (formula esplicita che coinvolge una matrice Q e i vettori ξ, ζ).",
+      "it-intermediate": "Osservazione B8: nella composizione dei tableau di flusso, le correzioni di segno s′ᵢ si calcolano con la forma quadratica s′ᵢ = (ζ₁⋯ζ_2n) · Q(f′ᵢ) · (ξ₁ᵀ⋯ξ_2nᵀ)ᵀ (Eq. B43). Qui f′ᵢ è la riga i-esima del secondo tableau, che sceglie quali righe di F(C) combinare, mentre ξ e ζ sono le parti X e Z delle righe di F(C). Il segno nasce dagli scambi necessari per riordinare il prodotto delle righe selezionate.",
       "it-expert": "Eq. B43: formula delle correzioni di segno via forma quadratica formale Q(f′_i) applicata ai vettori ξ,ζ."
     }
   },
@@ -10771,7 +10771,7 @@
     ],
     "sourceText": "i have Hamming weight 1 and no signcorrections are needed.",
     "explanations": {
-      "it-intermediate": "...i hanno peso di Hamming 1 e non servono correzioni di segno — il caso migliore è quindi molto più economico.",
+      "it-intermediate": "Costo del calcolo delle correzioni di segno. Nel caso peggiore una riga f′ᵢ ha tutti gli elementi uguali a 1, e servono tutti i prodotti ζᵢξⱼᵀ con i < j, con un costo O(n^ω) (ω è l'esponente della moltiplicazione tra matrici). Nel caso migliore ogni riga f′ᵢ ha un solo 1 (peso di Hamming 1): si seleziona una sola riga e non serve nessuna correzione di segno. È il caso delle porte elementari, per questo aggiornare il tableau porta per porta costa poco.",
       "it-expert": "Caso migliore: peso di Hamming 1 per riga ⟹ nessuna correzione di segno necessaria, complessità trascurabile."
     }
   },
@@ -11081,7 +11081,7 @@
     ],
     "sourceText": "i , respectively. Then, the Clifford tableau ofthe concatenation C′C is T (C′C) = T (C) ⊛T (C′), i.e., ⎞ ⎛ e02s1 ⊛t1 · T (C′)...2s2n ⊛t2n · T (C′) ⎟⎟⎠ ⎜⎜⎝ T (C′C) = ⎞ ⎛ 02s1...2s2n ⎟⎟⎠⊛T (C) · T (C′),(B47) ⎜⎜⎝ =",
     "explanations": {
-      "it-intermediate": "...i rispettivamente. Allora il Clifford tableau della concatenazione C′C è T(C′C)=T(C)⊛T(C′) — si noti l'ordine ROVESCIATO rispetto al flow tableau (T(C) a sinistra, non T(C′)) — questa è la manifestazione tecnica precisa della differenza covariante/controvariante.",
+      "it-intermediate": "Proposizione B7, nota in letteratura [29, 34, 35]: siano T(C) e T(C′) i tableau di Clifford di due unitarie, con righe tᵢ e t′ᵢ. Il tableau del circuito composto C′C (prima C, poi C′) è T(C′C) = T(C) ⊛ T(C′) (Eq. B47). Ogni riga tᵢ di T(C) viene moltiplicata per T(C′), con una correzione di segno 2sᵢ. Il tableau del primo circuito sta a sinistra: è la forma che prende la covarianza del pushforward.",
       "it-expert": "Prop. B7 (analoga a B6 per il Clifford tableau): T(C′C)=T(C)⊛T(C′) — ordine SCAMBIATO rispetto a F(C′C)=F(C′)⊛F(C), la firma algebrica esatta della differenza covariante (T) vs controvariante (F)."
     }
   },
@@ -11100,7 +11100,7 @@
     ],
     "sourceText": "where the sign corrections si are those of the product ti ⊛T (C′).",
     "explanations": {
-      "it-intermediate": "...dove le correzioni di segno s_i sono quelle del prodotto t_i⊛T(C′).",
+      "it-intermediate": "Precisa l'Eq. (B47): le correzioni di segno sᵢ che compaiono nella composizione dei tableau di Clifford sono quelle del prodotto tᵢ ⊛ T(C′). Si calcolano riga per riga con la forma quadratica del Corollario B6, applicata alla riga tᵢ.",
       "it-expert": "Correzioni di segno per T(C′C), analoghe a quelle di F(C′C) ma con ruoli scambiati."
     }
   },
@@ -11883,7 +11883,7 @@
     ],
     "sourceText": "where the phases κ′ of the inverse tableau are κ′ = −˜F ′κ ⊕4 2s,(B55) with sign correction · ˜F ′T BATBCT ˜F ′ · strup s = diagT ,(B56) DATDCT",
     "explanations": {
-      "it-intermediate": "...dove le fasi κ′ del tableau inverso sono κ′=−F̃′κ⊕₄2s, con una correzione di segno s data da una formula esplicita che coinvolge i blocchi A,B,C,D.",
+      "it-intermediate": "Proposizione B8: il tableau di flusso inverso F(C†), che coincide con il tableau di Clifford T(C), si ottiene in modo semplice. La parte binaria è F̃′ = (Dᵀ Bᵀ; Cᵀ Aᵀ) (Eq. B54), cioè l'inversa di una matrice simplettica, che non richiede eliminazione di Gauss. Le fasi del tableau inverso sono κ′ = −F̃′κ ⊕₄ 2s (Eq. B55), dove la correzione di segno s è data dagli elementi diagonali di un prodotto di matrici costruito con i blocchi A, B, C, D (Eq. B56).",
       "it-expert": "Eq. B55-B56: formula esplicita per la fase inversa κ′ (aritmetica su Z4) e la correzione di segno s associata."
     }
   },
@@ -11902,7 +11902,7 @@
     ],
     "sourceText": "where diagT is the column vector of the diagonal entries of thematrix product.",
     "explanations": {
-      "it-intermediate": "...dove diag indica il vettore colonna delle entrate diagonali del prodotto matriciale.",
+      "it-intermediate": "Precisa la notazione dell'Eq. (B56): diagᵀ indica il vettore colonna formato dagli elementi diagonali del prodotto di matrici. Le correzioni di segno del tableau inverso sono quindi gli elementi diagonali di F̃′ · strup(⋯) · F̃′ᵀ.",
       "it-expert": "Notazione: diag = estrazione della diagonale del prodotto matriciale, usata nella formula della correzione di segno."
     }
   },
@@ -12068,7 +12068,7 @@
     ],
     "sourceText": "2, and since ˜F is symplectic by Proposition B3, weget ˜F ′ = ˜F −1 = (DTBT ⎠ ⎛ ⎞ 100110001 ⎝ ⎠ = (2|0|0) ⊛ = (2|0|0),(B52)",
     "explanations": {
-      "it-intermediate": "...e poiché F̃ è simplettica per la Proposizione A3, si ottiene F̃′=F̃^(-1)=(D^T B^T | C^T A^T) dalla Proposizione A5.",
+      "it-intermediate": "Passo della dimostrazione della Proposizione B8. Dalla condizione F′·F = I segue, per le parti senza fase, F̃′·F̃ = I in F₂^(2n×2n). Poiché F̃ è simplettica (Proposizione B3), la sua inversa si scrive direttamente con la Proposizione A5: F̃′ = F̃⁻¹ = (Dᵀ Bᵀ; Cᵀ Aᵀ). L'esempio numerico (Eq. B52) mostra che anche il prodotto di vettori senza fase può produrre un segno, qui (2|0|0).",
       "it-expert": "Uso della simpletticità di F̃ (Prop. A3): l'inversa simplettica ha la forma esplicita a blocchi standard (D^T B^T | C^T A^T), risultato noto (Prop. A5)."
     }
   },
@@ -12154,7 +12154,7 @@
     ],
     "sourceText": "i is the ith row of F ′; i.e., by Remark A10, we get BATBCT T ,(B57) si = f ′ f ′ i · strup i DATDCT",
     "explanations": {
-      "it-intermediate": "...si ottiene s_i espresso tramite un prodotto matriciale con la funzione 'strup' (parte triangolare superiore stretta).",
+      "it-intermediate": "Le correzioni di segno sᵢ, per i = 1, …, 2n, nascono dai prodotti f′ᵢ ⊛ F, dove f′ᵢ è la riga i-esima del tableau inverso F′. Per l'Osservazione A10 si possono scrivere come sᵢ = f′ᵢ · strup(⋯) · f′ᵢᵀ (Eq. B57), dove la matrice al centro è costruita con i blocchi A, B, C, D di F. È la stessa forma quadratica già incontrata, applicata a ogni riga.",
       "it-expert": "Eq. B57: formula esplicita di s_i via 'strup', analoga a quella già vista per le correzioni di segno del prodotto ⊛ (Eq. B44)."
     }
   },
@@ -12197,7 +12197,7 @@
     ],
     "sourceText": "which are exactly the diagonal entries of BATBCT · ˜F ′T .(B58) ˜F ′ · strup DATDCT",
     "explanations": {
-      "it-intermediate": "...che sono esattamente le entrate diagonali del prodotto F̃′·strup(...).",
+      "it-intermediate": "Le correzioni sᵢ dell'Eq. (B57), una per ogni riga f′ᵢ, sono esattamente gli elementi diagonali della matrice F̃′ · strup(⋯) · F̃′ᵀ (Eq. B58). Così tutte le correzioni si calcolano insieme con un unico prodotto di matrici, invece che riga per riga.",
       "it-expert": "Eq. B58: le correzioni di segno = diagonale del prodotto F̃′·strup(blocco) — formula finale compatta."
     }
   },
@@ -12313,7 +12313,7 @@
     ],
     "sourceText": "since Z4 is a commutative ring with −2si = 2si ∈Z4for si ∈F2.",
     "explanations": {
-      "it-intermediate": "...poiché Z4 è un anello commutativo con −2s_i=2s_i∈Z4 per s_i∈F2 (proprietà aritmetica usata per semplificare la formula finale).",
+      "it-intermediate": "Ultimo passaggio del calcolo delle fasi del tableau inverso. Dalla colonna zero dell'equazione F′·F = I si ottiene un sistema lineare in Z₄ la cui soluzione è κ′ = −(2s ⊕₄ F̃′κ) = −F̃′κ ⊕₄ 2s (Eq. B59). Il segno davanti a 2s si può cambiare perché Z₄ è un anello commutativo e −2sᵢ = 2sᵢ quando sᵢ vale 0 o 1.",
       "it-expert": "Dettaglio aritmetico: −2x=2x in Z4 per x∈{0,1} — proprietà usata per semplificare il segno nella formula di κ′."
     }
   },
@@ -12746,7 +12746,7 @@
     ],
     "sourceText": "where diagT is the column vector of the diagonal entries of thematrix product.",
     "explanations": {
-      "it-intermediate": "...dove diag indica il vettore colonna delle entrate diagonali del prodotto matriciale (ripetizione della notazione già vista).",
+      "it-intermediate": "Precisa la notazione dell'Eq. (B62), la formula analoga per il tableau di Clifford inverso: diagᵀ indica il vettore colonna degli elementi diagonali del prodotto di matrici. Come per il tableau di flusso, tutte le correzioni di segno si ottengono dalla diagonale di un unico prodotto.",
       "it-expert": "Ripetizione della notazione diag per il caso T (analoga a p0405 per F)."
     }
   },
@@ -12876,7 +12876,7 @@
     ],
     "sourceText": "2 is covariant iff the sum i1 ⊕2i2 ⊕2 i3 is 0 and contravariant iff the sum is 1.",
     "explanations": {
-      "it-intermediate": "...2 è covariante se e solo se la somma i1⊕i2⊕i3 è 0, ed è controvariante se e solo se la somma è 1 — questa è la formula COMPATTA e definitiva che classifica TUTTE le 8 combinazioni possibili di convenzioni in un colpo solo, tramite una semplice somma modulo 2.",
+      "it-intermediate": "Conclude la Proposizione B9. Una convenzione di tracciamento si descrive con tre scelte binarie: aggiungere la porta alla fine o all'inizio (i₁), usare il circuito o il suo inverso (i₂), coniugare a sinistra o a destra (i₃). La mappa che ne risulta è covariante se i₁ ⊕ i₂ ⊕ i₃ = 0 e controvariante se la somma vale 1. Una sola somma modulo 2 classifica quindi tutte le otto combinazioni, come nell'albero di decisione della Fig. 8.",
       "it-expert": "Prop. B9 (risultato principale): covarianza ⟺ i1⊕i2⊕i3=0 (parità pari), controvarianza ⟺ somma=1 (parità dispari) — classificazione ELEGANTE e completa di tutte le 8 combinazioni di convenzioni tramite un solo bit di parità, il risultato culminante di tutta la Sezione B.3."
     }
   },
@@ -12933,7 +12933,7 @@
     ],
     "sourceText": "on the XY Z standard form of Eq. (A23) or a variantthereof.",
     "explanations": {
-      "it-intermediate": "...sulla forma standard XYZ dell'Equazione (A23) o una sua variante.",
+      "it-intermediate": "Completa l'Osservazione B14. La maggior parte dei tableau di Clifford usati in letteratura si classifica con l'albero di Fig. 8, più una scelta in più: la presentazione degli operatori di Pauli. Si può usare la forma vettoriale ϱ basata sulla forma standard XZ (Eq. A2), oppure la mappa r basata sulla forma standard XYZ (Eq. A23), o una loro variante. Segue un esempio concreto: la convenzione di Dehaene e De Moor.",
       "it-expert": "Riferimento alla forma standard XYZ (Eq. A23, definita in Appendice A) come alternativa presentazionale alla forma XZ usata di default nel paper."
     }
   },
@@ -13322,7 +13322,7 @@
     ],
     "sourceText": "with Clifford tableau ⎛ ⎞ 100η jxjz jηˆjxˆjzˆj 0|et⟩⟨et|I + |et⟩⟨et|0 (B74) = ⎝ ⎠.(B65) T (C) = Then, the Clifford tableau T (C′C) after appending C′ to C is ⎞ ⎛ ⎛ ⎞ 1000TDc,t00T0Dt,c 00T ⎟⎠(B66) ⎜⎝ ⎝ ⎠⊛T (C) · T (C′C) = 0T if C′ = CNOTc,t, ⎛ ⎞ 100TEt,ˆt 0(xj,tz j,t ) j(xˆj,tzˆj,t )ˆj ⎝ ⎠⊛T (C) · T (C′C) =",
     "explanations": {
-      "it-intermediate": "...con tableau di Clifford T(C) dato in forma a blocchi (Eq. B65). Allora il tableau di Clifford T(C′C), dopo aver aggiunto C′ a C, è dato dalla formula a blocchi (Eq. B66) — un aggiornamento esplicito espresso come prodotto di matrici a blocchi.",
+      "it-intermediate": "Proposizione B10: come si aggiorna il tableau di Clifford quando si aggiunge una porta elementare C′ (CNOT_{c,t}, Hₜ o Sₜ) a un circuito Clifford C. T(C) è scritto a blocchi, con una riga (ηⱼ|xⱼ|zⱼ) per ogni generatore (Eq. B65). Il nuovo tableau T(C′C) si ottiene moltiplicando T(C) per il tableau della porta, che ha la forma semplice delle matrici elementari dell'eliminazione di Gauss (Eq. B66), con una correzione di segno solo dove serve.",
       "it-expert": "Formula esplicita a blocchi per T(C′C) (Eq. B65-B66): moltiplicazione per matrici tipo 'Gauss elimination' D_{c,t} — l'aggiornamento è letteralmente un'operazione elementare di riga/colonna sul tableau."
     }
   },
@@ -13401,7 +13401,7 @@
     ],
     "sourceText": "and, therefore, for the jth row (η j|xj|z j) of T (C) the signcorrection is · xjT 0|et⟩⟨et|I + |et⟩⟨et|0 (xj|z j) · strup z jT · xjT 0|et⟩⟨et|00 (xj|z j) · z jT = xj,tz j,t(B75) (B67)",
     "explanations": {
-      "it-intermediate": "...e quindi, per la riga j-esima di T(C), la correzione di segno è data da un prodotto tra le colonne x_j, z_j del tableau (Eq. B67/B75) — le 'correzioni di segno' tracciano quando l'aggiornamento del tableau introduce un fattore di fase −1 aggiuntivo, un dettaglio tecnico ma essenziale per la correttezza.",
+      "it-intermediate": "Per la Hadamard Hₜ, la correzione di segno della riga j-esima (ηⱼ|xⱼ|zⱼ) del tableau si calcola con la forma quadratica e si riduce a x_{j,t}·z_{j,t} (Eq. B67/B75). Il segno cambia quindi solo se il generatore corrispondente ha sul qubit t sia una componente X sia una componente Z, cioè una Y: la Hadamard scambia X e Z e riportarli in ordine standard produce un −1.",
       "it-expert": "Formula della sign correction per riga (Eq. B67/B75): prodotto componente-per-componente delle colonne x_j,z_j — le correzioni di segno sono l'ingrediente che rende l'aggiornamento del tableau esatto (non solo a meno di fase)."
     }
   },
@@ -13462,7 +13462,7 @@
     ],
     "sourceText": "if C′ = Ht, with column vector (xj,tz j,t ) j the componentwiseproduct of the tth and ˆtth columns of T (C), and ⎞ ⎛ 10et TDt,ˆt 00T ⎟⎠⊛T (C) · ⎜⎝ T (C′C) =",
     "explanations": {
-      "it-intermediate": "...se C′=H_t (caso Hadamard), con vettore colonna dato dal prodotto componente per componente delle colonne t e t̂ (il 'partner' del qubit t) del tableau T(C).",
+      "it-intermediate": "Precisa il caso C′ = Hₜ dell'Eq. (B66): la colonna delle correzioni di segno (x_{j,t}z_{j,t})ⱼ è il prodotto, elemento per elemento, della colonna t e della colonna t̂ di T(C), cioè delle parti X e Z del qubit t. Segue la formula per l'ultimo caso, C′ = Sₜ.",
       "it-expert": "Caso specifico C′=H_t: la sign correction coinvolge le colonne t/t̂ accoppiate (X/Z dello stesso qubit) — riflette che H scambia i ruoli X↔Z su quel qubit."
     }
   },
@@ -13481,7 +13481,7 @@
     ],
     "sourceText": "as claimed; i.e., we get a sign change in a row iff the multipli-cation T (C) · (",
     "explanations": {
-      "it-intermediate": "...come affermato; cioè si ottiene un cambio di segno in una riga se e solo se la moltiplicazione T(C)·(...) scambia due '1' in quella riga.",
+      "it-intermediate": "Conclude il calcolo per la Hadamard. Una riga del tableau cambia segno se e solo se la moltiplicazione per il tableau di Hₜ scambia due 1 in quella riga, cioè se la riga ha un 1 sia nella colonna X sia nella colonna Z del qubit t. Scambiare i due fattori per tornare alla forma standard X-poi-Z produce il segno −1.",
       "it-expert": "Criterio combinatorio per la sign correction: cambio di segno ⟺ l'operazione di riga/colonna scambia due entrate '1' — caratterizzazione secca del quando serve la correzione."
     }
   },
@@ -13799,7 +13799,7 @@
     ],
     "sourceText": "the sign corrections are zero for the cases C′ = St and C′ =CNOTc,t, while for C′ = Ht we get BATBCT DATDCT",
     "explanations": {
-      "it-intermediate": "...le correzioni di segno sono nulle per i casi C′=S_t e C′=CNOT_(c,t), mentre per C′=H_t si ottiene (segue calcolo esplicito) — un risultato pulito: solo Hadamard genera correzioni di segno non banali tra i tre generatori.",
+      "it-intermediate": "Risultato del calcolo delle correzioni di segno per le tre porte elementari. Per Sₜ e CNOT_{c,t} le correzioni sono nulle, quindi il tableau si aggiorna con semplici operazioni sulle colonne. Solo la Hadamard Hₜ produce una correzione non banale, quella calcolata nell'Eq. (B77) che segue: è il segno x_{j,t}z_{j,t} già visto, che compare quando una riga ha una Y sul qubit t.",
       "it-expert": "Risultato chiave: sign correction = 0 per S_t e CNOT_{c,t}, non-banale solo per H_t — asimmetria interessante tra i tre generatori, verificata esplicitamente nel calcolo che segue."
     }
   },
@@ -13930,7 +13930,7 @@
     ],
     "sourceText": "c, we geta sign correction of sc = ζcξt T if c < t and sc = ζtξcT ift < c. Since F(C) is symplectic, we have 0 = ω( fc, ft) =ω((ξc|ζc), (ξt|ζt)) = ζcξt T ⊕2 ζtξcT and, hence, in both casessc = ζcξt T giving the sign correction in the middle part;the sign correction in the lower part can be calculatedanalogously.■Remark B16. As in the case of the Clifford tableau, theactions of the elementary ﬂow tableaus can be written as“matrix” operations, but since they act from the left theycorrespond to row operations. (B78)",
     "explanations": {
-      "it-intermediate": "...con segno che dipende dall'ordine relativo tra c e t (c<t oppure t<c). Poiché F(C) è simplettico, si ha una relazione (forma simplettica ω applicata alle righe c,t) che garantisce coerenza indipendentemente dall'ordine.",
+      "it-intermediate": "Conclude la dimostrazione per la CNOT nel caso del tableau di flusso. Restano due righe con più di un 1. Per la riga f′_c la correzione di segno vale ζ_cξ_tᵀ se c < t e ζ_tξ_cᵀ se t < c, quindi sembrerebbe dipendere dall'ordine dei qubit. Ma F(C) è simplettico, e quindi ω(f_c, f_t) = ζ_cξ_tᵀ ⊕ ζ_tξ_cᵀ = 0: le due espressioni coincidono e in entrambi i casi s_c = ζ_cξ_tᵀ. La correzione dell'altra riga si calcola allo stesso modo. Osservazione B16: come per il tableau di Clifford, anche le porte elementari sul tableau di flusso si scrivono come operazioni matriciali, ma poiché agiscono da sinistra sono operazioni sulle righe invece che sulle colonne.",
       "it-expert": "Dipendenza dall'ordinamento c vs t nella sign correction, risolta usando la struttura SIMPLETTICA di F(C) (ω(f_c,f_t)) — garantisce che il risultato sia ben definito indipendentemente da come si etichettano controllo/target."
     }
   },
@@ -14409,7 +14409,7 @@
     ],
     "sourceText": "i ) is zero,giving a sign correction of 0. This shows the vanishing signcorrection in the case C′ = Ht. In the case C′ = St, we have f ′",
     "explanations": {
-      "it-intermediate": "...dando una correzione di segno pari a 0. Questo mostra che la correzione di segno si annulla nel caso C′=H_t.",
+      "it-intermediate": "Nel tableau di flusso, quasi tutte le righe f′ᵢ del tableau di una porta elementare hanno peso di Hamming 1, cioè selezionano una sola riga di F(C). In quel caso la matrice Q(f′ᵢ) è nulla e la correzione di segno vale 0. Per la Hadamard Hₜ tutte le righe sono di questo tipo, quindi non c'è nessuna correzione, al contrario di quanto succede nel tableau di Clifford. Il caso Sₜ, che ha una riga di peso maggiore, è trattato subito dopo.",
       "it-expert": "Conclusione: sign correction=0 per C'=H_t — segue direttamente dall'annullarsi di Q."
     }
   },
@@ -14651,7 +14651,7 @@
     ],
     "sourceText": "where D is an invertible n × n matrix and A = D−T . Proof. The initialization ⎞ ⎛ 1000TI00T0I ⎟⎠∈G2n+1(B87) ⎜⎝ F0 = I =",
     "explanations": {
-      "it-intermediate": "...dove D è una matrice n×n invertibile e A=D^(−T) (trasposta inversa) — questo recupera esattamente la struttura nota dal caso CNOT-only discusso nel corpo principale del paper (Sezione II), ora dimostrata rigorosamente nel formalismo dei tableau.",
+      "it-intermediate": "Corollario B14: se il circuito è fatto solo di CNOT, il tableau di flusso ha una struttura a blocchi molto semplice (Eq. B86). Fase nulla, nessun mescolamento tra parti X e Z, un blocco D invertibile n×n e l'altro blocco A = D^(−T), l'inversa trasposta di D. In altre parole, un circuito di sole CNOT agisce sulle etichette Z con una matrice lineare invertibile e sulle etichette X con la sua inversa trasposta. La dimostrazione parte dal tableau identità (Eq. B87), che ha già questa forma.",
       "it-expert": "Struttura esplicita: D invertibile n×n, A=D^{-T} — ricollega direttamente al caso CNOT-only di §II (dove i 'Z labels' erano parity-check standard), qui riderivato come caso speciale della teoria generale dei tableau."
     }
   },
@@ -14725,7 +14725,7 @@
     ],
     "sourceText": "in each step does preserve it, since the standard matrix mul-tiplication respects the block form and the sign corrections2ζcλξtλT and 2ζˆcλξˆtλ",
     "explanations": {
-      "it-intermediate": "...preserva questa struttura, poiché la moltiplicazione matriciale standard rispetta la forma a blocchi e le correzioni di segno svaniscono a causa dei blocchi B e C essendo nulli. Quindi ogni tableau di flow F_λ ha la struttura a blocchi enunciata.",
+      "it-intermediate": "Passo induttivo della dimostrazione del Corollario B14. Moltiplicare per il tableau di una CNOT (Eq. B88) conserva la struttura a blocchi, perché il normale prodotto tra matrici rispetta i blocchi. Le eventuali correzioni di segno, 2ζ_cξ_tᵀ e la sua analoga, sono nulle perché i blocchi fuori diagonale B e C sono zero: non ci sono mai insieme componenti X e Z da scambiare. Quindi ogni tableau intermedio F_λ ha la struttura enunciata.",
       "it-expert": "Passo induttivo: la struttura a blocchi è preservata perché i blocchi 'off-diagonal' B,C restano nulli (annullando le sign correction) — chiude la dimostrazione di Cor. B14 per induzione."
     }
   },
@@ -15097,7 +15097,7 @@
     ],
     "sourceText": "2,1RZ of the ﬁrst rotation is¯R ¯Z1 ¯Z2(2γ ). Analogously, the logical meaning CNOT∗",
     "explanations": {
-      "it-intermediate": "...il significato logico della prima rotazione, coniugata da CNOT_(2,1), è R̄_(Z̄1 Z̄2)(2γ) — cioè la rotazione fisica R_Z sul qubit fisico corrisponde, logicamente, a una rotazione a due qubit sugli operatori Z̄1Z̄2.",
+      "it-intermediate": "Nell'esempio della Fig. 9 le rotazioni fisiche R_Z sul primo qubit e R_X sul secondo non vengono tracciate dal formalismo (sono in grigio), ma il loro significato logico si legge subito dalle etichette. L'etichetta Z del primo qubit, sotto il filo, è 12: quindi la R_Z fisica, riportata indietro attraverso CNOT_{2,1}, corrisponde alla rotazione logica R_{Z̄₁Z̄₂}(2γ) su due qubit. Nello stesso modo la R_X sul secondo qubit corrisponde a R_{X̄₁X̄₂}(2β).",
       "it-expert": "Risultato concreto: R_Z(γ) fisica ↦ logicamente R̄_{Z̄1Z̄2}(2γ) — lettura diretta del significato logico della rotazione fisica tramite le label aggiornate, l'obiettivo pratico dell'intero formalismo."
     }
   },
@@ -15515,7 +15515,7 @@
     ],
     "sourceText": "where ˆj = j + n and η = (η1 · · · ηn|ηˆ1 · · · ηˆn) is the Cliffordphase vector of C.",
     "explanations": {
-      "it-intermediate": "...dove ĵ=j+n e η=(η_1···η_n|η_ĵ1···η_ĵn) è il vettore di fase Clifford di C (chiarisce la notazione usata nella definizione precedente).",
+      "it-intermediate": "Precisa la notazione del tableau di flusso combinato F_c(C) appena definito (Eq. C1): ĵ = j + n indica la colonna Z associata al qubit j, e η = (η₁⋯ηₙ|η_1̂⋯η_n̂) è il vettore delle fasi di Clifford di C. Il tableau combinato mette insieme in un'unica tabella le etichette di flusso e queste fasi, così da contenere sia la trasformazione controvariante sia quella covariante.",
       "it-expert": "Notazione: ĵ=j+n indicizza la 'seconda metà' (blocco Z) dei 2n generatori — convenzione usata sistematicamente nel resto dell'Appendice."
     }
   },
@@ -15559,7 +15559,7 @@
     ],
     "sourceText": "j|xj|z j)of the full Clifford tableau can be read off from the combinedﬂow tableau columnwise after swapping the columns ¯Xj with ¯Zj and the rows Xj with Zj.",
     "explanations": {
-      "it-intermediate": "...(colonne x_j, z_j) del tableau Clifford completo possono essere lette dal tableau di flusso combinato colonna per colonna, dopo aver scambiato le colonne X̄_j con Z̄_j e le righe X_j con Z_j.",
+      "it-intermediate": "Corollario C1: dal tableau di flusso combinato F_c(C) si ricava anche il tableau di Clifford completo, senza invertire niente. Le righe ϱ(C_*ḡⱼ) = (κ′ⱼ|xⱼ|zⱼ) del tableau di Clifford si leggono per colonne nel tableau combinato, dopo aver scambiato le colonne X̄ⱼ con Z̄ⱼ e le righe Xⱼ con Zⱼ. È la versione in forma di tableau del metodo del testo principale per seguire insieme le due trasformazioni.",
       "it-expert": "Ricetta pratica: T(C) (Clifford tableau completo) si ricava da Fc(C) applicando uno scambio riga/colonna X↔Z — evita di dover mantenere T(C) e Fc(C) come strutture separate."
     }
   },
@@ -16775,7 +16775,7 @@
     ],
     "sourceText": "or calculate the ﬂow P label by P = X : read off the X label above the wire;P = Z : read off the Z label below the wire;P = Y : calculate the ⊛sum of the phase i, the X label, andthe Z label.",
     "explanations": {
-      "it-intermediate": "...o calcolare l'etichetta di flusso P nel modo seguente: P=X: leggere l'etichetta X sopra il filo; P=Z: leggere l'etichetta Z sotto il filo; P=Y: calcolare la somma ⊛ della fase i, dell'etichetta X e dell'etichetta Z.",
+      "it-intermediate": "Spiega come trovare il significato logico di una rotazione di Pauli fisica R_P inserita a un certo passo del circuito con qubit ausiliari (Eq. C13). Si legge, o si calcola, l'etichetta di flusso di P. Se P = X, si legge l'etichetta X sopra il filo; se P = Z, l'etichetta Z sotto il filo; se P = Y, si combinano con l'operazione ⊛ la fase i, l'etichetta X e l'etichetta Z, perché Y = iXZ.",
       "it-expert": "Ricetta operativa (case-by-case su P∈{X,Y,Z}) per leggere l'etichetta di flusso corrispondente — l'algoritmo pratico di lookup usato per implementare il tracking."
     }
   },
@@ -16914,7 +16914,7 @@
     ],
     "sourceText": "•α,they act as ±I on their respective auxiliary qubit and can beremoved from the label, while adjusting the phase exponentwith ⊕42 in the −case.",
     "explanations": {
-      "it-intermediate": "...•_α, agiscono come ±I sul rispettivo qubit ausiliario e possono essere rimosse dall'etichetta, aggiustando l'esponente di fase con ⊕₄2 nel caso −.",
+      "it-intermediate": "Se l'etichetta non contiene indici ×α (cioè non viola gli stabilizzatori dei qubit ausiliari), la rotazione si può riportare indietro anche attraverso la preparazione iniziale degli ausiliari. Gli indici ausiliari rimasti sono tutti del tipo •α, cioè stabilizzati, e agiscono come ±I sul rispettivo qubit ausiliario. Si possono quindi togliere dall'etichetta, aggiungendo 2 (modulo 4) all'esponente di fase quando il segno è −.",
       "it-expert": "Procedura di 'pulizia' finale: rimozione degli indici banali dall'etichetta con correzione di fase (+2 mod 4) quando il segno è negativo — l'algoritmo di semplificazione completo."
     }
   },
@@ -17008,7 +17008,7 @@
     ],
     "sourceText": "which is the sign correction for |1⟩and |−⟩initialized qubits.",
     "explanations": {
-      "it-intermediate": "...che è la correzione di segno per i qubit inizializzati in |1⟩ e |−⟩.",
+      "it-intermediate": "Commenta l'Eq. (C14). Quando si tolgono gli indici degli ausiliari dall'etichetta, la fase cambia di 2 (cioè di un segno −) per ogni ausiliario inizializzato in |1⟩ su cui compare una Z, e per ogni ausiliario inizializzato in |−⟩ su cui compare una X. È la correzione di segno dovuta a questi due stati, che sono autostati con autovalore −1.",
       "it-expert": "Dettaglio finale della formula κ': termine di correzione di segno per le inizializzazioni non-'+1-eigenstate' (|1⟩,|−⟩)."
     }
   },
@@ -17336,7 +17336,7 @@
     ],
     "sourceText": "•a⟩12 \u0005→⟨12⟩12. Since it does not contain an×a, the rotationis allowed and its logical meaning is R−¯Y1 ¯Y2(−2α) = R ¯Y1 ¯Y2(2α) as desired. •a⟩×a ⊛12",
     "explanations": {
-      "it-intermediate": "...•_a⟩12↦⟨12⟩12. Poiché non contiene un ×_a, la rotazione è permessa e il suo significato logico è R_−Ȳ1Ȳ2(−2α)=R_Ȳ1Ȳ2(2α) come desiderato.",
+      "it-intermediate": "Esempio della Fig. 10, con un qubit ausiliario a. Per una rotazione R_Y fisica bisogna calcolare l'etichetta Y combinando la fase i con le etichette X e Z del qubit; il risultato, una volta tolto l'indice stabilizzato •a, è ⟨12⟩12. Non contiene indici ×a, quindi la rotazione non viola lo stabilizzatore ed è permessa. Il suo significato logico è R_{−Ȳ₁Ȳ₂}(−2α) = R_{Ȳ₁Ȳ₂}(2α), cioè proprio la rotazione desiderata.",
       "it-expert": "Conclusione esempio: cancellazione dell'indice ×_a conferma che R_Y è permessa, con risultato finale coerente (segno doppio si semplifica correttamente)."
     }
   },
@@ -17462,7 +17462,7 @@
     ],
     "sourceText": "×α label above the wire. The rotationRP is an allowed operation iff P commutes with these physical for every qubit that has the",
     "explanations": {
-      "it-intermediate": "...×_α sopra il filo. La rotazione R_P è un'operazione permessa se e solo se P commuta con questi significati fisici di P̄_α per ogni qubit ausiliario α — questo è il criterio di compatibilità, formulato ora in termini di commutazione diretta.",
+      "it-intermediate": "Criterio alternativo per verificare se una rotazione fisica R_P è permessa. Per ogni ausiliario α che ha un indice ×α al passo considerato, si costruisce il significato fisico del suo stabilizzatore P̄α: si legge la fase di Clifford, si prendono gli operatori fisici Xⱼ sui qubit con ×α nell'etichetta X (sopra il filo) e gli Zⱼ sui qubit con ×α nell'etichetta Z (sotto il filo). La rotazione R_P è permessa se e solo se P commuta con tutti questi stabilizzatori fisici.",
       "it-expert": "Criterio del metodo alternativo: R_P permessa ⟺ P commuta con TUTTI gli operatori fisici P_α associati agli stabilizzatori ancilla — riformulazione del test di compatibilità come condizione di commutazione diretta."
     }
   },
@@ -17670,7 +17670,7 @@
     ],
     "sourceText": "middle and last parst of ϱ( ¯P) with the help of \u0013 = (",
     "explanations": {
-      "it-intermediate": "...parti centrale e finale di ϱ(P̄) con l'aiuto della matrice di permutazione (definita esplicitamente qui) — completa la notazione matriciale usata per esprimere il confronto tra i due metodi.",
+      "it-intermediate": "Descrive come impostare graficamente il controllo di compatibilità sul tableau. Il vettore di Q si scrive come colonna davanti al tableau, per selezionare le righe che interessano. Quello dello stabilizzatore P̄ si scrive come riga sotto il tableau, per selezionare le colonne. Bisogna usare il significato di Clifford del tableau, quindi le parti X e Z di ϱ(P̄) vanno scambiate: lo fa la matrice Ω = (1 0 0; 0 0 I; 0 I 0).",
       "it-expert": "Dettaglio della matrice di permutazione usata per lo swap X↔Z nella formalizzazione (blocco tecnico di supporto)."
     }
   },

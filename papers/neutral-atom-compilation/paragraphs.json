@@ -510,7 +510,7 @@
     "sourceText": "We first consider the case G = {I, X}, where X isa self-inverse single-qubit gate, i.e., X2 = I.Many",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Caso G={I,X} con X self-inverso (X²=I) — include, tra gli altri, i gate di Pauli e l'Hadamard (continua a pagina successiva)."
+      "it-expert": "Caso G = {I, X} con X self-inverse (X² = I): include molti gate a singolo qubit comuni, come i Pauli e l'Hadamard. In questo caso G ≅ GF(2) e il problema (1) diventa una decomposizione di rango su GF(2) della matrice pattern M."
     }
   },
   {
@@ -2940,7 +2940,7 @@
     "sourceText": "Unlike single-qubit gates, the execution of C-Z gatesrequires the participating qubits to be physically trans-ported to a designated entangling zone. Within this zone,",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "A differenza dei gate a singolo qubit, l'esecuzione dei gate C-Z richiede il trasporto fisico dei qubit coinvolti in una zona di entangling dedicata (continua a pagina successiva)."
+      "it-expert": "A differenza dei gate a singolo qubit, i C-Z richiedono di trasportare fisicamente i qubit coinvolti in una entangling zone dedicata. Lì il C-Z si può eseguire tra righe o colonne adiacenti di qubit; il trasporto via AOD (righe × colonne, intersezioni mosse in blocco) è descritto nel blocco successivo."
     }
   },
   {
@@ -3981,7 +3981,7 @@
     "sourceText": "We evaluate the performance of the proposed single-qubit gate compilation methods through numerical ex-periments.For each gate family, we generate random",
     "section": "IV.A Valutazione gate singolo qubit",
     "explanations": {
-      "it-expert": "Per ciascuna famiglia di gate generano matrici pattern casuali (continua a pagina successiva)."
+      "it-expert": "Valutazione numerica della compilazione dei gate a singolo qubit: per ciascuna famiglia di gate si generano matrici pattern M casuali sul gruppo corrispondente, con n da 10 a 200 e 100 istanze per dimensione (dettagli del campionamento nel blocco successivo)."
     }
   },
   {
@@ -4304,7 +4304,7 @@
     "sourceText": "For each instance, we record the total number ofatom transports required for implementing C-Z gates,as well as the number of addressing layers required forHadamard gates and Rz rotations, as produced by ourcompilation method. For comparison, we also record thecorresponding number of atom transports for C-Z gates",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Per ciascuna istanza registrano il numero totale di trasporti atomici per i C-Z e il numero di addressing layer per Hadamard e rotazioni Rz prodotti dal metodo; per confronto registrano anche i trasporti C-Z della baseline naive (continua a pagina successiva)."
+      "it-expert": "Metriche per ciascuna istanza QAOA-MaxCut: trasporti atomici totali per i C-Z e numero di addressing layer per Hadamard e rotazioni Rz prodotti dal metodo proposto; per confronto, i trasporti C-Z della baseline naive. Media e deviazione standard sui trial sono in Fig. 10."
     }
   },
   {

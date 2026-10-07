@@ -2840,7 +2840,7 @@
     ],
     "sourceText": "The approach of using HGPs can also be applied for LNN and all-to-all connected devices, though the respec-tive paths are not recognized as such or do not yield per-formance gains. In the LNN case, a minimal Hamiltonian grid (almost) coincides with a conventional Hamiltonian path: the HGP includes all but the first and the last qubits which are the only HGP neighbors. For all-to-all connected devices, a minimal HGP is trivial as it con-",
     "explanations": {
-      "it-intermediate": "Anche LNN e tutti-con-tutti rientrano nello schema, solo che l'HGP non porta vantaggi. Su LNN l'HGP minimale coincide quasi con il cammino hamiltoniano: contiene tutti i qubit tranne il primo e l'ultimo, che sono gli unici vicini. Sul grafo completo l'HGP minimale è banale e con-"
+      "it-intermediate": "Gli HGP (Hamiltonian grid path, cammini che attraversano la griglia di qubit) si possono usare anche nei due casi estremi, ma lì non portano vantaggi. Su un dispositivo LNN, cioè con i qubit in fila, l'HGP minimale coincide quasi con il normale cammino hamiltoniano: comprende tutti i qubit tranne il primo e l'ultimo, che sono gli unici vicini HGP. Su un dispositivo in cui ogni qubit è collegato a tutti gli altri, l'HGP minimale è banale, come spiega il blocco successivo."
     }
   },
   {
@@ -2876,7 +2876,7 @@
     ],
     "sourceText": "tains just a single qubit with all other qubits being HGP neighbors.",
     "explanations": {
-      "it-intermediate": "…tiene un solo qubit, mentre tutti gli altri sono suoi vicini HGP (conclusione della frase del paragrafo precedente)."
+      "it-intermediate": "Completa il caso dei dispositivi con connettività completa (tutti-con-tutti): qui l'HGP minimale è banale, perché contiene un solo qubit e tutti gli altri qubit sono suoi vicini HGP. Un cammino così corto non aiuta a organizzare il circuito, ed è per questo che su questi dispositivi l'approccio con gli HGP non porta vantaggi."
     }
   },
   {
@@ -2930,7 +2930,7 @@
     ],
     "sourceText": "Specifically, achieving lower depth (as compared to im-plementations for nearest neighbor connectivity graphs) requires stricter connectivity requirements on the hard-ware. The overall size of our algorithm implementations is largely determined by the size of the DCNOT gates which constitutes the most prominent component. Mean-while, the depth depends on the required shift between the constituent circuit components, in particular the shifts between subsequent PTC chains. As the number of HGP neighbors connected to a single HGP node grows, so does",
     "explanations": {
-      "it-intermediate": "Ridurre anche la profondità richiede requisiti di connettività più stringenti. Il numero di porte è dominato dalle DCNOT, mentre la profondità dipende da quanto bisogna sfasare le PTC consecutive. Più vicini HGP ha ogni nodo del cammino, più"
+      "it-intermediate": "Ridurre anche la profondità, oltre al numero di porte, richiede un hardware con più connessioni rispetto a una semplice fila di qubit. Il numero totale di porte dipende soprattutto dalle DCNOT, la componente più grande del circuito. La profondità, invece, dipende da quanto ogni catena Parity Twine (PTC) deve essere sfasata rispetto alla precedente prima di poter partire. Più vicini HGP ha ogni nodo del cammino, più grande deve essere questo sfasamento, e quindi più profondo diventa il circuito (il conto preciso è nel blocco successivo)."
     }
   },
   {
@@ -2948,7 +2948,7 @@
     ],
     "sourceText": "FIG. 10. (a) Schematic of the first two consecutive Parity Twine chains adapted to a ladder connectivity graph, illus-trating how labels are transported along two distinct HGPs. (b) Schematic of the decoding procedure, which begins with a",
     "explanations": {
-      "it-intermediate": "Figura 10: (a) le prime due Parity Twine chain adattate a una scala, con le etichette trasportate lungo due HGP distinti; (b) la decodifica, che inizia con"
+      "it-intermediate": "Didascalia della Figura 10. (a) Mostra le prime due catene Parity Twine adattate a una connettività a scala (ladder): le etichette di parità viaggiano lungo due HGP distinti, uno per ciascun lato della scala. (b) Mostra lo schema di decodifica, cioè la parte finale che riporta i qubit alle etichette di partenza; la sua sequenza è descritta nel blocco successivo."
     }
   },
   {
@@ -2984,7 +2984,7 @@
     ],
     "sourceText": "single DCNOT gate and is followed by one CNOT gate. This sequence is then applied repeatedly from top to bottom. The resulting decoding step contributes only in sub-leading order to both the circuit size and depth. the required shift between subsequent PTC chains and, consequently we obtain an increased depth. For example, the PTN(n) LNN circuit (with zero HGP neighbors) has a depth of 4n + O(1) while PTN(n) grid (with two HGP neigh-bors per HGP node) results in 6n + O(1).",
     "explanations": {
-      "it-intermediate": "…una sola DCNOT seguita da una CNOT, ripetute dall'alto in basso; la decodifica pesa solo in ordine sub-dominante (fine della didascalia di Fig. 10). Poi il testo riprende: più vicini ha ogni nodo, più grande è lo sfasamento necessario tra PTC successive, quindi più profondità. Esempio: il PTN su LNN (zero vicini HGP) ha profondità 4n + O(1), quello su griglia (due vicini per nodo) 6n + O(1)."
+      "it-intermediate": "Il blocco mette insieme due pezzi. Il primo chiude la didascalia di Fig. 10(b): la decodifica comincia con una DCNOT seguita da una CNOT, e questa coppia si ripete dall'alto verso il basso. Costa poco: aggiunge porte e profondità solo in termini di ordine inferiore, quindi non cambia il comportamento per n grande.\n\nIl secondo pezzo riprende il testo principale. Più vicini HGP ha ogni nodo, più bisogna sfasare una catena PTC rispetto alla precedente, e la profondità cresce. Per esempio, il PTN su LNN (nessun vicino HGP) ha profondità 4n + O(1), mentre su griglia quadrata (due vicini HGP per nodo) arriva a 6n + O(1). Più connettività quindi non riduce automaticamente la profondità: dipende da come si dispongono i cammini."
     }
   },
   {
@@ -3026,7 +3026,7 @@
     ],
     "sourceText": "Assuming a planar qubit layout, the above require-ments are for example met by a ladder connectivity graph (see Fig. 10). On a ladder we can naturally define two HGPs where the nodes of one are the HPG neighbors of the other. In that way, the required shift of subsequent PTC chains reduces to 3 CNOT gates (as compared to 4) when using the (sequential) LNN approach. Notably, this parallelization scheme only affects the depth but leaves the CNOT count unchanged. That is, using two con-nected HGPs (where each node is associated with one",
     "explanations": {
-      "it-intermediate": "In un layout planare questi requisiti sono soddisfatti dalla scala (ladder, Fig. 10): si definiscono due HGP, ciascuno formato dai vicini dell'altro. Lo sfasamento tra PTC successive scende così a 3 CNOT invece di 4 come su LNN. La parallelizzazione cambia solo la profondità, non il numero di porte: con due HGP collegati"
+      "it-intermediate": "Con un layout planare, una connettività a scala (ladder, Fig. 10) soddisfa i requisiti appena descritti. Sulla scala si definiscono due HGP, uno per lato, e i nodi di ciascuno sono i vicini HGP dell'altro. Così due catene PTC consecutive devono essere sfasate solo di 3 CNOT, invece delle 4 dell'approccio sequenziale su LNN. Questa parallelizzazione riduce la profondità ma non cambia il numero di CNOT; il blocco successivo dà i valori precisi."
     },
     "recall": [
       {
@@ -3079,7 +3079,7 @@
     ],
     "sourceText": "HGP neighbor) results in the exact same CNOT as the sequential approach where just a single HGP of the same kind is used. More concretely, we find 4n2 + O(n) PTN(n) PTN(n) = 3n + O(1).",
     "explanations": {
-      "it-intermediate": "…(ciascun nodo con un vicino HGP) il numero di CNOT è identico all'approccio sequenziale con un solo HGP dello stesso tipo. Concretamente, per il PTN sulla scala: circa 3n²/4 CNOT e profondità 3n + O(1)."
+      "it-intermediate": "Completa il confronto sulla scala: usare due HGP collegati, in cui ogni nodo ha un solo vicino HGP, richiede esattamente lo stesso numero di CNOT dell'approccio sequenziale con un unico HGP. Il guadagno è tutto in profondità. Per il circuito PTN su n qubit disposti a scala il numero di CNOT è (3/4)n² + O(n) e la profondità è 3n + O(1), quindi migliore della versione LNN su entrambe le misure (vedi Tab. I e II). Per estendere questo risultato ai generatori di termini a k corpi mantenendo la stessa profondità servirebbe una connettività \"a scacchiera\", cioè anche collegamenti diagonali tra qubit già collegati in orizzontale e in verticale."
     }
   },
   {
@@ -3329,7 +3329,7 @@
     ],
     "sourceText": "FIG. 11. Two subsequent QAOA cycles for the 3 × 4 square grid of Fig. 9(a) using shifted concatenation of two-body generators G(12)",
     "explanations": {
-      "it-intermediate": "Figura 11: due cicli QAOA consecutivi sulla griglia 3×4 di Fig. 9(a), ottenuti concatenando in modo sfalsato G2,grid e il suo aggiunto rovesciato,"
+      "it-intermediate": "Didascalia della Figura 11: mostra due cicli QAOA consecutivi sulla griglia 3×4 di Fig. 9(a). I due blocchi sono costruiti con il generatore a due corpi per griglia G₂,grid e con il suo aggiunto, concatenati in modo sfalsato così che il secondo inizi prima che il primo sia finito. La didascalia continua nel blocco successivo."
     }
   },
   {
@@ -3371,7 +3371,7 @@
     ],
     "sourceText": "2,grid and (G (12) 2,grid)† with single-qubit x-rotations of the driver unitary in between, indicated by black rectangular boxes. For illustration purposes we neglect the (many) single-qubit z rotations. trate this approach for two subsequent QAOA cycles on the 3 × 4 square grid shown in Fig. 9(a). In between the two Hamiltonian encoding blocks a permutation of the single-body labels is available so that we can apply the x rotation of the driver unitary. Shifted concatenation of QAOA blocks built from G(n) 2,grid and (G (n) 2,grid)† reduce the total depth by a factor of ∼2. More precisely, for an even number of QAOA cycles p we obtain a depth of 3n(p + 4 9) + O(1) while for an odd number of QAOA we find 3n(p + 1) + O(1). Thus, eventually we obtain a depth of 3n(1 + 1/p) + O(1) (3n(1 + 4 9p) + O(1)) per QAOA cycle given an odd (even) number of cycles. For p ≫1, this is on par with the best known depth, how-ever saving a factor of 9/4 in gate count compared to established SWAP based approaches [27, 46]. The same approach can be applied to other layouts such as heavy-hexagon and ladder. For all the connectivity graphs we investigate, we obtain a circuit depth that is at most equal to the best known result with a simultaneously significant improvement in gate count. In fact in most cases both metrics outperform existing algorithms. Our results for implementations of QAOA on the different connectivity graphs are collected in Tab. I.",
     "explanations": {
-      "it-intermediate": "…con le rotazioni X del driver in mezzo (rettangoli neri); le molte rotazioni Z sono omesse (fine didascalia). Tra i due blocchi le etichette sono di nuovo singole (permutate), quindi si possono applicare le rotazioni X. Risultato: profondità circa dimezzata, 3n(1 + 1/p) per ciclo con p dispari e 3n(1 + 4/(9p)) con p pari. Per p grande è pari alla migliore profondità nota, ma con 9/4 volte meno porte dei metodi basati su SWAP. Lo stesso vale per heavy hexagon e scala: profondità mai peggiore del miglior risultato noto, porte sempre molto meno, e nella maggior parte dei casi entrambe le metriche migliori (Tab. I)."
+      "it-intermediate": "Il blocco unisce la fine della didascalia di Fig. 11 e il testo che la commenta. Nella figura, tra il blocco G₂,grid e il suo aggiunto ci sono le rotazioni X del driver del QAOA (rettangoli neri); le molte rotazioni Z a un qubit non sono disegnate per semplicità.\n\nTra i due blocchi che codificano l'Hamiltoniana le etichette sono di nuovo a un corpo, solo in ordine permutato: per questo si possono applicare lì le rotazioni X del driver. Concatenare in modo sfalsato G₂,grid e il suo aggiunto dimezza circa la profondità totale. Con p cicli la profondità è 3n(p + 4/9) + O(1) se p è pari e 3n(p + 1) + O(1) se p è dispari, cioè per ciclo 3n(1 + 4/(9p)) e 3n(1 + 1/p). Per p grande eguaglia la migliore profondità nota, usando però 9/4 volte meno porte dei metodi basati su SWAP. Lo stesso approccio funziona anche per heavy hexagon e scala. Su tutte le connettività studiate la profondità non è mai peggiore del miglior risultato noto e il numero di porte è sempre molto più basso; spesso migliorano entrambe le misure (Tab. I)."
     }
   },
   {
@@ -3442,7 +3442,7 @@
     ],
     "sourceText": "Recently, some of the authors demonstrated in Ref. [35] how parity label tracking can yield reductions in gate count and depth when implementing the QFT on LNN devices. Up to single-qubit z rotations, the QFT circuit of Ref. [35] can (mainly) be understood as a combination",
     "explanations": {
-      "it-intermediate": "In [35] alcuni degli autori hanno mostrato come le etichette di parità riducano porte e profondità della QFT su LNN. A meno delle rotazioni Z a un qubit, quella QFT è essenzialmente una combinazione"
+      "it-intermediate": "In un lavoro precedente [35] alcuni degli stessi autori hanno mostrato che seguire le etichette di parità riduce porte e profondità della trasformata di Fourier quantistica (QFT) su dispositivi LNN. Ignorando le rotazioni Z a un qubit, quella QFT si può vedere come una sequenza di catene PTC alternate a rotazioni X; il blocco successivo spiega come."
     }
   },
   {
@@ -3484,7 +3484,7 @@
     ],
     "sourceText": "of PTC circuits neatly intertwined with single-qubit x rotation gates. Fig. 14(a) depicts the corresponding QFT circuit. In between subsequent PTC circuits we add the necessary single-body z rotations and Hadamard gates, which we decompose into z and x rotation gates. Unlike for circuits which solely decompose into CNOT and z rotation gates, the QFT requires a strict order in which labels are created and corresponding rotation gates are applied. In particular, the textbook QFT circuit requires Hadamard gates applied to individual qubits before appli-cation of corresponding controlled-phase gates. The QFT implementation of Fig. 14(a) works because of another neat property of PTN chains which becomes evident if one additionally tracks the x-labels: while PTC chains encode the initial bottom z-label into all other labels, the x-labels remain unpaired for the most part. Only the top qubit accumulates a string of the traversed x-labels (see Fig. 15). Therefore, after each PTC chain, we can still apply x-rotation gates that also logically correspond to single-qubit rotations. This property holds for all connectivity-adapted variations of PTC chains.",
     "explanations": {
-      "it-intermediate": "…di Parity Twine chain intercalate con rotazioni X a un qubit (Fig. 14(a)). Tra una PTC e l'altra si inseriscono rotazioni Z e Hadamard (scomposte in rotazioni Z e X). A differenza dei circuiti di sole CNOT e RZ, nella QFT l'ordine conta: gli Hadamard devono venire prima delle fasi controllate corrispondenti. Funziona grazie a un'altra proprietà delle PTC, visibile tracciando anche le etichette x: mentre l'etichetta z del qubit iniziale finisce combinata in tutte le altre, le etichette x restano quasi tutte non accoppiate; solo il qubit in cima accumula le etichette x attraversate (Fig. 15). Quindi dopo ogni PTC le rotazioni X agiscono ancora come rotazioni logiche a un qubit. Questo vale per tutte le varianti di PTC adattate alla connettività."
+      "it-intermediate": "La QFT di [35] è essenzialmente una sequenza di catene Parity Twine (PTC) alternate a rotazioni X a un qubit (Fig. 14(a)). Tra una catena e l'altra si aggiungono le rotazioni Z e le Hadamard, scomposte a loro volta in rotazioni Z e X.\n\nRispetto ai circuiti fatti solo di CNOT e rotazioni Z c'è un vincolo in più: nella QFT conta l'ordine in cui le etichette vengono create e le rotazioni applicate. Nel circuito da manuale, l'Hadamard su un qubit deve arrivare prima delle fasi controllate che lo riguardano. La costruzione di Fig. 14(a) funziona grazie a un'altra proprietà delle catene PTC, che si vede seguendo anche le etichette x. Mentre l'etichetta z del qubit in basso viene combinata in tutte le altre, le etichette x restano quasi tutte separate: solo il qubit in cima accumula quelle che ha attraversato (Fig. 15). Quindi dopo ogni catena una rotazione X agisce ancora come rotazione logica su un singolo qubit. La proprietà vale per tutte le varianti di PTC adattate alle diverse connettività."
     },
     "recall": [
       {
@@ -3513,7 +3513,7 @@
     ],
     "sourceText": "By this reason, we can replace the respective build-ing blocks and readily adapt the approach of Fig. 14 to qubit layouts with other connectivity graphs. In essence, this amounts to replacing each PTC circuit with its corre-sponding counterpart on the connectivity graph of interest and inserting corresponding single-body z rotation gates. For instance, using the mapping established in Sec. V A, we can map the circuit of Fig. 14(a) to a corresponding",
     "explanations": {
-      "it-intermediate": "Per questo basta sostituire ogni PTC con la sua versione per la connettività voluta, e inserire le rotazioni Z corrispondenti, per adattare la QFT di Fig. 14 ad altri layout. Per esempio, con la mappa della Sez. V A il circuito di Fig. 14(a) si trasforma in quello"
+      "it-intermediate": "Poiché la proprietà vale per tutte le varianti di PTC, la QFT di Fig. 14 si porta su altre connettività sostituendo ogni catena con la sua versione per il grafo voluto e inserendo le rotazioni Z corrispondenti. Per esempio, con la corrispondenza introdotta nella Sez. V A, il circuito LNN di Fig. 14(a) diventa quello ottimizzato per connettività completa (il risultato è descritto nel blocco successivo)."
     }
   },
   {
@@ -3585,7 +3585,7 @@
     ],
     "sourceText": "circuit optimized for all-to-all connected devices shown in Fig. 14(b). By virtue of mapping PTC to PTCall−to−all, we can directly conclude that the CNOT count and depth of the algorithm halves. Interestingly, the structure of the QFT implementation on all-to-all connected devices read-ily allows to construct an approximate QFT [59, 63] just from omitting CNOT gates (and corresponding rotations with angles below the approximation threshold).",
     "explanations": {
-      "it-intermediate": "…ottimizzato per connettività completa di Fig. 14(b). Poiché PTC diventa PTCall-to-all, CNOT e profondità si dimezzano. Inoltre questa struttura permette una QFT approssimata semplicemente omettendo le CNOT (e le rotazioni) con angoli sotto la soglia di approssimazione."
+      "it-intermediate": "Applicando la corrispondenza della Sez. V A, la QFT per LNN di Fig. 14(a) diventa la versione per dispositivi con connettività completa di Fig. 14(b). Poiché ogni catena PTC viene sostituita dalla sua versione per connettività completa, numero di CNOT e profondità si dimezzano. Inoltre, in questa forma si ottiene facilmente anche la QFT approssimata: basta omettere le CNOT, e le rotazioni corrispondenti, il cui angolo è sotto la soglia di approssimazione."
     }
   },
   {
@@ -3938,7 +3938,7 @@
     ],
     "sourceText": "We follow a similar procedure as outlined in Ref. [62] and generate initial states representing σ∗ k = QFT†|k⟩⟨k|QFT with computational basis states |k⟩ where k represents a bitstring of length n. This can be done by using only local rotations (of which the z rotations can be implemented noiseless). Subsequently, we apply the noisy QFT circuit implementations, ˜ QFT , combined with z-basis measurements. By extracting the counts of the correct bitstrings which refer to the initial computational basis state, we can deduce the performance",
     "explanations": {
-      "it-intermediate": "Metodo (come in [62]): si preparano stati che, dopo la QFT ideale, darebbero una stringa di bit nota |k⟩; per prepararli bastano rotazioni locali. Si applica la QFT rumorosa, si misura in base z e si conta quanto spesso esce la stringa giusta: questo misura la qualità"
+      "it-intermediate": "Per misurare quanto bene funziona la QFT rumorosa gli autori seguono il metodo di [62]. Preparano stati σ*ₖ = QFT†|k⟩⟨k|QFT, scelti in modo che una QFT perfetta li trasformi esattamente nella stringa di bit k. Per prepararli bastano rotazioni locali, e quelle Z si possono considerare prive di rumore. Poi applicano la QFT rumorosa e misurano nella base z. La frequenza con cui esce la stringa giusta k indica quanto la QFT reale si avvicina a quella ideale; il blocco successivo combina questi conteggi nella fedeltà di processo."
     }
   },
   {
@@ -4046,7 +4046,7 @@
     ],
     "sourceText": "22 3 idle (upper black dashed-dotted line). For reference, we include error values of five IBM machines (red) as well as the error values used for some of the simulations (white). of the QFT implementation. The results are combined in the process fidelity [62] Fproc = m m −1 kl| ˜ QFT (σ∗ (23) − 1 m(m −1) kl| ˜ QFT (σ∗ where m is the number of initial basis states and Pr kl| ˜ QFT (σ∗ the probability to measure the correct bitstring kl given ˜ QFT of the state σ∗",
     "explanations": {
-      "it-intermediate": "…(fine didascalia: la transizione tra scala e griglia dipende da n; per n → ∞ la griglia vince quando F2q > Fidle^19, per n = 2 la soglia è Fidle^(22/3); sono indicati cinque dispositivi IBM e i valori usati nelle simulazioni). Poi il testo: i risultati si combinano nella fedeltà di processo Fproc (equazione 23), calcolata dalla probabilità di misurare la stringa corretta per m stati iniziali casuali."
+      "it-intermediate": "Il blocco contiene la fine della didascalia di Fig. 16 e l'inizio del testo successivo. Nella figura la transizione tra layout a scala e a griglia dipende da n. Per n molto grande la griglia è migliore quando F₂q > F_idle¹⁹ (linea tratteggiata inferiore); per il caso più piccolo, n = 2, la soglia è F₂q > F_idle^(22/3) (linea superiore). Sono segnati anche gli errori di cinque macchine IBM (in rosso) e i valori usati in alcune simulazioni (in bianco).\n\nIl testo poi definisce come si misura la qualità della QFT. I conteggi ottenuti dagli m stati iniziali vengono combinati nella fedeltà di processo F_proc (Eq. 23), che si calcola dalla probabilità di misurare la stringa corretta k dopo aver applicato la QFT rumorosa allo stato σ*ₖ."
     }
   },
   {
@@ -4298,7 +4298,7 @@
     ],
     "sourceText": "While the process fidelity of most QFT methods drops",
     "explanations": {
-      "it-intermediate": "Mentre la fedeltà di processo della maggior parte dei metodi scende"
+      "it-intermediate": "Qui inizia il commento ai risultati sperimentali di Fig. 20(a), ottenuti su un processore IQM a griglia quadrata (Emerald): la frase prosegue nel blocco successivo, che confronta come cala la fedeltà di processo delle varie implementazioni della QFT al crescere del numero di qubit."
     }
   },
   {
@@ -4334,7 +4334,7 @@
     ],
     "sourceText": "to indistinguishably small values in the data shown in Fig. 20(a) at a system size of around 12 qubits, the Parity Twine square grid QFT still shows performance of several orders of magnitudes higher. Concretely, at a system size of n = 18 our implementation still provides a process fidelity of ∼10−3, where all other methods didn’t sample the correct bitstring at least once. Surprisingly, the LNN QFT implementation does not show a significant perfor-mance advantage over the reference implementations (in contrast to the simulations and theoretical expectations). This might be explained by single low-fidelity qubits that are addressed more often in the LNN implementation. Instead, on the IQM Garnet (Fig. 20(b)), we find a more versatile picture. Here the results resemble more the in-sights and expectations gained from our theoretical and numerical analysis: while the LNN implementation im-proves over the reference implementations, the ladder based implementation significantly outperforms all other implementations.",
     "explanations": {
-      "it-intermediate": "…a valori indistinguibili da zero intorno a 12 qubit (Fig. 20(a)), la QFT Parity Twine per griglia resta più alta di diversi ordini di grandezza: a n = 18 ha ancora fedeltà di processo ~10⁻³, mentre gli altri metodi non hanno mai misurato la stringa corretta. Sorprendentemente la versione LNN non batte chiaramente i riferimenti, contro le attese; gli autori lo attribuiscono a singoli qubit di bassa qualità usati più spesso dalla versione LNN. Su IQM Garnet (Fig. 20(b)) il quadro è più vicino alle previsioni teoriche e numeriche."
+      "it-intermediate": "Nei dati di Fig. 20(a), sul processore IQM Emerald, la fedeltà di processo della maggior parte dei metodi QFT diventa indistinguibile da zero intorno ai 12 qubit. La QFT Parity Twine per griglia quadrata resta invece più alta di diversi ordini di grandezza: a n = 18 ha ancora una fedeltà di circa 10⁻³, mentre gli altri metodi non hanno mai misurato la stringa corretta nemmeno una volta. Sorprendentemente la versione per LNN non batte in modo netto le implementazioni di riferimento, contrariamente a simulazioni e teoria. Gli autori ipotizzano che dipenda da singoli qubit di bassa qualità, usati più spesso dalla versione LNN. Sul processore IQM Garnet (Fig. 20(b)) i risultati sono più vicini alle previsioni: la versione LNN migliora sui riferimenti e quella a scala supera nettamente tutte le altre."
     },
     "recall": [
       {
@@ -4417,7 +4417,7 @@
     ],
     "sourceText": "We have investigated five different qubit layouts in depth: (1) LNN devices with nearest neighbor connectiv-ity, planar connectivity graphs among which are (2) heavy hexagon devices (3) ladder devices (4) square grid devices and (5) all-to-all connected devices with complete con-nectivity graphs. The average gate count of the derived generator circuits interpolates from LNN (µ = 2) over heavy hexagon (µ = 5/3), ladder (µ = 3/2) and square grids (µ = 4/3) to all-to-all with an optimal asymptotic average gate count of µ = 1. The developed formalism can be understood as a means to map the circuits between graphs of different connectivity. This lets us conjecture that the class of optimal circuits derived within our for-malism extends beyond complete graphs. As a first step in this direction we have proven that on LNN devices µ > 1 for generator circuits of label sets with odd-body labels. More precisely, we have shown µ ≥1 + 1 9 in this case but we have justified belief that this bound is not optimal. We have investigated different applications of our formal- ism: (i) quantum optimization algorithms, specifically the QAOA applied to QUBO and HUBO problems, (ii) the QFT and its approximation on all-to-all connected devices and (iii) Hamiltonian simulation based on Trotter-",
     "explanations": {
-      "it-intermediate": "Riassunto dei cinque layout: il costo medio µ scende da LNN (2) a heavy hexagon (5/3), scala (3/2), griglia quadrata (4/3) fino a tutti-con-tutti (1, ottimo). Il formalismo si può vedere come una mappa tra circuiti su grafi di connettività diversa, e gli autori congetturano che circuiti ottimi esistano anche oltre il grafo completo. Come primo passo hanno dimostrato che su LNN µ > 1 per certe famiglie di etichette. Seguono le applicazioni a QAOA, QFT e simulazione hamiltoniana con decomposizione di"
+      "it-intermediate": "Riepilogo dei cinque layout studiati: fila di qubit (LNN), heavy hexagon, scala, griglia quadrata e connettività completa. Il costo medio dei circuiti generatori µ scende da 2 (LNN) a 5/3 (heavy hexagon), 3/2 (scala), 4/3 (griglia), fino a 1 con connettività completa, che è il valore asintotico ottimale. Il formalismo serve in pratica a trasferire circuiti tra grafi di connettività diversi, e gli autori congetturano che esistano circuiti ottimali anche per grafi non completi. Come primo passo hanno dimostrato che su LNN µ > 1 per i generatori di insiemi di etichette con termini a un numero dispari di corpi: precisamente µ ≥ 1 + 1/9, un limite che ritengono migliorabile. Elencano infine le applicazioni studiate: QAOA per problemi QUBO e HUBO, QFT e QFT approssimata su dispositivi a connettività completa, e simulazione hamiltoniana con decomposizione di Trotter-Suzuki."
     },
     "recall": [
       {
@@ -4446,7 +4446,7 @@
     ],
     "sourceText": "Suzuki decomposition. On all investigated connectivity graphs, our approaches significantly outperform existing algorithms in gate count. Simultaneously, the depth of our algorithms beats the best known approaches on the majority of platforms, where at most we are on par with existing algorithms. Notably, our exact solutions, which are tailored to encode all-to-all connected problems, are so efficient that they even outperform the best state-of-the art compilation tools on sparse problems.",
     "explanations": {
-      "it-intermediate": "…Trotter-Suzuki. Su tutte le connettività studiate i loro metodi superano nettamente gli algoritmi esistenti nel numero di porte, e in profondità li battono nella maggior parte dei casi o sono alla pari. Le soluzioni esatte, pensate per problemi completamente connessi, sono così efficienti da battere i migliori compilatori anche su problemi sparsi (sopra una certa densità)."
+      "it-intermediate": "Conclusione sulle applicazioni (QAOA, QFT e simulazione hamiltoniana con decomposizione di Trotter-Suzuki): su tutte le connettività studiate i metodi proposti usano molte meno porte degli algoritmi esistenti. In profondità li battono sulla maggior parte delle piattaforme e, nel caso peggiore, sono alla pari. Le soluzioni esatte, pensate per problemi in cui ogni variabile interagisce con tutte le altre, sono così efficienti da superare i migliori strumenti di compilazione anche su problemi sparsi."
     }
   },
   {

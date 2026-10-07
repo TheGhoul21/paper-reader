@@ -447,8 +447,8 @@
     ],
     "sourceText": "error and timing models, and use it to look at the rear-rangement problem from three different angles. In Sec-tion 4, we extract lower bounds for time-optimal rear-rangement and extract scaling coefficients for various al-gorithms. In Section 5, we extend our benchmarking tonoisy environments and observe the advantages of dif-ferent heuristic strategies across error regimes. Lastly,in Section 6, we examine the challenges of preparingtarget patterns comprised of two atomic species, anddevelop a novel algorithm, InsideOut, capable of cir-cumventing these challenges.",
     "explanations": {
-      "it-intermediate": "...e la usiamo per analizzare il problema da tre prospettive: nella Sezione 4 estraiamo limiti inferiori teorici sul tempo ottimale e i coefficienti di scaling per vari algoritmi; nella Sezione 5 estendiamo il benchmark ad ambienti rumorosi osservando i vantaggi di strategie euristiche diverse a seconda del regime di errore; infine nella Sezione 6 esaminiamo le sfide del riordino con due specie atomiche, sviluppando un nuovo algoritmo, InsideOut.",
-      "it-expert": "...articolata in tre parti: §4 lower bounds e scaling coefficients time-optimal; §5 noisy benchmarking (vantaggi euristici per regime di errore dominante); §6 dual-species rearrangement e introduzione di InsideOut."
+      "it-intermediate": "Gli autori presentano atommovr, una piattaforma di simulazione che confronta algoritmi di riordino degli atomi con diversi modelli di errore e di tempo, e la usano per studiare il problema da tre punti di vista. Nella Sezione 4 ricavano limiti inferiori al tempo di riordino e misurano come cresce il tempo dei vari algoritmi. Nella Sezione 5 aggiungono il rumore e mostrano quale strategia conviene a seconda del tipo di errore dominante. Nella Sezione 6 affrontano il riordino di array con due specie atomiche e propongono un nuovo algoritmo, InsideOut, che ne supera le difficoltà.",
+      "it-expert": "Struttura del paper (atommovr come piattaforma di benchmark con modelli di errore e di timing): §4 lower bounds per il riordino time-optimal e coefficienti di scaling degli algoritmi; §5 benchmark rumoroso, con vantaggi euristici diversi per regime di errore dominante; §6 riordino dual-species e introduzione di InsideOut."
     }
   },
   {
@@ -504,8 +504,8 @@
     ],
     "sourceText": "beam into a movable rectilinear grid of beams that canbe displaced, expanded, and/or contracted. This ap-proach is extremely advantageous in that it allows forthe simultaneous implementation of many single-atomdisplacements in a single ‘AOD move segment’, whichwe define as an AOD operation which displaces one ormore atoms by a single site in the horizontal and/orvertical directions (including diagonally). A multi-sitemove (i.e.where an atom is moved by > 1 site) isdescribed by a consecutive sequence of AOD move seg-ments.",
     "explanations": {
-      "it-intermediate": "...in una griglia rettilinea di fasci spostabili, espandibili o comprimibili. Questo è molto vantaggioso perché permette di eseguire simultaneamente molti spostamenti di singoli atomi in un unico 'segmento di mossa AOD', definito come un'operazione che sposta uno o più atomi di un singolo sito in orizzontale e/o verticale (anche in diagonale). Uno spostamento multi-sito (più di un sito) è descritto da una sequenza consecutiva di segmenti di mossa AOD.",
-      "it-expert": "...griglia rettilinea di beam, spostabile/scalabile con continuità grazie alle due RF tone axes indipendenti. Un 'AOD move segment' = spostamento simultaneo di ≥1 atomo di un singolo sito (anche diagonale); mosse multi-sito = sequenze di segmenti consecutivi. Questa parallelizzabilità intrinseca è ciò che rende gli AOD superiori, in throughput, a schemi single-tweezer."
+      "it-intermediate": "Due deflettori acusto-ottici incrociati (AOD) trasformano un singolo fascio laser in una griglia rettangolare di fasci, che si può spostare, allargare o stringere. Il grande vantaggio è che molti atomi si possono spostare insieme in un'unica operazione. Gli autori chiamano \"segmento di mossa AOD\" un'operazione che sposta uno o più atomi di un solo sito, in orizzontale, in verticale o in diagonale. Uno spostamento di più siti è quindi una sequenza di segmenti consecutivi.",
+      "it-expert": "Crossed AOD: un beam in ingresso diventa una griglia rettilinea di tweezer, traslabile/dilatabile in modo continuo. Definizione operativa: 'AOD move segment' = spostamento simultaneo di ≥1 atomo di un singolo sito (anche diagonale); mosse multi-sito = sequenze di segmenti consecutivi. Il parallelismo intrinseco è ciò che dà agli AOD il vantaggio di throughput su schemi single-tweezer."
     },
     "recall": [
       {
@@ -555,7 +555,7 @@
     ],
     "sourceText": "ij gij (Fig.1b)?More formally, the time-optimal rearrangement algorithm aims to address thefollowing two questions:",
     "explanations": {
-      "it-intermediate": "...e come si costruisce esplicitamente tale sequenza di operazioni: queste sono le due domande fondamentali a cui l'algoritmo di riordino ottimale deve rispondere.",
+      "it-intermediate": "Il problema del riordino ottimale nel tempo si riduce a due domande. Dati una configurazione iniziale X₀ e una configurazione target g con N atomi, qual è il numero minimo di segmenti di mossa AOD necessario per passare da X₀ a g, e come cresce con N (Fig. 1b)? E come si costruisce esplicitamente una sequenza di mosse che raggiunga quel minimo? Il blocco successivo formalizza entrambe le domande.",
       "it-expert": "Seconda domanda: costruzione esplicita della sequenza ε1,...,εk* che realizza εk*∘⋯∘ε1(X0)=g — non solo l'esistenza/cardinalità minima ma anche l'algoritmo costruttivo."
     }
   },
@@ -644,7 +644,7 @@
     ],
     "sourceText": "We develop and demonstrate the use of a Python-basedsimulation framework, atommovr, with the followingfeatures:",
     "explanations": {
-      "it-intermediate": "Gli autori sviluppano e presentano un framework di simulazione in Python, atommovr, con le seguenti caratteristiche:",
+      "it-intermediate": "Gli autori presentano atommovr, un framework di simulazione scritto in Python. Le sue funzioni principali sono elencate nei blocchi successivi: confronto automatico delle prestazioni di algoritmi diversi (benchmark), modelli di errore e di tempo configurabili e strumenti di visualizzazione dei movimenti e degli errori.",
       "it-expert": "Panoramica del framework Python atommovr; segue elenco delle feature principali."
     }
   },
@@ -894,7 +894,7 @@
     ],
     "sourceText": "tleneck matching problem (MBMP) [36] in the graph-theoretic literature, which closely resembles LSAP. Thekey difference is that instead of minimizing the to-tal distance traveled by all atoms, the solution to theLBAP/MBMP minimizes the maximum distance trav-eled by any particular atom. Assuming that the speedof a moving tweezer is fixed, a lower bound on the re-arrangement time tLB can be easily extracted by thefollowing formula: tLB = s × dminmax |vtweezer|(1)",
     "explanations": {
-      "it-intermediate": "...il problema del collo di bottiglia (MBMP), che nella letteratura dei grafi assomiglia molto al LSAP. La differenza chiave è che invece di minimizzare la distanza totale percorsa da tutti gli atomi, la soluzione minimizza la distanza massima percorsa da un singolo atomo — questo dà proprio il limite di tempo teorico, perché il tempo totale è dominato dall'atomo che deve percorrere la strada più lunga (dato che gli spostamenti sono paralleli).",
+      "it-intermediate": "Per ottenere il limite inferiore gli autori risolvono il problema di assegnazione lineare a collo di bottiglia (LBAP), noto nella teoria dei grafi anche come MBMP. È simile al problema di assegnazione lineare (LSAP), ma con un obiettivo diverso: invece di minimizzare la distanza totale percorsa da tutti gli atomi, minimizza la distanza massima percorsa da un singolo atomo. Se gli atomi si muovono tutti in parallelo, il tempo totale è deciso proprio dall'atomo che fa il viaggio più lungo. A velocità della pinzetta fissata, il limite inferiore al tempo di riordino è quindi t_LB = s · d_minmax / |v_tweezer| (Eq. 1).",
       "it-expert": "MBMP ≈ LSAP ma con obiettivo min-max anziché min-sum: minimizza la distanza massima di trasporto anziché la somma, dando esattamente il lower bound rilevante quando le mosse sono eseguite in parallelo (il collo di bottiglia è l'atomo più lontano dal suo target)."
     },
     "recall": [
@@ -1101,7 +1101,7 @@
     "sourceText": "N)(as this entails moving O(N) atoms sequentially, eachwith a maximum distance of √",
     "explanations": {
       "it-intermediate": "Il fattore √N deriva dalla dimensione lineare di una griglia quadrata con N siti. Se O(N) atomi percorrono queste distanze uno dopo l'altro, i tempi si sommano e danno la crescita N√N. Parallelizzare i viaggi può ridurre questa somma senza cambiare l'assegnazione delle destinazioni.",
-      "it-expert": "...giustificazione: O(N) mosse sequenziali × distanza max O(√N) per atomo = O(N^1.5); risultato empirico concorda con [34] entro errore."
+      "it-expert": "Giustificazione dello scaling atteso dell'Hungarian naive: O(N) mosse sequenziali, ciascuna con distanza massima O(√N), danno O(N√N) = O(N^1.5); il risultato empirico concorda con [34] entro l'errore."
     }
   },
   {
@@ -1119,7 +1119,7 @@
     ],
     "sourceText": "N). We find that our ex-tracted scaling agrees (within error bars) with that pre-viously found in [34], and furthermore, observe that thenaive addition of parallelization to the Hungarian algo-rithm improves the scaling (from N 1.45(1) to N 1.26(1)).",
     "explanations": {
-      "it-intermediate": "...e osservano inoltre che aggiungere ingenuamente la parallelizzazione all'algoritmo Hungarian (cioè ParHungarian) migliora lo scaling rispetto alla versione sequenziale, pur non raggiungendo le prestazioni dei migliori algoritmi paralleli purpose-built come Tetris.",
+      "it-intermediate": "La previsione per l'Hungarian sequenziale era un tempo dell'ordine di N√N, perché sposta circa N atomi uno alla volta, ciascuno per al massimo circa √N siti. Lo scaling misurato concorda, entro l'errore, con quello trovato in [34]. Inoltre aggiungere in modo semplice la parallelizzazione all'algoritmo (ParHungarian) migliora lo scaling da N^1,45 a N^1,26, pur restando lontano dagli algoritmi progettati apposta per muovere molti atomi insieme.",
       "it-expert": "Risultato chiave: parallelizzare naively l'Hungarian (ParHungarian) migliora l'esponente di scaling (Table 1: 1.45→1.26) ma resta lontano dagli algoritmi progettati ad hoc per il parallelismo (Tetris 1.03, BalanceCompact 0.84)."
     },
     "recall": [
@@ -1272,8 +1272,8 @@
     ],
     "sourceText": "(Fig. 4c,d), as its high degree of parallelization enablessublinear time-scaling, whereas the absence of paral-lelization in the Hungarian means that its time-scalinggoes super-linearly (see Table 1). The ratio of successrates between the algorithms is shown for the entiresweep in Fig. 4c, and a linecut for a fixed vacuum-limited lifetime of 13.90 s is shown in Fig. 4d.",
     "explanations": {
-      "it-intermediate": "...(Fig. 4c,d), perché il suo alto grado di parallelizzazione permette uno scaling del tempo sub-lineare, mentre la mancanza di parallelizzazione nell'Hungarian fa sì che il suo tempo scali più che linearmente (vedi Tabella 1).",
-      "it-expert": "...il parallelismo di BalanceCompact dà scaling sub-lineare in N (riduce l'esposizione temporale al vacuum loss), mentre l'Hungarian sequenziale scala super-linearmente (b>1 in Table 1), peggiorando sotto perdita time-dependent."
+      "it-intermediate": "Quando domina la perdita di atomi dovuta al vuoto, che cresce con il tempo, conviene Balance and Compact (Fig. 4c,d). Questo algoritmo muove molti atomi in parallelo, quindi il suo tempo cresce meno che linearmente con N. L'Hungarian invece non parallelizza e il suo tempo cresce più che linearmente (Tabella 1): più tempo significa più atomi persi. La Fig. 4c mostra il rapporto tra i tassi di successo dei due algoritmi su tutto l'intervallo esplorato, e la Fig. 4d un taglio a vita media nel vuoto fissa di 13,90 s.",
+      "it-expert": "Regime vacuum-limited: il parallelismo di Balance and Compact dà scaling sub-lineare in N e riduce l'esposizione temporale alla perdita, mentre l'Hungarian sequenziale scala super-linearmente (b > 1, Tab. 1). Fig. 4c: rapporto dei success rate sull'intero sweep; Fig. 4d: linecut a t_v = 13,90 s."
     }
   },
   {
@@ -2008,7 +2008,7 @@
     "sourceText": "tweezers [4, 24, 47, 48].The key advantage of thismethod is that it avoids the constraint of generatingmoving tweezers on a rectilinear grid, and can executearbitrary combinations of moves in parallel.",
     "explanations": {
       "it-intermediate": "Muovere le trappole tramite ologrammi consente combinazioni di traiettorie che non devono seguire gli spostamenti accoppiati di righe e colonne degli AOD incrociati. Si possono così parallelizzare mosse geometricamente più generali. Questo descrive una possibilità hardware alternativa, non una prestazione già dimostrata da atommovr.",
-      "it-expert": "...vantaggio: libertà geometrica completa (no vincolo rettilineo dell'AOD) e parallelismo arbitrario di mosse, non limitato alla struttura riga/colonna."
+      "it-expert": "Muovere i tweezer con SLM o AOD olografici elimina il set separato di tweezer mobili [4, 24, 47, 48]. Vantaggio: nessun vincolo di griglia rettilinea come negli AOD incrociati, quindi combinazioni arbitrarie di mosse in parallelo. Il limite pratico, discusso subito dopo, è il frame rate lento."
     }
   },
   {
@@ -2615,7 +2615,7 @@
     ],
     "sourceText": "where ξ and u are normalized position and time variables mapped from displacement and time variables x and t.By rescaling ξ and u, we obtain x(t) = s \u0013\u0013 + s t (S.3) \u0012 tavg 2 t −tavg tavg where now t ∈[0, tavg] and x ∈[0, s].",
     "explanations": {
-      "it-intermediate": "...dove ξ e u sono variabili normalizzate di posizione e tempo, mappate dalle variabili fisiche di spostamento x e tempo t. Riscalando ξ e u si ottiene la traiettoria x(t) esplicita (Eq. S.3), valida per t tra 0 e tavg (tempo medio) e x tra 0 e s.",
+      "it-intermediate": "Nel modello dettagliato il trasporto di un atomo segue il profilo \"seno adiabatico\" (Eq. S.2), che accelera e frena dolcemente. In quella formula ξ e u sono posizione e tempo normalizzati, ricavati dallo spostamento x e dal tempo t reali. Riscalandoli si ottiene la traiettoria esplicita x(t) dell'Eq. S.3, valida per t tra 0 e t_avg (il tempo di una mossa di un sito) e x tra 0 e s, la distanza tra due siti.",
       "it-expert": "Eq. S.3: x(t) esplicita ottenuta riscalando ξ(u) con i parametri fisici s, tavg — traiettoria adiabatic-sine per un singolo sito, base per il calcolo dell'accel/decel time."
     }
   },
@@ -2781,7 +2781,7 @@
     ],
     "sourceText": "where δ(∗) = 1 if a (∗) event occurs for any tweezer in the AOD move segment and 0 otherwise, and ttransfer is thetime for a trap transfer between SLM and AOD tweezers.",
     "explanations": {
-      "it-intermediate": "...dove δ(∗) = 1 se l'evento (∗) si verifica per un qualsiasi tweezer nel segmento di mossa e 0 altrimenti, e t_transfer è il tempo per un trasferimento di trappola tra SLM e AOD.",
+      "it-intermediate": "Completa la formula S.6 per il tempo di un segmento di mossa AOD. Al tempo di viaggio si aggiungono termini fissi che contano solo se servono: δ(∗) vale 1 se l'evento (∗) avviene per almeno una pinzetta nel segmento (accelerazione, frenata, rilascio o presa di un atomo) e 0 altrimenti. t_transfer è il tempo necessario per passare un atomo tra una trappola fissa (SLM) e una pinzetta mobile (AOD).",
       "it-expert": "Definizione degli indicatori δ(∗) (evento sì/no per qualunque tweezer nel segmento) e di t_transfer (costo fisso SLM↔AOD)."
     }
   },
@@ -2881,8 +2881,8 @@
     ],
     "sourceText": "path and add the elements to a new list qµ.aA path may be empty because path lengths can differ.",
     "explanations": {
-      "it-intermediate": "...e si aggiungono gli elementi rimossi a una nuova lista qμ (un cammino può essere vuoto perché le lunghezze dei cammini possono differire tra loro).",
-      "it-expert": "...raccolti in qμ; nota: path lengths eterogenee, quindi alcuni path possono già essere esauriti a un dato round."
+      "it-intermediate": "Passo del diagramma di ParHungarian (Fig. S1): a ogni giro si prende la prossima mossa da ciascun cammino e la si mette in una nuova lista q_μ, che raccoglie le mosse candidate da eseguire insieme. Alcuni cammini possono essere già vuoti, perché i cammini hanno lunghezze diverse e i più corti finiscono prima.",
+      "it-expert": "Step del flowchart ParHungarian: a ogni round si estrae la mossa successiva da ogni path e la si raccoglie in q_μ; path lengths eterogenee, quindi alcuni path possono essere già esauriti a un dato round."
     }
   },
   {
@@ -3063,7 +3063,7 @@
     ],
     "sourceText": "ν=1, where N ′ is the size of set a. Note that the number of excess atoms is alwaysgreater or equal to the number of target vacancies due to the initial sufficient atom check. µ=1, where",
     "explanations": {
-      "it-intermediate": "...si ottiene un insieme di N' coppie atomo-target abbinate (il numero di atomi in eccesso è sempre maggiore o uguale al numero di vacanze target, grazie al controllo iniziale di sufficienza).",
+      "it-intermediate": "Risolvendo l'assegnazione, ParHungarian ottiene N′ coppie atomo–sito target {a_ν, t_ν}, dove N′ è il numero di elementi dell'insieme a. Il numero di atomi in eccesso è sempre almeno pari al numero di siti target vuoti, perché all'inizio l'algoritmo controlla che gli atomi caricati siano sufficienti: così ogni sito vuoto riceve un atomo.",
       "it-expert": "Output del LSAP: N' coppie (aν,tν); N'=numero di vacanze (excess≥vacancies garantito dal check iniziale)."
     }
   },
@@ -3107,7 +3107,7 @@
     ],
     "sourceText": "t=1, Lµ := Len(pµ) is the length of the µth path, and mµt is the tth move element of thepath µ.",
     "explanations": {
-      "it-intermediate": "...in sotto-cammini, dove Lμ è la lunghezza del μ-esimo cammino e m_μt è il t-esimo elemento di mossa del cammino μ — questa è la notazione usata anche nel flowchart di Fig. S1.",
+      "it-intermediate": "Definisce la notazione dei cammini usata da ParHungarian. Ogni cammino p_μ è una sequenza di mosse elementari: L_μ è la sua lunghezza, cioè il numero di mosse, e m_μt è la t-esima mossa del cammino μ. La stessa notazione compare nel diagramma di Fig. S1.",
       "it-expert": "Notazione: Lμ=Len(pμ), m_μt = t-esimo move-element del path μ — riallacciamento alla notazione del flowchart."
     }
   },
@@ -3220,7 +3220,7 @@
     ],
     "sourceText": "No-Par, the moves { ˜mi} can be parallelized. No-Par = ϵk ◦· · · ◦ϵ1(X).IfX′",
     "explanations": {
-      "it-intermediate": "...(No-Par), le mosse {m̃i} possono essere parallelizzate: No-Par = εk∘...∘ε1(X) (esecuzione sequenziale di riferimento con cui si confronta il risultato parallelo).",
+      "it-intermediate": "È il criterio con cui ParHungarian decide se un gruppo di mosse si può eseguire in parallelo. Su una copia dell'array si applicano le mosse tutte insieme (X′_Par), su un'altra le stesse mosse una dopo l'altra (X′_No-Par = ε_k ∘ … ∘ ε₁(X)). Se le due configurazioni finali coincidono, eseguire le mosse in parallelo dà lo stesso risultato e il gruppo è accettato.",
       "it-expert": "Se X'_Par = X'_No-Par (dove No-Par=εk∘⋯∘ε1(X), esecuzione sequenziale), allora la parallelizzazione è valida — criterio operativo di equivalenza."
     }
   },
@@ -3259,7 +3259,7 @@
     "sourceText": "However, ParHungarian does not offer the optimal parallelization strategy due to its greedy approach. The brute-force solution takes cost of O(2M) to compute, where M is the number of moves to be parallelized, since each moveelement can be parallelized and not parallelized. To make the algorithm scalable, we adapt the greedy approach tohandle the tradeoff of degree of parallelization and computational efficiency. The computational complexity of ourgreedy parallelization strategy is O(M 2).",
     "explanations": {
       "it-intermediate": "Tuttavia, ParHungarian non offre la strategia di parallelizzazione ottimale a causa del suo approccio greedy. La soluzione a forza bruta avrebbe un costo di O(2^M), dove M è il numero di mosse da parallelizzare — computazionalmente proibitivo, da cui la scelta di un'euristica greedy più economica.",
-      "it-expert": "...ma è subottimale (greedy, non esaustivo): la soluzione ottima costerebbe O(2^M) (ricerca su tutti i sottoinsiemi), impraticabile — motiva esplicitamente il compromesso greedy adottato, coerente con lo scaling b=1.26 (non ottimale) osservato in Table 1."
+      "it-expert": "ParHungarian non trova la parallelizzazione ottima perché è greedy: la soluzione esatta costa O(2^M) (ogni mossa può essere parallelizzata o no), impraticabile. Il greedy costa O(M²): compromesso esplicito tra grado di parallelismo ed efficienza, coerente con lo scaling non ottimale (b = 1,26) di Tab. 1."
     }
   },
   {
@@ -3581,7 +3581,7 @@
     ],
     "sourceText": "∪{ (i′, right) | i′ = top + 1, . . . , bottom}",
     "explanations": {
-      "it-intermediate": "...unito al lato destro dello strato: i siti (i', right) con i' che va da top+1 a bottom.",
+      "it-intermediate": "Secondo termine dell'Eq. S.10, che descrive lo strato k come la cornice quadrata dei suoi siti. Dopo il lato superiore, questo termine aggiunge il lato destro: i siti (i′, right) con i′ da top+1 a bottom, percorsi dall'alto verso il basso. Parte da top+1 perché l'angolo in alto a destra è già incluso nel lato superiore.",
       "it-expert": "Eq. S.10, secondo termine: lato right, {(i',right) | i'∈[top+1,bottom]}."
     }
   },
@@ -3619,7 +3619,7 @@
     ],
     "sourceText": "∪{ (i′, left) | i′ = bottom −1, . . . , top + 1}.",
     "explanations": {
-      "it-intermediate": "...unito infine al lato sinistro: i siti (i', left) con i' che va da bottom−1 a top+1 — insieme, questi quattro lati definiscono il perimetro quadrato completo dello strato k, percorso in senso orario.",
+      "it-intermediate": "Ultimo termine dell'Eq. S.10: il lato sinistro dello strato, cioè i siti (i′, left) con i′ da bottom−1 a top+1, percorsi dal basso verso l'alto. Esclude i due angoli, già contati nei lati inferiore e superiore. Con gli altri tre termini descrive tutto il perimetro dello strato k, percorso in senso orario e senza contare due volte gli angoli.",
       "it-expert": "Eq. S.10, quarto termine: lato left, {(i',left) | i'∈[bottom−1,top+1]} — l'unione dei quattro segmenti definisce L_k come perimetro quadrato orientato (ring), la struttura geometrica su cui opera ogni round di InsideOut."
     }
   },
@@ -3694,7 +3694,7 @@
     ],
     "sourceText": "update array M.An atom at (i, j) is misplaced when its occu-pation does not match the target occupation.",
     "explanations": {
-      "it-intermediate": "...aggiornando l'array M. Un atomo in (i,j) è 'mal posizionato' quando la sua occupazione non corrisponde all'occupazione target.",
+      "it-intermediate": "Passo del diagramma di InsideOut (Fig. S3): gli atomi mal posizionati sullo strato corrente vengono spinti fuori e l'array M viene aggiornato. Un atomo in (i, j) è mal posizionato quando l'occupazione di quel sito non corrisponde al target, per esempio se c'è un atomo della specie sbagliata o un atomo dove dovrebbe esserci un sito vuoto.",
       "it-expert": "Update di M dopo il push; definizione di misplaced: occupazione osservata ≠ occupazione target in quel sito (per la specie presente)."
     }
   },
@@ -3898,7 +3898,7 @@
     ],
     "sourceText": "bottom = crow + (k −1) + δrow,right = ccol + (k −1) + δcol,",
     "explanations": {
-      "it-intermediate": "...e i limiti (bottom, right) dello strato k, definiti in modo simmetrico rispetto al centro usando gli stessi fattori di parità.",
+      "it-intermediate": "Completa l'Eq. S.11: dopo top e left, definisce gli altri due confini dello strato k, bottom = c_row + (k−1) + δ_row e right = c_col + (k−1) + δ_col. Lo strato è quindi un quadrato centrato nel centro dell'array target (c_row, c_col) che si allarga di un sito per lato a ogni k. I termini δ servono a gestire array con un numero pari di righe o colonne, in cui il centro non cade su un singolo sito.",
       "it-expert": "bottom=c_row+(k−1)+δ_row, right=c_col+(k−1)+δ_col — completano, insieme a top/left (blocco precedente), la definizione del quadrato-anello L_k a distanza k−1 dal centro."
     }
   },
@@ -3917,7 +3917,7 @@
     ],
     "sourceText": "where δrow and δcol are factors used to handle odd/even number of rows/columns, crow and ccol are the row/columncoordinates of the center of the target array, top/left/bottom/right are the boundaries of the kth layer.",
     "explanations": {
-      "it-intermediate": "...dove δ_row e δ_col gestiscono la parità pari/dispari del numero di righe/colonne, c_row e c_col sono le coordinate riga/colonna del centro dell'array target, e top/left/bottom/right sono i confini dello strato k-esimo — questa è la regola geometrica esplicita richiamata nel flowchart di Fig. S3.",
+      "it-intermediate": "Spiega i simboli dell'Eq. S.11. δ_row e δ_col correggono i calcoli quando il numero di righe o colonne è pari o dispari. c_row e c_col sono le coordinate del centro dell'array target. top, left, bottom e right sono i confini dello strato k-esimo. Questa è la regola geometrica richiamata nel diagramma di InsideOut (Fig. S3).",
       "it-expert": "Riepilogo della parametrizzazione geometrica completa dei layer concentrici, richiamata da Fig. S3 come Eq. S.10 — i layer sono anelli quadrati concentrici centrati su (c_row,c_col), con k che cresce dal centro verso l'esterno (o viceversa)."
     }
   },

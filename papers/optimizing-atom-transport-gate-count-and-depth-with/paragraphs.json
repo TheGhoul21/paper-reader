@@ -330,8 +330,8 @@
     ],
     "sourceText": "and circuit depth [38].",
     "explanations": {
-      "it-intermediate": "Chiusura della frase precedente: \"...e la profondità del circuito [rif. 38]\".",
-      "it-expert": "Chiusura di frase (continuazione tipografica dalla pagina precedente)."
+      "it-intermediate": "Conclude la frase sulla codifica di parità iniziata nella pagina precedente: grazie alle etichette di parità tutte le interazioni a due qubit diventano rotazioni a un qubit, e questo riduce al minimo sia il numero di porte sia la profondità del circuito, come mostrato in [38].",
+      "it-expert": "Chiude la frase precedente: l'encoding di parità rende ogni interazione a due corpi una rotazione a singolo qubit e minimizza sia gate count sia depth [38]."
     },
     "section": "II. Parity Twine Networks"
   },
@@ -457,7 +457,7 @@
     ],
     "sourceText": "this comes at the cost of modestly increased depth ofthe PTN compared to the linear PTN, because consec-utive Twine chains need more delay before they can bestarted [38], as reflected by the increased width of theTwine chains in Fig. 2. In general, increased connectivityreduces the overall gate count, but it does not necessarilyimply a reduction in circuit depth [38]. This trade-off iscommon to PTNs with legs, making it nontrivial to de-termine a priori which layout is optimal: the best choicedepends on the relative importance of gate count and cir-cuit depth for the underlying hardware and application.",
     "explanations": {
-      "it-intermediate": "...questo risparmio ha un costo: una profondità della PTN modestamente maggiore rispetto alla PTN lineare, perché le Twine chain consecutive richiedono più ritardo prima di poter partire (riflesso nella maggiore larghezza delle Twine chain in Fig. 2). In generale, una connettività maggiore riduce il numero totale di porte, ma non implica necessariamente una riduzione della profondità del circuito. Questo compromesso è comune alle PTN con rami, rendendo non banale stabilire a priori quale layout sia ottimale: la scelta migliore dipende dall'importanza relativa di gate-count e profondità per l'hardware e l'applicazione considerati.",
+      "it-intermediate": "Le gambe (legs) fanno risparmiare porte, perché richiedono singole CNOT invece delle DCNOT della spina dorsale (backbone). Il risparmio però ha un costo: la PTN diventa un po' più profonda di quella lineare, perché ogni Twine chain deve aspettare più a lungo prima di partire dopo la precedente. In Fig. 2 questo si vede dalla maggiore larghezza delle catene. In generale più connettività riduce il numero totale di porte, ma non riduce automaticamente la profondità. Il compromesso vale per tutte le PTN con gambe, quindi non si può dire in anticipo quale layout sia il migliore: dipende da quanto contano numero di porte e profondità per l'hardware e l'applicazione.",
       "it-expert": "Trade-off centrale: più connettività (legs) → meno gate-count ma non necessariamente meno depth, perché le Twine chain successive devono attendere più a lungo prima di partire [38]. Non esiste un layout dominante in assoluto: la scelta ottima è hardware- e applicazione-dipendente — è esattamente il problema che la Sez. III/IV affrontano quantitativamente per i NAQC."
     },
     "section": "II. Parity Twine Networks",
@@ -546,7 +546,7 @@
     ],
     "sourceText": "positions throughout the computation. Entangling gatesare consequently performed between atoms at fixed po-sitions, and the compilation problem is primarily deter-mined by the available static connectivity and native gateset. In a mobile architecture, by contrast, atoms can betransported during computation. Atom transport can beused to bring atoms into or out of interaction regions,implement native physical SWAP operations, dynami-cally modify the effective qubit connectivity, or to sup-press unwanted interactions and crosstalk between non-addressed qubits. Since atom transport and native gateoperations operate on substantially different timescalesand offer different degrees of parallelization, the tradeoffbetween connectivity and movement constitutes a non-trivial architectural consideration in NAQCs [46, 47].",
     "explanations": {
-      "it-intermediate": "...alle loro posizioni durante tutto il calcolo. Le porte entangling vengono quindi eseguite tra atomi a posizioni fisse, e il problema di compilazione è determinato principalmente dalla connettività statica disponibile e dal set di porte native. In un'architettura mobile, al contrario, gli atomi possono essere trasportati durante il calcolo. Il trasporto può servire a portare atomi dentro o fuori dalle regioni di interazione, implementare operazioni SWAP fisiche native, modificare dinamicamente la connettività effettiva dei qubit, oppure sopprimere interazioni indesiderate e crosstalk tra qubit non coinvolti. Poiché trasporto e operazioni di porta nativa avvengono su scale temporali molto diverse e con gradi di parallelizzazione diversi, il compromesso tra connettività e movimento è una considerazione architetturale non banale nei NAQC.",
+      "it-intermediate": "Questo passaggio completa il confronto tra architetture statiche e mobili e spiega che cosa cambia per il compilatore. In un'architettura statica le porte entangling avvengono solo tra atomi che restano nelle loro posizioni: il compilatore deve quindi lavorare con le coppie già vicine e con le porte native disponibili. In un'architettura mobile, invece, gli atomi possono essere spostati durante il calcolo. Lo spostamento serve a portarli dentro o fuori dalle zone in cui interagiscono, a scambiare fisicamente due qubit invece di usare porte SWAP, a cambiare quali coppie possono interagire e a tenere lontani i qubit che non devono essere coinvolti, riducendo il crosstalk. Muovere atomi richiede però tempi diversi da quelli delle porte e si può parallelizzare in modo diverso. Per questo non è ovvio se convenga avere più connettività fissa o più movimento: è il compromesso che il paper vuole quantificare.",
       "it-expert": "Static: compilazione vincolata solo da connettività fissa + gate set nativo. Mobile: il trasporto abilita SWAP fisici, riconfigurazione dinamica della connettività, soppressione di crosstalk — ma su timescale molto più lenta delle gate operation e con parallelizzazione diversa, da cui il trade-off architetturale connectivity/movement [46,47] che il paper quantifica poi con il modello di fedeltà."
     },
     "section": "III.A Neutral-atom architectures"
@@ -622,7 +622,7 @@
     ],
     "sourceText": "the CZ gate regardless, returning them to the swappedpositions instead of their original positions incurs onlyminimal shuttling overhead.",
     "explanations": {
-      "it-intermediate": "...la porta CZ, in ogni caso; riportarli nelle posizioni scambiate anziché in quelle originali comporta quindi solo un overhead di shuttling minimo.",
+      "it-intermediate": "Spiega perché la costruzione CZSWAP è adatta alle architetture a zone. Lì gli atomi vengono portati nella zona di interazione per la porta CZ e, dopo la porta, devono comunque tornare nella zona di memoria. Riportarli nelle posizioni scambiate invece che in quelle di partenza aggiunge quindi pochissimo trasporto: lo scambio dei due qubit si ottiene quasi gratis.",
       "it-expert": "Chiusura dell'argomento: dato lo shuttling di ritorno obbligatorio, il costo marginale di riportare gli atomi in posizione scambiata (anziché originale) è trascurabile — è la stessa osservazione che sta alla base della costruzione CZSWAP di Sez. III.B."
     },
     "section": "III.A Neutral-atom architectures"
@@ -641,7 +641,7 @@
     ],
     "sourceText": "Within NAQCs, three primary decomposition strate-gies for the DCNOT building block can be considered, asshown in Fig. 1(b):",
     "explanations": {
-      "it-intermediate": "Sui NAQC si possono considerare tre strategie principali di decomposizione per il blocco costruttivo DCNOT, come mostrato in Fig. 1(b):",
+      "it-intermediate": "Sulle piattaforme ad atomi neutri il blocco DCNOT si può realizzare in tre modi, mostrati in Fig. 1(b): (i) con due porte CZ, (ii) con una porta iSWAP, oppure (iii) con una CZSWAP, cioè una CZ seguita dallo scambio fisico dei due atomi. Le tre formule sono elencate nei blocchi successivi; il resto della sezione confronta quanto costano sull'hardware.",
       "it-expert": "Le tre decomposizioni native del DCNOT [Fig. 1(b)] elencate di seguito — CZ-only, iSWAP-based, CZSWAP-based — sono il fulcro comparativo di tutta la Sez. III."
     },
     "section": "III.B Entangling gates"
@@ -836,7 +836,7 @@
     ],
     "sourceText": "To show this, it is useful to briefly review how aRydberg-mediated CZ gate between two atoms, A andB, is typically implemented in such architectures:",
     "explanations": {
-      "it-intermediate": "Per dimostrarlo, è utile rivedere brevemente come viene tipicamente implementata una porta CZ mediata da Rydberg tra due atomi A e B in queste architetture:",
+      "it-intermediate": "Per capire perché lo scambio dopo una CZ costa così poco, gli autori ricordano come si esegue di solito una porta CZ mediata da Rydberg tra due atomi A e B: l'atomo A viene avvicinato a B, si esegue la porta e poi A viene riportato al suo posto. I tre passi sono elencati nei blocchi successivi, e il CZSWAP cambia solo l'ultimo.",
       "it-expert": "Setup per il conteggio di costo: protocollo standard a 3 step per una CZ Rydberg-mediata tra atomi A,B in architettura mobile."
     },
     "section": "III.B Entangling gates"
@@ -874,8 +874,8 @@
     ],
     "sourceText": "array (SLM) into a mobile tweezer (AOD) andtransported into proximity with atom B, such thatboth reside within the Rydberg blockade radius;",
     "explanations": {
-      "it-intermediate": "...(SLM) a una pinzetta mobile (AOD) e trasportato in prossimità dell'atomo B, in modo che entrambi si trovino entro il raggio di blocco di Rydberg (la distanza entro cui l'eccitazione di un atomo impedisce quella del vicino, necessaria per l'entanglement).",
-      "it-expert": "...a trappola mobile (AOD), trasporto entro il raggio di blockade Rydberg rispetto a B — condizione necessaria per l'interazione entangling."
+      "it-intermediate": "Primo passo della porta CZ: l'atomo A viene trasferito dalla trappola ottica fissa (array SLM) a una pinzetta mobile (AOD) e portato vicino all'atomo B. I due atomi devono trovarsi entro il raggio di blockade di Rydberg, cioè la distanza entro cui l'eccitazione di un atomo impedisce quella dell'altro: è questo effetto che produce l'entanglement.",
+      "it-expert": "Step (1) del protocollo CZ: trasferimento di A da trappola statica (SLM) a trappola mobile (AOD) e trasporto entro il raggio di blockade di Rydberg rispetto a B, condizione necessaria per l'interazione entangling."
     },
     "section": "III.B Entangling gates"
   },
@@ -1007,7 +1007,7 @@
     ],
     "sourceText": "interaction distance for performing the CZ gate opera-tion.While Rydberg-mediated CZ gates are typicallyperformed with the atoms held in static traps, we assumethroughout this work that inter-tweezer CZ gates are alsoallowed. In this case, step (2) can be performed with-out transferring atom A into the SLM array, such thatthe tweezer transfer count required for a single CZ gateis reduced from four to two. Consequently, a DCNOTimplemented via two independently performed CZ gatesrequires four transfer operations and four big moves in to-tal. Also note that if local gates can be applied while theatoms remain in proximity, the two CZ gates in decom-position (i) can be applied consecutively without movingthe atoms apart in between; this case is not consideredin the mobile architecture assumed in this work.",
     "explanations": {
-      "it-intermediate": "...distanza di interazione necessaria per eseguire la CZ. Sebbene le CZ mediate da Rydberg siano tipicamente eseguite con gli atomi in trappole statiche, in questo lavoro si assume che siano permesse anche CZ fra A nella pinzetta mobile AOD e B nella trappola statica SLM (\"inter-tweezer\"). In questo caso il passo (2) può essere eseguito senza trasferire l'atomo A nell'array SLM, riducendo così il numero di trasferimenti necessari per una singola CZ da quattro a due. Di conseguenza, una DCNOT implementata con due CZ indipendenti richiede in totale quattro trasferimenti e quattro big move. Si noti inoltre che se le porte locali possono essere applicate mentre gli atomi restano vicini, le due CZ della decomposizione (i) possono essere eseguite consecutivamente senza separare gli atomi nel mezzo — caso non considerato nell'architettura mobile assunta in questo lavoro.",
+      "it-intermediate": "Il blocco completa la definizione di big move: è lo spostamento che porta gli atomi dalla distanza iniziale a quella, più corta, necessaria per eseguire la CZ. Poi gli autori precisano un'ipotesi. Di solito le CZ di Rydberg si eseguono con entrambi gli atomi in trappole fisse, ma qui si assume che sia possibile anche una CZ tra l'atomo A ancora nella pinzetta mobile (AOD) e l'atomo B nella trappola fissa (SLM). Così il passo (2) non richiede di trasferire A nell'array SLM, e una singola CZ scende da quattro a due trasferimenti tra trappole. Una DCNOT fatta con due CZ indipendenti richiede quindi in tutto quattro trasferimenti e quattro big move. Se si potessero applicare porte locali mentre gli atomi restano vicini, le due CZ della decomposizione (i) si potrebbero eseguire una dopo l'altra senza allontanare gli atomi, ma l'architettura mobile considerata nel paper non prevede questo caso.",
       "it-expert": "Ottimizzazione assunta: CZ fra AOD e SLM permesse (senza rilasciare A in SLM) → transfer count per singola CZ da 4 a 2. Per DCNOT via 2×CZ indipendenti: totale 4 transfer + 4 big move. Nota su un caso non modellato: se le porte locali sono applicabili con atomi ravvicinati, le 2 CZ potrebbero eseguirsi senza separazione intermedia — semplificazione esclusa dal modello adottato."
     },
     "section": "III.B Entangling gates"
@@ -1115,7 +1115,7 @@
     ],
     "sourceText": "to reduce this overhead by nearly half, requiring onlyone global XY rotation per Hadamard layer, plus twoadditional layers at the start and end of the circuit [seeFig. 3(b)]. For these operations, we specifically choosealternating global ±π/2 X rotations, SX ≡GRX(π/2)and S†",
     "explanations": {
-      "it-intermediate": "...ridurre questo overhead di quasi la metà, richiedendo solo una rotazione globale XY per ogni strato di Hadamard, più due strati aggiuntivi all'inizio e alla fine del circuito [Fig. 3(b)]. Per queste operazioni si scelgono specificamente rotazioni X globali alternate di ±π/2: S_X ≡ GR_X(π/2) e S†_X ≡ GR_X(−π/2).",
+      "it-intermediate": "Nella versione della QFT con sole CZ, ogni strato di Hadamard richiederebbe in modo ingenuo due blocchi di rotazioni globali XY. La struttura regolare delle Twine chain su una catena lineare permette di dimezzare quasi questo costo: basta una sola rotazione globale XY per ogni strato di Hadamard, più due strati in più all'inizio e alla fine del circuito [Fig. 3(b)]. Come rotazioni si scelgono rotazioni X globali di ±π/2 alternate, S_X ≡ GR_X(π/2) e S†_X ≡ GR_X(−π/2).",
       "it-expert": "Ottimizzazione: da 2 a 1 blocco GR per strato di Hadamard (+2 strati bordo) sfruttando la struttura regolare della catena LNN. Scelta specifica: rotazioni alternate S_X=GR_X(π/2), S†_X=GR_X(−π/2)."
     },
     "section": "III.C Global rotations in the XY plane",
@@ -1166,7 +1166,7 @@
     ],
     "sourceText": "On the other hand, the CZSWAP-based implementa-tion of the QFT consists of layers of entangling CZSWAPand CZ gates interleaved with single-qubit X rotations.These rotations can be globalized using the simplified de-composition",
     "explanations": {
-      "it-intermediate": "L'implementazione della QFT basata su CZSWAP, invece, consiste di strati di porte entangling CZSWAP e CZ intercalati con rotazioni a singolo qubit attorno a X. Queste rotazioni possono essere globalizzate usando una decomposizione semplificata:",
+      "it-intermediate": "La QFT basata su CZSWAP, invece, è fatta di strati di porte entangling CZSWAP e CZ, alternati a rotazioni X su singoli qubit. Anche queste rotazioni si possono trasformare in rotazioni globali, cioè applicate a tutti i qubit insieme, usando la scomposizione semplificata dell'Eq. (1): una rotazione locale attorno a X diventa una rotazione locale attorno a Z racchiusa tra due rotazioni globali attorno a Y.",
       "it-expert": "Caso CZSWAP: strati CZSWAP/CZ intercalati con rotazioni X locali, globalizzabili con la decomposizione semplificata dell'Eq. (1)."
     },
     "section": "III.C Global rotations in the XY plane"
@@ -1242,7 +1242,7 @@
     "sourceText": "Y ≡GRY (−π/2)[seeFig. 3(c)]. Note that QFT circuits based on the iSWAPdecomposition are equivalent to those based on theCZSWAP decomposition, up to additional S† gates, since",
     "explanations": {
       "it-intermediate": "Un gate iSWAP si ottiene da CZSWAP aggiungendo S† su entrambi i qubit. Per questo le due realizzazioni della QFT hanno la stessa struttura compilata e lo stesso numero di blocchi globali SY, a meno delle fasi locali aggiuntive. Gli autori concentrano il confronto su CZ e CZSWAP.",
-      "it-expert": "...S†_Y ≡ GR_Y(−π/2) [Fig. 3(c)]. Equivalenza notata: QFT via iSWAP ≡ QFT via CZSWAP a meno di S† extra, conseguenza diretta dell'identità dell'Eq. (2)."
+      "it-expert": "Chiude la definizione di S†_Y ≡ GR_Y(−π/2) [Fig. 3(c)]. Osservazione: la QFT via iSWAP è equivalente a quella via CZSWAP a meno di S† aggiuntivi, per l'identità dell'Eq. (2) (S† ⊗ S† · CZSWAP = iSWAP); struttura compilata e numero di S_Y restano invariati, quindi si considerano solo (i) e (iii)."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1316,7 +1316,7 @@
     ],
     "sourceText": "To evaluate the performance of the different PTN-based implementations on NAQCs and to benchmarkthem against alternative circuit proposals [37] and NA-specific compilers [31, 35] we estimate the total fidelity fof a given quantum circuit (transpiled to the native gateset) by [32, 35, 37]",
     "explanations": {
-      "it-intermediate": "Per valutare le prestazioni delle diverse implementazioni PTN sui NAQC e confrontarle con proposte di circuito alternative e compilatori specifici per atomi neutri, gli autori stimano la fedeltà totale f di un dato circuito quantistico (tradotto nel set di porte native) tramite la formula seguente:",
+      "it-intermediate": "Per confrontare le diverse implementazioni PTN tra loro, con altre proposte di circuito [37] e con compilatori specifici per atomi neutri [31, 35], gli autori stimano la fedeltà totale f di ciascun circuito, già tradotto nelle porte native. La stima è un prodotto di fattori, uno per ogni fonte di errore: porte globali, porte CZ, eccitazioni di Rydberg indesiderate (crosstalk), trasferimenti tra trappole e tempo di inattività. La formula è l'Eq. (3) e i parametri sono nella Tabella I.",
       "it-expert": "Setup del benchmark: fedeltà totale f stimata via un modello analitico (Eq. 3) calibrato per confronto diretto con [37] (Gao), Enola [35] e Atomique [31]."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
@@ -1541,7 +1541,7 @@
     ],
     "sourceText": "idle denotes the total idle time accu-mulated by qubit q. Throughout this work, we assumethat dynamical decoupling sequences are applied duringall idle periods and atom transports to suppress dephas-ing [50]. Consequently, the T2 value reported in Table Irepresents the effective coherence time achieved underthese sequences [51].Because the total shuttling andidle times remain well below T2, the residual decoher-ence from idling is approximated to first order as a lineardecay.",
     "explanations": {
-      "it-intermediate": "...idle indica il tempo totale di inattività accumulato dal qubit q. In questo lavoro si assume che sequenze di disaccoppiamento dinamico vengano applicate durante tutti i periodi di idling e i trasporti atomici per sopprimere la decoerenza (dephasing). Di conseguenza, il valore di T2 riportato in Tabella I rappresenta il tempo di coerenza effettivo ottenuto sotto queste sequenze. Poiché i tempi totali di shuttling e idling restano ben al di sotto di T2, il decadimento residuo da idling viene approssimato al prim'ordine come lineare.",
+      "it-intermediate": "L'ultimo termine dell'Eq. (3) descrive gli errori dovuti all'inattività: T^q_idle è il tempo totale in cui il qubit q resta fermo senza operazioni. Gli autori assumono che durante tutti i periodi di inattività e durante i trasporti si applichino sequenze di disaccoppiamento dinamico, che riducono il dephasing. Quindi il T2 della Tabella I è il tempo di coerenza efficace ottenuto con queste sequenze. Poiché i tempi totali di trasporto e inattività sono molto più brevi di T2, la perdita di coerenza si approssima al primo ordine con un decadimento lineare.",
       "it-expert": "T^q_idle = tempo di inattività accumulato dal qubit q. Si assume dynamical decoupling attivo durante idling/trasporto (quindi T2 in Tab. I è già il T2 effettivo post-DD [51]). Dato T_idle << T2, il decadimento (1−T_idle/T2) è l'approssimazione lineare al prim'ordine dell'esponenziale — valida nel regime considerato."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
@@ -1604,7 +1604,7 @@
     ],
     "sourceText": "d/a, where d is the displacement associatedwith the corresponding CZ or CZSWAP operation and ais the effective atom acceleration calibrated to the ex-perimentally demonstrated transport time of 200 µs over110 µm reported in Ref. [16].Although Eq. (3) provides only a first-order fidelityapproximation, it facilitates direct benchmarking againstalternative proposals and NA-specific compilers using aconcise set of experimental parameters.Crucially, be-cause it relies exclusively on circuit-level metrics, thismodel scales to significantly larger qubit numbers thanwould be feasible with full circuit simulations. p",
     "explanations": {
-      "it-intermediate": "...(d/a), dove d è lo spostamento associato all'operazione CZ o CZSWAP corrispondente e a è l'accelerazione atomica effettiva, calibrata sul tempo di trasporto dimostrato sperimentalmente di 200 µs su 110 µm riportato in un lavoro precedente. Sebbene l'Eq. (3) fornisca solo un'approssimazione di fedeltà al prim'ordine, permette un confronto diretto con proposte alternative e compilatori specifici per atomi neutri usando un insieme conciso di parametri sperimentali. Soprattutto, poiché si basa esclusivamente su metriche a livello di circuito, questo modello si estende a numeri di qubit molto più grandi di quanto sarebbe fattibile con simulazioni complete del circuito.",
+      "it-intermediate": "Il tempo di trasporto si stima come t = 2√(d/a), dove d è lo spostamento richiesto dalla CZ o dalla CZSWAP e a è l'accelerazione efficace dell'atomo. Il valore di a è calibrato su un esperimento che ha spostato un atomo di 110 µm in 200 µs [16]. L'Eq. (3) è solo un'approssimazione al primo ordine della fedeltà, ma permette di confrontare direttamente proposte e compilatori diversi con pochi parametri sperimentali. Soprattutto, poiché usa solo grandezze del circuito (numero di porte, trasporti, tempi), funziona anche per molti più qubit di quanti si potrebbero simulare per intero.",
       "it-expert": "Calibrazione di a: da un dato sperimentale concreto (200µs su 110µm, [16]). Limitazioni dichiarate esplicitamente: Eq. (3) è un'approssimazione al prim'ordine (fattori indipendenti, nessuna correlazione tra canali d'errore) — ma il vantaggio decisivo è la scalabilità: essendo basata su metriche di circuito (conteggi, non simulazione a livello di stato), permette benchmark fino a n grandi, altrimenti proibitivi con simulazione completa (costo esponenziale in n)."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
@@ -1718,7 +1718,7 @@
     ],
     "sourceText": "exclusively for the final decoding stage.Conversely,the enhanced connectivity of the ladder layout—as anexample—minimizes the number of CZSWAP operationsgenerated during DCNOT conversion. Despite this re-duction in CZSWAP gates, the combined two-qubit gatecount, treating both CZ and CZSWAP equally as sin-gle two-qubit operations, remains identical across bothlayouts2.",
     "explanations": {
-      "it-intermediate": "...esclusivamente per lo stage finale di decodifica. Al contrario, la maggiore connettività del layout a scala (ladder), per esempio, minimizza il numero di operazioni CZSWAP generate durante la conversione della DCNOT. Nonostante questa riduzione di porte CZSWAP, il conteggio combinato di porte a due qubit — trattando CZ e CZSWAP allo stesso modo come singole operazioni a due qubit — resta identico tra i due layout.",
+      "it-intermediate": "Nel layout lineare la QFT usa CZSWAP in tutte le Twine chain e porte CZ solo nella fase finale di decodifica. Il layout a scala (ladder), con la sua connettività maggiore, riduce invece il numero di CZSWAP prodotte quando si converte ogni DCNOT. Eppure, se si contano CZ e CZSWAP allo stesso modo, come singole operazioni a due qubit, il numero totale di porte a due qubit è identico nei due layout (nota 2).",
       "it-expert": "Nota tecnica: il layout ladder (più connesso) sostituisce CZSWAP con CZ nella conversione DCNOT, ma il conteggio combinato 2Q (CZ+CZSWAP contate insieme) resta invariato rispetto al lineare — la connettività ridistribuisce il tipo di porta, non il totale (vedi nota 2 sul conteggio, blocco 93)."
     },
     "section": "IV.A Exact QFT"
@@ -1775,7 +1775,7 @@
     ],
     "sourceText": "the total two-qubit gate count remains identical acrossall layouts, the square layout requires more single-qubitgates than the linear and ladder configurations.Thisoverhead arises from an increased number of global ro-tations necessitated by a larger two-qubit gate depth, asdetailed below.",
     "explanations": {
-      "it-intermediate": "...il conteggio totale di porte a due qubit resti identico tra tutti i layout, il layout quadrato richiede più porte a singolo qubit rispetto alle configurazioni lineare e a scala. Questo overhead deriva da un numero maggiore di rotazioni globali, reso necessario da una profondità di porta a due qubit maggiore, come dettagliato di seguito.",
+      "it-intermediate": "Nel layout quadrato bastano CZ a lungo raggio per propagare le etichette di parità, senza CZSWAP. Anche se il numero totale di porte a due qubit resta uguale in tutti i layout, il layout quadrato richiede più porte a un qubit di quelli lineare e a scala. Il motivo è che ha una profondità maggiore negli strati a due qubit: servono quindi più strati di rotazioni globali, come spiegato subito dopo.",
       "it-expert": "Costo nascosto del layout square: pur a parità di 2Q gate-count, richiede più gate 1Q (GR) a causa della maggiore 2Q depth — collegamento diretto tra depth e overhead di rotazioni globali, spiegato nel blocco seguente."
     },
     "section": "IV.A Exact QFT"
@@ -2034,7 +2034,7 @@
     ],
     "sourceText": "static architecture, the SWAP-free compilation requiresonly nearest-neighbor CZ gates and therefore no atomshuttling. Our fidelity estimates nevertheless include aresidual crosstalk infidelity of 0.25% per Rydberg exci-tation (fexc = 0.9975) while again assuming noiselesssingle-qubit operations.",
     "explanations": {
-      "it-intermediate": "...architettura statica, la compilazione priva di SWAP richiede solo porte CZ tra primi vicini e quindi nessuno shuttling atomico. Le stime di fedeltà includono comunque un'infedeltà residua da crosstalk dello 0.25% per eccitazione di Rydberg (fexc=0.9975), assumendo ancora operazioni a singolo qubit prive di rumore.",
+      "it-intermediate": "Descrive come è modellata l'architettura statica nel confronto della Fig. 6. Qui la compilazione senza SWAP usa solo porte CZ tra atomi vicini, quindi gli atomi non vengono mai spostati. Le stime di fedeltà includono comunque un piccolo errore dovuto al crosstalk, lo 0,25% per ogni eccitazione di Rydberg (f_exc = 0,9975). Come nel resto del confronto, le porte a un qubit sono considerate prive di errori.",
       "it-expert": "Caso static (SWAP-free): solo CZ nearest-neighbor, zero shuttling — ma il modello include comunque il termine di crosstalk residuo fexc=0.9975 (le architetture statiche non sono immuni al crosstalk, solo al costo di trasporto)."
     },
     "section": "IV.A Exact QFT"
@@ -2142,7 +2142,7 @@
     ],
     "sourceText": "the top panel of Fig. 6(c), this mobile advantage becomeseven more pronounced at lower CZ-gate fidelities andlarger system sizes. However, when crosstalk is neglected(fexc = 1.0), the SWAP-free implementation becomes ad-vantageous once the CZ-gate fidelity exceeds fCZ ≈0.996[see bottom panel in Fig. 6(c)]. At this threshold, the in-fidelity introduced by atom transfers and time-intensiveshuttling in the mobile approach outweighs the penalty ofthe additional CZ gates required by the static approach.This crossover clearly illustrates that the optimal compi-lation strategy is highly sensitive to the underlying hard-ware characteristics. We emphasize, however, that thefidelity estimates presented here serve primarily as per-formance indicators; exact crossover points will dependon the specific capabilities and limitations of the targetneutral-atom platform.",
     "explanations": {
-      "it-intermediate": "...pannello superiore della Fig. 6(c), questo vantaggio mobile diventa ancora più pronunciato a fedeltà CZ più basse e dimensioni di sistema maggiori. Tuttavia, quando il crosstalk viene trascurato (fexc=1.0), l'implementazione priva di SWAP diventa vantaggiosa una volta che la fedeltà CZ supera fCZ≈0.996 [pannello inferiore, Fig. 6(c)]. A questa soglia, l'infedeltà introdotta dai trasferimenti atomici e dallo shuttling dispendioso in tempo nell'approccio mobile supera la penalità delle porte CZ aggiuntive richieste dall'approccio statico. Questo crossover illustra chiaramente come la strategia di compilazione ottimale sia altamente sensibile alle caratteristiche dell'hardware sottostante. Va sottolineato, tuttavia, che le stime di fedeltà qui presentate servono principalmente come indicatori di prestazione: i punti di crossover esatti dipenderanno dalle capacità e dai limiti specifici della piattaforma ad atomi neutri considerata.",
+      "it-intermediate": "Il vantaggio dell'implementazione mobile (con CZSWAP) su quella statica cresce quando le CZ sono meno precise e il sistema è più grande (pannello superiore della Fig. 6(c)). Se però si ignora il crosstalk (f_exc = 1), la versione statica senza SWAP diventa migliore quando la fedeltà delle CZ supera circa 0,996 (pannello inferiore). Oltre questa soglia, gli errori dovuti ai trasferimenti tra trappole e al tempo di trasporto della versione mobile pesano più delle CZ in più richieste da quella statica. Quindi la strategia migliore dipende molto dalle caratteristiche dell'hardware. Gli autori precisano che queste stime sono indicatori di prestazione: le soglie esatte dipendono dalla piattaforma ad atomi neutri specifica.",
       "it-expert": "Quantificazione del crossover: con crosstalk, mobile sempre meglio (vantaggio cresce a fCZ basso/n grande); senza crosstalk, static vince sopra fCZ≈0.996 (il costo di transfer+shuttling mobile supera il risparmio di CZ count). Caveat esplicito degli autori: il crossover esatto è hardware-dependent, il modello dà solo indicatori qualitativi/di scala, non predizioni assolute."
     },
     "section": "IV.A Exact QFT"
@@ -2467,7 +2467,7 @@
     ],
     "sourceText": "m and QFT2m blockcan be directly implemented through its Parity Twinerealization without modifying the overall OQFT struc-ture. One subtlety is that efficient QFT implementations,including the PTN realization, generally implement thetransform up to a permutation of the qubits [cf. Fig. 2],which has to be handled.",
     "explanations": {
-      "it-intermediate": "...m e QFT_2m può essere implementato direttamente tramite la sua realizzazione Parity Twine, senza modificare la struttura complessiva dell'OQFT. Una sottigliezza è che le implementazioni efficienti della QFT, inclusa quella PTN, realizzano generalmente la trasformata a meno di una permutazione dei qubit [Fig. 2], che va gestita.",
+      "it-intermediate": "Poiché le Parity Twine Network implementano in modo efficiente qualunque QFT esatta, ogni blocco QFT†_m e QFT_2m dell'OQFT si può sostituire direttamente con la sua versione Parity Twine, senza cambiare la struttura complessiva dell'OQFT. C'è però un dettaglio da gestire: le implementazioni efficienti della QFT, inclusa quella PTN, restituiscono il risultato con i qubit in un ordine permutato [Fig. 2], e la permutazione va tenuta in conto quando si collegano i blocchi.",
       "it-expert": "Punto tecnico da gestire: sia le realizzazioni PTN esatte sia l'OQFT implementano la trasformata a meno di permutazione dei qubit (bit-reversal-like, [Fig. 2]) — questa permutazione va tracciata esplicitamente quando si compongono blocchi QFT_m/QFT_2m in cascata, pena un errore sistematico nell'ordinamento finale."
     },
     "section": "IV.B Optimistic QFT"
@@ -2600,7 +2600,7 @@
     ],
     "sourceText": "m oper-ations again reverse the ordering.At this point, thetwo columns of m-patches have effectively been swapped,such that exchanges of nearest-neighbor m-patch are suf-ficient to obtain the required ordering for the final layerof QFT2m operations5.",
     "explanations": {
-      "it-intermediate": "...m invertono nuovamente l'ordinamento. A questo punto le due colonne di patch sono state effettivamente scambiate, cosicché scambi tra patch vicini sono sufficienti per ottenere l'ordinamento richiesto per lo strato finale di operazioni QFT_2m.",
+      "it-intermediate": "Lo strato intermedio di QFT†_m inverte di nuovo l'ordine dei qubit all'interno di ogni patch, e così lo riporta a quello originale. A questo punto l'effetto complessivo è che le due colonne di patch si sono scambiate di posto. Per preparare l'ultimo strato di QFT_2m bastano quindi scambi tra patch vicine, senza riordinare i singoli qubit (vedi nota 5).",
       "it-expert": "Dopo il secondo reversal (da QFT†_m): le due colonne risultano scambiate, quindi basta uno scambio nearest-neighbor tra colonne (non un routing arbitrario) per allineare l'ordine richiesto dallo strato finale QFT_2m — la sequenza minimale di 2 scambi collettivi (t3, t5) descritta in Fig. 7(a)."
     },
     "section": "IV.B Optimistic QFT"
@@ -2620,7 +2620,7 @@
     "sourceText": "Crucially, the required patch exchanges can be imple-",
     "explanations": {
       "it-intermediate": "Gli scambi richiesti tra patch si possono realizzare traslando collettivamente una colonna di gruppi di atomi. Si evita così di instradare individualmente ogni qubit, sfruttando il trasporto parallelo dell'architettura. L'ordine finale può restare invertito da sinistra a destra: va seguito nelle operazioni successive o corretto se l'applicazione lo richiede.",
-      "it-expert": "Frase di transizione (continua nel blocco 129 concettualmente — nota di implementazione sugli scambi di patch)."
+      "it-expert": "Nota implementativa sugli scambi di patch: si realizzano traslando collettivamente una delle due colonne di patch (Fig. 7(a), t3 e t5), sfruttando il trasporto parallelo di cluster di atomi invece del routing qubit per qubit; i dettagli seguono nel blocco successivo."
     },
     "section": "IV.B Optimistic QFT"
   },
@@ -2657,8 +2657,8 @@
     ],
     "sourceText": "m is applied.In these patches, the original qubit order-ing is therefore not restored.However, this is not a problem,because these patches do not participate in the final layer ofQFT2m operations.",
     "explanations": {
-      "it-intermediate": "...m intermedia. In questi patch l'ordinamento originale dei qubit non viene quindi ripristinato. Questo però non è un problema, perché questi patch non partecipano allo strato finale di operazioni QFT_2m.",
-      "it-expert": "...ma è innocuo: quei patch non partecipano comunque allo strato finale QFT_2m, quindi l'ordine non ripristinato non ha conseguenze — un dettaglio di bordo della costruzione (tipicamente ai margini della griglia K/2×2m)."
+      "it-intermediate": "Conclude la nota 5. In alcune patch non viene applicata nessuna QFT†_m intermedia, quindi lì l'ordine originale dei qubit non viene ripristinato. Non è un problema, perché quelle patch non partecipano neppure allo strato finale di QFT_2m: il loro ordine invertito non influisce sul risultato.",
+      "it-expert": "Nota 5: le patch senza QFT†_m intermedia restano con l'ordine invertito dal primo strato, ma la cosa è innocua perché sono escluse anche dallo strato finale QFT_2m. È un dettaglio di bordo della costruzione, tipicamente ai margini della griglia K/2 × 2m."
     },
     "section": "IV.B Optimistic QFT"
   },
@@ -2676,7 +2676,7 @@
     ],
     "sourceText": "mented by collectively translating one of the two columnsof patches, as shown at the bottom of Fig. 7(a) attime step t3. This operation is naturally supported inboth mobile and quasi-static neutral-atom architectures,where entire clusters of atoms can be translated in par-allel with minimal overhead [18, 19].After the finallayer, the original qubit ordering can be restored throughnearest-neighbor patch exchanges, which can again beimplemented through collective transport of one of thetwo columns of patches, as shown at time step t5 in thebottom of Fig. 7(a). The proposed collective transportachieves the target qubit ordering up to a left-right re-versal, which must be accounted for in subsequent oper-ations. If preserving the original left-to-right ordering isrequired, the collective transport can instead be imple-mented through column exchanges of atoms. The finalpatch exchanges can be omitted if restoring the originalqubit ordering is not required by the target application.",
     "explanations": {
-      "it-intermediate": "...implementato traslando collettivamente una delle due colonne di patch, come mostrato in basso nella Fig. 7(a) all'istante t3. Questa operazione è naturalmente supportata sia in architetture ad atomi neutri mobili sia quasi-statiche, dove interi cluster di atomi possono essere traslati in parallelo con overhead minimo. Dopo l'ultimo strato, l'ordinamento originale dei qubit può essere ripristinato tramite scambi di patch tra primi vicini, anch'essi implementabili tramite trasporto collettivo di una delle due colonne di patch, come mostrato all'istante t5. Il trasporto collettivo proposto raggiunge l'ordinamento target a meno di un'inversione sinistra-destra, di cui bisogna tener conto nelle operazioni successive. Se è richiesto preservare l'ordinamento originale sinistra-destra, il trasporto collettivo può invece essere implementato tramite scambi di colonne di atomi. Gli scambi finali di patch possono essere omessi se l'applicazione target non richiede di ripristinare l'ordinamento originale dei qubit.",
+      "it-intermediate": "Gli scambi tra patch si realizzano spostando tutta insieme una delle due colonne di patch, come mostrato in basso nella Fig. 7(a) al passo t3. Le architetture ad atomi neutri, sia mobili sia quasi-statiche, sanno già spostare in parallelo interi gruppi di atomi con poco costo aggiuntivo [18, 19]. Dopo l'ultimo strato l'ordine originale dei qubit si può ripristinare con altri scambi tra patch vicine, ancora traslando una colonna (passo t5). Con questo metodo l'ordine finale risulta però invertito da sinistra a destra, e le operazioni successive devono tenerne conto. Se serve mantenere l'ordine originale, si possono invece scambiare le colonne di atomi. Se l'applicazione non richiede di ripristinare l'ordine, gli scambi finali si possono omettere.",
       "it-expert": "Meccanismo fisico degli scambi: traslazione collettiva di un'intera colonna di patch (a t3 e t5), supportata nativamente da hardware mobile/quasi-static [18,19] con overhead minimo (trasporto parallelo di cluster). Nota implementativa: il risultato è a meno di left-right reversal (accettabile se gestito a valle, o evitabile con column exchange); gli scambi finali sono del tutto omettibili se l'applicazione non richiede l'ordine originale — un risparmio opzionale di risorse."
     },
     "section": "IV.B Optimistic QFT",
@@ -2746,7 +2746,7 @@
     ],
     "sourceText": "2Q , where N2Q de-notes the total number of two-qubit gates, shifting fromquadratic (exact QFT) to nearly linear (OQFT) gatescaling, i.e.O(n log(n/ϵ)), substantially slows the de-cay of overall fidelity with n. The additional paralleliza-tion provided by the OQFT further suppresses depth-dependent error mechanisms, giving rise to the increas-ingly pronounced fidelity advantage observed for large n.",
     "explanations": {
-      "it-intermediate": "...dove N_2Q indica il numero totale di porte a due qubit, il passaggio da uno scaling quadratico (QFT esatta) a uno quasi lineare (OQFT, O(n log(n/ε))) rallenta sostanzialmente il decadimento della fedeltà complessiva con n. La parallelizzazione aggiuntiva fornita dall'OQFT sopprime inoltre i meccanismi di errore dipendenti dalla profondità, dando origine al vantaggio di fedeltà sempre più marcato osservato per n grande.",
+      "it-intermediate": "Spiega perché l'OQFT diventa più fedele della QFT esatta quando n cresce. La fedeltà del circuito dipende soprattutto dalle porte a due qubit: in pratica vale f ≈ f₂Q^N₂Q, dove N₂Q è il loro numero totale. Nella QFT esatta N₂Q cresce come n², nell'OQFT quasi linearmente, come O(n log(n/ε)), quindi la fedeltà cala molto più lentamente. In più l'OQFT esegue molte operazioni in parallelo, e questo riduce gli errori che crescono con la profondità. Per questo il vantaggio dell'OQFT diventa sempre più evidente per n grande.",
       "it-expert": "Due effetti si sommano nel vantaggio OQFT a n grande: (1) N2Q quasi-lineare invece di quadratico rallenta il decadimento esponenziale di f; (2) depth O(log(n/ε)) sopprime anche gli errori depth-dipendenti (idling/crosstalk accumulati) — entrambi gli effetti crescono con n, spiegando il vantaggio sempre più marcato osservato."
     },
     "section": "IV.B Optimistic QFT",
@@ -2867,7 +2867,7 @@
     ],
     "sourceText": "efficient method for realizing dense interaction graphs onthese platforms. Since qubits must return to the storagezone after an entangling gate regardless, routing them toswapped rather than original positions incurs negligibleadditional overhead.",
     "explanations": {
-      "it-intermediate": "...realizzare grafi di interazione densi su queste piattaforme. Dato che i qubit devono comunque tornare alla zona di storage dopo una porta entangling, instradarli verso le posizioni scambiate anziché quelle originali comporta un overhead aggiuntivo trascurabile.",
+      "it-intermediate": "Nelle architetture a zone, le PTN basate su CZSWAP sono un modo molto efficiente di realizzare grafi di interazione densi con pochi spostamenti. Dopo ogni porta entangling i qubit devono comunque tornare nella zona di memoria, quindi riportarli in posizioni scambiate invece che in quelle di partenza non costa praticamente nulla in più. Lo scambio di posto, che altrimenti richiederebbe porte aggiuntive, si ottiene così quasi gratis.",
       "it-expert": "Ripetizione/consolidamento dell'argomento chiave (già in III.A, blocco 36-37): lo shuttling di ritorno obbligatorio rende lo scambio di posizione CZSWAP quasi gratuito anche in un'architettura a zone."
     },
     "section": "V. Summary and Outlook"
@@ -3019,7 +3019,7 @@
     ],
     "sourceText": "Here, a big move denotes the transport distance dbig = dtw −dint, while an offset move denotes the additionalshort displacement required during the exchange. The total transport distances associated with a CZ and CZSWAPoperation are therefore",
     "explanations": {
-      "it-intermediate": "Qui un \"big move\" indica la distanza di trasporto d_big = d_tw − d_int, mentre un \"offset move\" indica il breve spostamento aggiuntivo richiesto durante lo scambio. Le distanze totali di trasporto associate a un'operazione CZ e CZSWAP sono quindi:",
+      "it-intermediate": "Qui un big move è lo spostamento d_big = d_tw − d_int, cioè dalla distanza iniziale tra le trappole a quella necessaria per l'interazione. Un offset move è il breve spostamento laterale in più che serve durante lo scambio per evitare collisioni. Ne segue che una CZ richiede in totale d_CZ = 2·d_big di trasporto, mentre una CZSWAP richiede d_CZSWAP = 2·d_big + 4·d_offset (equazione nel blocco successivo).",
       "it-expert": "Definizioni formali: dbig = dtw − dint, offset move = spostamento aggiuntivo per lo scambio. Segue la formula per le distanze totali."
     },
     "section": "Appendix A: CZ versus CZSWAP in mobile architectures"
@@ -3114,7 +3114,7 @@
     ],
     "sourceText": "Table III summarizes the gate-count and circuit-depth scaling of the PTN-based QFT for the linear, ladder, andsquare layouts. Here, GR denotes global single-qubit rotations, RZ denotes local RZ rotations, and the total numbersof single- and two-qubit gates are defined as",
     "explanations": {
-      "it-intermediate": "La Tabella III riassume lo scaling di conteggio di porte e profondità di circuito della QFT basata su PTN per i layout lineare, a scala e quadrato. Qui GR indica le rotazioni globali a singolo qubit, RZ le rotazioni locali RZ, e i numeri totali di porte a uno e due qubit sono definiti come segue:",
+      "it-intermediate": "La Tabella III riassume come crescono, con il numero di qubit, il numero di porte e la profondità della QFT basata su PTN nei layout lineare, a scala e quadrato. GR indica le rotazioni globali a un qubit e RZ le rotazioni Z locali. Il numero totale di porte a un qubit è N_1Q = N_GR + N_RZ, quello delle porte a due qubit è N_2Q = N_CZ + N_CZSWAP.",
       "it-expert": "Setup Tab. III: formule di scaling per i 3 layout, con definizioni N1Q, N2Q date nel blocco successivo."
     },
     "section": "Appendix B: Resource Scaling of PTN-Based QFT"
@@ -3202,7 +3202,7 @@
     ],
     "sourceText": "for all three layouts, while redistributing the gates between CZ and CZSWAP operations according to the availableconnectivity. The linear layout requires the largest number of CZSWAP gates, whereas increased connectivity pro-gressively replaces CZSWAP operations with CZ gates. This redistribution, however, does not reduce the overalltwo-qubit gate depth for the linear and ladder layouts, which remains 2n−1. The ladder therefore provides a particu-larly favorable compromise, achieving the same two-qubit gate count and depth as the linear layout while substantiallyreducing the number of CZSWAP operations. In contrast, the square layout further reduces the CZSWAP count atthe expense of increased single-qubit and two-qubit depth. Thus, increasing connectivity does not necessarily im-prove all circuit resources simultaneously; rather, it enables a trade-off between gate type, depth, and the associatedhardware-dependent implementation costs.",
     "explanations": {
-      "it-intermediate": "...per tutti e tre i layout, ridistribuendo le porte tra operazioni CZ e CZSWAP a seconda della connettività disponibile. Il layout lineare richiede il maggior numero di porte CZSWAP, mentre una connettività crescente sostituisce progressivamente operazioni CZSWAP con porte CZ. Questa ridistribuzione, tuttavia, non riduce la profondità totale di porta a due qubit per i layout lineare e a scala, che resta 2n−1. Il layout a scala offre quindi un compromesso particolarmente favorevole, raggiungendo lo stesso conteggio e la stessa profondità di porta a due qubit del layout lineare, riducendo sostanzialmente il numero di operazioni CZSWAP. Il layout quadrato, al contrario, riduce ulteriormente il conteggio di CZSWAP a scapito di una maggiore profondità a uno e due qubit. Quindi, aumentare la connettività non migliora necessariamente tutte le risorse del circuito simultaneamente; piuttosto, abilita un compromesso tra tipo di porta, profondità e i relativi costi di implementazione hardware-dipendenti.",
+      "it-intermediate": "In tutti e tre i layout la PTN usa lo stesso numero di porte a due qubit, N_2Q = n²/2 + n/2 − 1; cambia solo la ripartizione tra CZ e CZSWAP in base alla connettività. Il layout lineare usa più CZSWAP, mentre più connettività sostituisce gradualmente le CZSWAP con CZ. Nei layout lineare e a scala, però, questo non riduce la profondità a due qubit, che resta 2n − 1. La scala è quindi un compromesso particolarmente buono: stesso numero di porte e stessa profondità del lineare, ma molte meno CZSWAP. Il layout quadrato riduce ancora le CZSWAP, ma a costo di una profondità maggiore sia a uno sia a due qubit. Più connettività non migliora quindi tutte le risorse insieme: permette di scegliere un compromesso tra tipo di porte, profondità e costi dell'hardware.",
       "it-expert": "Formalizzazione quantitativa del messaggio qualitativo di Sez. II/IV.A: depth 2Q resta 2n−1 per linear e ladder nonostante la ridistribuzione CZ↔CZSWAP — il ladder è strettamente dominante sul linear (stesso count/depth, meno CZSWAP). Lo square scambia meno CZSWAP con più depth 1Q e 2Q — nessun layout è dominante in assoluto, conferma quantitativa del trade-off di Sez. II."
     },
     "section": "Appendix B: Resource Scaling of PTN-Based QFT"
@@ -3259,7 +3259,7 @@
     ],
     "sourceText": "The PTN-based QFT can also serve as a building block for Fourier-space quantum arithmetic [59, 60]. In general,Fourier-space operators can be expressed in the form",
     "explanations": {
-      "it-intermediate": "La QFT basata su PTN può anche fungere da blocco costruttivo per l'aritmetica quantistica nello spazio di Fourier. In generale, gli operatori nello spazio di Fourier possono essere espressi nella forma seguente:",
+      "it-intermediate": "La QFT basata su PTN può servire anche come mattone per l'aritmetica quantistica nello spazio di Fourier [59, 60]. In generale un operatore di questo tipo si scrive come A = QFT† D QFT: si passa nella base di Fourier, si applica un operatore D che lì è diagonale e si torna indietro. Una QFT più efficiente rende quindi più efficienti anche tutte queste operazioni.",
       "it-expert": "Setup App. D: framework generale per operatori Fourier-space A=QFT†DQFT (formula nel blocco successivo), applicabile ad aritmetica quantistica [59,60]."
     },
     "section": "Appendix D: Quantum Arithmetic"
@@ -3371,7 +3371,7 @@
     ],
     "sourceText": "where D is a diagonal operator in the Fourier basis. For quantum arithmetic, D is a diagonal unitary whose phasesencode the corresponding arithmetic function.Similar Fourier-space decompositions have also been used beyondarithmetic, for example in quantum algorithms for solving partial differential equations, where the QFT can be usedto diagonalize the relevant differential operators [66, 67].",
     "explanations": {
-      "it-intermediate": "...dove D è un operatore diagonale nella base di Fourier. Per l'aritmetica quantistica, D è un unitario diagonale le cui fasi codificano la funzione aritmetica corrispondente. Decomposizioni simili nello spazio di Fourier sono state usate anche oltre l'aritmetica, per esempio in algoritmi quantistici per risolvere equazioni alle derivate parziali, dove la QFT può essere usata per diagonalizzare gli operatori differenziali rilevanti.",
+      "it-intermediate": "In A = QFT† D QFT, D è un operatore diagonale nella base di Fourier, cioè agisce solo moltiplicando ogni stato per una fase. Nell'aritmetica quantistica D è una unitaria diagonale le cui fasi codificano la funzione da calcolare, per esempio una somma. Scomposizioni simili si usano anche fuori dall'aritmetica: negli algoritmi quantistici per le equazioni alle derivate parziali la QFT serve a diagonalizzare gli operatori differenziali [66, 67].",
       "it-expert": "D = operatore diagonale che codifica la funzione aritmetica (o, in altri contesti, un operatore differenziale diagonalizzato in base di Fourier, [66,67]) — la stessa struttura A=QFT†DQFT ricorre oltre l'aritmetica pura."
     },
     "section": "Appendix D: Quantum Arithmetic"
@@ -3390,7 +3390,7 @@
     ],
     "sourceText": "As a simple example, we consider the Draper adder [59], which performs addition by transforming the inputregister to the Fourier basis, applying a phase gradient Da corresponding to the classical integer a to be added, andtransforming back. The circuit takes the form",
     "explanations": {
-      "it-intermediate": "Come esempio semplice, si considera l'adder di Draper, che esegue l'addizione trasformando il registro di input nella base di Fourier, applicando un gradiente di fase D_a corrispondente all'intero classico a da sommare, e trasformando indietro. Il circuito ha la forma seguente:",
+      "it-intermediate": "Come esempio semplice gli autori considerano l'addizionatore di Draper [59]. Per sommare un intero classico a al registro, porta il registro nella base di Fourier, applica un gradiente di fase D_a che dipende da a e torna nella base originale. Il circuito è ADD_a = QFT† D_a QFT, con D_a|b⟩ = exp(2πiab/2ⁿ)|b⟩ (blocco successivo).",
       "it-expert": "Esempio concreto: Draper adder [59] — ADDa = QFT†·Da·QFT (formula nel blocco successivo), il caso più semplice di aritmetica Fourier-based."
     },
     "section": "Appendix D: Quantum Arithmetic"
@@ -3471,7 +3471,7 @@
     ],
     "sourceText": "The same Fourier-space construction also enables addition of two quantum registers [59, 60]. Let the two n-qubitregisters encode the integers a and b, respectively. The desired quantum-quantum adder can then be written as ADD =(I ⊗QFT†)Dab(I ⊗QFT), withDab|a⟩|b⟩= exp 2πiab/22n\u0001|a⟩|b⟩,",
     "explanations": {
-      "it-intermediate": "La stessa costruzione nello spazio di Fourier permette anche l'addizione di due registri quantistici. Siano i due registri di n qubit che codificano gli interi a e b rispettivamente. L'adder quantistico-quantistico desiderato può quindi essere scritto come:",
+      "it-intermediate": "La stessa costruzione permette di sommare due registri quantistici. Se due registri di n qubit contengono gli interi a e b, il sommatore si scrive ADD = (I ⊗ QFT†) D_ab (I ⊗ QFT): si applica la QFT solo al registro di b, poi un operatore diagonale D_ab che aggiunge la fase exp(2πiab/2²ⁿ), e infine la QFT inversa. Il risultato è |a⟩|b⟩ → |a⟩|a + b mod 2ⁿ⟩. A differenza del caso precedente, D_ab coinvolge entrambi i registri.",
       "it-expert": "Estensione al caso quantum-quantum adder (a e b entrambi registri quantistici, non solo a classico) — formula nel blocco successivo."
     },
     "section": "Appendix D: Quantum Arithmetic"
@@ -3528,7 +3528,7 @@
     ],
     "sourceText": "the low-ancilla structure of the underlying construction. Such optimistic multipliers have been shown to be sufficientfor quantum algorithms such as Shor’s factoring algorithm, illustrating that the optimistic approximation can bepropagated through nontrivial arithmetic computations [44].",
     "explanations": {
-      "it-intermediate": "...la struttura a basso numero di ancilla della costruzione sottostante. Tali moltiplicatori ottimistici si sono dimostrati sufficienti per algoritmi quantistici come l'algoritmo di fattorizzazione di Shor, illustrando come l'approssimazione ottimistica possa essere propagata attraverso calcoli aritmetici non banali.",
+      "it-intermediate": "Sostituendo le QFT di un moltiplicatore basato sulla QFT con delle OQFT si ottiene un moltiplicatore \"ottimistico\": meno profondo e con la stessa struttura a pochi qubit ausiliari del circuito di partenza. È stato mostrato [44] che moltiplicatori di questo tipo bastano per algoritmi come quello di Shor per la fattorizzazione. Questo indica che l'approssimazione ottimistica può essere usata anche dentro calcoli aritmetici complessi senza compromettere il risultato dell'algoritmo.",
       "it-expert": "Validazione dell'approccio: i moltiplicatori \"ottimistici\" (basati su OQFT) sono già noti essere sufficienti per Shor's factoring [44] — precedente diretto che rende plausibile l'estensione proposta qui."
     },
     "section": "Appendix D: Quantum Arithmetic"
