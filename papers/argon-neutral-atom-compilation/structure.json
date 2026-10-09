@@ -109,16 +109,16 @@
           "paragraphs": [
             "p0008",
             "p0011",
-            "p0012",
             "p0013",
-            "p0014",
             "p0015",
-            "p0016",
             "p0017",
             "p0018",
+            "p0021",
+            "p0012",
+            "p0014",
+            "p0016",
             "p0019",
             "p0020",
-            "p0021",
             "p0022"
           ],
           "meaning": {
@@ -151,19 +151,19 @@
             "it-intermediate": "Gate, geometria e trasporto"
           },
           "paragraphs": [
-            "p0023",
-            "p0024",
             "p0026",
             "p0027",
             "p0029",
+            "p0023",
+            "p0024",
             "p0030",
             "p0031",
             "p0032",
             "p0033",
-            "p0035",
             "p0036",
-            "p0037",
             "p0038",
+            "p0035",
+            "p0037",
             "p0040"
           ],
           "meaning": {
@@ -196,12 +196,12 @@
             "it-intermediate": "Separare il costo statico da quello dinamico"
           },
           "paragraphs": [
-            "p0041",
             "p0042",
             "p0043",
-            "p0045",
             "p0046",
-            "p0047"
+            "p0047",
+            "p0055",
+            "p0041"
           ],
           "meaning": {
             "it-intermediate": "La biblioteca contiene schemi geometrici di coppie compatibili con l’hardware. La selezione di quale qubit logico assegnare a ciascuna posizione dipende invece dal circuito e dalle sue interazioni future."
@@ -216,16 +216,16 @@
             "it-intermediate": "Il grafo dei conflitti"
           },
           "paragraphs": [
+            "p0045",
             "p0048",
             "p0049",
             "p0050",
             "p0051",
             "p0052",
-            "p0055",
             "p0053",
-            "p0056",
             "p0057",
-            "p0058"
+            "p0058",
+            "p0056"
           ],
           "meaning": {
             "it-intermediate": "Qui un nodo rappresenta un possibile gate su una coppia di siti fisici; un arco segnala due gate incompatibili in parallelo. Il solver cerca insiemi indipendenti di capacità massima, poi rotazioni e riflessioni ampliano la biblioteca."
@@ -261,16 +261,15 @@
             "p0061",
             "p0062",
             "p0063",
-            "p0064",
-            "p0065",
             "p0066",
-            "p0067",
-            "p0068",
             "p0069",
             "p0070",
             "p0071",
-            "p0072",
-            "p0073"
+            "p0073",
+            "p0064",
+            "p0065",
+            "p0067",
+            "p0068"
           ],
           "meaning": {
             "it-intermediate": "I nodi codificano coordinate vecchie e nuove dei qubit; gli archi e i ritardi descrivono gate futuri entro una finestra. La rete aggrega queste informazioni per predire un costo di routing del candidato. La previsione non è ancora una traiettoria eseguibile."
@@ -287,6 +286,7 @@
           "paragraphs": [
             "p0074",
             "p0075",
+            "p0072",
             "p0077",
             "p0078",
             "p0079"
@@ -356,11 +356,11 @@
             "it-intermediate": "Esperimenti e modello di errore"
           },
           "paragraphs": [
+            "p0089",
+            "p0088",
             "p0085",
             "p0086",
             "p0087",
-            "p0088",
-            "p0089",
             "p0090",
             "p0091",
             "p0093"
@@ -378,21 +378,18 @@
             "it-intermediate": "Risultati e contributo dei moduli"
           },
           "paragraphs": [
+            "p0097",
             "p0095",
             "p0096",
-            "p0097",
-            "p0098",
             "p0099",
+            "p0098",
             "p0100",
             "p0103",
             "p0105",
             "p0101",
-            "p0107",
             "p0108",
             "p0109",
-            "p0112",
-            "p0104",
-            "p0110"
+            "p0107"
           ],
           "meaning": {
             "it-intermediate": "Le tabelle confrontano stadi Rydberg, movimenti, fidelity modellata e latenza; la scomposizione del framework mostra come le diverse scelte contribuiscano al risultato."
@@ -407,15 +404,18 @@
             "it-intermediate": "Ablazioni e scalabilità"
           },
           "paragraphs": [
+            "p0112",
             "p0115",
             "p0117",
-            "p0118",
+            "p0104",
+            "p0110",
             "p0121",
             "p0122",
+            "p0118",
+            "p0119",
             "p0113",
             "p0114",
             "p0116",
-            "p0119",
             "p0123"
           ],
           "meaning": {
@@ -432,9 +432,7 @@
           },
           "paragraphs": [
             "p0125",
-            "p0126",
-            "p0129",
-            "p0127"
+            "p0126"
           ],
           "meaning": {
             "it-intermediate": "Il confronto con un approccio a zone richiede hardware e modelli differenti; gli autori confrontano le metriche che considerano compatibili e discutono l’estensione del framework."
@@ -466,7 +464,9 @@
             "it-intermediate": "Che cosa portare via"
           },
           "paragraphs": [
+            "p0129",
             "p0130",
+            "p0127",
             "p0131"
           ],
           "meaning": {
