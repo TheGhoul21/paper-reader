@@ -13,8 +13,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Gli autori propongono una porta CZ remota basata su trasporto direzionale (DT) e il relativo compilatore, per array di atomi neutri organizzati in zone. Il problema di partenza: spostare fisicamente gli atomi con deflettori acusto-ottici (AOD) è lento e vincolato (righe/colonne non possono incrociarsi, velocità e portata limitate dall'hardware), il che limita le connessioni a lunga distanza. La soluzione: usare gli AOD solo per impostare/tarare i canali di trasporto, mentre il DT diventa il meccanismo predefinito per l'entanglement remoto — una sequenza di impulsi laser (sfruttando l'\"antiblockade\" di Rydberg) fa viaggiare un'eccitazione di Rydberg lungo una catena dinamica di atomi ausiliari, realizzando una CZ tra due qubit stazionari e non adiacenti. Risultato: la fase di entanglement dura dal 50% al 90% in meno rispetto alle sole tecniche AOD, con distanze altrimenti precluse dai limiti ottici dello shuttling.",
-      "it-expert": "Contributo: gate CZ remoto DT-based + compilatore per array zonati, per superare i limiti fisici dello shuttling AOD puro (vincoli di non-crossing riga/colonna, velocità del dispositivo, range hardware-limited). Scelta di design chiave: gli AOD restano solo per setup/micro-tuning dei canali, il DT diventa il default per l'entanglement remoto — un'inversione rispetto ai compilatori zonati esistenti (ZAC, ZAP) che usano AOD per ogni operazione a due qubit. Meccanismo: sequenza di π-pulse detuning-modulati in regime di antiblockade propaga un'eccitazione di Rydberg lungo un corridoio ancilla dinamico/resettabile, realizzando CZ tra qubit stazionari non adiacenti senza spostarli fisicamente. Guadagno riportato: 50-90% di riduzione della durata della fase di entangling rispetto a baseline solo-AOD, più connettività a lungo raggio non vincolata dai limiti ottici di field-of-view/apertura numerica."
+      "it-intermediate": "Il paper propone una porta CZ remota basata sul trasporto direzionale (DT) e un compilatore che la usa, per array di atomi neutri divisi in zone. Oggi due qubit lontani interagiscono spostando gli atomi con deflettori acusto-ottici (AOD), ma righe e colonne di trappole non possono incrociarsi, la velocità è limitata e la portata è vincolata dall'ottica. Qui invece gli AOD servono solo a predisporre e ritoccare dei canali, mentre l'entanglement a distanza passa per il DT: sfruttando l'antiblockade di Rydberg, una sequenza di impulsi π fa viaggiare un'eccitazione di Rydberg lungo un corridoio di atomi ausiliari, e così si esegue una CZ tra qubit fermi e lontani. La fase di entanglement dura dal 50% al 90% in meno rispetto ai soli AOD, e si raggiungono distanze oltre i limiti dello spostamento.",
+      "it-expert": "CZ remota basata su directional transport (DT) e relativo compilatore per array zonati. Lo shuttling AOD è limitato da non-crossing di righe e colonne, velocità e range; qui gli AOD servono solo a setup e micro-tuning dei canali, e il DT diventa il meccanismo di default per l'entanglement remoto. In regime di antiblockade, una sequenza di π-pulse con detuning modulato propaga un'eccitazione Rydberg lungo un corridoio ancilla dinamico e resettabile, realizzando una CZ tra qubit stazionari non adiacenti. Riduzione della durata degli entangling stage del 50–90% rispetto a baseline solo AOD, con connettività oltre i limiti ottici dello shuttling."
     },
     "section": "Abstract"
   },
@@ -32,8 +32,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Gli array di atomi neutri (intrappolati con pinzette ottiche, con interazioni tramite stati di Rydberg) sono tra le piattaforme più promettenti per computer quantistici scalabili. Il problema pratico: serve una compilazione efficiente per minimizzare il costo, in tempo, dello spostamento fisico degli atomi.",
-      "it-expert": "Framing standard: NA array come piattaforma leader (tweezer ottici + interazioni Rydberg), con ampio corredo di citazioni. Tesi centrale del paper: il vero collo di bottiglia per la scalabilità pratica non è il gate in sé ma l'overhead di trasporto atomico."
+      "it-intermediate": "Gli array di atomi neutri, intrappolati con pinzette ottiche e fatti interagire tramite stati di Rydberg, sono tra le piattaforme più promettenti per computer quantistici di grandi dimensioni. Per sfruttarli serve però una compilazione che riduca il costo dello spostamento degli atomi.",
+      "it-expert": "NA array (tweezer ottici, interazioni Rydberg) come piattaforma scalabile; la computazione pratica richiede compilazione che minimizzi l'overhead di trasporto atomico."
     },
     "section": "1. Introduzione"
   },
@@ -57,8 +57,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "In architetture \"zonate\", l'entanglement a lungo raggio si ottiene di solito spostando fisicamente i qubit tra zona di stoccaggio e zona di entanglement con gli AOD, eseguendo la porta a due qubit e riportandoli indietro (ampia lista di lavori precedenti che usano questo approccio). Anche se i gate di Rydberg sono velocissimi (nanosecondi-microsecondi), il movimento meccanico costa decine-centinaia di microsecondi per ogni andata e ritorno. Per circuiti con molto entanglement a lungo raggio, come la trasformata di Fourier quantistica (QFT), questo overhead di trasporto diventa il vero collo di bottiglia, più del tempo di esecuzione dei gate stessi.",
-      "it-expert": "Descrive il paradigma AOD-shuttling dominante nei compilatori zonati esistenti (ampia lista di riferimenti) — round trip storage→entanglement→storage. Nota quantitativa chiave: gate Rydberg ns-µs vs shuttling decine-centinaia di µs per round trip, un gap di 1-2 ordini di grandezza usato come motivazione. Per pattern QFT-like (entanglement denso a lungo raggio, molti round trip), il trasporto — non il gate — diventa il termine dominante nella latenza: è la premessa dell'argomento centrale del paper."
+      "it-intermediate": "Nelle architetture a zone, due qubit lontani si fanno interagire spostandoli con gli AOD dalla zona di memoria a quella di entanglement, eseguendo la porta e riportandoli indietro. Le porte di Rydberg durano da nanosecondi a microsecondi, ma ogni andata e ritorno costa decine o centinaia di microsecondi. Nei circuiti con molte interazioni a lunga distanza, come la trasformata di Fourier quantistica (QFT), è quindi il movimento, non la porta, a determinare il tempo totale.",
+      "it-expert": "Nelle architetture zonate l'entanglement a lungo raggio avviene via shuttling AOD storage → entanglement → storage. Gate di Rydberg da ns a µs contro decine o centinaia di µs per round trip: per pattern densi a lungo raggio come la QFT il trasporto diventa il collo di bottiglia della latenza."
     },
     "section": "1. Introduzione",
     "recall": [
@@ -89,8 +89,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 1, che introduce visivamente il framework di compilazione a trasporto direzionale.",
-      "it-expert": "Didascalia Fig. 1 (framework DT) — pannelli (a)-(c): bottleneck AOD-only, meccanismo DT, strategia ibrida del compilatore."
+      "it-intermediate": "La Figura 1 presenta il framework di compilazione basato sul trasporto direzionale.",
+      "it-expert": "Fig. 1: framework di compilazione DT."
     },
     "section": "1. Introduzione"
   },
@@ -108,8 +108,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Qui si spiega il meccanismo alternativo: invece di spostare gli atomi fisicamente, il DT fa viaggiare l'informazione quantistica come un'eccitazione di Rydberg lungo una catena preconfigurata di atomi \"ancilla\" di supporto, sfruttando l'antiblockade di Rydberg (impulsi laser calibrati che scambiano l'eccitazione tra atomi vicini). Sequenza per una CZ remota: un impulso locale trasforma lo stato del qubit di controllo in un'eccitazione di Rydberg, questa viaggia via DT fino a un atomo relay accanto al target, e un secondo impulso sul target imprime una fase condizionata solo se l'eccitazione è arrivata. Con parametri realistici bastano pochi microsecondi, contro le decine/centinaia dell'approccio solo-AOD: un miglioramento di 1-2 ordini di grandezza, purché l'overhead di compilazione resti sotto controllo.",
-      "it-expert": "Meccanica del DT: propagazione coerente di un'eccitazione di Rydberg lungo una catena ancilla preconfigurata (non moto fisico dell'atomo), via antiblockade. Protocollo CZ remota: π-pulse locale su |1⟩_c → eccitazione Rydberg; trasporto DT fino al relay adiacente al target; 2π-pulse risonante con l'antiblockade sul target imprime la fase condizionata solo in presenza dell'eccitazione vicina — il condizionamento è puramente di risonanza, non richiede prossimità fisica pre-esistente. Cifra chiave: pochi µs contro decine-centinaia AOD-only (1-2 ordini di grandezza), a patto che l'overhead di compilazione non elimini il guadagno — è esattamente il problema che il resto del paper risolve."
+      "it-intermediate": "Il trasporto direzionale cambia approccio: invece di spostare gli atomi, fa viaggiare l'informazione come un'eccitazione di Rydberg lungo una catena di atomi ausiliari (ancilla) già disposti [10, 27, 31]. Sfrutta l'antiblockade di Rydberg: impulsi laser calibrati passano l'eccitazione da un atomo al vicino. Una CZ remota avviene così: un impulso π trasforma la componente |1⟩ del qubit di controllo in un'eccitazione di Rydberg; l'eccitazione viaggia fino a un atomo vicino al target; un impulso 2π sul target, sintonizzato sulla risonanza di antiblockade, imprime una fase solo se l'eccitazione è arrivata. Con parametri realistici una CZ così richiede pochi microsecondi, contro decine o centinaia con i soli AOD [Fig. 1(a)(b)]: un guadagno di 10–100 volte, purché il costo di compilazione resti basso.",
+      "it-expert": "Il DT propaga l'informazione come eccitazione Rydberg coerente lungo una catena ancilla preconfigurata [10, 27, 31], via antiblockade (facilitation). CZ remota: π-pulse locale che mappa |1⟩_c su un'eccitazione Rydberg, trasporto DT fino a un relay adiacente al target, 2π-pulse sul target risonante con l'antiblockade che imprime la fase condizionata. Tempi di pochi µs contro decine o centinaia per l'AOD [Fig. 1(a)(b)]: speedup di 1–2 ordini di grandezza, se l'overhead di compilazione resta contenuto."
     },
     "section": "1. Introduzione",
     "recall": [
@@ -140,8 +140,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "La sfida centrale: tenere pronti dei \"corridoi\" DT statici per ogni possibile coppia di qubit richiederebbe troppo spazio fisico e troppo movimento AOD, annullando i vantaggi di velocità. Serve quindi una compilazione che integri il trasporto AOD con una pianificazione dinamica dei canali DT, usando gli AOD in modo mirato solo per la configurazione iniziale e la manutenzione, non per ogni singola operazione di entanglement.",
-      "it-expert": "Trade-off che motiva il design: canali DT statici per coprire tutte le interazioni possibili è irrealizzabile (spazio fisico e overhead AOD proibitivi, vanificando lo speedup). La soluzione è un compilatore che pianifica dinamicamente i canali DT, riservando il moto AOD a configurazione iniziale/manutenzione anziché a ogni operazione a due qubit (idea ripresa concettualmente da Q-Pilot) — è il gap che il framework colma rispetto a un DT puramente statico."
+      "it-intermediate": "Il problema è che tenere pronti corridoi DT per tutte le coppie possibili occuperebbe troppo spazio e richiederebbe troppi spostamenti AOD, annullando il guadagno [1]. Il compilatore deve quindi combinare AOD e canali DT pianificati di volta in volta, usando gli AOD per la configurazione iniziale e la manutenzione, non per ogni porta [29].",
+      "it-expert": "Corridoi DT statici per tutte le interazioni avrebbero costi proibitivi di spazio e di AOD [1]: serve integrare il trasporto AOD con una pianificazione dinamica dei canali, usando l'AOD per configurazione e manutenzione invece che per ogni operazione entangling [29]."
     },
     "section": "1. Introduzione",
     "recall": [
@@ -172,8 +172,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Gli autori presentano la loro soluzione: un compilatore che conosce il trasporto direzionale (DT-aware) e cerca un equilibrio tra la velocità delle CZ remote via DT e il costo di preparare i canali. Lo fa in due modi: classifica ogni coppia CZ, decidendo se conviene eseguirla con il DT o spostando gli atomi con l'AOD, e gestisce i canali DT in modo dinamico, adattandoli mentre il circuito procede (i dettagli sono nel blocco successivo).",
-      "it-expert": "Enunciato della proposta: compilatore DT-aware che ottiene il bilanciamento AOD/DT tramite classificazione intelligente delle coppie CZ (DT-eligible vs direct-AOD) — anticipa il criterio formalizzato in Sez. 4."
+      "it-intermediate": "Il compilatore proposto tiene conto del DT e trova questo equilibrio in due modi: classifica ogni coppia di qubit che deve fare una CZ e gestisce i canali DT in modo dinamico.",
+      "it-expert": "Compilatore DT-aware basato su classificazione delle coppie CZ e gestione dinamica dei canali."
     },
     "section": "1. Introduzione"
   },
@@ -191,8 +191,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Continua la descrizione del framework (Fig. 1c): in una fase iniziale di configurazione si concentra tutto il grosso movimento AOD, assegnando i qubit a canali DT predefiniti per priorità e parallelizzando gli spostamenti con uno scheduling su un grafo di conflitti. Dopo questa fase, l'infrastruttura resta sostanzialmente statica durante l'esecuzione del circuito. Ogni coppia da far interagire viene classificata come \"adatta al DT\" o \"da fare con AOD diretto\": le coppie facilmente allineabili a un canale DT unidimensionale usano la CZ remota veloce, le altre lo shuttling locale. Il canale DT \"dorsale\" si aggiorna in modo incrementale, riusando un piccolo pool di atomi ancilla come punti di relay: questo sostituisce i grandi movimenti AOD globali con aggiornamenti locali, riducendo molto l'overhead.",
-      "it-expert": "Dettaglio implementativo: fase di configurazione iniziale concentra il movimento AOD bulk (placement priority-based su canali DT predefiniti), con routing su grafo di conflitti e scheduling greedy a maximal-independent-set per parallelizzare i movimenti. Dopo il setup l'infrastruttura è quasi statica. Criterio operativo: DT-eligible (allineamento economico a canale 1D) vs direct-AOD, deciso per coppia. Punto architetturale chiave: mantenimento incrementale del \"DT backbone\" (cresce/si rimodella per stage, non full-repack) più riuso di un pool ridotto di flying ancilla come relay — sostituendo AOD sweep globali con update localizzati, vera fonte della riduzione di overhead rivendicata."
+      "it-intermediate": "Il funzionamento è riassunto nella Fig. 1(c). In una fase iniziale gli AOD fanno quasi tutti gli spostamenti: i qubit vengono assegnati a canali DT predefiniti, in ordine di priorità, e un router esegue in parallelo gli spostamenti compatibili scegliendoli con un metodo greedy su un grafo dei conflitti. Poi il circuito gira su un'infrastruttura quasi fissa. Ogni coppia CZ viene classificata: se si allinea facilmente a un canale DT unidimensionale usa la CZ remota veloce, altrimenti uno spostamento AOD locale. Il canale principale (backbone) cresce e cambia forma da uno stadio all'altro invece di essere ricostruito, e un piccolo gruppo di atomi ancilla mobili fa da relay: grandi spostamenti globali diventano piccoli aggiornamenti locali.",
+      "it-expert": "Fig. 1(c): fase di configurazione iniziale che concentra il riarrangiamento AOD, con placement priority-based su canali DT predefiniti e router su conflict graph con scheduling greedy MIS. Poi esecuzione su infrastruttura quasi statica; ogni coppia CZ è DT-eligible (allineabile a basso costo a un canale 1D) o direct-AOD. Il DT backbone è mantenuto incrementalmente tra stage e un piccolo pool di flying ancilla fa da relay, sostituendo sweep AOD globali con update locali."
     },
     "section": "1. Introduzione"
   },
@@ -216,8 +216,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "I tre contributi dichiarati: (1) una metodologia ibrida che integra il trasporto AOD con la pianificazione dinamica dei canali DT; (2) algoritmi specializzati per circuiti tipo QFT (bassa parallelizzabilità, pattern di interazione che si spostano nel tempo), dove la gestione dinamica dei canali batte la pianificazione statica globale; (3) risultati sperimentali: 50-90% di riduzione della durata della fase di entanglement rispetto a baseline solo-AOD, più connettività a lunga distanza altrimenti impossibile per i limiti ottici del sistema.",
-      "it-expert": "Contributi in forma di lista: (1) metodologia ibrida AOD+DT dinamico; (2) algoritmi ad-hoc per QFT-style (bassa parallelicità, interazioni \"scivolanti\" — il caso peggiore per uno scheduling statico); (3) risultato quantitativo, 50-90% di riduzione della durata di entangling-stage vs baseline AOD-only, con connettività oltre i limiti di field-of-view/apertura numerica. Il contributo (2) segnala già che il paper distinguerà un compilatore \"statico\" generico da uno \"dinamico\" specifico per QFT — distinzione centrale in Sez. 4.3."
+      "it-intermediate": "I contributi sono tre: un metodo di compilazione che combina strettamente trasporto AOD e pianificazione dinamica dei canali DT, mantenendo le risorse sotto controllo; algoritmi specifici per circuiti tipo QFT, con poche operazioni parallele e interazioni che si spostano nel tempo, dove i canali dinamici battono quelli statici; e una riduzione del 50–90% della durata della fase di entanglement rispetto ai soli AOD, con collegamenti a distanze oltre i limiti di campo visivo e apertura numerica dell'ottica.",
+      "it-expert": "Contributi: metodologia ibrida AOD + pianificazione dinamica dei canali DT; algoritmi per circuiti QFT-style a basso parallelismo e interazioni scorrevoli, dove i canali dinamici superano il provisioning statico; riduzione del 50–90% della durata degli entangling stage rispetto all'AOD-only, con connettività oltre i limiti di field-of-view e apertura numerica."
     },
     "section": "1. Introduzione"
   },
@@ -235,8 +235,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Spiega l'architettura \"zonata\" standard: il processore è diviso in zone di stoccaggio (dove i qubit restano stabili), zone di entanglement (dove si eseguono i gate) e zone di lettura. Per far interagire due qubit lontani, si spostano fisicamente dalla zona di stoccaggio a quella di entanglement con gli AOD, si esegue il gate, e li si riportano indietro. Questo movimento fisico è il vero collo di bottiglia: decine-centinaia di microsecondi contro i nanosecondi-microsecondi del gate stesso, con vincoli aggiuntivi come il campo visivo limitato e traiettorie delle pinzette che non possono incrociarsi.",
-      "it-expert": "Formalizza il baseline architetturale: partizione storage/entanglement/readout zone; round-trip storage→entanglement→storage per ogni CZ remota è lo status quo. Vincoli quantitativi ribaditi (AOD tens-hundreds µs vs gate ns-µs) più due vincoli strutturali usati come argomento pro-DT: field-of-view limitato e non-crossing constraint sulle traiettorie — vincoli che il DT (propagazione di stato, non di atomo) elude per costruzione."
+      "it-intermediate": "Per crescere, i processori ad atomi neutri si dividono in zone: memoria (storage), dove i qubit aspettano conservando l'informazione; entanglement, dove si eseguono le porte; lettura (readout), dove si misura. Per far interagire due qubit lontani li si porta dalla memoria alla zona di entanglement con le pinzette AOD, si esegue la porta e li si riporta indietro. Questo movimento è il limite principale: richiede da decine a centinaia di microsecondi, contro i nanosecondi o microsecondi delle porte di Rydberg, ed è vincolato dal campo visivo dell'ottica e dal divieto di incrociare le traiettorie delle pinzette.",
+      "it-expert": "Architettura zonata: storage, entanglement e readout zone; le CZ remote richiedono il round trip storage → entanglement → storage via shuttling AOD, il collo di bottiglia (decine o centinaia di µs contro gate da ns a µs), vincolato da field-of-view e non-crossing delle traiettorie."
     },
     "section": "2. Background"
   },
@@ -254,8 +254,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "L'AOD sposta l'atomo fisico; il DT invece sposta solo uno stato quantistico — nello specifico una singola eccitazione di Rydberg — lasciando gli atomi fermi.",
-      "it-expert": "Distinzione netta: AOD trasporta l'atomo, DT trasporta solo lo stato (un'eccitazione di Rydberg singola) — è la base concettuale di tutto il paper."
+      "it-intermediate": "Lo shuttling AOD sposta l'atomo intero. Il DT invece sposta solo uno stato quantistico, una singola eccitazione di Rydberg, e gli atomi restano dove sono.",
+      "it-expert": "L'AOD trasporta l'atomo; il DT trasporta solo lo stato, una singola eccitazione Rydberg."
     },
     "section": "2.2 Directional Transport"
   },
@@ -273,8 +273,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il trasporto avviene lungo un canale di atomi ausiliari (ancilla) predisposto in anticipo. Il meccanismo fisico sfruttato — l'antiblockade di Rydberg — è nominato qui e spiegato subito dopo, oltre la Figura 2.",
-      "it-expert": "Canale ancilla pre-arrangiato come substrato fisico del DT; il fenomeno di Rydberg richiamato qui (antiblockade/facilitation) è dettagliato nel blocco successivo, dopo la Fig. 2."
+      "it-intermediate": "Il trasporto avviene lungo un canale di atomi ancilla predisposto in anticipo e sfrutta un effetto della fisica di Rydberg chiamato antiblockade, o facilitazione.",
+      "it-expert": "Substrato: un canale ancilla pre-arrangiato; meccanismo: antiblockade (facilitation) di Rydberg."
     },
     "section": "2.2 Directional Transport"
   },
@@ -292,8 +292,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 2: (a) come l'interazione tra atomi di Rydberg fa sì che l'impulso 2π sia risonante solo alla giusta distanza; (b) come il meccanismo DT, pensato in 1D, si estenda a una geometria 2D; (c) i vincoli geometrici reali usati dal compilatore (distanze tra canali e tra zone, in micrometri); (d) la sequenza temporale del protocollo CZ remoto.",
-      "it-expert": "Fig. 2, quattro pannelli: (a) diagramma dei livelli energetici — lo shift indotto dall'interazione Rydberg rende il 2π-pulse risonante solo alla distanza di facilitazione; (b) estensione del meccanismo DT 1D a geometria 2D; (c) vincoli geometrici concreti usati dal compilatore — spaziatura canali in entanglement zone (4,8,5,7 µm), separazione tra zone (10 µm), spaziatura in storage zone (6 µm), gli input reali del layout su cui opera l'algoritmo di Sez. 4; (d) sequenza temporale del protocollo."
+      "it-intermediate": "La Figura 2 mostra la CZ remota e l'architettura del compilatore. (a) Schema dei livelli di energia: l'interazione tra atomi di Rydberg sposta i livelli in modo che l'impulso 2π sul target sia risonante solo alla distanza di facilitazione. (b) Estensione del meccanismo DT da una fila a una geometria bidimensionale. (c) Vincoli geometrici usati dal compilatore: distanze tra i siti dei canali nella zona di entanglement (4, 8, 5, 7 µm), distanza tra zone (10 µm) e passo della zona di memoria (6 µm). (d) Sequenza temporale: un impulso π (giallo) sul controllo crea un'eccitazione che viaggia lungo la catena di ancilla, e permette l'impulso 2π condizionato sul target (rosso).",
+      "it-expert": "Fig. 2: (a) livelli energetici, con l'interazione che rende il 2π-pulse risonante solo alla distanza di facilitazione; (b) estensione 2D del DT; (c) vincoli geometrici del compilatore, con spaziature di canale 4, 8, 5, 7 µm, separazione tra zone 10 µm e passo di storage 6 µm; (d) sequenza temporale del protocollo CZ remoto."
     },
     "section": "2.2 Directional Transport"
   },
@@ -311,8 +311,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Qui si spiega il fenomeno nominato prima: un atomo in stato di Rydberg altera i livelli energetici dei vicini. Con una sequenza di impulsi laser calibrata, l'eccitazione può passare da un atomo al vicino solo se quest'ultimo è già eccitato — un \"effetto domino\" che fa \"saltare\" l'eccitazione lungo la catena dal qubit di controllo al target.",
-      "it-expert": "Meccanismo di antiblockade/facilitation: uno stato di Rydberg sposta i livelli energetici dei vicini; una sequenza di π-pulse calibrata sfrutta questo shift per uno swap condizionato e direzionale dell'eccitazione tra vicini — effetto \"domino\" che permette hop rapidi lungo la catena ancilla dal control al target."
+      "it-intermediate": "Un atomo nello stato di Rydberg sposta i livelli di energia dei vicini. Con una sequenza di impulsi laser ben calibrata (per esempio impulsi π) l'eccitazione passa da un atomo al vicino in modo coerente e in una sola direzione, ma solo se l'atomo accanto è già eccitato. Ne nasce un effetto domino: una singola eccitazione salta rapidamente lungo la catena di ancilla, dal qubit di controllo fino al target.",
+      "it-expert": "Antiblockade: lo stato Rydberg sposta i livelli dei vicini; π-pulse calibrati scambiano coerentemente e direzionalmente l'eccitazione tra vicini solo in presenza di un'eccitazione adiacente, producendo hop a domino lungo la catena ancilla dal controllo al target."
     },
     "section": "2.2 Directional Transport",
     "recall": [
@@ -343,8 +343,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il DT è veloce (ogni hop è sub-microsecondo, aggirando i limiti meccanici degli AOD) ma richiede un corridoio statico di atomi ancilla preconfigurato. Il paper sfrutta proprio questo compromesso: usare gli AOD una volta per costruire i canali DT veloci, e poi affidarsi al DT per tutto l'entanglement remoto successivo.",
-      "it-expert": "Sintesi del trade-off: DT veloce (hop sub-µs) ma richiede corridoio ancilla statico pre-costruito. Il framework ibrido sfrutta esattamente questa asimmetria: AOD one-shot per costruire i canali, poi DT per tutte le CZ remote successive — è il pattern di design dell'intero paper."
+      "it-intermediate": "Il DT è veloce: ogni salto è guidato da impulsi laser e dura meno di un microsecondo, senza i limiti meccanici degli AOD. Richiede però un corridoio di ancilla fermo e predisposto. Il compilatore sfrutta questo compromesso: usa gli AOD una volta per costruire i canali, poi usa il DT per tutto l'entanglement a distanza.",
+      "it-expert": "Hop sub-µs guidati da laser, senza limiti meccanici, ma con bisogno di un corridoio ancilla statico. Il framework ibrido usa l'AOD una volta per configurare i canali e poi il DT per tutte le CZ remote."
     },
     "section": "2.2 Directional Transport"
   },
@@ -362,8 +362,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Nei processori ad atomi neutri zonati, il ritardo dell'entanglement a lungo raggio non dipende dalla CZ di Rydberg in sé (sub-microsecondo) ma dal lento movimento fisico necessario per portare gli atomi dalla zona di stoccaggio a quella di entanglement (decine-centinaia di microsecondi a viaggio). Proprio come nei circuiti a modello a gate dove le CZ remote si fanno con catene di SWAP, è il routing — non il gate stesso — a diventare il vero collo di bottiglia. Il DT risolve il problema eliminando gran parte del movimento costoso: tiene i qubit fermi e fa propagare una singola eccitazione di Rydberg tramite hop su scala di microsecondi. Una CZ remota mediata da DT si completa in genere in 1-10 microsecondi, con un guadagno di 1-2 ordini di grandezza rispetto al solo AOD, riducendo anche l'esposizione agli errori di idle per carichi di lavoro su larga scala.",
-      "it-expert": "Framing quantitativo: la latenza è dominata dal transport, non dalla CZ di Rydberg (sub-µs). Analogia esplicita con SWAP-based remote CZ nei circuiti gate-model — il routing è il bottleneck, non l'entangling pulse, un parallelo diretto con la letteratura NISQ standard. Il DT elimina il grosso del moto costoso mantenendo i data qubit stazionari e propagando una singola eccitazione via hop µs-scale. Cifra centrale: CZ remota in 1-10 µs, 1-2 ordini di grandezza di speedup, con beneficio aggiuntivo di minore esposizione a errori di idle — rilevante per workload fault-tolerant su larga scala."
+      "it-intermediate": "Nei processori a zone il ritardo dell'entanglement a distanza non dipende dalla CZ, che dura meno di un microsecondo, ma dal movimento tra memoria e zona di entanglement, che costa decine o centinaia di microsecondi per viaggio. Succede lo stesso nei circuiti in cui le CZ remote richiedono lunghe catene di SWAP: è l'instradamento, non la porta, a pesare. Il DT elimina gran parte del movimento: i qubit di dati restano fermi e una sola eccitazione viaggia lungo un canale con salti di circa un microsecondo. Una CZ remota mediata dal DT si completa in 1–10 µs, da 10 a 100 volte più velocemente dei soli AOD, e i qubit restano meno tempo esposti agli errori di attesa.",
+      "it-expert": "La latenza dell'entanglement a lungo raggio è dominata dal moto storage ↔ entanglement (decine o centinaia di µs) e non dalla CZ (sub-µs), come nelle CZ remote SWAP-based del gate model. Il DT mantiene stazionari i data qubit e propaga una singola eccitazione con hop su scala µs: CZ remota in 1–10 µs, 1–2 ordini di grandezza più veloce dell'AOD-only e con minore esposizione all'idle error."
     },
     "section": "3. Motivation"
   },
@@ -381,8 +381,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il trasporto direzionale (DT) non sostituisce le pinzette mobili AOD: i due meccanismi lavorano insieme. Tutte le operazioni di Rydberg avvengono comunque nella zona di entanglement, e un canale DT esiste solo dopo che ancilla e qubit scelti sono stati portati fisicamente sui siti del canale. Quindi l'AOD sposta gli atomi tra le zone e costruisce i canali; il DT, una volta costruito il canale, trasferisce rapidamente l'eccitazione lungo di esso (il blocco successivo spiega come il compilatore sfrutta questa divisione).",
-      "it-expert": "Divisione dei compiti: DT e AOD sono accoppiati, non alternativi. Le operazioni Rydberg restano confinate nella entanglement zone e i canali DT vanno costruiti prima, trasportando ancilla e qubit selezionati sui siti del canale. AOD = movimento zona-a-zona e costruzione dei canali; DT = trasferimento veloce dell'eccitazione lungo il canale già costruito, che rende possibile la CZ remota."
+      "it-intermediate": "Il DT non sostituisce gli AOD: lavorano insieme. Le operazioni di Rydberg avvengono comunque nella zona di entanglement, e un canale DT va prima costruito portando ancilla e qubit scelti sui suoi siti. Gli AOD spostano quindi gli atomi tra le zone e costruiscono i canali; il DT trasferisce rapidamente l'eccitazione lungo il percorso già costruito.",
+      "it-expert": "DT e AOD sono accoppiati: le operazioni Rydberg restano nella entanglement zone e i canali DT vanno costruiti trasportando ancilla e qubit selezionati sui siti. L'AOD esegue moto inter-zona e costruzione dei canali, il DT il trasferimento rapido dell'eccitazione."
     },
     "section": "3. Motivation",
     "recall": [
@@ -413,8 +413,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Conclude la descrizione di come lavorano insieme i due meccanismi. Le pinzette mobili AOD spostano gli atomi tra le zone e li mettono in fila per costruire un canale. Il trasporto direzionale (DT) poi passa velocemente l'eccitazione di Rydberg lungo quel canale già pronto, così una porta CZ può agire tra qubit lontani. Spostare atomi è lento, far correre l'eccitazione è veloce. Il compilatore statico che il paper presenta subito dopo sfrutta questa differenza: concentra gli spostamenti lenti in una fase di preparazione iniziale, così durante l'esecuzione del circuito restano quasi solo i passaggi DT rapidi e gli impulsi di Rydberg locali.",
-      "it-expert": "Completa la divisione dei compiti: una volta che l'AOD ha costruito il canale, il DT esegue il trasferimento rapido dell'eccitazione lungo il percorso. Qui compare per la prima volta il \"compilatore statico DT-aware\" (oggetto della Sez. 4): concentra tutto il trasporto lento nella fase di setup, così che a runtime l'esecuzione sia dominata da hop DT e impulsi Rydberg locali."
+      "it-intermediate": "Il compilatore statico presentato subito dopo organizza questo lavoro congiunto: concentra il trasporto lento in una fase di configurazione iniziale, così che durante il circuito restino quasi solo i salti DT veloci e gli impulsi di Rydberg locali.",
+      "it-expert": "Il compilatore statico DT-aware coordina il flusso AOD + DT concentrando il trasporto lento nella configurazione iniziale, così che l'esecuzione sia dominata da hop DT e impulsi Rydberg locali."
     },
     "section": "3. Motivation"
   },
@@ -432,8 +432,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "In questa sezione gli autori trasformano l'idea della CZ remota via DT in un framework di compilazione concreto per architetture zonate, illustrato in Figura 3.",
-      "it-expert": "Transizione dalla teoria della CZ remota DT-based (Sez. 2-3) a un framework di compilazione concreto per architetture zonate (Fig. 3) — qui inizia la parte tecnica/algoritmica del paper."
+      "it-intermediate": "La sezione trasforma la CZ remota basata sul DT in un framework di compilazione concreto per architetture a zone, mostrato nella Fig. 3.",
+      "it-expert": "Dalla CZ remota DT a un framework di compilazione ibrido per architetture zonate (Fig. 3)."
     },
     "section": "4. Compiler Framework for Hybrid Remote CZ"
   },
@@ -451,8 +451,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Gli autori formalizzano il protocollo DT già descritto (Fig. 2): invece di spostare fisicamente i qubit logici, l'interazione di entanglement è mediata facendo propagare una singola eccitazione di Rydberg lungo una catena di atomi ausiliari, dal qubit di controllo c al target t. Notazione: |0⟩ e |1⟩ sono gli stati base del qubit, |r⟩ è lo stato eccitato di Rydberg usato per il gate. Il protocollo comincia con un impulso locale (\"map-in\") che porta selettivamente lo stato |1⟩ del controllo verso |r⟩.",
-      "it-expert": "Formalizzazione del protocollo (Fig. 2), building on [31]: entanglement mediato da propagazione di una singola eccitazione Rydberg lungo la catena ancilla control→target, non da moto fisico dei qubit logici. Notazione standard: |0⟩,|1⟩ stati hyperfine di base, |r⟩ stato Rydberg per l'entangling. Passo 1: π-pulse locale risonante su |1⟩_c↔|r⟩_c (map-in), selettivo su |1⟩, lascia |0⟩ inalterato."
+      "it-intermediate": "Riprendendo il concetto di DT [31], il paper descrive in generale come ottenere una CZ remota (Fig. 2). I qubit logici non si muovono: l'interazione passa per una singola eccitazione di Rydberg che viaggia lungo una catena di ancilla dal controllo c al target t. |0⟩_c e |1⟩_c sono i due livelli di base (iperfini) del qubit di controllo, |r⟩_c uno stato di Rydberg molto eccitato usato per le porte. Il protocollo inizia con un impulso π locale, detto map-in, risonante con la transizione |1⟩_c ↔ |r⟩_c.",
+      "it-expert": "Formalizzazione della CZ remota DT-based [31] (Fig. 2): un'eccitazione Rydberg singola si propaga sulla catena ancilla da c a t, senza muovere i qubit logici. |0⟩_c, |1⟩_c sono stati iperfini di ground, |r⟩_c lo stato Rydberg; il protocollo inizia con un π-pulse locale di map-in risonante con |1⟩_c ↔ |r⟩_c."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport"
   },
@@ -470,8 +470,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Solo la componente |1⟩ del qubit di controllo viene portata allo stato di Rydberg, mentre |0⟩ resta nello stato fondamentale. Così l'informazione logica resta codificata nelle ampiezze del qubit di controllo, e la presenza o assenza dell'eccitazione di Rydberg funge da semplice \"flag\" binario per il trasporto successivo. Con una frequenza di Rabi rappresentativa di circa 3 MHz, l'impulso π dura circa 0.167 microsecondi.",
-      "it-expert": "Selettività cruciale: solo |1⟩_c va a |r⟩_c, |0⟩_c resta nel ground manifold — l'informazione logica (ampiezze α,β) rimane sul qubit, l'eccitazione Rydberg è solo un flag binario per il trasporto (disaccoppiamento tra informazione e portante fisica). Parametro di lavoro: Ω/π≈3 MHz → t_π≈0.167 µs, primo termine del budget temporale finale (Eq. 1)."
+      "it-intermediate": "L'impulso map-in porta nello stato di Rydberg solo la componente |1⟩_c; |0⟩_c resta nei livelli di base. L'informazione logica resta quindi nelle ampiezze α e β del controllo, mentre la presenza o l'assenza dell'eccitazione fa da segnale binario per il trasporto. Con una frequenza di Rabi Ω/π ≈ 3 MHz, l'impulso π dura t_π ≈ 0,167 µs.",
+      "it-expert": "Solo |1⟩_c va in |r⟩_c: l'informazione resta nelle ampiezze α, β, e l'eccitazione fa da flag binario per il trasporto. Con Ω/π ≈ 3 MHz, t_π ≈ 0,167 µs."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport"
   },
@@ -489,8 +489,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "L'eccitazione di Rydberg viene poi fatta \"viaggiare\" lungo una catena DT di lunghezza L, ripetendo un'operazione di hop tra atomi vicini: un breve cambio di detuning seguito da una coppia di impulsi π che scambiano la popolazione tra due atomi ancilla adiacenti, mentre tutti gli altri restano nello stato fondamentale.",
-      "it-expert": "Meccanismo di hop formalizzato: swap condizionato |r,0⟩↔|0,r⟩ tra ancilla adiacenti via detuning-switch + coppia di π-pulse facilitati, ripetuto L volte lungo la catena (gli altri siti restano in ground state, mantenendo l'eccitazione localizzata a una coppia per volta). T_hop = 2π/Ω̃ + τ_sw combina il tempo di evoluzione Rabi sulla sovrapposizione bright e il tempo di commutazione del detuning — è il termine che, moltiplicato per L, domina il costo variabile del protocollo."
+      "it-intermediate": "L'eccitazione passa poi lungo una catena DT di lunghezza L, con salti ripetuti tra atomi vicini. Ogni salto è un breve cambio di detuning seguito da due impulsi π facilitati che scambiano |r, 0⟩ ↔ |0, r⟩ tra due ancilla adiacenti; tutti gli altri siti restano nello stato di base. La durata di un salto è T_hop = 2π/Ω̃ + τ_sw, dove Ω̃ è la frequenza di Rabi efficace e τ_sw il tempo del cambio di detuning.",
+      "it-expert": "L'eccitazione è rilanciata lungo una catena di lunghezza L con hop nearest-neighbor: switch di detuning più due π-pulse facilitati che scambiano |r, 0⟩ ↔ |0, r⟩, con gli altri siti in ground. T_hop = 2π/Ω̃ + τ_sw."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport"
   },
@@ -508,8 +508,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Nel regime di parametri usato dagli autori, ogni hop dura circa 0.256 microsecondi. Dopo L hop, l'eccitazione di Rydberg si trova su un atomo relay accanto al qubit target, mentre sia il controllo che il target restano nello stato fondamentale.",
-      "it-expert": "T_hop≈0.256 µs nel regime operativo scelto (citato da [31]). Dopo L hop l'eccitazione risiede sul relay adiacente al target; punto chiave: sia c che t restano nel ground manifold per tutta la fase di trasporto, nessuna coerenza è esposta sui qubit logici durante il transito."
+      "it-intermediate": "Nei parametri usati, un salto dura circa T_hop ≈ 0,256 µs [31]. Dopo L salti l'eccitazione si trova su un atomo relay accanto al target t, mentre c e t sono ancora nei livelli di base.",
+      "it-expert": "T_hop ≈ 0,256 µs [31]. Dopo L hop l'eccitazione è sul relay adiacente a t, con c e t entrambi nel ground manifold."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport"
   },
@@ -527,8 +527,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "A questo punto si applica un impulso 2π di Rydberg sul target. Se l'atomo relay vicino è nello stato eccitato, l'interazione Rydberg-Rydberg sposta la transizione del target in risonanza di antiblockade: l'evoluzione risultante imprime una fase condizionata, realizzando così una porta CZ tra controllo e target. Con la frequenza di Rabi usata, questo impulso dura circa 0.334 microsecondi, circa il doppio del π-pulse iniziale.",
-      "it-expert": "Step di entangling: 2π-pulse su |1⟩_t↔|r⟩_t; la presenza dell'eccitazione sul relay adiacente sposta la transizione del target in risonanza di antiblockade, e l'evoluzione 2π imprime la fase condizionata → CZ su (c,t) a meno di fasi single-qubit locali (correggibili in software). t_2π≈0.334 µs con Ω/(2π)≈3MHz, circa 2× t_π — secondo termine del budget in Eq. 1."
+      "it-intermediate": "A quel punto si applica un impulso 2π sulla transizione |1⟩_t ↔ |r⟩_t del target. Se il relay vicino è eccitato, l'interazione tra i due stati di Rydberg porta la transizione in risonanza di antiblockade, e l'evoluzione 2π aggiunge una fase alla componente |1⟩_t solo in quel caso: si ottiene una CZ tra c e t, a meno di fasi su singoli qubit. Con Ω/(2π) ≈ 3 MHz l'impulso dura t_2π ≈ 0,334 µs, circa il doppio di t_π.",
+      "it-expert": "2π-pulse su |1⟩_t ↔ |r⟩_t: con il relay in |r⟩ l'interazione Rydberg–Rydberg porta la transizione in risonanza di antiblockade e imprime una fase condizionata su |1⟩_t, realizzando la CZ su (c, t) a meno di fasi single-qubit. t_2π ≈ 0,334 µs, circa 2 t_π."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport",
     "recall": [
@@ -559,8 +559,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Dopo l'entangling, l'eccitazione di Rydberg viene riportata indietro verso il lato del controllo invertendo la sequenza DT, con un costo di tempo pari a L volte la durata di un hop. Un secondo impulso locale riporta poi l'eccitazione allo stato computazionale di base.",
-      "it-expert": "Fase di ritorno: reverse della sequenza DT (altri L·T_hop), poi un secondo π-pulse locale map-out |r⟩_c→|1⟩_c riporta il controllo nel ground manifold — il protocollo è simmetrico andata/ritorno, raddoppiando il contributo degli hop nel budget totale."
+      "it-intermediate": "Dopo la porta l'eccitazione torna verso il controllo ripercorrendo la sequenza DT al contrario, con altri L·T_hop di tempo. Un secondo impulso π locale, |r⟩_c → |1⟩_c, la riporta poi nel livello |1⟩_c del controllo.",
+      "it-expert": "Ritorno: sequenza DT invertita (altri L·T_hop) e secondo π-pulse locale |r⟩_c → |1⟩_c (map-out)."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport"
   },
@@ -578,8 +578,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il qubit di controllo torna così completamente nello stato fondamentale. Le fasi dinamiche residue su controllo e target vengono assorbite con rotazioni Z virtuali via software, con un costo di tempo trascurabile. Mettendo insieme tutti i contributi si ottiene la durata totale di una porta CZ remota mediata da DT.",
-      "it-expert": "Fasi dinamiche residue (single-qubit, sia su c che t) assorbite come Z virtuali in software — trucco standard su molte piattaforme a qubit, costo temporale nullo. Prepara il bilancio finale di Eq. 1."
+      "it-intermediate": "Il qubit di controllo torna così interamente nei livelli di base. Le fasi residue su c e t si correggono con rotazioni Z virtuali, applicate via software senza costo di tempo. Sommando i contributi si ottiene la durata totale della CZ remota.",
+      "it-expert": "Il controllo torna nel ground manifold; le fasi dinamiche residue su c e t sono assorbite in Z virtuali software, a costo temporale nullo."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport"
   },
@@ -597,8 +597,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Sommando tutti i contributi si ottiene: T_CZ ≈ 2·t_π + 2·L·T_hop + t_2π ≈ 0.667 microsecondi + 0.512·L microsecondi (Equazione 1). Il punto chiave: il costo dell'entanglement remoto cresce linearmente con il numero di hop veloci (cioè con la distanza L), non con un lento movimento meccanico — allineando l'implementazione fisica della CZ remota con le scale temporali rapide dei gate di Rydberg nativi.",
-      "it-expert": "Eq. 1: T_CZ ≈ 2t_π + 2L·T_hop + t_2π ≈ 0.667 µs + 0.512L µs — termine costante (map-in/out + entangling pulse) più termine lineare in L (andata+ritorno degli hop). Risultato strutturale: scalabilità lineare in L, in scala µs anziché AOD — il modello di costo che alimenterà direttamente le decisioni di scheduling/placement del compilatore in Sez. 4.2-4.3 (minimizzare L effettivo, non solo il conteggio di operazioni)."
+      "it-intermediate": "La durata totale è T_CZ ≈ 2t_π + 2L·T_hop + t_2π ≈ 0,667 µs + 0,512·L µs (Eq. 1): una parte fissa per gli impulsi più una parte che cresce linearmente con la lunghezza L del canale. Il costo della CZ remota dipende quindi dal numero di salti veloci, non da un lento movimento meccanico, ed è sulla stessa scala dei tempi delle porte di Rydberg.",
+      "it-expert": "Eq. (1): T_CZ ≈ 2t_π + 2L·T_hop + t_2π ≈ 0,667 µs + 0,512 L µs, lineare nel numero di hop e non nel moto meccanico; è il modello di costo usato dal compilatore."
     },
     "section": "4.1 General Theory of Remote CZ by Directional Transport",
     "notebookSuggestion": "La formula (1) per T_CZ in funzione di L (lunghezza della catena di trasporto) si presta bene a un notebook interattivo per esplorare il trade-off distanza/latenza.",
@@ -630,8 +630,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Tutte le porte CZ logiche vengono realizzate tramite la CZ remota via DT, eliminando quasi tutto lo shuttling ripetuto tra zona di stoccaggio ed entanglement. Il compilatore fa un solo passo di configurazione assistito da AOD per posizionare i qubit su canali DT predefiniti dentro la zona di entanglement; una volta stabilita questa topologia, l'entanglement si ottiene instradando le eccitazioni DT lungo i canali, riducendo il tempo totale di esecuzione.",
-      "it-expert": "Design centrale della Sez. 4.2: tutte le CZ logiche passano per DT-based remote CZ, eliminando la ripetizione di shuttling storage↔entanglement. Un solo step di configurazione AOD-assisted piazza i qubit su canali DT predefiniti; dopo, l'entanglement è puro routing di eccitazioni lungo canali già pronti — la topologia è \"one-shot\", non ricostruita per ogni stage."
+      "it-intermediate": "Nel compilatore statico tutte le CZ logiche usano la CZ remota via DT, così sparisce quasi tutto il viavai tra memoria e zona di entanglement. Un solo passo di configurazione con gli AOD mette i qubit su un insieme di canali DT predefiniti dentro la zona di entanglement; poi l'entanglement si ottiene instradando eccitazioni lungo i canali, e il tempo totale si riduce.",
+      "it-expert": "Compilatore statico: tutte le CZ logiche via CZ remota DT. Un solo step di configurazione AOD piazza i qubit su canali DT predefiniti nella entanglement zone; dopo, l'entanglement è routing di eccitazioni lungo i canali."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ",
     "recall": [
@@ -662,8 +662,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il compilatore condivide alcuni elementi algoritmici con compilatori zonati precedenti come ZAC e ZAP (modellazione esplicita del moto AOD, vettori di movimento, scheduling parallelo basato su insiemi indipendenti massimali). Come ZAP, supporta riconfigurazioni AOD su larga scala per dispositivi FPQA. La differenza chiave: ZAC e ZAP ripartizionano ripetutamente i qubit e pianificano più round di shuttling zona-a-zona per ogni \"stage\" di Rydberg, mentre questo compilatore mantiene una topologia DT sostanzialmente statica ed esegue i gate nell'ordine temporale prodotto dallo scheduler logico. La CZ remota via DT gestisce tutte le interazioni non locali, quindi ogni ulteriore movimento si limita ad aggiustamenti locali dentro la zona di entanglement, con il grosso del costo di trasporto assorbito in anticipo.",
-      "it-expert": "Posizionamento rispetto allo stato dell'arte: elementi condivisi con ZAC [13] e ZAP [9] — modellazione esplicita del moto AOD, movement vector, scheduling MIS-based. Come ZAP, supporta riconfigurazione AOD su larga scala per FPQA. Differenza architetturale cruciale: ZAC/ZAP ripartizionano e ri-schedulano lo shuttling ad ogni \"stage\" Rydberg (costo ricorrente); qui la topologia DT è sostanzialmente statica e i gate seguono l'ordine dello scheduler logico direttamente. Le interazioni non-locali sono tutte assorbite da DT, lasciando solo raffinamenti locali dentro l'entanglement zone — il costo di trasporto bulk è pagato una volta sola, upfront, non per stage."
+      "it-intermediate": "Il compilatore ha elementi in comune con compilatori a zone precedenti come ZAC [13] e ZAP [9]: descrive esplicitamente i movimenti AOD, usa vettori di spostamento e organizza in parallelo i riarrangiamenti con insiemi indipendenti massimali. Come ZAP, gestisce grandi riconfigurazioni AOD su dispositivi FPQA (array di atomi neutri programmabili sul campo). ZAC e ZAP però ridividono ripetutamente i qubit e pianificano più giri di spostamenti tra zone per ogni stadio Rydberg. Qui la topologia DT resta quasi fissa e le porte seguono l'ordine dello scheduler logico: le interazioni non locali le fa il DT, e gli spostamenti restanti sono piccoli ritocchi nella zona di entanglement, con il grosso del trasporto pagato all'inizio.",
+      "it-expert": "Elementi condivisi con ZAC [13] e ZAP [9]: modellazione esplicita del moto AOD, movement vector, scheduling MIS. Come ZAP supporta riconfigurazione AOD su larga scala per FPQA. A differenza di ZAC e ZAP, che ripartizionano e rischedulano lo shuttling a ogni stage Rydberg, qui la topologia DT è essenzialmente statica e i gate seguono l'ordine logico; il DT copre le interazioni non locali e il moto residuo è limitato a raffinamenti locali, con il costo di trasporto pagato upfront."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
   },
@@ -681,8 +681,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Ogni canale DT è realizzato come una catena unidimensionale di atomi ancilla \"volanti\", un concetto ripreso da compilatori FPQA come Q-Pilot: atomi mobili intrappolati con AOD che fungono da risorse di instradamento temporanee, create, posizionate e riciclate all'occorrenza. Gli autori assegnano prima un punteggio di priorità a ogni qubit, basato su quanto presto e spesso compare nel circuito; i qubit con priorità più alta vengono posizionati meglio. La griglia hardware (SLM) viene poi ritagliata in modo adattivo, sia nella zona di stoccaggio sia in quella di entanglement, rispettando vincoli fisici del layout.",
-      "it-expert": "Meccanismo di flying ancilla per i canali DT, ripreso concettualmente da Q-Pilot [29] (risorse di routing AOD create/posizionate/riciclate on demand). Placement algoritmico: punteggio di priorità Pri(q) calcolato pesando ogni gate per 1/(p+1) sul tempo logico p e sommando sui qubit partecipanti — dà priorità a qubit coinvolti presto e spesso. Griglia SLM ritagliata adattivamente (storage dimensionata sul numero di qubit; entanglement derivata dalla storage-region per il parallelismo desiderato), con vincoli hardware espliciti (es. colonne con x mod 12 = 4) — parametri coerenti coi vincoli geometrici già visti in Fig. 2(c)."
+      "it-intermediate": "Ogni canale DT è una fila di ancilla \"volanti\", atomi tenuti da pinzette AOD che, come nei compilatori FPQA tipo Q-Pilot [29], si creano, posizionano e riciclano quando servono, senza spostare i qubit di dati. Il posizionamento inizia assegnando a ogni qubit una priorità Pri(q): scorrendo il circuito nell'ordine temporale, ogni porta allo strato p aggiunge un peso 1/(p + 1) ai suoi qubit, quindi chi compare presto e spesso ha priorità più alta. La griglia di trappole fisse (SLM) viene poi ritagliata: nella memoria si allarga finché ci stanno tutti i qubit, nella zona di entanglement si dimensiona per il parallelismo voluto. I qubit nella zona di entanglement possono stare solo su alcune colonne (per esempio quelle con x mod 12 = 4), a partire da una prima riga utile ent_first_row_y. I vincoli geometrici sono quelli della Fig. 2(c).",
+      "it-expert": "Canali DT come catene 1D di flying ancilla, come in Q-Pilot [29]. Placement: priorità Pri(q) sommando pesi 1/(p + 1) sui qubit di ogni gate allo strato p, quindi più alta per qubit usati presto e spesso. Griglia SLM ritagliata adattivamente in storage ed entanglement zone; siti di entanglement limitati a colonne fissate (per esempio x mod 12 = 4) a partire da ent_first_row_y; vincoli geometrici come in Fig. 2(c)."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
   },
@@ -700,8 +700,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 3 (flowchart del compilatore dinamico) seguita da altri vincoli hardware concreti: separazioni tipiche tra atomi nella zona di entanglement (4-8 micrometri), spaziatura nella zona di stoccaggio (6 micrometri), e gap tra zone (10 micrometri).",
-      "it-expert": "Fig. 3 (flowchart del compilatore dinamico) + parametri hardware concreti: separazioni entanglement-zone 4-8 µm, storage-zone spacing 6 µm, gap inter-zona 10 µm — stessi ordini di grandezza già visti in Fig. 2(c), qui riproposti come vincoli operativi per l'algoritmo di placement."
+      "it-intermediate": "La Figura 3 è lo schema a blocchi del compilatore dinamico. Sotto la figura il testo completa i vincoli hardware che fissano la disposizione fisica: distanze tipiche tra atomi nella zona di entanglement di 4–8 µm, passo di 6 µm nella zona di memoria e 10 µm tra le zone.",
+      "it-expert": "Fig. 3: flowchart del compilatore dinamico. Vincoli di layout: separazioni di 4–8 µm nella entanglement zone, 6 µm in storage, 10 µm tra zone."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
   },
@@ -719,8 +719,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "A partire dai siti candidati vicino alla prima riga utile, si scelgono tante posizioni target nella zona di entanglement quanti sono i qubit, assegnandole in ordine di priorità: i qubit più importanti ottengono le coordinate migliori. Le posizioni di stoccaggio iniziali sono scelte per minimizzare un costo che penalizza soprattutto il disallineamento di colonna, riducendo distanza stoccaggio-entanglement e rischio di conflitti. A differenza del piazzamento \"reuse-aware\" di ZAC (ricalcolato più volte durante l'esecuzione), qui il piazzamento si calcola una sola volta, su misura per una topologia DT statica valida per tutto il circuito. Segue la configurazione dei canali DT: ogni colonna di qubit viene allineata a un canale statico con una mappa di pairing precalcolata, per garantire che ogni qubit possa raggiungere ogni altro tramite atomi relay lungo almeno un percorso DT.",
-      "it-expert": "Placement algoritmico dettagliato: target site assignment greedy in ordine di Pri(q); costo column-dominant (penalizza mismatch di colonna, termini secondari per allineamento di riga e vicinanza alla prima entangling row) — riduce distanza storage↔entanglement e conflitti di routing. Differenza esplicita da ZAC: il reuse-aware placement di ZAC è ricomputato per finestre di entangling multiple; qui il placement è one-shot, tailored su una topologia DT statica per l'intero circuito. Configurazione canali: allineamento colonna↔canale DT statico, pairing map simmetrica precalcolata per garantire raggiungibilità universale via almeno un percorso DT."
+      "it-intermediate": "Tra i siti a partire da quella prima riga utile si scelgono tante posizioni quanti sono i qubit, opportunamente distanziate, e le si ordina per coordinata. I qubit, in ordine di priorità, prendono uno alla volta il miglior sito libero, così i qubit più importanti ottengono le posizioni migliori. Le posizioni iniziali in memoria si scelgono minimizzando un costo che penalizza soprattutto il cambio di colonna e, in secondo luogo, premia l'allineamento di riga e la vicinanza alla prima riga di entanglement: si riducono le distanze da percorrere e i conflitti, e i qubit importanti finiscono in testa ai loro canali. A differenza di ZAC, che ricalcola il posizionamento attorno a più finestre di entanglement per riusare i qubit, qui il posizionamento si calcola una volta prima dell'esecuzione, per una topologia DT che resterà la stessa. Poi si configurano i canali: ogni colonna di qubit viene allineata a un canale DT fisso, che fornisce i siti per gli impulsi 2π e collega i qubit tra loro. Una mappa di accoppiamento simmetrica, calcolata in anticipo, garantisce che ogni qubit possa raggiungere ogni altro lungo almeno un percorso DT. Nella memoria si escludono i siti già occupati e si usa lo stesso costo per scegliere da dove far partire i canali: così i canali vengono prenotati in anticipo nella zona di entanglement, insieme agli spostamenti necessari per riempirli.",
+      "it-expert": "Dai siti candidati a partire da ent_first_row_y si scelgono tante posizioni quanti i qubit, assegnate greedy in ordine di Pri(q). Le posizioni iniziali in storage minimizzano un costo column-dominant (mismatch di colonna, poi allineamento di riga e vicinanza alla prima riga di entanglement), riducendo distanze e conflitti. Diversamente dal placement reuse-aware di ZAC, il placement è calcolato una volta per una topologia DT statica. Configurazione dei canali: ogni colonna è allineata a un canale DT statico, con pairing map simmetrica precalcolata che garantisce raggiungibilità universale; in storage si escludono i siti occupati e si riusa il costo column-oriented, pre-allocando i canali e i relativi move vector."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
   },
@@ -738,8 +738,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il paragrafo conclude la preparazione dei canali DT e descrive come il compilatore sposta gli atomi. I canali vengono collocati in anticipo nella zona di entanglement, in posizioni libere scelte con lo stesso modello di costo usato per piazzare i qubit. Così si possono riempire durante la configurazione iniziale senza ostacolare il movimento dei qubit. A differenza di ZAP, che ricalcola le posizioni intermedie con simulated annealing per ogni segmento del circuito, qui la disposizione dei canali si calcola una volta sola e resta fissa per tutta l'esecuzione.\n\nPrima di qualunque porta a due qubit il compilatore sposta tutti gli atomi verso la disposizione di partenza. Per farlo traduce la differenza tra la posizione attuale e quella desiderata in comandi hardware: attivare una trappola mobile, spostarla o parcheggiarla, disattivarla. Costruisce poi un grafo dei conflitti, in cui due spostamenti sono collegati se causerebbero una collisione o competerebbero per la stessa trappola AOD. A ogni passo sceglie, con un metodo greedy, il più grande insieme di spostamenti senza conflitti (un insieme indipendente massimale), che si possono eseguire in parallelo. Quando questo non basta, usa una sequenza a più fasi in cui alcuni qubit vengono parcheggiati temporaneamente su righe SLM ausiliarie: così non ci sono collisioni e l'hardware non resta bloccato.",
-      "it-expert": "A differenza del simulated-annealing ricalcolato di ZAP per ogni segmento, qui la configurazione dei canali DT è calcolata una volta e trattata come risorsa di routing statica. Fase di bulk migration pre-runtime: router traduce il delta placement→target in primitive (activate/move-park/deactivate); conflict graph su qubit-move e DT-channel-move; scheduling greedy MIS massimizza il parallelismo AOD per round. Fallback esplicito a sequenza multi-stage (Activate→Park→BigMove→Park→Deactivate) quando il MIS single-pass non basta — garantisce assenza di collisioni/deadlock a livello hardware."
+      "it-intermediate": "I canali si riempiono durante la configurazione iniziale senza intralciare il movimento dei qubit. ZAP ricalcola posizioni intermedie con simulated annealing per ogni segmento del circuito; qui invece la configurazione dei canali si calcola una volta e resta una risorsa fissa per tutta l'esecuzione. Prima di qualunque porta a due qubit, il compilatore porta tutti gli atomi nella disposizione di partenza. Il router traduce la differenza tra posizioni attuali e desiderate in comandi hardware: attivare una trappola mobile, spostarla o parcheggiarla, disattivarla. Costruisce un grafo dei conflitti, in cui ogni nodo è uno spostamento e un arco indica due spostamenti che si scontrerebbero o competerebbero per lo stesso canale AOD. A ogni passo sceglie con un metodo greedy un grande insieme di spostamenti senza conflitti (insieme indipendente massimale), da eseguire in parallelo. Se non basta un passo, usa una sequenza a più fasi (attiva, parcheggia, spostamento lungo, parcheggia, disattiva) appoggiando temporaneamente i qubit su righe SLM ausiliarie: niente collisioni e niente blocchi dell'hardware.",
+      "it-expert": "I canali sono popolati in configurazione senza interferire con il moto dei qubit; diversamente dal simulated annealing ricalcolato di ZAP, la configurazione DT è calcolata una volta e trattata come risorsa statica. Bulk migration prima di ogni 2Q gate: il router traduce il delta di mapping in primitive (activate, move/park, deactivate), costruisce un conflict graph su move di qubit e canali (archi per collisioni o contesa AOD) e seleziona a ogni step un MIS greedy di move paralleli. Fallback multi-stage (Activate → Park → BigMove → Park → Deactivate) con parcheggio su righe SLM ausiliarie, senza collisioni né deadlock."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
   },
@@ -757,8 +757,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Dopo la configurazione iniziale, la mappatura dei qubit resta sostanzialmente statica: invece di ripartizionare continuamente i qubit tra stoccaggio ed entanglement, si segue direttamente lo scheduling logico su una topologia DT quasi fissa, usando la CZ remota per tutte le interazioni non locali. Gli autori integrano anche un modello di timing fisico che alimenta un modello di fedeltà, considerando errori dei gate, infedeltà da movimento, cross-talk sui qubit inattivi e decoerenza durante l'inattività — una stima coerente della fedeltà del circuito sotto questo flusso di compilazione.",
-      "it-expert": "Sintesi operativa: post-setup, mapping quasi statico; scheduling logico eseguito direttamente sulla topologia DT fissa, moto residuo limitato ad aggiustamenti locali circuit-specific. Modello di timing fisico (gate latency + AOD motion delay) alimenta un modello di fedeltà che integra errori di gate, infedeltà da movimento, cross-talk su qubit idle e decoerenza da idle time — collega direttamente scelte di scheduling/placement alle metriche di fedeltà riportate in Sez. 5."
+      "it-intermediate": "Dopo la configurazione iniziale la posizione dei qubit cambia poco. Invece di ridividere continuamente i qubit tra memoria e zona di entanglement, il compilatore segue direttamente l'ordine logico del circuito su una topologia DT quasi fissa, con CZ remote per tutte le porte non locali; restano solo piccoli ritocchi nella zona di entanglement. Un modello dei tempi combina la durata delle porte con quella dei movimenti AOD e dà il tempo totale. Questo alimenta un modello di fedeltà che conta errori delle porte, errori dovuti al movimento, crosstalk sui qubit inattivi nella zona di entanglement e perdita di coerenza durante le attese.",
+      "it-expert": "Mapping post-configurazione quasi statico: lo schedule logico è seguito direttamente sulla topologia DT con CZ remote per le porte non locali e solo aggiustamenti locali. Un modello temporale (latenze di gate + ritardi AOD) alimenta il modello di fedeltà con errori di gate, infedeltà da moto, crosstalk sui qubit idle e decoerenza."
     },
     "section": "4.2 Compiler Support for DT-based Remote CZ"
   },
@@ -776,8 +776,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Apre la spiegazione del perché la QFT richiede canali DT dinamici e perché le pinzette mobili AOD restano comunque indispensabili. Il punto di partenza è che i circuiti di tipo QFT e quelli di tipo Ising/QAOA chiedono cose molto diverse alla pianificazione del trasporto degli atomi: il confronto è sviluppato nel blocco successivo.",
-      "it-expert": "Titolo di paragrafo: motivazione per canali dinamici nella QFT + ruolo residuo di AOD. Anticipa il confronto strutturale QFT vs Ising/QAOA sviluppato di seguito."
+      "it-intermediate": "Perché la QFT richiede canali dinamici, e perché gli AOD restano indispensabili: i circuiti tipo QFT e quelli tipo Ising/QAOA chiedono cose molto diverse alla pianificazione del trasporto.",
+      "it-expert": "QFT vs Ising/QAOA: requisiti di trasporto radicalmente diversi, da cui canali dinamici per la QFT e ruolo residuo dell'AOD."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
@@ -795,8 +795,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "La differenza chiave: nella QFT, solo un piccolo insieme di coppie CZ è attivo in ogni stage, e questo insieme cambia lentamente (per un esempio a 10 qubit, lo scheduler genera 31 stage con 24 pattern diversi ma sparsi). Costruire canali DT statici per tutte le possibili interazioni della QFT sarebbe uno spreco enorme. La struttura \"a finestra scorrevole\" della QFT suggerisce invece un approccio dinamico: pochi canali DT vengono rimodellati e riusati stage dopo stage. I circuiti Ising/QAOA, al contrario, riusano ripetutamente lo stesso pattern denso di interazioni, e per questo traggono vantaggio da un design a canali statici.",
-      "it-expert": "Argomento quantitativo per l'approccio dinamico: nella QFT solo poche coppie CZ sono attive per stage e l'insieme evolve lentamente (esempio 10 qubit: 31 stage ASAP, 24 pattern distinti ma sparsi). Pre-provisioning statico di tutte le interazioni QFT possibili sarebbe spreco netto. La struttura sliding-window della QFT motiva canali DT pochi-e-riusati, rimodellati stage-by-stage. Contrasto netto con Ising/QAOA (pattern denso e ripetuto, design statico preferibile) — giustifica perché il paper introduce DUE compilatori (statico in 4.2, dinamico qui) invece di uno solo."
+      "it-intermediate": "Nella QFT in ogni stadio entangling sono attive poche coppie CZ, e cambiano lentamente: in un esempio su 10 qubit lo scheduler ASAP produce 31 stadi con 24 schemi di interazione diversi ma poco popolati. Costruire canali fissi per tutte le interazioni possibili sarebbe uno spreco. La struttura \"a finestra scorrevole\" della QFT suggerisce invece pochi canali DT che cambiano forma e vengono riusati da uno stadio all'altro, coprendo lo schema triangolare delle CZ senza una grande topologia fissa. I circuiti Ising/QAOA, al contrario, ripetono sempre lo stesso schema denso, e per loro conviene il canale fisso.",
+      "it-expert": "QFT: poche coppie CZ attive per stage, che cambiano lentamente (10 qubit: 31 stage ASAP, 24 pattern distinti e sparsi); il provisioning statico sarebbe uno spreco e la struttura a finestra scorrevole motiva pochi canali DT rimodellati e riusati sul pattern triangolare. Ising/QAOA ripetono un pattern denso e favoriscono canali statici."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT",
     "recall": [
@@ -827,8 +827,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Anche con la CZ remota via DT, un po' di trasporto atomico resta necessario: gli AOD servono per (i) caricare i qubit nella zona di entanglement, (ii) concentrare i qubit attivi in una sezione stretta adatta al routing DT, e (iii) riorganizzare ancilla e qubit \"pre-uso\" lungo i percorsi DT che cambiano nel tempo. Trattando AOD e DT come complementari, il design evita di ripartizionare tutto globalmente prima di ogni stage. Segue la descrizione del flusso del compilatore in tre parti: primo, per ogni stage si decide se usare un canale DT o solo AOD locale, classificando ogni coppia come \"DT-eligible\" o no; secondo (Algorithm 1, blocco successivo), per uno stage DT-abilitato si sceglie una \"colonna-ancora\" su una griglia pesata dal costo di trasporto, minimizzando il costo di collegamento agli estremi e costruendo un percorso simile al precedente; terzo, ogni estremo viene collegato con un breve ramo che evita ostacoli, e si costruisce una matrice di costo sugli atomi ancilla disponibili per l'assegnazione finale.",
-      "it-expert": "Trasporto AOD ancora necessario per tre ruoli distinti: (i) caricamento qubit in entanglement zone, (ii) concentrazione dei qubit attivi in cross-section stretta per il routing DT, (iii) repacking di ancilla/pre-use qubit lungo percorsi DT evolventi. Design AOD+DT complementare evita repacking globale ripetuto, confinando il moto AOD ad aggiustamenti locali leggeri. DT-Aware Compiler Flow, tre componenti: (1) DT eligibility & per-stage reuse — decisione per stage basata su persistenza delle coppie CZ, classificazione DT-eligible/direct-AOD, qubit non coinvolti tenuti in storage; (2) anchor-column selection su grid graph pesato (Algorithm 1): candidati da banda-colonna precedente + colonne a densità di endpoint pesata massima, poi shortest-path per la dorsale, vicino agli endpoint e simile al path precedente (continuità temporale, riduce churn); (3) branch construction — path breve endpoint→dorsale evitando ostacoli/mosse verticali costose, poi cost matrix compatta sugli ancilla disponibili per l'assegnazione (continua nel blocco successivo verso l'Hungarian matching)."
+      "it-intermediate": "Anche con la CZ remota servono spostamenti: i qubit stanno in trappole SLM nella zona di memoria, ma le porte di Rydberg si fanno solo nella zona di entanglement. Gli AOD servono a (i) caricare i qubit nella zona di entanglement, (ii) raccogliere i qubit attivi in una fascia stretta adatta al DT, (iii) risistemare ancilla e qubit \"pre-uso\" lungo percorsi DT che cambiano. Il DT poi fa le CZ a distanza senza spostare tutti i qubit. Così non serve un grande riordino globale prima di ogni stadio: gli AOD fanno solo piccoli aggiustamenti degli ancilla che formano i canali.\n\nIl flusso del compilatore ha tre parti. Primo, per ogni stadio decide se usare un canale DT: se alcune coppie CZ si ripetono in stadi vicini costruisce un canale principale (backbone), altrimenti usa solo CZ con AOD locali; le coppie con estremi vicini al canale, o facili da avvicinare, usano il DT, le altre l'AOD, e i qubit non coinvolti restano in memoria. Secondo (Algoritmo 1), sceglie una colonna \"àncora\" su una griglia i cui archi pesano il costo di trasporto AOD, tra la colonna del canale precedente e quelle con più estremi vicini, e costruisce con un cammino minimo un backbone che passa dove gli estremi sono concentrati restando vicino al percorso precedente. Terzo, collega ogni estremo al backbone con un breve ramo che evita ostacoli e spostamenti verticali costosi, e costruisce una matrice dei costi sugli ancilla disponibili, riusati e di riserva, che tiene conto del trasporto AOD, da risolvere come abbinamento a costo minimo.",
+      "it-expert": "Il trasporto resta necessario: qubit in SLM nella storage zone e gate Rydberg solo nella entanglement zone. L'AOD serve a (i) caricare i qubit, (ii) concentrare quelli attivi in una sezione adatta al DT, (iii) riposizionare ancilla e pre-use qubit lungo percorsi DT evolutivi; il DT esegue le CZ a lungo raggio. Flusso: (1) DT eligibility per stage, con backbone se le coppie persistono tra stage adiacenti, classificazione DT/AOD e qubit inattivi in storage; (2) anchor column su griglia pesata dal costo AOD (Algoritmo 1) e backbone per shortest path vicino al precedente; (3) branch endpoint → backbone che evitano ostacoli e mosse verticali, con cost matrix sugli ancilla (riusati e di riserva), risolta come assegnamento a costo minimo."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
@@ -882,8 +882,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Algoritmo 1 (DTChannelPlan), lo pseudocodice che formalizza il procedimento appena descritto per uno stage abilitato al DT: dato l'insieme di coppie CZ, il layout attuale e il canale DT precedente, costruisce la griglia pesata, aggiorna il canale, classifica ogni coppia come DT-eligible o AOD, trova i rami di collegamento, assegna gli atomi ancilla tramite un abbinamento di costo minimo (algoritmo ungherese), e gestisce i casi in cui un collegamento diretto è troppo costoso, ripiegando su un percorso DT a due tratti o sull'AOD diretto.",
-      "it-expert": "Algorithm 1 (DTChannelPlan) formalizza in pseudocodice l'intera pipeline di Sez. 4.3: build grid pesata → update canale rispetto al precedente → classificazione per-coppia DT-eligible/AOD via NearChain/CheapAlign → raccolta branch site → cost matrix su ancilla (riusati + nuovi) → assegnazione via matching ungherese → emissione mosse. Include un fallback esplicito per coppie DT-eligible ma troppo costose/infeasible: prova un DT a due tratti (TwoLegDT), altrimenti retrocede a direct-AOD."
+      "it-intermediate": "L'Algoritmo 1 (DTChannelPlan) scrive in pseudocodice la pianificazione di uno stadio con DT. Costruisce la griglia dal layout attuale e aggiorna il canale precedente. Per ogni coppia CZ: se è già vicina al canale o si allinea a basso costo, la assegna al DT e calcola i rami dai suoi estremi al canale; altrimenti la assegna all'AOD. Raccoglie gli ancilla disponibili (di canale e di riserva dello stadio precedente, più nuovi), costruisce la matrice dei costi verso i siti richiesti, risolve l'abbinamento con l'algoritmo ungherese ed emette gli spostamenti. Infine, per ogni coppia DT troppo costosa o non fattibile, prova un percorso DT a due tratti; se non c'è, la passa all'AOD.",
+      "it-expert": "Algoritmo 1 (DTChannelPlan): build grid, update del canale, classificazione delle coppie (NearChain o CheapAlign → DT con branch per entrambi gli estremi, altrimenti AOD), pool di ancilla (canale e riserva precedenti più nuovi), cost matrix, Hungarian, emissione mosse; fallback TwoLegDT o demotion ad AOD per coppie troppo costose o infeasible."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT",
     "notebookSuggestion": "Algorithm 1 (DTChannelPlan) e' un algoritmo di scheduling/matching passo-passo: ottimo candidato per un notebook che lo esegue su un'istanza giocattolo."
@@ -902,8 +902,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Questo passaggio descrive come il compilatore dinamico per la QFT assegna gli atomi ancilla ai canali DT e cosa fa quando un canale non si può costruire. Per ogni sito del canale calcola un costo che dipende dalla distanza da percorrere e premia il riuso di atomi già vicini. Poi risolve l'abbinamento ancilla–siti con il minimo costo totale, usando l'algoritmo ungherese. Gli spostamenti che ne risultano vengono eseguiti in parallelo dove non entrano in conflitto.\n\nTra uno stadio e il successivo il canale non viene ricostruito da zero: le parti ancora valide restano dove sono e si aggiornano solo quelle in conflitto. Se non esiste un ramo che rispetti i vincoli sia di movimento sia di interazione, il compilatore usa un canale DT più lungo a due tratti, oppure esegue la coppia con il trasporto AOD diretto. In questo modo la struttura dei canali resta stabile anche se, come nella QFT, le coppie che devono interagire cambiano da uno stadio all'altro.\n\nInfine introduce le due risorse con cui si costruisce un canale. Le ancilla \"volanti\" sono atomi su siti AOD che non contengono informazione logica: come nel modello FPQA di Q-Pilot, vengono attivati, usati per mediare la CZ remota e poi riportati nella zona di stoccaggio per essere riusati. L'altra risorsa sono i qubit \"pre-uso\", descritti subito dopo.",
-      "it-expert": "Cost matrix con penalità di distanza e riuso, risolta via matching ungherese; mosse risultanti schedulate in parallelo via routing AOD MIS-based. Meccanismi di robustezza: endpoint rebalancing e cross-stage reuse (solo le sezioni in conflitto vengono aggiornate); fallback esplicito a TwoLegDT o demotion a direct-AOD quando nessun branch è fattibile — mantiene stabile il DT backbone nonostante i pattern QFT che slittano nel tempo. Tassonomia delle risorse fisiche: flying ancilla (modello FPQA di Q-Pilot [29]) vs pre-use qubit (vedi blocco successivo)."
+      "it-intermediate": "Nella matrice i costi crescono con la distanza da percorrere e premiano il riuso di atomi già in posizione; l'abbinamento ancilla–siti a costo minimo si trova con l'algoritmo ungherese, e gli spostamenti risultanti si eseguono in parallelo con lo stesso router a insiemi indipendenti. Tra uno stadio e l'altro il canale non si ricostruisce: le parti invariate restano e si aggiornano solo quelle in conflitto, riequilibrando gli estremi. Se nessun ramo rispetta i vincoli di movimento e di interazione, il compilatore usa un percorso DT più lungo a due tratti o esegue la coppia con l'AOD. Così il backbone resta stabile mentre le interazioni della QFT scorrono. I canali sono fatti di due tipi di risorse: ancilla volanti e qubit pre-uso. Le ancilla volanti seguono il modello FPQA di Q-Pilot [29]: qualunque atomo su un sito AOD che non contiene informazione logica può diventare un ancilla temporaneo, essere usato per una CZ remota e poi tornare in memoria per essere riusato.",
+      "it-expert": "Cost matrix con penalità di distanza e preferenza per il riuso, risolta con l'Hungarian; mosse schedulate in parallelo con routing AOD MIS. Cross-stage reuse con endpoint rebalancing: si aggiornano solo le sezioni in conflitto; senza branch fattibile si usa un TwoLegDT o si declassa a direct-AOD, mantenendo stabile il backbone sotto pattern QFT scorrevoli. Risorse dei canali: flying ancilla (modello FPQA di Q-Pilot [29], atomi AOD senza informazione logica attivati, usati e restituiti alla storage) e pre-use qubit."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
@@ -921,8 +921,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "I qubit \"pre-uso\" sono qubit logici che parteciperanno al calcolo più avanti nel circuito, ma il cui primo gate arriva solo dopo. Prima di essere usati, vengono caricati collettivamente nella zona di entanglement e trattati come nodi di relay lungo il canale DT. Quando il circuito raggiunge il loro primo gate logico programmato, il compilatore li ritira dal canale e li riporta al normale flusso di esecuzione.",
-      "it-expert": "Pre-use qubit: qubit logici con primo utilizzo differito, temporaneamente caricati in entanglement zone e usati come nodi di relay lungo il canale DT (segmento \"pre-use\" in Fig. 3) prima del loro primo gate reale — riuso opportunistico della capacità di trasporto altrimenti idle. Al loro primo gate schedulato, vengono ritirati dal canale e reintegrati nel flusso dati standard."
+      "it-intermediate": "I qubit pre-uso sono qubit logici che parteciperanno al calcolo, ma la cui prima porta arriva solo più avanti nel circuito. Prima di allora vengono caricati insieme nella zona di entanglement e usati come relay lungo il canale DT (segmento \"pre-use\" in Fig. 3). Quando arriva la loro prima porta, il compilatore li toglie dal canale e li riporta al normale ruolo di qubit di dati.",
+      "it-expert": "Pre-use qubit: qubit logici con primo gate differito, caricati collettivamente nella entanglement zone come relay (segmento pre-use in Fig. 3) e ritirati dal canale al loro primo gate."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
@@ -940,8 +940,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Le ancilla \"volanti\" (atomi temporanei portati dalle pinzette AOD) hanno due ruoli. Le ancilla di canale occupano il canale DT attivo durante uno stadio con porte a due qubit: sono i siti lungo cui viaggia l'eccitazione di Rydberg. Le ancilla di riserva restano inattive, ma sono parcheggiate dove l'AOD può aggiungerle al canale con poco movimento. Così, quando i qubit attivi cambiano e il canale va allungato, accorciato o deviato, ci sono già siti di relay pronti all'uso (la fine della frase è in fondo alla pagina successiva, sotto la Fig. 6).",
-      "it-expert": "Sotto-tassonomia dei flying ancilla: channel ancilla (occupano attivamente la dorsale DT dello stage corrente) vs reserve ancilla (idle ma posizionati per incorporazione a basso costo AOD) — buffer di siti relay pre-posizionati per assorbire i cambi di topologia tra stage senza mosse AOD costose."
+      "it-intermediate": "Le ancilla volanti hanno due ruoli. Le ancilla di canale occupano il backbone DT attivo in uno stadio a due qubit: sono i siti lungo cui viaggia l'eccitazione. Le ancilla di riserva restano ferme, ma parcheggiate dove l'AOD può aggiungerle al canale con poco movimento: sono una scorta di siti di relay pronti per quando il canale va modificato.",
+      "it-expert": "Flying ancilla: channel ancilla sul backbone attivo, lungo cui si propaga l'eccitazione, e reserve ancilla idle posizionate per un'incorporazione a basso costo AOD, come pool di relay pronti."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT",
     "recall": [
@@ -961,7 +961,7 @@
   {
     "id": "p0097",
     "page": 5,
-    "order": 56,
+    "order": 57,
     "sourceText": "Figure 4: Duration comparison our proposed static compiler and SOTA compilers.",
     "rects": [
       [
@@ -972,15 +972,15 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 4: confronto della durata di esecuzione tra il compilatore statico proposto e i compilatori allo stato dell'arte.",
-      "it-expert": "Fig. 4: duration comparison, compilatore statico proposto vs SOTA (ZAC, ZAP, Enola)."
+      "it-intermediate": "La Figura 4 confronta la durata ottenuta dal compilatore statico proposto con quella dei compilatori allo stato dell'arte.",
+      "it-expert": "Fig. 4: durata, compilatore statico vs SOTA."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
   {
     "id": "p0098",
     "page": 5,
-    "order": 57,
+    "order": 60,
     "sourceText": "across all instances, the static compiler reaches 0.264 fidelity versus0.225 for the best baseline, a 17.6% improvement. At small sizes,our fidelity matches ZAP, but gains increase markedly with systemsize. For mid-range circuits (𝑛=42–50), fidelity rises by 6–11%. Fordeeper circuits (𝑛=98–100), the improvement reaches 1.8–1.9×. Thelargest gains occur for 𝑛=150–200, where our fidelities exceed thebest baseline by factors of 5.9× and 15.9×. Overall, the static DTstrategy mitigates cumulative transport and decoherence errors,yielding substantially higher fidelity for large Ising workloads.Comparison of Static and Dynamic Compilers for QFT Tasks:Fig. 6 compares the static and dynamic DT compilers on QFT cir-cuits. The dynamic compiler consistently achieves higher outputfidelity, improving from 3.61×10−1 to 4.85×10−1 at small scales andfrom 1.67×10−12 to 3.70×10−7 in the most demanding cases. Theseresults indicate that dynamic DT execution significantly enhancesthe robustness of long-range QFT workloads.",
     "rects": [
       [
@@ -991,8 +991,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Risultati numerici: su tutte le istanze, il compilatore statico raggiunge una fedeltà di 0.264 contro 0.225 del miglior baseline (+17.6%). Alle piccole dimensioni la fedeltà è pari a ZAP, ma il vantaggio cresce molto con la dimensione del sistema: per circuiti medi (n=42-50) sale del 6-11%, per circuiti più profondi (n=98-100) arriva a 1.8-1.9 volte, e per le dimensioni maggiori (n=150-200) supera il miglior baseline di 5.9 e 15.9 volte. In sintesi, la strategia DT statica riduce l'accumulo di errori di trasporto e decoerenza, con guadagni di fedeltà molto marcati sui carichi Ising di grandi dimensioni. Segue il confronto tra compilatore statico e dinamico sui compiti QFT (Fig. 6): il compilatore dinamico ottiene sempre una fedeltà più alta, da 0.361 a 0.485 alle piccole scale e da 1.67×10⁻¹² a 3.70×10⁻⁷ nei casi più estremi — un miglioramento enorme per i carichi QFT a lungo raggio.",
-      "it-expert": "Dati quantitativi Fig. 4/6: fedeltà media static compiler 0.264 vs 0.225 best baseline (+17.6%); parità con ZAP a piccola scala, poi crescita marcata con n (6-11% a n=42-50, 1.8-1.9× a n=98-100, 5.9× e 15.9× a n=150-200) — la strategia DT statica mitiga errori cumulativi di trasporto/decoerenza soprattutto a grande scala. Confronto statico vs dinamico su QFT (Fig. 6): il dinamico è sempre superiore in fedeltà, con guadagni che vanno da un fattore ~1.3× a piccola scala fino a ~5 ordini di grandezza (1.67e-12 → 3.70e-7) nei casi estremi — evidenza diretta che l'investimento extra in DT duration del compilatore dinamico (vedi blocco su Fig. 6b) è ampiamente ripagato in robustezza per workload QFT a lungo raggio."
+      "it-intermediate": "In media su tutte le istanze il compilatore statico raggiunge fedeltà 0,264 contro 0,225 del miglior concorrente, il 17,6% in più. Sui circuiti piccoli è alla pari con ZAP, ma il vantaggio cresce con la dimensione: +6–11% per n = 42–50, 1,8–1,9 volte per n = 98–100, 5,9 e 15,9 volte per n = 150 e 200. Mantenendo il trasporto basso, il DT statico limita l'accumulo di errori di trasporto e di attesa sui grandi circuiti Ising. Sulla QFT (Fig. 6) il compilatore dinamico dà sempre una fedeltà più alta di quello statico: da 0,361 a 0,485 sui circuiti piccoli, e da 1,67×10⁻¹² a 3,70×10⁻⁷ nei casi più difficili.",
+      "it-expert": "Fedeltà media 0,264 contro 0,225 del miglior baseline (+17,6%): parità con ZAP a piccola scala, poi +6–11% (n = 42–50), 1,8–1,9× (n = 98–100), 5,9× e 15,9× (n = 150–200), per la riduzione degli errori cumulativi di trasporto e decoerenza. QFT (Fig. 6): il dinamico supera sempre lo statico, da 0,361 a 0,485 a piccola scala e da 1,67×10⁻¹² a 3,70×10⁻⁷ nei casi più difficili."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT",
     "recall": [
@@ -1023,15 +1023,15 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 5: confronto di fedeltà tra il compilatore statico proposto e i compilatori SOTA su circuiti Ising di diverse dimensioni.",
-      "it-expert": "Fig. 5: fidelity comparison, static compiler vs SOTA su circuiti Ising a scala variabile."
+      "it-intermediate": "La Figura 5 confronta la fedeltà del compilatore statico con quella dei compilatori allo stato dell'arte su circuiti Ising di diverse dimensioni.",
+      "it-expert": "Fig. 5: fedeltà, compilatore statico vs SOTA su circuiti Ising di diversa dimensione."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
   {
     "id": "p0134",
     "page": 5,
-    "order": 59,
+    "order": 61,
     "sourceText": "Fig. 6(b) shows the DT-channel duration. Both compilers providelarge reductions over Enola, ZAC, and ZAP. At 𝑛=10, the staticcompiler lowers the duration to 2.45 × 103, while the dynamic com-piler maintains a still-low 7.19 × 103, well below prior methods. At𝑛=200, the static and dynamic durations (9.26 × 104 and 2.36 × 105,respectively) remain substantially smaller than those of ZAC andZAP. Relative to the static baseline, the dynamic compiler acceptsa moderate increase in DT duration in exchange for a substantialfidelity gain. The tradeoff is clear, the static compiler is optimizedfor minimal DT duration, whereas the dynamic compiler spendsslightly more DT time to utilize DT channels more effectively, de-livering higher-fidelity QFT execution while still achieving largeduration reductions compared with existing compilers.",
     "rects": [
       [
@@ -1042,15 +1042,15 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "La Figura 6(b) mostra la durata del canale DT: entrambi i compilatori (statico e dinamico) riducono molto i tempi rispetto a Enola, ZAC e ZAP. A n=10, lo statico scende a 2450 (unità di tempo) e il dinamico a 7190, comunque ben al di sotto dei metodi precedenti; a n=200 restano entrambi molto più piccoli di ZAC/ZAP. Il compromesso è chiaro: il compilatore statico è ottimizzato per la minima durata DT, mentre quello dinamico spende un po' più tempo DT per sfruttare meglio i canali, ottenendo un'esecuzione QFT a fedeltà più alta pur mantenendo grandi riduzioni di durata rispetto ai compilatori esistenti.",
-      "it-expert": "Fig. 6(b), DT-channel duration: entrambi i compilatori dominano Enola/ZAC/ZAP. A n=10: static 2.45e3 vs dynamic 7.19e3 (comunque entrambi sotto i baseline); a n=200: static 9.26e4 vs dynamic 2.36e5, ancora sostanzialmente inferiori a ZAC/ZAP. Trade-off esplicito quantificato: il dinamico accetta un aumento moderato di DT duration in cambio di un guadagno di fedeltà sostanziale (vedi p0098) — il paper caratterizza così i due compilatori come punti diversi sulla stessa frontiera costo/fedeltà, non come un compilatore strettamente migliore dell'altro."
+      "it-intermediate": "La Fig. 6(b) mostra la durata dei canali DT. Entrambi i compilatori la riducono molto rispetto a Enola, ZAC e ZAP. A n = 10 lo statico arriva a 2,45×10³ e il dinamico a 7,19×10³; a n = 200 a 9,26×10⁴ e 2,36×10⁵, sempre molto meno di ZAC e ZAP. Il dinamico spende quindi un po' più tempo DT dello statico, ma usa meglio i canali e in cambio ottiene una fedeltà molto più alta sulla QFT: lo statico minimizza la durata, il dinamico la bilancia con la fedeltà.",
+      "it-expert": "Fig. 6(b), durata DT: entrambi molto sotto Enola, ZAC e ZAP; n = 10: 2,45×10³ (statico) e 7,19×10³ (dinamico); n = 200: 9,26×10⁴ e 2,36×10⁵. Il dinamico accetta più durata DT in cambio di un guadagno sostanziale di fedeltà QFT."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
   {
     "id": "p0136",
     "page": 5,
-    "order": 60,
+    "order": 56,
     "sourceText": "Figure 6: Our Proposed Static vs Dynamic Compiler: Perfor-mance comparison on different-sized QFT benchmarks.the channel must be extended, shortened, or rerouted around newlyactive qubits.",
     "rects": [
       [
@@ -1061,15 +1061,15 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Il blocco contiene due cose. La didascalia della Figura 6 presenta il confronto tra il compilatore statico e quello dinamico proposti, su benchmark QFT di dimensioni diverse. Sotto la figura c'è la fine di una frase della pagina precedente, sulle ancilla di riserva: servono per i casi in cui, quando cambiano i qubit attivi, il canale DT va allungato, accorciato o fatto passare attorno ai nuovi qubit.",
-      "it-expert": "Fig. 6: static vs dynamic compiler su benchmark QFT di dimensione variabile. Il frammento sotto la figura chiude la frase sulle reserve ancilla (Sez. 4.3): forniscono relay sites pronti quando il canale va esteso, accorciato o reinstradato attorno a qubit appena attivati."
+      "it-intermediate": "Le ancilla di riserva servono quando il canale va allungato, accorciato o fatto passare attorno a qubit appena diventati attivi: questa fine di frase sta sotto la Figura 6, la cui didascalia annuncia il confronto tra compilatore statico e dinamico su benchmark QFT di dimensioni diverse.",
+      "it-expert": "Le reserve ancilla servono quando il canale va esteso, accorciato o reinstradato attorno a qubit appena attivati. Il blocco contiene anche la didascalia della Fig. 6: compilatore statico vs dinamico su benchmark QFT di diversa dimensione."
     },
     "section": "4.3 Customized Dynamic Compiler for QFT"
   },
   {
     "id": "p0138",
     "page": 5,
-    "order": 62,
+    "order": 59,
     "sourceText": "Benchmarks. We evaluate our approach on five families of pa-rameterized quantum circuits: Quantum Fourier Transform (qft),transverse-field Ising (ising), Bernstein–Vazirani (bv), cat-statepreparation (cat), and ripple-carry adder (adder).Baselines. We compare our compiler against three SOTA neutral-atom compilers: ZAC [13], ZAP [9], and Enola [25]. To ensure afair comparison, we adopt the same hardware parameter table andzoned architecture specification as ZAP.Duration Comparision with SOTA Compilers: As shown inFig. 4, our static compiler consistently reduces entangling-stageduration across all benchmark families compared with the best ofEnola, ZAC, and ZAP. Across the Ising, BV, CAT, and adder suites,the minimum improvement observed is about 29% (in the smallestBV instance), while the best cases reach 75–82% reduction for large-scale circuits (𝑛≈150–200). On average, the static compiler deliversa 72–74% reduction in duration—corresponding to roughly 3.8–3.9×speedup—uniformly outperforming all baselines. Importantly, theimprovement grows with circuit size, indicating that the proposedstatic strategy scales favorably as circuits become deeper and wider.Fidelity Comparison with SOTA Compilers: Beyond reducingentangling duration, our static compiler also improves end-to-endfidelity on Ising benchmarks. As shown in Fig. 4, its total fidelityranges from 0.513 at 𝑛=10 to 0.011 at 𝑛=200, whereas the best ofZAC and ZAP ranges from 0.515 down to only 0.00070. Averaged",
     "rects": [
       [
@@ -1080,8 +1080,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Setup sperimentale: valutazione su cinque famiglie di circuiti parametrizzati (QFT, Ising a campo trasverso, Bernstein-Vazirani, preparazione di stati cat, addizionatore ripple-carry), confrontandosi con tre compilatori SOTA per atomi neutri (ZAC, ZAP, Enola), usando la stessa tabella di parametri hardware e la stessa architettura zonata di ZAP per un confronto equo. Risultati sulla durata (Fig. 4): il compilatore statico riduce sempre la durata della fase di entangling rispetto al migliore tra i baseline, con un miglioramento minimo di circa il 29% e massimo del 75-82% sui circuiti grandi; in media riduzione del 72-74% (speedup di circa 3.8-3.9 volte), con il vantaggio che cresce al crescere della dimensione del circuito. Sulla fedeltà (Fig. 4, Ising), la fedeltà totale del compilatore statico va da 0.513 (n=10) a 0.011 (n=200), contro 0.515-0.00070 per il migliore tra ZAC e ZAP.",
-      "it-expert": "Setup: 5 famiglie di benchmark (qft, ising, bv, cat, adder) vs 3 baseline SOTA (ZAC [13], ZAP [9], Enola [25]), stessa hardware parameter table e zoned architecture spec di ZAP per fair comparison. Duration (Fig. 4): riduzione uniforme su tutte le famiglie, minimo ~29% (BV piccola), massimo 75-82% (n≈150-200), media 72-74% (~3.8-3.9× speedup) — scala favorevolmente con la dimensione del circuito. Fidelity (Fig. 4, Ising): static compiler 0.513→0.011 (n=10→200) vs best-of-ZAC/ZAP 0.515→0.00070 — entrambi degradano con n, ma il gap relativo si allarga drammaticamente a grande n."
+      "it-intermediate": "La valutazione usa cinque famiglie di circuiti con parametri: trasformata di Fourier quantistica (qft), modello di Ising in campo trasverso (ising), Bernstein–Vazirani (bv), preparazione di stati cat (cat) e addizionatore ripple-carry (adder). Il confronto è con tre compilatori per atomi neutri: ZAC [13], ZAP [9] ed Enola [25], con gli stessi parametri hardware e la stessa architettura a zone di ZAP. Durata (Fig. 4): il compilatore statico riduce sempre la durata degli stadi di entanglement rispetto al migliore dei tre. Il guadagno minimo è circa 29%, sulla BV più piccola; il massimo 75–82%, sui circuiti grandi (n ≈ 150–200); in media 72–74%, cioè circa 3,8–3,9 volte più veloce, e cresce con la dimensione del circuito. Fedeltà sui circuiti Ising (Fig. 5; il testo rimanda alla Fig. 4): la fedeltà totale va da 0,513 a n = 10 a 0,011 a n = 200, mentre il migliore tra ZAC e ZAP scende da 0,515 a 0,00070.",
+      "it-expert": "Benchmark: qft, ising, bv, cat, adder; baseline ZAC [13], ZAP [9], Enola [25] con i parametri hardware e la spec zonata di ZAP. Durata (Fig. 4): riduzione uniforme rispetto al miglior baseline, da circa 29% (bv piccola) a 75–82% (n ≈ 150–200), media 72–74% (circa 3,8–3,9×), crescente con n. Fedeltà Ising (Fig. 5, citata nel testo come Fig. 4): da 0,513 (n = 10) a 0,011 (n = 200), contro 0,515 → 0,00070 del migliore tra ZAC e ZAP."
     },
     "section": "5. Evaluation"
   },
@@ -1099,8 +1099,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Conclusione: gli autori presentano un framework di compilazione ibrido per CZ remote su sistemi ad atomi neutri zonati, che integra strettamente la configurazione assistita da AOD con l'esecuzione via DT — il primo lavoro a integrare canali DT in architetture zonate, con interazioni a lungo raggio a costo di movimento molto ridotto. Sviluppano sia un compilatore DT statico per carichi generali sia uno dinamico ottimizzato per QFT, coordinati da un allineamento AOD leggero. Sui benchmark testati, il metodo riduce sostanzialmente la latenza di entangling e spesso migliora anche la fedeltà rispetto ai compilatori zonati esistenti — a dimostrazione che combinare AOD e DT è una strada efficace per migliorare le prestazioni nell'era NISQ e scalare la compilazione per atomi neutri.",
-      "it-expert": "Sintesi: primo framework a integrare canali DT in architetture zonate (non solo DT isolato); due compilatori (statico general-purpose, dinamico QFT-optimized) coordinati da AOD alignment leggero. Risultati aggregati: riduzione sostanziale di latenza + miglioramento di fedeltà in molti casi vs SOTA zonati. Framing come contributo pratico per l'era NISQ, con posizionamento esplicito verso la scalabilità futura."
+      "it-intermediate": "Il paper presenta un framework di compilazione ibrido per CZ remote su processori ad atomi neutri a zone, che unisce la configurazione con AOD all'esecuzione con DT. È il primo a integrare canali DT in architetture a zone, ottenendo interazioni a lunga distanza con molto meno movimento. Comprende un compilatore DT statico per circuiti generali e uno dinamico per circuiti tipo QFT, coordinati da piccoli aggiustamenti AOD nella zona di entanglement. Sui benchmark riduce molto la latenza dell'entanglement e spesso migliora anche la fedeltà rispetto ai compilatori a zone esistenti: combinare AOD e DT è una strada pratica per circuiti più complessi.",
+      "it-expert": "Primo framework che integra canali DT in architetture zonate, accoppiando configurazione AOD ed esecuzione DT: compilatore statico general-purpose e dinamico per QFT, coordinati da allineamenti AOD locali. Riduce sostanzialmente la latenza di entangling e spesso migliora la fedeltà rispetto ai compilatori zonati esistenti."
     },
     "section": "6. Conclusion and Outlook"
   },
@@ -1118,8 +1118,8 @@
       ]
     ],
     "explanations": {
-      "it-intermediate": "Ringraziamento a Qi-Yu Liang per discussioni e spunti utili — verosimilmente uno degli autori del lavoro [31] sul trasporto direzionale, citato più volte nel paper.",
-      "it-expert": "Ringraziamento a Qi-Yu Liang (verosimilmente co-autore di [31], il lavoro fondativo sul DT citato ripetutamente nel testo)."
+      "it-intermediate": "Gli autori ringraziano Qi-Yu Liang per discussioni e suggerimenti.",
+      "it-expert": "Ringraziamenti a Qi-Yu Liang."
     },
     "section": "7. Acknowledgment"
   }

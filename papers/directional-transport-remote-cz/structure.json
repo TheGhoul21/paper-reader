@@ -418,7 +418,8 @@
           "paragraphs": [
             "p0064",
             "p0065",
-            "p0066"
+            "p0066",
+            "p0136"
           ],
           "meaning": {
             "it-intermediate": "Flying ancilla e qubit non ancora usati sono risorse fisiche temporanee. Un pre-use qubit smette di fare da relay quando arriva la sua prima operazione logica.",
@@ -457,11 +458,10 @@
           },
           "paragraphs": [
             "p0097",
-            "p0098",
             "p0107",
-            "p0134",
-            "p0136",
-            "p0138"
+            "p0138",
+            "p0098",
+            "p0134"
           ],
           "meaning": {
             "it-intermediate": "I grafici confrontano circuiti compilati sotto il modello hardware adottato. Il canale dinamico può richiedere più tempo DT del canale statico e ottenere comunque una fedeltà migliore.",
