@@ -621,8 +621,8 @@
             "p0100",
             "p0101",
             "p0102",
-            "p0103",
-            "p0104"
+            "p0104",
+            "p0107"
           ],
           "meaning": {
             "it-intermediate": "Il confronto con altri compilatori usa il modello di rumore definito prima. Il ladder combina count/depth contenuti con meno trasferimenti e offset della linea; una griglia più connessa può richiedere più stadi e soffrire maggiormente il crosstalk.",
@@ -640,11 +640,11 @@
             "it-expert": "Quando conviene muovere gli atomi"
           },
           "paragraphs": [
+            "p0103",
+            "p0110",
             "p0105",
             "p0106",
-            "p0107",
             "p0109",
-            "p0110",
             "p0111",
             "p0112"
           ],
@@ -854,7 +854,8 @@
             "p0232",
             "p0233",
             "p0234",
-            "p0236"
+            "p0236",
+            "p0243"
           ],
           "meaning": {
             "it-intermediate": "La tabella separa rotazioni globali, RZ, CZ e CZSWAP. Count totale e tipo di gate raccontano cose diverse; alcune formule sono fit numerici, con approssimazioni indicate per la griglia quadrata.",
@@ -893,7 +894,6 @@
           "paragraphs": [
             "p0241",
             "p0242",
-            "p0243",
             "p0244",
             "p0245",
             "p0246",
