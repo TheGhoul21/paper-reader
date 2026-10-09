@@ -14,13 +14,13 @@
     ],
     "sourceText": "AbstractQuantum computing is quickly evolving from the era of quantum advantage to quantum utility, thereby enabling the formulation and implementation of large-scale, application-driven quantum algorithms. However, existing approaches often incur prohibitive sampling and reconstruction overheads due to their lack of sensitivity to application structure and device heterogeneity. DAScut proposes a Density-and-Structure-aware circuit cutting framework that exploits fidelity-aware circuit to device mapping and isomorphism awareness to reduce execution and reconstruction costs. Experimental results using selected benchmark quantum algorithms demonstrate that DAScut reduces redundant sub-circuit execution by up to 52% for heterogeneous workloads and speeds up execution by about 6 times relative to other scheduling methods. These results highlight DAScut as a scalable and practical step toward simulating sparse quantum circuit executions on classical resources.",
     "explanations": {
-      "it-beginner": "Riassunto del paper: i computer quantistici stanno passando dal dimostrare solo teoricamente di essere più veloci (\"vantaggio quantistico\") a essere realmente utili (\"utilità quantistica\"). Ma eseguire algoritmi grandi spezzandoli in pezzi più piccoli (circuit cutting) costa caro, sia in numero di ripetizioni necessarie sia in calcolo per ricomporre i risultati. DAScut sceglie in modo intelligente su quale dispositivo far girare ogni pezzo di circuito (guardando quanto è affidabile) e riconosce quando due pezzi hanno la stessa struttura per evitare di rieseguirli inutilmente. Nei test, riduce le esecuzioni ridondanti fino al 52% ed è circa 6 volte più veloce di altri metodi di pianificazione."
+      "it-beginner": "I computer quantistici stanno passando dal dimostrare di poter battere i computer normali su problemi di prova (\"vantaggio quantistico\") all'essere utili su problemi veri (\"utilità quantistica\"). I programmi utili però sono grandi, e per eseguirli spesso li si taglia in pezzi più piccoli. I metodi attuali per farlo costano molto: richiedono tantissime ripetizioni e un lungo lavoro al computer normale per rimettere insieme i risultati. DAScut riduce questi costi in due modi: manda ogni pezzo sul processore quantistico dove darà il risultato più affidabile, e riconosce i pezzi che hanno la stessa forma per non eseguirli due volte. Nei test riduce fino al 52% le esecuzioni inutili ed è circa 6 volte più veloce di altri metodi."
     }
   },
   {
     "id": "p0007",
     "page": 0,
-    "order": 7,
+    "order": 8,
     "section": "1 Introduction",
     "rects": [
       [
@@ -32,7 +32,7 @@
     ],
     "sourceText": "Current quantum cloud infrastructures face resource inefficiencies: small algorithms under-utilize available QPU capacity [6–8], while large algorithms experience long queue times due to limited access to high-qubit devices [9]. To mitigate this imbalance, researchers are exploring multiprogramming – concurrent execution of small quantum algorithms on a single QPU [6–8] – and Distributed Quantum Computing (DQC) techniques, such as circuit cutting, to execute large algorithms across multiple smaller NISQ (Noisy Intermediate-Scale Quantum) devices [10–18].",
     "explanations": {
-      "it-beginner": "I data center quantistici di oggi sprecano risorse: gli algoritmi piccoli non sfruttano tutta la capacità del processore quantistico (QPU) disponibile, mentre quelli grandi aspettano in coda a lungo perché ci sono pochi dispositivi con abbastanza qubit. Per risolvere il problema si esplorano due strade: far girare più algoritmi piccoli insieme sullo stesso QPU, oppure \"spezzare\" un algoritmo grande e farlo girare su più dispositivi piccoli collegati (calcolo quantistico distribuito)."
+      "it-beginner": "I servizi che offrono computer quantistici via internet usano male le risorse. I programmi piccoli lasciano inutilizzata gran parte del processore; quelli grandi aspettano a lungo in coda, perché pochi processori hanno abbastanza qubit. Si cercano due soluzioni: far girare più programmi piccoli insieme sullo stesso processore (multiprogrammazione), oppure dividere un programma grande in pezzi da eseguire su più processori piccoli (calcolo quantistico distribuito). I processori attuali sono detti NISQ: hanno pochi qubit e commettono errori."
     },
     "recall": [
       {
@@ -49,7 +49,7 @@
   {
     "id": "p0008",
     "page": 0,
-    "order": 8,
+    "order": 7,
     "section": "1 Introduction",
     "rects": [
       [
@@ -61,7 +61,7 @@
     ],
     "sourceText": "Accelerators like Graphical Processing Units (GPUs) and more recently Quantum Processing Units (QPUs), have driven advancements in fast computation and large-scale data analysis. Their impact spans a wide range of domains, including emerging applications in quantum-enhanced Artificial Intelligence and Deep Learning (AI/DL). High Performance Computing (HPC) environments [1–5] are also leveraging principles like superposition and entanglement in QPUs to progress from demonstrating theoretical speedups (quantum advantage) to achieving practical relevance (quantum utility). Consequently, quantum algorithms of varying scales, from small to large, are currently being researched and developed.",
     "explanations": {
-      "it-beginner": "Contesto generale: schede grafiche (GPU) e più di recente processori quantistici (QPU) hanno spinto in avanti calcolo veloce e analisi di grandi quantità di dati, incluse applicazioni di intelligenza artificiale potenziata dal quantistico. I sistemi di supercalcolo stanno iniziando a sfruttare proprietà quantistiche (sovrapposizione, entanglement) per passare da dimostrazioni teoriche a un'utilità pratica reale."
+      "it-beginner": "Negli ultimi anni nuovi tipi di processori hanno accelerato il calcolo: le schede grafiche (GPU) e, più di recente, i processori quantistici (QPU). Anche i grandi centri di supercalcolo iniziano a usare i processori quantistici, che sfruttano fenomeni come la sovrapposizione e l'entanglement. Per questo oggi si sviluppano programmi quantistici di ogni dimensione, da molto piccoli a molto grandi."
     }
   },
   {
@@ -79,7 +79,7 @@
     ],
     "sourceText": "Existing circuit cutting methods often lead to high reconstruction and classical post-processing overheads. Also, variations in qubit quality, connectivity, and error rates across devices coupled with dispatch of sub-circuits to suboptimal QPUs can drastically affect quantum fidelity, utility, qubit idle time and overall Makespan [6–8]. Current approaches thus face three critical challenges: 1. Cut determination and partition quality, 2. Device spatial heterogeneity and noise, and 3. Resource contention and scheduling inefficiency. Addressing these challenges requires a framework that jointly considers application structure, hardware characteristics, and scheduling constraints when executing circuits in a distributed quantum environment.",
     "explanations": {
-      "it-beginner": "I metodi attuali per tagliare i circuiti comportano costi alti di ricostruzione ed elaborazione classica. Inoltre dispositivi diversi hanno qubit di qualità diversa, connessioni diverse e tassi di errore diversi: se un pezzo di circuito finisce sul dispositivo sbagliato, la qualità del risultato, l'utilità e i tempi peggiorano. I tre problemi principali: 1) come decidere dove tagliare e quanto è buona la suddivisione, 2) le differenze tra dispositivi e il loro rumore, 3) l'inefficienza nel decidere chi esegue cosa e quando."
+      "it-beginner": "Dividere un programma non è gratis. Rimettere insieme i risultati ha alti costi di ricostruzione: molto lavoro al computer normale. In più i processori sono diversi tra loro: qualità dei qubit, collegamenti ed errori cambiano. Se un pezzo finisce sul processore sbagliato, il risultato è meno affidabile e il tempo totale di esecuzione si allunga. Restano quindi tre problemi: decidere dove tagliare, tenere conto delle differenze tra processori e organizzare bene chi esegue cosa e quando. Serve un sistema che consideri tutto questo insieme."
     },
     "recall": [
       {
@@ -107,7 +107,7 @@
     ],
     "sourceText": "This paper proposes an execution framework that tailors scheduling and execution to the quantum circuit structure",
     "explanations": {
-      "it-beginner": "Riassunto in una frase: questo paper propone un sistema che adatta la pianificazione e l'esecuzione alla struttura specifica del circuito quantistico."
+      "it-beginner": "La proposta del paper è un sistema che organizza l'esecuzione di un programma quantistico in base alla sua forma e alle caratteristiche delle macchine disponibili."
     }
   },
   {
@@ -125,7 +125,7 @@
     ],
     "sourceText": "and spatiotemporal characteristics of gate-based NISQ devices. Through integrated Python-based circuit partitioning, scheduling, and execution, the framework reduces computational and spatiotemporal overheads while improving Makespan, quantum fidelity, and system throughput. This paper makes the following contributions (Sec. 3):",
     "explanations": {
-      "it-beginner": "Qui si chiude la descrizione dell'idea centrale: il sistema non esegue tutti i circuiti nello stesso modo, ma organizza il lavoro in base alla forma del circuito e alle caratteristiche della macchina, cioè a quanto tempo richiedono le operazioni e a dove si trovano i qubit sul chip. I computer quantistici attuali (detti NISQ) hanno pochi qubit e commettono errori, quindi questo adattamento conta. Il sistema, scritto in Python, fa tre cose: divide il circuito in parti, decide in che ordine e dove eseguirle, e poi le esegue. Secondo gli autori così si spreca meno tempo di calcolo, si riduce il tempo totale di esecuzione, i risultati sono più affidabili e la macchina completa più lavori. Subito dopo il paper elenca i propri contributi."
+      "it-beginner": "Per adattarsi alle macchine, il sistema guarda quanto tempo richiedono le operazioni e come sono disposti i qubit sul chip. È scritto in Python: divide il programma in pezzi, decide dove e quando eseguirli e li esegue. Così si spreca meno calcolo, si riduce il tempo totale di esecuzione, i risultati sono più affidabili e la macchina completa più lavori. Subito dopo il paper elenca i propri contributi."
     }
   },
   {
@@ -143,7 +143,7 @@
     ],
     "sourceText": "●Characterization of pair-wise qubit interactions within quantum circuit structures for informed partitioning decisions. ●Structure-aware sub-circuit reuse via sub-circuit isomorphism analysis, which eliminates redundant executions post-cutting, thereby reducing classical post-processing overhead and improving Makespan and throughput. ●Joint scheduling scheme integrating circuit characteristics, sub-circuit properties, device capabilities, and execution fidelity to optimize execution schedules across heterogeneous NISQ resources.",
     "explanations": {
-      "it-beginner": "I tre contributi principali: 1) un modo per capire come interagiscono le coppie di qubit in un circuito, utile per decidere dove tagliarlo; 2) il riconoscimento di sotto-circuiti strutturalmente identici (isomorfi) per evitare di rieseguire più volte la stessa cosa, risparmiando tempo di calcolo; 3) un sistema di pianificazione che tiene conto insieme di circuito, sotto-circuiti, capacità dei dispositivi e affidabilità dell'esecuzione."
+      "it-beginner": "I contributi sono tre. Primo, guardare quali coppie di qubit interagiscono nel programma, per scegliere tagli migliori. Secondo, riconoscere i pezzi che hanno la stessa forma (pezzi \"isomorfi\") ed eseguirli una sola volta, risparmiando tempo. Terzo, un modo di decidere dove e quando eseguire ogni pezzo che tiene conto insieme del programma, dei pezzi, delle capacità di ogni processore e dell'affidabilità attesa."
     },
     "recall": [
       {
@@ -172,7 +172,7 @@
     ],
     "sourceText": "The rest of the paper is organized as follows: Section 2 highlights the motivations for this investigation while Section 3 describes the proposed approach. Section 4 presents an experimental evaluation of the system and Section 5 reviews related work. In Section 6, conclusions on the research work are drawn.",
     "explanations": {
-      "it-beginner": "Come è organizzato il resto del paper: Sezione 2 spiega le motivazioni, Sezione 3 descrive il metodo proposto, Sezione 4 mostra i risultati sperimentali, Sezione 5 confronta con lavori simili, Sezione 6 tira le conclusioni."
+      "it-beginner": "Il resto del paper: la Sezione 2 spiega perché questo lavoro serve, la 3 descrive il metodo, la 4 mostra gli esperimenti, la 5 lo confronta con altri lavori e la 6 conclude."
     }
   },
   {
@@ -190,7 +190,7 @@
     ],
     "sourceText": "In quantum computing, Quantum Processing Units (QPUs), unlike classical accelerators, exploit quantum-mechanical properties of qubits–superposition, entanglement, and interference–to execute algorithms with potential exponential speedups for specific problem classes. Modern gate-based QPUs[1, 3, 5] differ widely in their physical qubit technologies, connectivity, and native gate sets. Superconducting devices [1, 5] operate on transmon qubits with a basis gate set typically consisting of {rz, sx, x, cx}. In contrast, trapped-ion processors [3] provide all-to-all connectivity and support native Mølmer-Sørensen (MS) entangling gates, while neutral-atom and photonic platforms offer alternative interaction mechanisms and coherence characteristics.",
     "explanations": {
-      "it-beginner": "A differenza degli acceleratori classici, i processori quantistici (QPU) sfruttano proprietà quantistiche dei qubit (sovrapposizione, entanglement, interferenza) per ottenere in teoria accelerazioni enormi su certi problemi. I QPU moderni sono molto diversi tra loro: quelli superconduttori usano un set base di operazioni {rz, sx, x, cx}, quelli a ioni intrappolati collegano tutti i qubit tra loro e usano un tipo diverso di operazione; esistono anche altre tecnologie (atomi neutri, fotoni) con caratteristiche proprie."
+      "it-beginner": "Un processore quantistico non funziona come una scheda grafica: sfrutta proprietà dei qubit come sovrapposizione, entanglement e interferenza, che su alcuni problemi possono dare accelerazioni enormi. I processori esistenti però sono molto diversi tra loro. Quelli superconduttori hanno un set base di operazioni di sole quattro operazioni native, chiamate rz, sx, x e cx; quelli a ioni intrappolati collegano ogni qubit con tutti gli altri e usano un'altra operazione per far interagire i qubit; atomi neutri e fotoni hanno ancora altre caratteristiche."
     }
   },
   {
@@ -208,7 +208,7 @@
     ],
     "sourceText": "Although quantum algorithms are written in a hardware-agnostic circuit model, each physical device imposes constraints through its coupling graph and basis gate set during execution. To execute quantum circuits on real hardware, qubits must be mapped onto the physical connectivity of a target NISQ device through a multi-stage quantum compilation and execution toolchain. Within the Qiskit framework [19], this workflow encompasses several distinct",
     "explanations": {
-      "it-beginner": "Anche se si scrive un algoritmo quantistico in modo generico, ogni dispositivo reale impone vincoli tramite la sua mappa di collegamenti tra qubit e le operazioni che sa fare nativamente. Per eseguirlo davvero bisogna passare per una catena di compilazione (qui basata su Qiskit) fatta di più fasi."
+      "it-beginner": "Un programma quantistico si scrive senza pensare a una macchina precisa. Ogni processore reale però ha dei limiti: solo alcune coppie di qubit sono collegate, secondo la sua mappa di collegamenti, e sa eseguire solo le sue operazioni native. Per far girare il programma bisogna quindi adattarlo, passando per una catena di strumenti che, nella libreria Qiskit [19], ha diverse fasi."
     }
   },
   {
@@ -226,7 +226,7 @@
     ],
     "sourceText": "phases: circuit construction using abstract gate operations, optional classical simulation via statevector or noise-aware simulators for validation, specification of device-level noise models derived from backend calibration data, transpilation into device-native instructions, execution on physical or simulated backends, and measurement post-processing. Throughout this pipeline, device-specific constraints and noise characteristics are explicitly incorporated via backend configuration files, calibration data derived from continuous device characterization, and hardware-aware optimization passes that account for qubit connectivity, gate fidelities, and coherence times.",
     "explanations": {
-      "it-beginner": "Le fasi della catena di compilazione: si costruisce il circuito con operazioni astratte, si può simularlo classicamente per controllare che sia corretto, si specifica un modello di rumore basato sulle calibrazioni reali del dispositivo, si traduce (\"transpile\") il circuito nelle istruzioni native, si esegue su hardware vero o simulato, e infine si elaborano le misure — tenendo sempre conto di connettività, affidabilità e tempi di 'decadimento' dei qubit."
+      "it-beginner": "Le fasi sono: scrivere il programma con operazioni astratte; facoltativamente simularlo su un computer normale per controllarlo; costruire un modello di rumore della macchina usando le sue misure di calibrazione; tradurre il programma nelle operazioni che la macchina sa fare; eseguirlo, su hardware vero o simulato; elaborare le misure. In ogni fase si tiene conto dei limiti della macchina: quali qubit sono collegati, quanto sono affidabili le operazioni e quanto a lungo i qubit conservano l'informazione."
     }
   },
   {
@@ -244,7 +244,7 @@
     ],
     "sourceText": "Quantum circuit transpilation transforms an abstract, ideal circuit into an equivalent circuit compatible with a target device [20] (Fig. 1). Transpilation typically involves three steps: (1) Gate decomposition: all non-native gates are rewritten into the device's basis gate set. For superconducting devices with basis {rz, sx, x, cx}, arbitrary single-qubit unitaries are synthesized using Euler decompositions, while multi-qubit gates are expressed as compositions of cx and single-qubit rotations. (2) Qubit mapping: logical qubits are assigned to physical qubits with the goal of minimizing error accumulation; and (3) Routing: when two-qubit gates operate on non-adjacent qubits in the device coupling graph G = (V, E), the compiler must insert SWAP operations to establish connectivity. Each SWAP gate, typically decomposed into three cx gates, increases circuit depth and error accumulation (Fig. 1c).",
     "explanations": {
-      "it-beginner": "La \"transpilazione\" trasforma un circuito ideale in uno equivalente compatibile col dispositivo scelto, in tre passi: 1) si riscrivono le operazioni non native usando quelle disponibili; 2) si assegnano i qubit logici del circuito ai qubit fisici cercando di minimizzare gli errori; 3) quando due qubit devono interagire ma non sono fisicamente collegati, si inseriscono operazioni SWAP per \"avvicinarli\" — ma ogni SWAP (che vale tre operazioni CX) allunga il circuito e aggiunge errore."
+      "it-beginner": "La traduzione per la macchina si chiama \"transpilazione\" (Fig. 1) e ha tre passi. Primo, le operazioni non native vengono riscritte con quelle che la macchina conosce. Secondo, ognuno dei qubit logici del programma viene assegnato a un qubit fisico, scegliendo quelli che sbagliano meno. Terzo, se due qubit devono interagire ma sul chip non sono collegati, si aggiungono operazioni SWAP che spostano l'informazione finché non sono vicini. Ogni SWAP equivale a tre operazioni cx: allunga il programma e aggiunge errori (Fig. 1c)."
     },
     "recall": [
       {
@@ -273,7 +273,7 @@
     ],
     "sourceText": "These steps increase circuit depth and compound noise, particularly on sparsely connected devices. Even well-transpiled circuits remain constrained by NISQ device noise. Performance degradation arises from qubit decoherence, routing overhead, and mapping to unreliable physical qubits–effects that can be characterized through device-specific noise models essential for fidelity assessment.",
     "explanations": {
-      "it-beginner": "Questi passaggi allungano il circuito e sommano rumore, specialmente su dispositivi poco connessi. Anche un circuito ben transpilato resta limitato dal rumore tipico dei dispositivi NISQ: perdita di coerenza dei qubit, costi delle operazioni SWAP e uso di qubit fisici poco affidabili."
+      "it-beginner": "Questi passi allungano il programma e accumulano errori, soprattutto su chip con pochi collegamenti. Anche una buona traduzione non elimina gli errori delle macchine NISQ: i qubit perdono l'informazione col tempo, gli SWAP costano e alcuni qubit fisici sono poco affidabili. Questi effetti si descrivono con modelli di errore specifici per ogni macchina, indispensabili per stimare la qualità del risultato."
     }
   },
   {
@@ -291,7 +291,7 @@
     ],
     "sourceText": "Quantum fidelity quantifies how closely a noisy quantum computation approximates its ideal execution. Distribution-based fidelity metrics compare measurement outcome probabilities between ideal (noiseless) and noisy executions. A widely used metric is the Hellinger fidelity [7, 21] in Equation 1:",
     "explanations": {
-      "it-beginner": "La \"fedeltà\" quantistica misura quanto un'esecuzione reale (rumorosa) somiglia a quella ideale (senza rumore), confrontando le probabilità dei risultati misurati nei due casi. Una misura comune è la \"fedeltà di Hellinger\" (Equazione 1)."
+      "it-beginner": "Per misurare quanto un'esecuzione con errori si avvicina a quella ideale si usa la \"fedeltà\". Si esegue il programma senza errori e con errori, e si confrontano le probabilità dei possibili risultati delle misure. Una misura molto usata è la fedeltà di Hellinger [7, 21], data dall'Equazione 1."
     },
     "recall": [
       {
@@ -357,7 +357,7 @@
     "sourceText": "F(Pideal, Qnoise) = √( ∑_i Pideal(i) · Qnoisy(i) )^2  (1)",
     "notebookSuggestion": "Un piccolo notebook interattivo che calcola la fedeltà di Hellinger date due distribuzioni di probabilità di esempio aiuterebbe a visualizzare come varia il valore al variare del rumore.",
     "explanations": {
-      "it-beginner": "Equazione 1, la formula della fedeltà di Hellinger: confronta le probabilità dei risultati misurati nell'esecuzione ideale (Pideal) con quelle dell'esecuzione reale e rumorosa (Qnoisy), sommando su tutti i possibili risultati i. Più le due distribuzioni si assomigliano, più il valore è vicino a 1 (alta fedeltà). Nota: nel PDF questa formula è composta da diversi frammenti di testo/simboli separati (radice, sommatoria, numeratori...); qui sono stati raggruppati in un unico paragrafo cliccabile."
+      "it-beginner": "L'Equazione 1 calcola la fedeltà di Hellinger: per ogni possibile risultato i si moltiplicano la probabilità ideale e quella con errori, si prende la radice e si sommano i valori; il risultato finale è il quadrato di questa somma. Vale 1 quando le due distribuzioni sono identiche e scende quando differiscono."
     }
   },
   {
@@ -375,7 +375,7 @@
     ],
     "sourceText": "where, Pideal and Qnoisy denote the measurement distributions obtained from noiseless and noisy executions, respectively. This measure captures fidelity loss attributable to hardware constraints and noise models and reflects how accurately each hardware preserves quantum information.",
     "explanations": {
-      "it-beginner": "Pideal e Qnoisy sono le distribuzioni di probabilità dei risultati ottenuti rispettivamente senza rumore e con rumore reale. Questa misura cattura quanta fedeltà si perde per via dei limiti hardware, indicando quanto ciascun dispositivo reale preserva davvero l'informazione quantistica."
+      "it-beginner": "P_ideal e Q_noisy sono le probabilità dei risultati senza errori e con errori. La fedeltà mostra quanta qualità si perde per colpa dei limiti e degli errori della macchina, cioè quanto bene ogni processore conserva l'informazione quantistica."
     }
   },
   {
@@ -393,7 +393,7 @@
     ],
     "sourceText": "Fig. 1 Example of quantum circuit transpilation and sources of fidelity Loss",
     "explanations": {
-      "it-beginner": "Didascalia della Figura 1: un esempio di come un circuito viene 'transpilato' (adattato al dispositivo) e da dove arrivano le perdite di fedeltà lungo il processo."
+      "it-beginner": "La Figura 1 mostra un esempio di traduzione di un programma per una macchina e i punti in cui la qualità del risultato peggiora."
     }
   },
   {
@@ -411,7 +411,7 @@
     ],
     "sourceText": "Heterogeneity in coupling graphs and gate fidelity across devices can lead to measurable fidelity gaps for different applications.",
     "explanations": {
-      "it-beginner": "Dispositivi diversi hanno mappe di collegamento e affidabilità delle operazioni diverse, e questo può causare differenze misurabili nella fedeltà a seconda dell'applicazione."
+      "it-beginner": "Poiché i processori hanno collegamenti e affidabilità diversi, lo stesso programma può dare risultati di qualità molto diversa a seconda della macchina."
     }
   },
   {
@@ -429,7 +429,7 @@
     ],
     "sourceText": "Figure 2a,b,c illustrate the fidelity of six (6) selected benchmark quantum circuits (Table 3) from the MQT [22] and Qiskit Circuit Library [19] benchmarks on three (3) simulated IBM backends (FakePrague, 33 qubits; FakeAuckland, 27 qubits; FakeMumbai, 27 qubits). The noisy simulations were performed using Qiskit-Aer-GPU on an NVIDIA A30 GPU, incorporating device-specific noise models and coupling maps. For each device, transpilation was performed with the SABRE layout and routing algorithm. Ideal (noiseless) executions were simulated the same hardware, serving as a reference for Pideal.",
     "explanations": {
-      "it-beginner": "Gli autori misurano la fedeltà di 6 circuiti di riferimento (da due librerie standard) su tre simulazioni di dispositivi IBM reali (FakePrague 33 qubit, FakeAuckland e FakeMumbai 27 qubit). Le simulazioni rumorose girano su GPU usando i modelli di rumore specifici di ogni dispositivo, con l'algoritmo SABRE per decidere layout e instradamento. Le esecuzioni 'ideali' servono come riferimento di paragone."
+      "it-beginner": "Per mostrarlo, la Figura 2 riporta la fedeltà di sei programmi di prova (Tabella 3), presi dalle raccolte MQT [22] e Qiskit [19], eseguiti su tre simulazioni di processori IBM: FakePrague (33 qubit), FakeAuckland e FakeMumbai (27 qubit ciascuno). Le simulazioni girano su una scheda grafica NVIDIA A30 e usano la connettività e i modelli di rumore di ogni processore; la traduzione usa l'algoritmo SABRE. Le esecuzioni senza errori, simulate sulla stessa macchina, servono da riferimento."
     }
   },
   {
@@ -447,7 +447,7 @@
     ],
     "sourceText": "From Fig. 2 the following key observations are made: First, device errors dominate fidelity, with noise and error rates constituting the primary source of degradation. This is particularly observed in Effi_full circuit which is known for its large two-qubit operations. Algorithmic sensitivity also varies as highly entangled circuits such as QAOA, Effi_full, and Random experience greater fidelity loss compared to shallower or more structured circuits like BV. For instance though FakeAuckland and FakeMumbai have similar topologies and capacities(qubits = 27), fidelity for Effi_full (14 qubits) falls to 0.57 on FakeMumbai compared to 0.74 on FakeAuckland. These observations",
     "explanations": {
-      "it-beginner": "Osservazioni principali: 1) il rumore del dispositivo è la causa principale di perdita di fedeltà, specialmente per il circuito 'Effi_full' che usa molte operazioni a due qubit; 2) circuiti molto 'intrecciati' (entangled) come QAOA, Effi_full e Random perdono più fedeltà di circuiti più semplici come BV; 3) anche con topologie e capacità simili (27 qubit), Effi_full ottiene fedeltà 0.57 su FakeMumbai contro 0.74 su FakeAuckland — conta quindi molto anche il dispositivo specifico, non solo il numero di qubit."
+      "it-beginner": "Dalla Figura 2 emergono alcune cose. Gli errori della macchina sono la causa principale del calo di qualità, soprattutto per Effi_full, un programma con molte operazioni a due qubit. Conta anche il tipo di programma: quelli con molto entanglement, come QAOA, Effi_full e Random, perdono più qualità di programmi semplici come BV. E conta la macchina: FakeAuckland e FakeMumbai hanno collegamenti e qubit simili, eppure Effi_full su 14 qubit ha fedeltà 0,74 sulla prima e solo 0,57 sulla seconda."
     },
     "recall": [
       {
@@ -476,7 +476,7 @@
     ],
     "sourceText": "primarily reveal the need to place quantum circuits on suitable devices to ensure fidelity. Also, larger circuits further reduce execution fidelity indicating that to optimize execution fidelity, circuits need to be small in width and depth.",
     "explanations": {
-      "it-beginner": "Queste osservazioni indicano che bisogna scegliere con attenzione su quale dispositivo mettere un circuito per avere buona fedeltà, e che i circuiti più grandi (più larghi o più profondi) perdono fedeltà più velocemente — quindi conviene tenerli piccoli."
+      "it-beginner": "Quindi bisogna scegliere con cura su quale processore eseguire un programma. Inoltre i programmi più grandi, cioè con più qubit o più passi, perdono più qualità: per ottenere risultati affidabili conviene eseguire programmi piccoli."
     }
   },
   {
@@ -494,7 +494,7 @@
     ],
     "sourceText": "Finally, simulations were limited to 14 qubits because noise-aware density-matrix simulation on the FakeAuckland, FakeMumbai, and FakePrague backends consistently resulted in out-of-memory failures beyond this point (Fig. 2), except for sparsely structured BV circuits. Although this limitation arises from classical simulation constraints, it reflects a broader scalability challenge governed by available execution resources [23].",
     "explanations": {
-      "it-beginner": "Le simulazioni si sono fermate a 14 qubit perché oltre questa soglia le simulazioni 'consapevoli del rumore' esaurivano la memoria del computer (tranne per i circuiti BV, più semplici). È un limite dovuto alla simulazione classica, ma riflette un problema più generale di scalabilità legato alle risorse di calcolo disponibili."
+      "it-beginner": "Le simulazioni si fermano a 14 qubit: oltre, simulare gli errori su FakeAuckland, FakeMumbai e FakePrague esauriva la memoria del computer, tranne per i programmi BV, molto semplici. È un limite della simulazione su computer normali, ma rispecchia un problema generale: quanto si può scalare dipende dalle risorse disponibili [23]."
     }
   },
   {
@@ -512,7 +512,7 @@
     ],
     "sourceText": "As an approach in DQC [10], Circuit cutting applies gate cuts or wire cuts to decompose a large circuit into smaller sub-circuits which are executed independently and then classically reconstructed. However, the method incurs (i) a sampling overhead that grows exponentially with the number and type of cuts of the chosen quasi-probability decomposition [12–15] and (ii) classical post-processing overhead from reconstructing sub-circuit observables [16–18] which ultimately impacts on execution time.",
     "explanations": {
-      "it-beginner": "Il \"circuit cutting\" (taglio di circuiti) taglia un circuito grande in pezzi più piccoli che vengono eseguiti separatamente e poi ricombinati via calcolo classico. Il problema è che comporta: 1) un costo di campionamento che cresce esponenzialmente col numero e tipo di tagli usati, e 2) un costo di elaborazione classica per ricostruire i risultati, che allunga i tempi totali."
+      "it-beginner": "Il taglio dei circuiti (circuit cutting) è una tecnica di calcolo distribuito [10]: si tagliano operazioni o collegamenti tra qubit per dividere un programma grande in pezzi più piccoli, che si eseguono separatamente e poi si ricombinano con un computer normale. Ha due costi. Il costo di campionamento, cioè il numero di ripetizioni necessarie, cresce in modo esponenziale con il numero e il tipo di tagli. E la ricostruzione dei risultati richiede molto calcolo, che allunga il tempo totale."
     },
     "recall": [
       {
@@ -541,7 +541,7 @@
     ],
     "sourceText": "Table 1 and Fig. 3 present circuit cutting evaluation using Qiskit's circuit-cutting toolkit [16]. Three (3) 15-qubit benchmarks–Bernstein–Vazirani (BV), EfficientSU2 with circular entanglement (Effi_circ), and EfficientSU2 with full entanglement (Effi_full)–from",
     "explanations": {
-      "it-beginner": "La Tabella 1 e la Figura 3 mostrano una valutazione del taglio di circuiti (con lo strumento ufficiale di Qiskit) su tre circuiti di riferimento da 15 qubit: Bernstein–Vazirani (BV, semplice), EfficientSU2 con entanglement circolare (Effi_circ) ed EfficientSU2 con entanglement completo (Effi_full, il più denso)."
+      "it-beginner": "La Tabella 1 e la Figura 3 misurano questi costi con lo strumento di taglio di Qiskit [16], su tre programmi di prova da 15 qubit: Bernstein–Vazirani (BV), semplice, e due versioni di EfficientSU2, una con entanglement circolare (Effi_circ) e una con entanglement completo (Effi_full), la più densa."
     }
   },
   {
@@ -559,7 +559,7 @@
     ],
     "sourceText": "Fig. 2 Fidelity comparison on 3 noisy backends",
     "explanations": {
-      "it-beginner": "Didascalia della Figura 2: confronto della fedeltà su tre dispositivi rumorosi diversi."
+      "it-beginner": "La Figura 2 confronta la fedeltà dei programmi di prova su tre processori simulati con errori."
     }
   },
   {
@@ -595,7 +595,7 @@
     ],
     "sourceText": "Table 1 Quantum Circuit Cutting Analysis Across Different Device Capacities — Circuit Width / Number of cuts / Sampling Overhead / Reconstruction time (s) / Fidelity — raw values for BV, Effi_circ, Effi_full across widths 2-10",
     "explanations": {
-      "it-beginner": "Tabella 1: confronta, per i tre circuiti di riferimento (BV, Effi_circ, Effi_full) a diverse larghezze, quanti tagli servono, quanto cresce il costo di campionamento, quanto tempo serve per ricostruire i risultati e quale fedeltà finale si ottiene. Nota: l'estrazione automatica del testo da questa tabella del PDF non conserva la struttura a righe/colonne, quindi qui i numeri appaiono come un unico blocco — per leggere i valori con precisione conviene guardare direttamente la tabella nel PDF."
+      "it-beginner": "La Tabella 1 riporta, per BV, Effi_circ ed Effi_full e per diverse dimensioni massime dei pezzi (da 2 a 10 qubit), quanti tagli servono, quante ripetizioni in più richiedono, quanto tempo serve a ricombinare i risultati e quale fedeltà si ottiene. Nel testo estratto i numeri della tabella sono mescolati: per leggerli conviene guardare la tabella nel PDF."
     }
   },
   {
@@ -613,7 +613,7 @@
     ],
     "sourceText": "MQT [22] and the Qiskit Circuit Library [24] were evaluated. These preliminary experiments employed a noiseless simulator with the FakeMelbourne backend topology (14 qubits, limited connectivity) to isolate the effects of circuit structure and device connectivity constraints from hardware noise. The analysis quantifies how limiting the executable circuit width or device capacity constraints affects (i) cut count, (ii) sampling overhead, (iii) reconstruction time, and (iv) observable fidelity (Eq. 1). From Table 1 and Fig. 3, the following were observed:",
     "explanations": {
-      "it-beginner": "Per questo esperimento è stato usato un simulatore senza rumore con la topologia del dispositivo 'FakeMelbourne' (14 qubit, connettività limitata), per isolare l'effetto della struttura del circuito e dei limiti di connessione dal rumore hardware vero e proprio. L'analisi misura come limitare la larghezza eseguibile del circuito influenzi: numero di tagli, costo di campionamento, tempo di ricostruzione e fedeltà finale."
+      "it-beginner": "I programmi vengono da MQT [22] e dalla libreria Qiskit [24]. Queste prove usano un simulatore senza errori con i collegamenti del processore FakeMelbourne (14 qubit, pochi collegamenti), per vedere solo l'effetto della forma del programma e dei collegamenti, senza il rumore. Si misura come la dimensione massima dei pezzi influisce su quattro cose: numero di tagli, ripetizioni in più, tempo di ricombinazione e fedeltà (Eq. 1)."
     }
   },
   {
@@ -631,7 +631,7 @@
     ],
     "sourceText": "●First, cuts decrease as circuit width increases. BV requires no cuts at width ≥8 qubits while Effi_full decreases from 98 cuts (width 2) to 56 (width 8) and 50 (width 10), though some widths yield suboptimal partitions. ●Secondly, the sampling overhead scales exponentially with entanglement: At width 2, overhead equals 5.31×10^5 (BV), 4.30×10^7 (Effi_circ), and 3.28×10^93 for Effi_full. Even at width 10, Effi_full remains at 5.15×10^47, rendering it impractical for sampling cost or cut-minimization strategies. ●Thirdly, reconstruction time correlates with cut count. For instance, BV reconstruction time drops from ∼378 s (width 2) to ∼0.15 s (width ≥8). Effi_circ shows similar trends while Effi_full remains in the multi-thousand-second range due to extreme sampling overhead. ●Fourthly, fidelity improves as cuts decrease. BV fidelity increases from 0.5765 →0.9993 (width 2 →5); Effi_circ fidelity reaches ≈1.0 by width 8. However, Effi_full fidelity remains 0 throughout due to high entanglement causing reconstructed circuits to diverge from the original. Takeaway: Circuit partitioning must be applied judiciously, as cut count rises sharply with decreasing device capacity and increasing global entanglement, driving total runtime exponentially.",
     "explanations": {
-      "it-beginner": "Risultati principali: 1) i tagli necessari diminuiscono all'aumentare della larghezza disponibile (BV non ne richiede più da 8 qubit in su; Effi_full scende da 98 a 50-56 tagli); 2) il costo di campionamento cresce esponenzialmente con quanto è 'intrecciato' il circuito — per Effi_full resta impraticabile anche a larghezza 10; 3) il tempo di ricostruzione segue il numero di tagli: per BV scende da ~378 a ~0.15 secondi, mentre per Effi_full resta nell'ordine delle migliaia di secondi; 4) la fedeltà migliora con meno tagli, tranne per Effi_full che resta a fedeltà zero. Messaggio chiave: bisogna tagliare i circuiti con criterio, perché il numero di tagli necessari esplode rapidamente quando il dispositivo è piccolo o il circuito molto intrecciato."
+      "it-beginner": "I risultati sono quattro. Più grandi possono essere i pezzi, meno tagli servono: BV non ne richiede più da 8 qubit in su, Effi_full scende da 98 tagli (pezzi da 2 qubit) a 56 (8 qubit) e 50 (10 qubit). Il costo di campionamento cresce enormemente con l'entanglement: con pezzi da 2 qubit sono circa 5×10⁵ per BV, 4×10⁷ per Effi_circ e 3×10⁹³ per Effi_full, che resta impraticabile anche a 10 qubit. Il tempo di ricostruzione segue il numero di tagli: per BV scende da circa 378 secondi a 0,15, per Effi_full resta di migliaia di secondi. La fedeltà migliora con meno tagli (BV da 0,58 a 0,999), tranne per Effi_full, che resta a zero. Conclusione: bisogna tagliare con giudizio, perché con processori piccoli e programmi molto intrecciati i tagli, e con loro il tempo, crescono in fretta."
     },
     "recall": [
       {
@@ -660,7 +660,7 @@
     ],
     "sourceText": "Different quantum algorithms generate distinct interaction patterns or entanglement between qubits, which directly influence the cost of partitioning and reconstruction (Section 2.1). To visualize these structural differences, Fig. 4 shows the interaction graphs of representative sparse (BV) and dense circuits(Effi_full). The nodes represent",
     "explanations": {
-      "it-beginner": "Algoritmi quantistici diversi producono schemi diversi di interazione (entanglement) tra i qubit, e questo influenza direttamente quanto costa tagliarli e poi ricostruirli. Per mostrare visivamente queste differenze, la Figura 4 disegna i 'grafi di interazione' di un circuito semplice (BV) e di uno denso (Effi_full): i nodi del grafo rappresentano i qubit."
+      "it-beginner": "Programmi diversi fanno interagire i qubit in modi diversi, e questo decide quanto costa tagliarli e ricombinarli (Sezione 2.1). La Figura 4 lo mostra con i \"grafi di interazione\" di un programma sparso (BV) e di uno denso (Effi_full): ogni nodo è un qubit del programma e ogni collegamento indica due qubit che interagiscono."
     },
     "recall": [
       {
@@ -689,7 +689,7 @@
     ],
     "sourceText": "Fig. 3 Performance scaling analysis across different circuits",
     "explanations": {
-      "it-beginner": "Didascalia della Figura 3: come cambiano le prestazioni (tempi, costi) al variare della larghezza del circuito, per i diversi circuiti testati."
+      "it-beginner": "La Figura 3 mostra come cambiano tagli, ripetizioni, tempi e fedeltà al variare della dimensione massima dei pezzi, per i diversi programmi di prova."
     }
   },
   {
@@ -707,7 +707,7 @@
     ],
     "sourceText": "Fig. 4 Comparison of pair-wise interactions and isomorphism within quantum circuits",
     "explanations": {
-      "it-beginner": "Didascalia della Figura 4: confronto tra le interazioni a coppie di qubit e il riconoscimento di strutture identiche (isomorfismo) nei circuiti quantistici."
+      "it-beginner": "La Figura 4 confronta quali coppie di qubit interagiscono in programmi diversi e mostra pezzi con la stessa forma (isomorfi), che si potrebbero eseguire una volta sola."
     }
   }
 ]
