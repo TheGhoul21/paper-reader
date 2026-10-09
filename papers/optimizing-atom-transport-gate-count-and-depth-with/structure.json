@@ -406,8 +406,8 @@
         {
           "id": "twine-entangling-2",
           "title": {
-            "it-intermediate": "Che cosa costa un CZ mobile",
-            "it-expert": "Che cosa costa un CZ mobile"
+            "it-intermediate": "Che cosa costa una CZ, e lo scambio",
+            "it-expert": "Costo di CZ e CZSWAP su array mobile"
           },
           "paragraphs": [
             "p0047",
@@ -419,11 +419,12 @@
             "p0054",
             "p0055",
             "p0056",
+            "p0060",
             "p0057"
           ],
           "meaning": {
-            "it-intermediate": "Un atomo viene prelevato, avvicinato, usato nel gate e riportato indietro. Big moves e trasferimenti fra trappole sono operazioni distinte. Gli autori assumono CZ fra trappole AOD/SLM e specificano come contare due CZ indipendenti. La figura 3 confronta i circuiti QFT nativi.",
-            "it-expert": "Il modello separa big moves e handoff SLM↔AOD, ammette inter-tweezer CZ e non usa nel caso mobile principale due CZ consecutivi mantenendo gli atomi vicini."
+            "it-intermediate": "Una CZ su un array mobile richiede di avvicinare un atomo all'altro e poi riportarlo indietro: spostamenti lunghi (big move) e passaggi tra trappole mobili e fisse (trasferimenti) sono i costi da contare. Il CZSWAP cambia solo il viaggio di ritorno, così lo scambio dei qubit arriva quasi senza spostamenti in più.",
+            "it-expert": "Il modello separa big move e handoff SLM↔AOD e ammette CZ inter-tweezer. Il CZSWAP modifica solo lo step di ritorno: stessi big move, offset brevi e 4 transfer per il non-crossing AOD."
           },
           "purpose": {
             "it-intermediate": "Rende concreto il costo di trasporto associato ai gate e prepara il motivo per cui CZSWAP può convenire.",
@@ -453,20 +454,19 @@
         {
           "id": "twine-global-control-1",
           "title": {
-            "it-intermediate": "Due vincoli hardware nello stesso passaggio",
-            "it-expert": "Due vincoli hardware nello stesso passaggio"
+            "it-intermediate": "Rotazioni XY solo globali",
+            "it-expert": "Controllo XY globale"
           },
           "paragraphs": [
-            "p0059",
-            "p0060"
+            "p0059"
           ],
           "meaning": {
-            "it-intermediate": "Le rotazioni nel piano XY sono globali e vanno combinate con RZ locali. Il testo completa anche il CZSWAP: dopo il CZ torna alla posizione iniziale l’altro atomo, con piccoli spostamenti e trasferimenti aggiuntivi per rispettare i vincoli AOD.",
-            "it-expert": "Il lowering deve soddisfare controllo XY globale; la continuazione sul CZSWAP esplicita quattro handoff e offset per il non-crossing AOD."
+            "it-intermediate": "Le rotazioni attorno a un asse del piano XY agiscono su tutti gli atomi insieme; solo le rotazioni Z sono locali. Una rotazione arbitraria su un qubit richiede quindi di combinare R_Z locali e rotazioni globali.",
+            "it-expert": "Rotazioni XY solo globali GR_α(θ); la sintesi single-qubit richiede tre strati R_Z locali e due GR."
           },
           "purpose": {
-            "it-intermediate": "Completa il costo dello scambio prima di spiegare come globalizzare le rotazioni del circuito.",
-            "it-expert": "Collega i vincoli di controllo e trasporto ai circuiti nativi successivi."
+            "it-intermediate": "Introduce il secondo vincolo hardware, che determina quante rotazioni globali servono nei circuiti compilati.",
+            "it-expert": "Fissa il modello di addressing usato per globalizzare le rotazioni."
           }
         },
         {

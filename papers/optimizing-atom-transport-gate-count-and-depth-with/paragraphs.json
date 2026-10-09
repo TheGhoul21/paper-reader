@@ -508,8 +508,8 @@
     ],
     "sourceText": "So far we have discussed PTNs in a generic setting,considering the DCNOT as a building block. However,the DCNOT gate is not a native entangling operation onmost available quantum computing platforms. In partic-ular, on neutral-atom devices the native entangling gateis typically the CZ gate, therefore the DCNOT needsto be transpiled. Moreover, many current neutral-atomplatforms do not support local addressing for single-qubitrotations in the XY plane, but can only apply them glob-ally. Therefore, to fully leverage Parity-Twine-based cir-cuit synthesis on NAQCs, it is instructive to follow aco-design approach to optimize PTNs for the underlyinghardware capabilities. To this end, we first briefly reviewdifferent NAQC architectures, with particular emphasison how qubit connectivity is established and, in particu-lar, whether atom shuttling is allowed during computa-tion. We then propose different ways to implement PTNson NAQCs, focusing first on the role of entangling gatesbefore introducing the global rotations. By construction,all these implementations are unitarily equivalent. How-ever, circuit gate counts and depth, as well as the numberand distance of potentially required atom shuttling op-erations, can vary substantially among different physicalimplementations.To identify the optimal compilationstrategy, it is therefore necessary to evaluate them underexperimentally realistic parameters with a comprehensivenoise model.",
     "explanations": {
-      "it-intermediate": "Finora le PTN sono state discusse in astratto, usando la DCNOT come blocco costruttivo. Ma la DCNOT non è un'operazione entangling nativa sulla maggior parte delle piattaforme di calcolo quantistico: sugli atomi neutri la porta nativa è tipicamente la CZ, quindi la DCNOT deve essere tradotta. Inoltre molte piattaforme ad atomi neutri attuali non supportano l'indirizzamento locale per rotazioni a singolo qubit nel piano XY, ma possono applicarle solo globalmente. Per sfruttare pienamente la sintesi di circuiti basata su Parity Twine su questi hardware, è quindi utile seguire un approccio di co-design che ottimizzi le PTN per le capacità hardware sottostanti. Gli autori prima rivedono brevemente le diverse architetture NAQC (in particolare se permettono lo shuttling degli atomi durante il calcolo), poi propongono diversi modi di implementare le PTN su NAQC, partendo dal ruolo delle porte entangling per poi introdurre le rotazioni globali. Per costruzione tutte queste implementazioni sono unitariamente equivalenti, ma conteggio di porte, profondità, e numero/distanza delle operazioni di shuttling possono variare sostanzialmente — da qui la necessità di valutarle con un modello di rumore realistico.",
-      "it-expert": "Due vincoli hardware NAQC motivano il resto della sezione: (1) porta nativa = CZ, non DCNOT → serve transpilazione; (2) rotazioni XY spesso solo globali, non locally-addressable. Approccio: rassegna architetture (statiche vs mobili, III.A) → decomposizioni entangling (III.B) → rotazioni globali (III.C) → modello di fedeltà quantitativo (III.D), dato che le implementazioni sono unitariamente equivalenti ma non equivalenti in costo fisico."
+      "it-intermediate": "Fin qui la DCNOT era un mattone astratto. Sugli atomi neutri, però, la porta entangling nativa è la CZ, e su molte piattaforme le rotazioni nel piano XY si possono applicare solo a tutti gli atomi insieme. La stessa rete Twine va quindi adattata all'hardware. Le versioni che seguono realizzano tutte la stessa unitaria, ma differiscono per numero di porte, profondità e spostamenti di atomi richiesti: per sceglierne una serve un modello di rumore con parametri realistici, che arriva in III.D.",
+      "it-expert": "Due vincoli NAQC guidano la sezione: entangler nativo CZ (la DCNOT va transpilata) e rotazioni XY spesso solo globali. Le implementazioni proposte sono unitariamente equivalenti ma differiscono in gate count, depth e numero/distanza degli shuttle; il confronto richiede quindi un noise model con parametri sperimentali (III.D)."
     },
     "section": "III. Parity Twine on NAQCs"
   },
@@ -527,8 +527,8 @@
     ],
     "sourceText": "Neutral-atom quantum computing architectures canbroadly be distinguished by whether the positions of theatoms remain fixed during computation or can be dy-namically reconfigured.In a static architecture atomsare initially arranged in (almost) arbitrary patterns torealize the desired qubit layout, but remain at their fixed",
     "explanations": {
-      "it-intermediate": "In un'architettura statica le posizioni degli atomi vengono scelte prima del calcolo e poi restano fisse. I gate devono quindi sfruttare le connessioni disponibili tra quelle posizioni. In un'architettura mobile, invece, trasportare gli atomi durante il calcolo permette di cambiare quali coppie possono interagire.",
-      "it-expert": "Distinzione architetturale primaria: static (posizioni fisse post-preparazione) vs mobile (riconfigurabili durante il calcolo) — la dicotomia su cui si fonda l'intera Sez. III."
+      "it-intermediate": "Il primo spartiacque tra architetture ad atomi neutri è se gli atomi possono muoversi durante il calcolo. In un'architettura statica le posizioni si scelgono all'inizio, anche in disposizioni quasi arbitrarie, e poi restano fisse.",
+      "it-expert": "Distinzione di base: architetture statiche, con geometria quasi arbitraria fissata prima del calcolo, e mobili, riconfigurabili durante il calcolo."
     },
     "section": "III.A Neutral-atom architectures"
   },
@@ -546,8 +546,8 @@
     ],
     "sourceText": "positions throughout the computation. Entangling gatesare consequently performed between atoms at fixed po-sitions, and the compilation problem is primarily deter-mined by the available static connectivity and native gateset. In a mobile architecture, by contrast, atoms can betransported during computation. Atom transport can beused to bring atoms into or out of interaction regions,implement native physical SWAP operations, dynami-cally modify the effective qubit connectivity, or to sup-press unwanted interactions and crosstalk between non-addressed qubits. Since atom transport and native gateoperations operate on substantially different timescalesand offer different degrees of parallelization, the tradeoffbetween connectivity and movement constitutes a non-trivial architectural consideration in NAQCs [46, 47].",
     "explanations": {
-      "it-intermediate": "Questo passaggio completa il confronto tra architetture statiche e mobili e spiega che cosa cambia per il compilatore. In un'architettura statica le porte entangling avvengono solo tra atomi che restano nelle loro posizioni: il compilatore deve quindi lavorare con le coppie già vicine e con le porte native disponibili. In un'architettura mobile, invece, gli atomi possono essere spostati durante il calcolo. Lo spostamento serve a portarli dentro o fuori dalle zone in cui interagiscono, a scambiare fisicamente due qubit invece di usare porte SWAP, a cambiare quali coppie possono interagire e a tenere lontani i qubit che non devono essere coinvolti, riducendo il crosstalk. Muovere atomi richiede però tempi diversi da quelli delle porte e si può parallelizzare in modo diverso. Per questo non è ovvio se convenga avere più connettività fissa o più movimento: è il compromesso che il paper vuole quantificare.",
-      "it-expert": "Static: compilazione vincolata solo da connettività fissa + gate set nativo. Mobile: il trasporto abilita SWAP fisici, riconfigurazione dinamica della connettività, soppressione di crosstalk — ma su timescale molto più lenta delle gate operation e con parallelizzazione diversa, da cui il trade-off architetturale connectivity/movement [46,47] che il paper quantifica poi con il modello di fedeltà."
+      "it-intermediate": "Con atomi fermi le porte entangling agiscono solo tra posizioni prefissate, quindi la compilazione dipende dalla connettività disponibile e dalle porte native. Se invece gli atomi si possono trasportare, il movimento diventa uno strumento: porta atomi dentro e fuori dalle zone di interazione, scambia fisicamente due qubit al posto di una porta SWAP, cambia quali coppie sono vicine, allontana i qubit da proteggere dal crosstalk. Spostare atomi è però molto più lento che eseguire porte e si parallelizza in modo diverso: scegliere tra connettività fissa e movimento è un compromesso reale [46, 47].",
+      "it-expert": "Statico: la compilazione è vincolata da connettività fissa e gate set nativo. Mobile: il trasporto realizza SWAP fisici, riconfigura la connettività efficace e sopprime crosstalk sui qubit non indirizzati, ma su timescale e con parallelismo diversi dai gate. Il trade-off connettività/movimento [46, 47] è ciò che il modello di fedeltà deve quantificare."
     },
     "section": "III.A Neutral-atom architectures"
   },
@@ -565,8 +565,8 @@
     ],
     "sourceText": "In this work, we consider neutral-atom platforms thatuse spatial light modulators (SLMs) to define static trappositions and crossed two-dimensional acousto-optic de-flectors (AODs) to provide dynamically movable traps.Atoms can be coherently transferred between AOD-and SLM-generated optical tweezers by adiabatically ex-changing their trapping potentials through coordinatedintensity ramps [48], while preserving the qubit state.This capability can be used to prepare the desired ge-ometry before computation in both static and mobile ar-chitectures. In mobile architectures, it can additionallybe used to dynamically rearrange atoms during compu-tation.",
     "explanations": {
-      "it-intermediate": "In questo lavoro si considerano piattaforme che usano modulatori spaziali di luce (SLM) per definire posizioni di trappola statiche, e deflettori acusto-ottici incrociati bidimensionali (AOD) per fornire trappole mobili. Gli atomi possono essere trasferiti in modo coerente tra pinzette ottiche generate da AOD e da SLM scambiando adiabaticamente i loro potenziali di trappola tramite rampe di intensità coordinate, preservando lo stato del qubit. Questa capacità può servire a preparare la geometria desiderata prima del calcolo (sia in architetture statiche sia mobili) e, nelle architetture mobili, anche a riarrangiare dinamicamente gli atomi durante il calcolo.",
-      "it-expert": "Setup hardware concreto assunto nel paper: SLM (trappole statiche) + AOD incrociati 2D (trappole mobili), con trasferimento coerente SLM↔AOD via rampe di intensità adiabatiche [48] (preserva lo stato del qubit). Questo trasferimento è l'operazione elementare il cui costo (Ttrans, ftrans in Tab. I) entra poi nel modello di fedeltà."
+      "it-intermediate": "Le posizioni fisse sono create da un modulatore spaziale di luce (SLM), quelle mobili da due deflettori acusto-ottici incrociati (AOD). Un atomo passa da una trappola all'altra senza perdere lo stato del qubit, abbassando lentamente un potenziale mentre si alza l'altro [48]. In entrambe le architetture questo serve a preparare la disposizione iniziale; in quella mobile anche a riordinare gli atomi durante il calcolo. Ogni passaggio ha un costo in tempo e fedeltà, che il modello di III.D conta come trasferimento.",
+      "it-expert": "Hardware assunto: SLM per le trappole statiche, AOD 2D incrociati per quelle mobili, con handoff coerente SLM↔AOD tramite rampe di intensità adiabatiche [48]. L'handoff serve alla preparazione in entrambe le architetture e al riarrangiamento in-circuit in quella mobile; il suo costo entra nel modello come T_trans e f_trans."
     },
     "section": "III.A Neutral-atom architectures"
   },
@@ -584,8 +584,8 @@
     ],
     "sourceText": "The distinction between static and mobile architec-tures is directly relevant to the implementation of PTNs.In this work, we focus primarily on mobile, monolithic ar-chitectures, in which atom transport dynamically mod-ifies the relative positions of qubits within a commonarray. For such architectures, a central compilation ob-jective is to minimize both the number and depth ofatom movement operations, since transport contributessubstantially to the overall circuit runtime and, conse-quently, to idling errors.Minimizing movement depthnaturally favors parallel transport of multiple atomswhenever possible. Such collective atom transport hasbeen experimentally demonstrated in neutral-atom ar-chitectures, including, for example, the implementationof transversal logical operations in quantum error correc-tion experiments [18, 19].",
     "explanations": {
-      "it-intermediate": "La distinzione tra architetture statiche e mobili è direttamente rilevante per l'implementazione delle PTN. Il paper si concentra principalmente su architetture mobili monolitiche, in cui il trasporto modifica dinamicamente le posizioni relative dei qubit in un unico array. Per queste architetture, un obiettivo centrale della compilazione è minimizzare sia il numero sia la profondità delle operazioni di movimento degli atomi, dato che il trasporto contribuisce sostanzialmente al tempo totale di esecuzione del circuito e, di conseguenza, agli errori di idling (errori che si accumulano mentre un qubit aspetta inattivo). Minimizzare la profondità di movimento favorisce naturalmente il trasporto parallelo di più atomi contemporaneamente quando possibile — una capacità già dimostrata sperimentalmente, ad esempio nell'implementazione di operazioni logiche trasversali in esperimenti di correzione d'errore quantistica.",
-      "it-expert": "Focus del paper: mobile monolithic. Obiettivo di compilazione: minimizzare #movimenti e profondità di movimento, perché il trasporto domina il runtime e quindi l'errore di idling (via T2, vedi poi Eq. 3). Il trasporto collettivo parallelo (già dimostrato in esperimenti di transversal logical gates per QEC [18,19]) è la strategia naturale per minimizzare la depth di movimento."
+      "it-intermediate": "Il paper si concentra sull'architettura mobile monolitica: un unico array in cui il trasporto cambia le posizioni relative dei qubit. Qui il trasporto pesa sul tempo totale, e quindi sugli errori che i qubit accumulano mentre aspettano. Il compilatore deve ridurre sia il numero di spostamenti sia quanti turni di spostamento si susseguono. Per questo conviene muovere molti atomi insieme, come già fatto negli esperimenti di correzione d'errore con porte logiche trasversali [18, 19].",
+      "it-expert": "Focus: architetture mobili monolitiche. Obiettivo di compilazione: minimizzare numero e depth delle operazioni di movimento, perché il trasporto domina il runtime e quindi l'errore di idling. Ne segue la preferenza per trasporto collettivo parallelo, già dimostrato nei gate logici trasversali [18, 19]."
     },
     "section": "III.A Neutral-atom architectures"
   },
@@ -603,8 +603,8 @@
     ],
     "sourceText": "The PTN framework can, in principle, also be ex-tended to zone-based architectures, in which atoms aredistributed among distinct computational, storage, andreadout zones.In such architectures, the connectivityencoded by a PTN could inform and optimize atom-shuttling strategies by specifying which pairs or groupsof atoms should interact, with the corresponding interac-tions realized through transport between zones. Devel-oping a compilation scheme tailored to such zone-basedarchitectures, however, is beyond the scope of this work.In particular, the CZSWAP-based implementation dis-cussed below could be a strong candidate for a shuttling-efficient realization on zone-based platforms: since thequbits must be shuttled back to the storage zone after",
     "explanations": {
-      "it-intermediate": "Le reti PTN potrebbero anche guidare il trasporto tra zone di calcolo, memoria e lettura. CZSWAP è un candidato utile perché, dopo l'interazione, gli atomi devono comunque tornare alla memoria: restituirli a posizioni scambiate può aggiungere poco trasporto. Il paper non sviluppa però un compilatore completo per queste architetture a zone.",
-      "it-expert": "Estensione concettuale (non sviluppata qui) a zone-based architectures: la topologia PTN potrebbe guidare direttamente le strategie di shuttling inter-zona. Punto tecnico anticipato: la costruzione CZSWAP è un candidato naturale per zone-based, perché lo shuttling di ritorno verso la storage zone è comunque obbligatorio — vedi [37]."
+      "it-intermediate": "Le architetture a zone, con regioni separate per calcolo, memoria e lettura, restano fuori dal lavoro. Lì la rete PTN potrebbe comunque indicare quali gruppi di atomi devono incontrarsi, e quindi guidare gli spostamenti tra le zone. Il CZSWAP, introdotto in III.B, sarebbe un buon candidato per realizzarle.",
+      "it-expert": "Estensione non sviluppata: in architetture zoned la connettività PTN può specificare quali coppie o gruppi portare nella zona di interazione, guidando lo shuttling inter-zona. Il CZSWAP è indicato come candidato naturale."
     },
     "section": "III.A Neutral-atom architectures"
   },
@@ -622,8 +622,8 @@
     ],
     "sourceText": "the CZ gate regardless, returning them to the swappedpositions instead of their original positions incurs onlyminimal shuttling overhead.",
     "explanations": {
-      "it-intermediate": "Spiega perché la costruzione CZSWAP è adatta alle architetture a zone. Lì gli atomi vengono portati nella zona di interazione per la porta CZ e, dopo la porta, devono comunque tornare nella zona di memoria. Riportarli nelle posizioni scambiate invece che in quelle di partenza aggiunge quindi pochissimo trasporto: lo scambio dei due qubit si ottiene quasi gratis.",
-      "it-expert": "Chiusura dell'argomento: dato lo shuttling di ritorno obbligatorio, il costo marginale di riportare gli atomi in posizione scambiata (anziché originale) è trascurabile — è la stessa osservazione che sta alla base della costruzione CZSWAP di Sez. III.B."
+      "it-intermediate": "Il motivo: nelle architetture a zone, dopo la CZ gli atomi devono comunque tornare in memoria. Riportarli in posizioni scambiate invece che in quelle di partenza costa quasi nulla in più, perché lo scambio viaggia insieme a uno spostamento che andava fatto comunque.",
+      "it-expert": "Il ritorno alla storage zone dopo la CZ è obbligatorio, quindi rientrare in posizioni scambiate ha overhead di shuttling minimo: è la stessa logica del CZSWAP su array monolitici (III.B)."
     },
     "section": "III.A Neutral-atom architectures"
   },
@@ -641,8 +641,8 @@
     ],
     "sourceText": "Within NAQCs, three primary decomposition strate-gies for the DCNOT building block can be considered, asshown in Fig. 1(b):",
     "explanations": {
-      "it-intermediate": "Sulle piattaforme ad atomi neutri il blocco DCNOT si può realizzare in tre modi, mostrati in Fig. 1(b): (i) con due porte CZ, (ii) con una porta iSWAP, oppure (iii) con una CZSWAP, cioè una CZ seguita dallo scambio fisico dei due atomi. Le tre formule sono elencate nei blocchi successivi; il resto della sezione confronta quanto costano sull'hardware.",
-      "it-expert": "Le tre decomposizioni native del DCNOT [Fig. 1(b)] elencate di seguito — CZ-only, iSWAP-based, CZSWAP-based — sono il fulcro comparativo di tutta la Sez. III."
+      "it-intermediate": "Il blocco DCNOT si può realizzare in tre modi, tutti con la stessa unitaria (Fig. 1(b)): con due CZ, con una iSWAP, oppure con una CZ seguita dallo scambio dei due qubit.",
+      "it-expert": "Tre decomposizioni native della DCNOT [Fig. 1(b)]: due CZ, iSWAP, CZSWAP."
     },
     "section": "III.B Entangling gates"
   },
@@ -660,8 +660,8 @@
     ],
     "sourceText": "(i) Decomposition into two CZ gates",
     "explanations": {
-      "it-intermediate": "Prima delle tre decomposizioni: (i) scomposizione in due porte CZ, l'approccio standard.",
-      "it-expert": "(i) CZ-only — la decomposizione \"di riferimento\", con cui le altre due vengono confrontate."
+      "it-intermediate": "(i) La via standard: ognuna delle due CNOT che formano la DCNOT diventa una CZ.",
+      "it-expert": "(i) Decomposizione in due CZ, il riferimento."
     },
     "section": "III.B Entangling gates"
   },
@@ -679,8 +679,8 @@
     ],
     "sourceText": "DCNOT = (I ⊗H) CZ (H ⊗H) CZ (H ⊗I) ;",
     "explanations": {
-      "it-intermediate": "La formula mostra come costruire una DCNOT combinando porte di Hadamard (H) e due porte CZ: DCNOT = (I⊗H)·CZ·(H⊗H)·CZ·(H⊗I). È la traduzione algebrica standard di due CNOT consecutive in direzioni opposte usando solo Hadamard e CZ.",
-      "it-expert": "DCNOT = (I⊗H) CZ (H⊗H) CZ (H⊗I): la coniugazione standard CNOT→H·CZ·H applicata due volte, con gli H intermedi che si combinano. Preserva il conteggio di 2 porte a due qubit per DCNOT."
+      "it-intermediate": "Ogni CNOT è una CZ racchiusa tra due Hadamard sul qubit target. Nella DCNOT le due CNOT hanno target opposti, e le Hadamard interne si combinano nello strato (H⊗H) al centro della formula. Restano due porte a due qubit per blocco, come nella PTN originale.",
+      "it-expert": "DCNOT = (I⊗H) CZ (H⊗H) CZ (H⊗I): CNOT = H·CZ·H sul target, applicata alle due direzioni. Mantiene due gate a due qubit per DCNOT."
     },
     "section": "III.B Entangling gates"
   },
@@ -728,8 +728,8 @@
     ],
     "sourceText": "(ii) Mapping to an iSWAP gate S† ⊗S†H DCNOT = (H ⊗I) iSWAP ;",
     "explanations": {
-      "it-intermediate": "Seconda decomposizione: mappare la DCNOT su una singola porta iSWAP (a meno di rotazioni S† locali). Questo è vantaggioso perché riduce due CNOT a una sola porta a due qubit — ma richiede che l'hardware disponga nativamente della porta iSWAP.",
-      "it-expert": "(ii) DCNOT ≅ (H⊗I)·iSWAP a meno di coniugazioni S†⊗S†: comprime 2 CNOT (= 1 DCNOT) in 1 sola porta a due qubit nativa, il minimo teorico in termini di gate-count — se l'iSWAP è disponibile con fedeltà sufficiente."
+      "it-intermediate": "(ii) Una sola porta iSWAP, con rotazioni locali prima e dopo: DCNOT = (H⊗I) iSWAP (S†⊗S†H). Le due CNOT diventano una sola porta a due qubit.",
+      "it-expert": "(ii) DCNOT = (H⊗I) iSWAP (S†⊗S†H): un solo gate a due qubit per DCNOT, il minimo possibile, se iSWAP è nativa."
     },
     "section": "III.B Entangling gates"
   },
@@ -747,8 +747,8 @@
     ],
     "sourceText": "(iii) Realization as a combined CZ–SWAP (CZSWAP)",
     "explanations": {
-      "it-intermediate": "La terza realizzazione combina un gate CZ con lo scambio dei due qubit, ottenendo CZSWAP. Con Hadamard opportuni prima e dopo, questo realizza il blocco DCNOT richiesto dalla rete Twine. Il vantaggio fisico dipende da quanto costa integrare lo scambio nel trasporto già necessario per il CZ.",
-      "it-expert": "(iii) CZSWAP — la decomposizione centrale nell'argomento del paper, apparentemente più costosa ma in realtà quasi gratuita nell'architettura mobile (vedi sotto)."
+      "it-intermediate": "(iii) Una porta chiamata CZSWAP, che unisce la CZ e lo scambio dei due qubit.",
+      "it-expert": "(iii) CZSWAP, la decomposizione su cui si basa il paper."
     },
     "section": "III.B Entangling gates"
   },
@@ -766,8 +766,8 @@
     ],
     "sourceText": "operation, i.e., a CZ gate followed by a SWAP op-eration on the same two qubits",
     "explanations": {
-      "it-intermediate": "CZSWAP combina due effetti sulla stessa coppia: applica la porta entangling CZ e poi scambia i qubit. Inserita fra le rotazioni H indicate nella formula successiva, realizza il blocco DCNOT. Negli array mobili lo scambio può sfruttare lo spostamento fisico degli atomi, motivo per cui questa decomposizione viene studiata.",
-      "it-expert": "La terza decomposizione usa CZSWAP=CZ seguita da SWAP sulla stessa coppia, con DCNOT=(H⊗I)CZSWAP(I⊗H). Il vantaggio hardware discusso dopo dipende dal costo marginale dello SWAP per trasporto eseguito dopo CZ."
+      "it-intermediate": "CZSWAP significa una CZ seguita da uno SWAP sugli stessi due qubit. Su un array mobile lo SWAP non deve essere una porta: si può ottenere spostando fisicamente gli atomi.",
+      "it-expert": "CZSWAP = CZ seguita da SWAP sulla stessa coppia; su array mobili lo SWAP può essere uno scambio fisico di posizioni."
     },
     "section": "III.B Entangling gates"
   },
@@ -785,8 +785,8 @@
     ],
     "sourceText": "DCNOT = (H ⊗I) CZSWAP (I ⊗H) .",
     "explanations": {
-      "it-intermediate": "Formula: DCNOT = (H⊗I)·CZSWAP·(I⊗H), la traduzione algebrica della decomposizione (iii).",
-      "it-expert": "DCNOT = (H⊗I) CZSWAP (I⊗H): singola porta CZSWAP nativa + coniugazioni Hadamard, analoga in struttura a (i) e (ii) ma con SWAP incorporato."
+      "it-intermediate": "Con una Hadamard su ciascun lato, una sola CZSWAP basta per l'intera DCNOT: DCNOT = (H⊗I) CZSWAP (I⊗H).",
+      "it-expert": "DCNOT = (H⊗I) CZSWAP (I⊗H): una sola CZ fisica per DCNOT, con lo SWAP incorporato."
     },
     "section": "III.B Entangling gates"
   },
@@ -804,8 +804,8 @@
     ],
     "sourceText": "Decomposition (i) is the standard approach and pre-serves the two-qubit gate count of the original PTNconstruction.Decomposition (ii)—which reduces twoCNOTs to a single iSWAP—is, in principle, the mostefficient in terms of two-qubit gate count.However,the iSWAP gate is not readily available on most cur-rent neutral-atom platforms, but schemes to realize high-fidelity iSWAP gates have recently been proposed [12,13]. Decomposition (iii), involving a CZSWAP operation,may initially appear suboptimal, as it introduces an addi-tional, usually costly SWAP operation alongside the CZgate. Nevertheless, as detailed below, in mobile, mono-lithic architectures the effective cost of a displacement-based SWAP can be negligible when it is performed aftera CZ gate, rendering this approach highly competitive.",
     "explanations": {
-      "it-intermediate": "Confronto tra le tre: la decomposizione (i) è l'approccio standard e preserva il conteggio di porte a due qubit della costruzione PTN originale. La (ii) — che riduce due CNOT a una singola iSWAP — è in linea di principio la più efficiente in termini di conteggio, ma la porta iSWAP non è ancora facilmente disponibile sulla maggior parte delle piattaforme ad atomi neutri attuali (anche se schemi per realizzarla con alta fedeltà sono stati recentemente proposti). La (iii), che coinvolge una CZSWAP, può sembrare inizialmente sub-ottimale, poiché introduce un'operazione SWAP aggiuntiva — di solito costosa — accanto alla CZ. Tuttavia, come mostrato nel seguito, in architetture mobili monolitiche il costo effettivo di uno SWAP basato sullo spostamento fisico può essere trascurabile se eseguito subito dopo una CZ, rendendo questo approccio molto competitivo.",
-      "it-expert": "Confronto: (i) standard, gate-count invariato; (ii) ottimo in gate-count ma iSWAP non nativa (sebbene proposte recenti [12,13] la rendano plausibile); (iii) apparentemente sub-ottima (SWAP extra) ma — punto chiave del paper — in architettura mobile monolitica il costo marginale di un displacement-based SWAP dopo una CZ è quasi nullo, rendendo CZSWAP altamente competitiva. Il resto della sottosezione dimostra quantitativamente questo claim."
+      "it-intermediate": "Sul solo numero di porte a due qubit vince la (ii): una invece di due. La iSWAP però non è ancora disponibile sulla maggior parte delle piattaforme ad atomi neutri, anche se sono stati proposti schemi ad alta fedeltà [12, 13]. La (iii) sembra la peggiore, perché alla CZ aggiunge uno SWAP, di solito costoso. Su un array mobile monolitico, però, uno SWAP fatto spostando gli atomi subito dopo una CZ costa quasi nulla: la tappa successiva mostra perché.",
+      "it-expert": "(i) conserva il gate count della PTN originale; (ii) è ottima in gate count ma l'iSWAP non è nativa sulla maggior parte delle piattaforme (proposte recenti in [12, 13]); (iii) aggiunge in apparenza uno SWAP costoso, ma su array mobili monolitici uno SWAP per spostamento dopo la CZ ha costo efficace trascurabile, il che rende CZSWAP competitiva."
     },
     "section": "III.B Entangling gates",
     "recall": [
@@ -836,8 +836,8 @@
     ],
     "sourceText": "To show this, it is useful to briefly review how aRydberg-mediated CZ gate between two atoms, A andB, is typically implemented in such architectures:",
     "explanations": {
-      "it-intermediate": "Per capire perché lo scambio dopo una CZ costa così poco, gli autori ricordano come si esegue di solito una porta CZ mediata da Rydberg tra due atomi A e B: l'atomo A viene avvicinato a B, si esegue la porta e poi A viene riportato al suo posto. I tre passi sono elencati nei blocchi successivi, e il CZSWAP cambia solo l'ultimo.",
-      "it-expert": "Setup per il conteggio di costo: protocollo standard a 3 step per una CZ Rydberg-mediata tra atomi A,B in architettura mobile."
+      "it-intermediate": "Per vedere quanto costa lo scambio bisogna guardare come si esegue una CZ di Rydberg tra due atomi A e B su un array mobile. Il protocollo ha tre passi.",
+      "it-expert": "Per contare i costi si parte dal protocollo standard a tre passi di una CZ di Rydberg tra A e B su array mobile."
     },
     "section": "III.B Entangling gates"
   },
@@ -855,8 +855,8 @@
     ],
     "sourceText": "(1) Atom A is transferred from a static optical tweezer",
     "explanations": {
-      "it-intermediate": "Nel protocollo illustrato, l'atomo A passa da una trappola statica SLM a una mobile AOD e viene avvicinato all'atomo B. La distanza finale deve rientrare nel raggio di blocco di Rydberg per consentire il gate a due qubit. Questo primo passo introduce sia un trasferimento tra trappole sia un trasporto fisico.",
-      "it-expert": "Il primo step trasferisce A da SLM ad AOD e lo porta a dint da B, nel regime di blockade richiesto per CZ. La separazione iniziale e quella d'interazione fissano il primo big move del protocollo."
+      "it-intermediate": "Passo (1): l'atomo A viene tolto dalla trappola fissa in cui si trova.",
+      "it-expert": "Step (1): A lascia la trappola statica."
     },
     "section": "III.B Entangling gates"
   },
@@ -874,8 +874,8 @@
     ],
     "sourceText": "array (SLM) into a mobile tweezer (AOD) andtransported into proximity with atom B, such thatboth reside within the Rydberg blockade radius;",
     "explanations": {
-      "it-intermediate": "Primo passo della porta CZ: l'atomo A viene trasferito dalla trappola ottica fissa (array SLM) a una pinzetta mobile (AOD) e portato vicino all'atomo B. I due atomi devono trovarsi entro il raggio di blockade di Rydberg, cioè la distanza entro cui l'eccitazione di un atomo impedisce quella dell'altro: è questo effetto che produce l'entanglement.",
-      "it-expert": "Step (1) del protocollo CZ: trasferimento di A da trappola statica (SLM) a trappola mobile (AOD) e trasporto entro il raggio di blockade di Rydberg rispetto a B, condizione necessaria per l'interazione entangling."
+      "it-intermediate": "A passa dall'array SLM a una pinzetta mobile (AOD), che lo porta vicino a B, entro il raggio di blockade di Rydberg: la distanza sotto cui l'eccitazione di un atomo impedisce quella dell'altro, l'effetto che produce l'entanglement.",
+      "it-expert": "Handoff SLM→AOD e big move fino a d_int, entro il raggio di blockade rispetto a B."
     },
     "section": "III.B Entangling gates"
   },
@@ -899,8 +899,8 @@
     ],
     "sourceText": "(2) Atom A is then released into a static trap, and the entangling operation is performed;",
     "explanations": {
-      "it-intermediate": "Dopo l'avvicinamento, l'atomo A viene depositato in una trappola statica e si esegue l'interazione entangliante con B. Il modello separa quindi il gate dalla fase di trasporto. Anche il deposito contribuisce al numero di trasferimenti tra SLM e AOD.",
-      "it-expert": "Il secondo step rilascia A da AOD a SLM prima della CZ. Il gate viene eseguito nella configurazione statica di interazione, e il rilascio entra nel transfer count del protocollo."
+      "it-intermediate": "Passo (2): A viene lasciato in una trappola fissa vicino a B e si esegue la CZ. Anche questo è un passaggio tra trappola mobile e fissa, cioè un trasferimento.",
+      "it-expert": "Step (2): handoff AOD→SLM, poi CZ con entrambi gli atomi in trappole statiche."
     },
     "section": "III.B Entangling gates"
   },
@@ -918,8 +918,8 @@
     ],
     "sourceText": "(3) Atom A is recaptured by the mobile tweezer, trans-",
     "explanations": {
-      "it-intermediate": "Concluso il gate, A viene ripreso dalla trappola mobile, riportato alla posizione iniziale e depositato nella trappola statica. Il ritorno aggiunge un secondo viaggio lungo e altri due trasferimenti. Nel protocollo completo la sola interazione logica non è quindi l'unico costo.",
-      "it-expert": "Il terzo step ricattura A in AOD, esegue il big move di ritorno e ricarica lo SLM originale. Con andata e ritorno il protocollo illustrato costa due big moves e quattro transfer."
+      "it-intermediate": "Passo (3): dopo la porta, la pinzetta mobile riprende A.",
+      "it-expert": "Step (3): handoff SLM→AOD per riprendere A."
     },
     "section": "III.B Entangling gates"
   },
@@ -937,8 +937,8 @@
     ],
     "sourceText": "ported back to its original position, and reloadedinto the static array.",
     "explanations": {
-      "it-intermediate": "Dopo la porta CZ, l'atomo A viene ripreso dalla pinzetta mobile, riportato nella sua posizione iniziale e depositato di nuovo nell'array statico. Questo viaggio di ritorno completa il protocollo standard: nel conteggio successivo contribuisce al secondo grande spostamento e ai trasferimenti fra trappole.",
-      "it-expert": "Il terzo step riprende A con la pinzetta mobile, ne esegue il trasporto di ritorno e lo ricarica nell'array statico. Chiude il protocollo CZ standard, che complessivamente richiede due big moves e quattro trasferimenti statico↔mobile."
+      "it-intermediate": "A viene riportato alla posizione di partenza e lasciato di nuovo nella sua trappola fissa: è il secondo spostamento lungo del protocollo.",
+      "it-expert": "Big move di ritorno e handoff AOD→SLM nella posizione originale."
     },
     "section": "III.B Entangling gates"
   },
@@ -956,8 +956,8 @@
     ],
     "sourceText": "In total, such a CZ gate requires two big move transportoperations and four transfer operations between staticand mobile tweezers. We define a big move as the trans-port from the initial distance of the atoms to the shorter",
     "explanations": {
-      "it-intermediate": "Il protocollo CZ illustrato richiede due viaggi lunghi e quattro passaggi tra trappole statiche e mobili. Un big move porta gli atomi dalla separazione iniziale alla distanza ridotta necessaria all'interazione, o realizza il ritorno. Il conteggio permette di confrontare decomposizioni logicamente equivalenti ma con costi fisici diversi.",
-      "it-expert": "Costo totale protocollo standard: 2 big move + 4 transfer (SLM↔AOD) per singola CZ. Definizione di \"big move\": trasporto dalla separazione iniziale dtw alla distanza di interazione dint — il building block di costo usato poi in Tab. I ed Eq. 3."
+      "it-intermediate": "In totale una CZ così costa due big move, andata e ritorno, e quattro trasferimenti tra trappole fisse e mobili. Un big move è il viaggio dalla distanza iniziale tra gli atomi a quella, più corta, a cui si esegue la CZ.",
+      "it-expert": "Costo del protocollo standard: 2 big move e 4 transfer SLM↔AOD per CZ. Big move = trasporto da d_tw a d_int."
     },
     "section": "III.B Entangling gates",
     "recall": [
@@ -988,8 +988,8 @@
     ],
     "sourceText": "FIG. 3: The quantum Fourier transform on n = 5 qubits (QFT5) implemented using a Parity Twine Network ona linear nearest-neighbor array, and transpiled into (a) a non-native CNOT gate set, (b) a CZ gate set with globalRX rotations, and (c) a CZSWAP gate set with global RY rotations. The CZSWAP operation consists of a CZ gatefollowed by a physical SWAP of the underlying atoms, enabled by atom shuttling in a shuttling-capable architecture.For visual clarity, the rotation angles of the RZ gates, which differ across qubits, are omitted from the circuit diagrams.",
     "explanations": {
-      "it-intermediate": "Didascalia della Figura 3: la trasformata di Fourier quantistica su n=5 qubit (QFT5), implementata con una Parity Twine Network su un array lineare a interazione tra primi vicini, e tradotta in tre modi: (a) un set di porte CNOT non nativo, (b) un set di porte CZ con rotazioni globali RX, (c) un set di porte CZSWAP con rotazioni globali RY. L'operazione CZSWAP consiste in una CZ seguita da uno scambio fisico degli atomi coinvolti, reso possibile dallo shuttling in un'architettura capace di spostare gli atomi. Per chiarezza visiva, gli angoli di rotazione delle porte RZ (che differiscono da qubit a qubit) sono omessi dai diagrammi.",
-      "it-expert": "Fig. 3: QFT5 su array lineare nearest-neighbor, tre transpilazioni comparative — (a) CNOT non-nativo (riferimento astratto), (b) CZ + global RX, (c) CZSWAP + global RY. È il caso di studio a piccola scala su cui si basano poi i confronti quantitativi (Fig. 4-6) a n=30."
+      "it-intermediate": "La Figura 3 mostra la stessa QFT su 5 qubit in fila, costruita con una rete Parity Twine e compilata in tre modi: (a) con CNOT, che sugli atomi neutri non sono native; (b) con CZ e rotazioni X globali; (c) con CZSWAP e rotazioni Y globali, dove lo scambio è uno spostamento fisico degli atomi. Gli angoli delle R_Z, diversi da qubit a qubit, non sono indicati.",
+      "it-expert": "Fig. 3: QFT₅ su catena LNN via PTN, transpilata in (a) CNOT non nativi, (b) CZ con R_X globali, (c) CZSWAP con R_Y globali; angoli R_Z omessi."
     },
     "section": "III.B Entangling gates"
   },
@@ -1007,15 +1007,15 @@
     ],
     "sourceText": "interaction distance for performing the CZ gate opera-tion.While Rydberg-mediated CZ gates are typicallyperformed with the atoms held in static traps, we assumethroughout this work that inter-tweezer CZ gates are alsoallowed. In this case, step (2) can be performed with-out transferring atom A into the SLM array, such thatthe tweezer transfer count required for a single CZ gateis reduced from four to two. Consequently, a DCNOTimplemented via two independently performed CZ gatesrequires four transfer operations and four big moves in to-tal. Also note that if local gates can be applied while theatoms remain in proximity, the two CZ gates in decom-position (i) can be applied consecutively without movingthe atoms apart in between; this case is not consideredin the mobile architecture assumed in this work.",
     "explanations": {
-      "it-intermediate": "Il blocco completa la definizione di big move: è lo spostamento che porta gli atomi dalla distanza iniziale a quella, più corta, necessaria per eseguire la CZ. Poi gli autori precisano un'ipotesi. Di solito le CZ di Rydberg si eseguono con entrambi gli atomi in trappole fisse, ma qui si assume che sia possibile anche una CZ tra l'atomo A ancora nella pinzetta mobile (AOD) e l'atomo B nella trappola fissa (SLM). Così il passo (2) non richiede di trasferire A nell'array SLM, e una singola CZ scende da quattro a due trasferimenti tra trappole. Una DCNOT fatta con due CZ indipendenti richiede quindi in tutto quattro trasferimenti e quattro big move. Se si potessero applicare porte locali mentre gli atomi restano vicini, le due CZ della decomposizione (i) si potrebbero eseguire una dopo l'altra senza allontanare gli atomi, ma l'architettura mobile considerata nel paper non prevede questo caso.",
-      "it-expert": "Ottimizzazione assunta: CZ fra AOD e SLM permesse (senza rilasciare A in SLM) → transfer count per singola CZ da 4 a 2. Per DCNOT via 2×CZ indipendenti: totale 4 transfer + 4 big move. Nota su un caso non modellato: se le porte locali sono applicabili con atomi ravvicinati, le 2 CZ potrebbero eseguirsi senza separazione intermedia — semplificazione esclusa dal modello adottato."
+      "it-intermediate": "Gli autori fanno un'ipotesi che abbassa il costo della CZ: la porta si può eseguire anche con A ancora nella pinzetta mobile e B nella trappola fissa. Il passo (2) non richiede più di lasciare A, e i trasferimenti scendono da quattro a due per CZ. Una DCNOT fatta con due CZ separate costa quindi quattro trasferimenti e quattro big move. Se si potessero applicare porte locali con gli atomi ancora vicini, le due CZ si farebbero di seguito senza allontanarli; il modello mobile del paper esclude questo caso.",
+      "it-expert": "Si ammettono CZ inter-tweezer (A in AOD, B in SLM): lo step (2) non richiede handoff e una CZ costa 2 transfer. DCNOT via due CZ indipendenti: 4 transfer e 4 big move. Il caso di due CZ consecutive senza separare gli atomi, possibile con gate locali in prossimità, è escluso dal modello mobile."
     },
     "section": "III.B Entangling gates"
   },
   {
     "id": "p0057",
     "page": 4,
-    "order": 57,
+    "order": 58,
     "rects": [
       [
         0.5179950988370609,
@@ -1026,8 +1026,8 @@
     ],
     "sourceText": "quently, in such architectures, the CZSWAP constructioncan achieve higher overall fidelity than a decompositioninto two CZ gates by reducing both the number of CZgates and the total shuttling time.",
     "explanations": {
-      "it-intermediate": "Di conseguenza, in queste architetture la costruzione CZSWAP può raggiungere una fedeltà complessiva superiore rispetto a una decomposizione in due CZ, riducendo sia il numero di porte CZ sia il tempo totale di shuttling.",
-      "it-expert": "Conclusione della sottosezione: CZSWAP riduce sia #CZ sia tempo di shuttling totale rispetto a 2×CZ, con vantaggio netto di fedeltà — anticipa i risultati quantitativi di Fig. 5-6."
+      "it-intermediate": "Il bilancio per una DCNOT: con due CZ servono due porte CZ, quattro big move e quattro trasferimenti; con un CZSWAP una sola CZ, due big move più i brevi offset move, e quattro trasferimenti. Meno CZ e meno tempo di trasporto: per questo, su queste architetture, il CZSWAP può dare una fedeltà complessiva più alta.",
+      "it-expert": "Per DCNOT: 2×CZ = 2 CZ, 4 big move, 4 transfer; CZSWAP = 1 CZ, 2 big move + offset, 4 transfer. Meno CZ e minore tempo di shuttling danno a CZSWAP una fedeltà complessiva potenzialmente superiore."
     },
     "section": "III.B Entangling gates"
   },
@@ -1045,15 +1045,15 @@
     ],
     "sourceText": "In many state-of-the-art NAQC architectures, rota-tions around an axis in the XY plane are restricted toglobal rotations GRα(θ) acting on the entire atom array(or a defined subset); here α denotes the rotation axis inthe XY plane and θ is the rotation angle. Under theseconstraints, arbitrary single-qubit rotations can be syn-thesized by interleaving three layers of local RZ rotationswith two global XY rotations [49]. Therefore, we addi-tionally optimize our PTNs around global XY rotationsfor both the CZ-only and CZSWAP decompositions.",
     "explanations": {
-      "it-intermediate": "In molte architetture NAQC allo stato dell'arte, le rotazioni attorno a un asse nel piano XY sono limitate a rotazioni globali GR_α(θ) che agiscono sull'intero array di atomi (o su un sottoinsieme definito); qui α indica l'asse di rotazione nel piano XY e θ l'angolo di rotazione. Sotto questo vincolo, rotazioni arbitrarie a singolo qubit possono essere sintetizzate intercalando tre strati di rotazioni locali RZ con due rotazioni globali XY. Per questo motivo gli autori ottimizzano ulteriormente le loro PTN attorno alle rotazioni globali XY, sia per la decomposizione CZ-only sia per quella CZSWAP.",
-      "it-expert": "Vincolo hardware: rotazioni XY solo globali GR_α(θ) (non locally addressable). Sintesi di rotazioni locali arbitrarie via RZ-GR-RZ-GR-RZ (3 RZ locali + 2 GR globali, [49]) — questa struttura è ciò che viene poi ottimizzato per minimizzare il numero di blocchi GR nel circuito PTN."
+      "it-intermediate": "Il secondo vincolo hardware riguarda le rotazioni a un qubit. Su molte piattaforme quelle attorno a un asse del piano XY sono globali: agiscono su tutto l'array, o su un sottoinsieme fissato, con lo stesso asse α e lo stesso angolo θ. Una rotazione arbitraria su un singolo qubit si ottiene comunque alternando tre strati di R_Z locali e due rotazioni XY globali [49]. Le PTN vanno quindi ottimizzate anche per usare poche rotazioni globali, sia nella versione con due CZ sia in quella con CZSWAP.",
+      "it-expert": "Vincolo: rotazioni XY solo globali GR_α(θ). Una rotazione single-qubit arbitraria richiede tre strati di R_Z locali intercalati da due GR [49]; le PTN vanno ottimizzate attorno alle GR per entrambe le decomposizioni (i) e (iii)."
     },
     "section": "III.C Global rotations in the XY plane"
   },
   {
     "id": "p0060",
     "page": 4,
-    "order": 60,
+    "order": 57,
     "rects": [
       [
         0.08823366102829479,
@@ -1064,8 +1064,8 @@
     ],
     "sourceText": "The CZSWAP gate can be performed with only a min-imal modification of step (3): Instead of returning atomA to its original position, atom B is transported backto atom A’s initial position, while atom A remains atits new position.This does not change the big movecount compared to the CZ gate, and the only requiredadditional transport is a short offset move needed to ex-change the atomic positions, which is negligible comparedwith the big move [37]. However, since AOD arrays can-not cross during the physical SWAP operation, for theCZSWAP it is always necessary to drop atom A into thestatic SLM array and to pick up atom B from this array.Therefore, it requires four transfer operations.Conse-",
     "explanations": {
-      "it-intermediate": "Per ottenere CZSWAP, al ritorno si porta B alla posizione iniziale di A, mentre A rimane nella nuova posizione. Il numero di big move resta quello del CZ, ma servono piccoli spostamenti aggiuntivi per evitare l'incrocio degli array AOD. In questo schema lo scambio impone comunque quattro trasferimenti: il costo marginale è piccolo nelle ipotesi considerate, non nullo.",
-      "it-expert": "Meccanica della CZSWAP: modifica minima dello step (3) — si riporta B (non A) alla posizione iniziale di A. Stesso big-move count della CZ; costo aggiuntivo = 1 offset move (breve, trascurabile) per evitare l'incrocio fisico degli array AOD, che richiede comunque il drop-off/pick-up completo (4 transfer, come nella CZ non ottimizzata). Questo è il calcolo quantitativo dietro il claim \"costo marginale quasi nullo\" della sottosezione III.B."
+      "it-intermediate": "Il CZSWAP cambia solo il passo (3): invece di riportare A al suo posto, si porta B nella posizione iniziale di A, e A resta dove si trova. I big move restano due, come per la CZ, e serve in più solo un breve spostamento laterale (offset move) per scambiare le posizioni, trascurabile rispetto ai big move [37]. C'è però un costo: durante lo scambio le righe e colonne AOD non possono incrociarsi, quindi A va lasciato in una trappola fissa e B va ripreso da lì. Il CZSWAP richiede così quattro trasferimenti, contro i due della CZ.",
+      "it-expert": "CZSWAP: nello step (3) torna B nella posizione iniziale di A, mentre A resta. Stesso numero di big move della CZ più offset move brevi [37]; poiché gli array AOD non possono incrociarsi, servono drop di A e pickup di B, quindi 4 transfer."
     },
     "section": "III.C Global rotations in the XY plane",
     "recall": [
@@ -1096,8 +1096,8 @@
     ],
     "sourceText": "To illustrate this, consider the QFT implementedwith PTNs [see Fig. 3]. In the CZ-only decomposition,Hadamard gates must be inserted before, between, andafter the two CZ gates [cf. Fig. 1(b)]. While the struc-ture of the Twine chains allows some of these to cancel,for example the Hadamards situated between pairs ofCZ gates remain and must be decomposed into globalXY rotations.Naively, this would require two globalrotation blocks per Hadamard layer. However, the struc-tured circuit of the PTNs on the LNN chain enables us",
     "explanations": {
-      "it-intermediate": "La decomposizione della QFT con soli CZ lascia strati di Hadamard tra le coppie di gate a due qubit. Poiché le rotazioni XY disponibili sono globali, questi strati devono essere compilati in blocchi comuni a tutti i qubit e correzioni locali. La struttura regolare delle Twine chain permette di ridurre quasi della metà l'overhead rispetto alla costruzione diretta.",
-      "it-expert": "Caso di studio QFT [Fig. 3]: nella decomposizione CZ-only gli H tra coppie di CZ non si cancellano tutti e vanno tradotti in GR globali. Conteggio naïve: 2 blocchi GR per strato di Hadamard — ma la struttura regolare del circuito PTN su catena LNN permette un'ottimizzazione (dimezzamento, mostrato nel blocco successivo)."
+      "it-intermediate": "Nella QFT con sole CZ (Fig. 3b) le Hadamard vanno messe prima, in mezzo e dopo le due CZ di ogni DCNOT. Lungo le catene Twine alcune si cancellano, ma quelle tra le due CZ restano e vanno realizzate con rotazioni globali. In modo diretto, ogni strato di Hadamard richiederebbe due blocchi di rotazioni globali.",
+      "it-expert": "QFT CZ-only (Fig. 3b): le H interne alle coppie di CZ non si cancellano lungo le catene e vanno globalizzate; il costo naïf è di due blocchi GR per strato di Hadamard."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1115,8 +1115,8 @@
     ],
     "sourceText": "to reduce this overhead by nearly half, requiring onlyone global XY rotation per Hadamard layer, plus twoadditional layers at the start and end of the circuit [seeFig. 3(b)]. For these operations, we specifically choosealternating global ±π/2 X rotations, SX ≡GRX(π/2)and S†",
     "explanations": {
-      "it-intermediate": "Nella versione della QFT con sole CZ, ogni strato di Hadamard richiederebbe in modo ingenuo due blocchi di rotazioni globali XY. La struttura regolare delle Twine chain su una catena lineare permette di dimezzare quasi questo costo: basta una sola rotazione globale XY per ogni strato di Hadamard, più due strati in più all'inizio e alla fine del circuito [Fig. 3(b)]. Come rotazioni si scelgono rotazioni X globali di ±π/2 alternate, S_X ≡ GR_X(π/2) e S†_X ≡ GR_X(−π/2).",
-      "it-expert": "Ottimizzazione: da 2 a 1 blocco GR per strato di Hadamard (+2 strati bordo) sfruttando la struttura regolare della catena LNN. Scelta specifica: rotazioni alternate S_X=GR_X(π/2), S†_X=GR_X(−π/2)."
+      "it-intermediate": "La regolarità delle catene su una fila di qubit permette di scendere quasi alla metà: un solo blocco globale per strato di Hadamard, più due strati in più all'inizio e alla fine (Fig. 3b). I blocchi sono rotazioni X globali di +π/2 e −π/2 alternate: S_X ≡ GR_X(π/2) e S_X† ≡ GR_X(−π/2).",
+      "it-expert": "La struttura della PTN su LNN riduce il costo a un blocco GR per strato di Hadamard più due strati di bordo (Fig. 3b), usando S_X = GR_X(π/2) e S_X† = GR_X(−π/2) alternati."
     },
     "section": "III.C Global rotations in the XY plane",
     "recall": [
@@ -1147,8 +1147,8 @@
     ],
     "sourceText": "X ≡GRX(−π/2). When the timing of these globalrotations is synchronized, this alternating structure canact like a dynamical decoupling sequence, effectively sup-pressing hardware errors. Yet, this choice remains flex-ible; by adjusting the initial and final rotation layersalongside specific internal RZ angles, the circuit can alsobe compiled using uniform SX blocks.",
     "explanations": {
-      "it-intermediate": "Quando la temporizzazione di queste rotazioni globali è sincronizzata, questa struttura alternata può agire come una sequenza di disaccoppiamento dinamico, sopprimendo efficacemente gli errori hardware. La scelta resta comunque flessibile: modificando gli strati di rotazione iniziale e finale insieme a specifici angoli RZ interni, il circuito può anche essere compilato usando blocchi S_X uniformi.",
-      "it-expert": "Bonus collaterale: l'alternanza S_X/S†_X sincronizzata funge da sequenza di dynamical decoupling, sopprimendo errori hardware come effetto secondario dell'ottimizzazione di gate-count. Variante disponibile: blocchi S_X uniformi riassorbendo la differenza negli angoli RZ interni."
+      "it-intermediate": "L'alternanza ha un vantaggio in più: se i tempi sono sincronizzati, la sequenza S_X, S_X†, … agisce come un disaccoppiamento dinamico e attenua gli errori dell'hardware. Non è obbligatoria: cambiando gli strati iniziale e finale e alcuni angoli R_Z interni si può usare sempre lo stesso blocco S_X.",
+      "it-expert": "Con timing sincronizzato, l'alternanza S_X/S_X† funziona come dynamical decoupling. In alternativa, ritoccando strati di bordo e angoli R_Z interni, si compila con soli blocchi S_X uniformi."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1166,8 +1166,8 @@
     ],
     "sourceText": "On the other hand, the CZSWAP-based implementa-tion of the QFT consists of layers of entangling CZSWAPand CZ gates interleaved with single-qubit X rotations.These rotations can be globalized using the simplified de-composition",
     "explanations": {
-      "it-intermediate": "La QFT basata su CZSWAP, invece, è fatta di strati di porte entangling CZSWAP e CZ, alternati a rotazioni X su singoli qubit. Anche queste rotazioni si possono trasformare in rotazioni globali, cioè applicate a tutti i qubit insieme, usando la scomposizione semplificata dell'Eq. (1): una rotazione locale attorno a X diventa una rotazione locale attorno a Z racchiusa tra due rotazioni globali attorno a Y.",
-      "it-expert": "Caso CZSWAP: strati CZSWAP/CZ intercalati con rotazioni X locali, globalizzabili con la decomposizione semplificata dell'Eq. (1)."
+      "it-intermediate": "Nella QFT con CZSWAP (Fig. 3c) gli strati di CZSWAP e CZ si alternano a rotazioni X su singoli qubit. Queste si rendono globali con una regola più semplice, l'Eq. (1).",
+      "it-expert": "QFT CZSWAP (Fig. 3c): strati CZSWAP/CZ intercalati da R_X locali, globalizzate con l'Eq. (1)."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1203,8 +1203,8 @@
     ],
     "sourceText": "R(i) Y R(i) X (θ) = S† Z (θ)SY ,(1)",
     "explanations": {
-      "it-intermediate": "Equazione (1): mostra come una rotazione locale R_X(θ) su un qubit possa essere riscritta come S†_Y · R_Z(θ) · S_Y, cioè come una rotazione Z coniugata da due rotazioni globali Y — un trucco algebrico che permette di sostituire rotazioni locali X, difficili da realizzare nativamente, con una combinazione di rotazioni Z locali (facili) e rotazioni Y globali.",
-      "it-expert": "Eq. (1): R_X^(i)(θ) = S†_Y R_Z^(i)(θ) S_Y — coniugazione che rimpiazza una R_X locale non nativa con R_Z locale (nativa) + 2 rotazioni Y globali, analoga concettualmente alla riscrittura R_X=H R_Z H ma nella base globale-XY disponibile qui."
+      "it-intermediate": "Eq. (1): una rotazione X sul qubit i equivale a una rotazione Z sullo stesso qubit, che l'hardware esegue localmente, racchiusa tra due rotazioni Y globali: R_X⁽ⁱ⁾(θ) = S_Y† R_Z⁽ⁱ⁾(θ) S_Y. Sui qubit senza R_Z in mezzo, le due rotazioni globali si annullano.",
+      "it-expert": "Eq. (1): R_X⁽ⁱ⁾(θ) = S_Y† R_Z⁽ⁱ⁾(θ) S_Y, cambio di base globale attorno a una R_Z locale; sui qubit non ruotati S_Y† S_Y = I."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1222,8 +1222,8 @@
     ],
     "sourceText": "whereSY ≡GRY (π/2)andS†",
     "explanations": {
-      "it-intermediate": "SY indica una rotazione globale attorno a Y di π/2, mentre SY† usa l'angolo opposto. Questi blocchi, con le rotazioni locali Z, realizzano le rotazioni X necessarie alla compilazione. La scelta di una base globale comune sfrutta la struttura ripetitiva del circuito CZSWAP.",
-      "it-expert": "SY=GRY(π/2) e SY†=GRY(−π/2) sono i cambi di base globali della decomposizione R(i)X(θ)=SY†R(i)Z(θ)SY. La regolarità della PTN permette di condividere questi blocchi fra rotazioni locali."
+      "it-intermediate": "Nell'Eq. (1), S_Y è la rotazione globale di π/2 attorno all'asse Y, e S_Y† quella opposta, di −π/2. Sono i blocchi globali che compaiono nella Fig. 3(c).",
+      "it-expert": "S_Y = GR_Y(π/2), S_Y† = GR_Y(−π/2): i blocchi globali della Fig. 3(c)."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1241,8 +1241,8 @@
     ],
     "sourceText": "Y ≡GRY (−π/2)[seeFig. 3(c)]. Note that QFT circuits based on the iSWAPdecomposition are equivalent to those based on theCZSWAP decomposition, up to additional S† gates, since",
     "explanations": {
-      "it-intermediate": "Un gate iSWAP si ottiene da CZSWAP aggiungendo S† su entrambi i qubit. Per questo le due realizzazioni della QFT hanno la stessa struttura compilata e lo stesso numero di blocchi globali SY, a meno delle fasi locali aggiuntive. Gli autori concentrano il confronto su CZ e CZSWAP.",
-      "it-expert": "Chiude la definizione di S†_Y ≡ GR_Y(−π/2) [Fig. 3(c)]. Osservazione: la QFT via iSWAP è equivalente a quella via CZSWAP a meno di S† aggiuntivi, per l'identità dell'Eq. (2) (S† ⊗ S† · CZSWAP = iSWAP); struttura compilata e numero di S_Y restano invariati, quindi si considerano solo (i) e (iii)."
+      "it-intermediate": "La strada (ii), con la iSWAP, non porta a un circuito diverso: una QFT costruita con iSWAP coincide con quella costruita con CZSWAP, a meno di porte S† in più, per l'identità dell'Eq. (2).",
+      "it-expert": "Le QFT basate su iSWAP e su CZSWAP coincidono a meno di S† aggiuntive, per l'Eq. (2)."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1278,8 +1278,8 @@
     ],
     "sourceText": "S† ⊗S†\u0001 CZSWAP = iSWAP.(2)",
     "explanations": {
-      "it-intermediate": "Equazione (2): S†⊗S† · CZSWAP = iSWAP — mostra formalmente che la porta iSWAP è equivalente a una CZSWAP coniugata da rotazioni S† locali su entrambi i qubit.",
-      "it-expert": "Eq. (2): (S†⊗S†)·CZSWAP = iSWAP — identità algebrica che formalizza l'equivalenza tra le decomposizioni (ii) e (iii) menzionata sopra."
+      "it-intermediate": "Eq. (2): CZSWAP = (S†⊗S†) iSWAP. Una CZSWAP è cioè una iSWAP seguita da una porta S† su ciascuno dei due qubit. Le S† sono rotazioni attorno a Z, che l'hardware esegue localmente.",
+      "it-expert": "Eq. (2): CZSWAP = (S†⊗S†) iSWAP; le due decomposizioni differiscono per fasi Z locali."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1297,8 +1297,8 @@
     ],
     "sourceText": "Nevertheless, the compiled circuit structure and the SYgate count remain unchanged.We therefore focus ondecompositions (i) and (iii) throughout this paper.",
     "explanations": {
-      "it-intermediate": "Ciononostante, la struttura del circuito compilato e il conteggio di porte S_Y restano invariati. Per questo motivo il paper si concentra sulle decomposizioni (i) e (iii) per il resto del lavoro.",
-      "it-expert": "Conseguenza pratica: dato che (ii) e (iii) danno la stessa struttura/costo a meno di S† extra, il paper non tratta separatamente (ii) — focus dichiarato su (i) CZ-only e (iii) CZSWAP per il resto del paper."
+      "it-intermediate": "Per questo la struttura del circuito e il numero di blocchi S_Y non cambiano tra (ii) e (iii). Da qui in poi il paper confronta solo la versione con due CZ, la (i), e quella con CZSWAP, la (iii).",
+      "it-expert": "Struttura compilata e numero di S_Y invariati tra (ii) e (iii): il seguito considera solo (i) e (iii)."
     },
     "section": "III.C Global rotations in the XY plane"
   },
@@ -1316,8 +1316,8 @@
     ],
     "sourceText": "To evaluate the performance of the different PTN-based implementations on NAQCs and to benchmarkthem against alternative circuit proposals [37] and NA-specific compilers [31, 35] we estimate the total fidelity fof a given quantum circuit (transpiled to the native gateset) by [32, 35, 37]",
     "explanations": {
-      "it-intermediate": "Per confrontare le diverse implementazioni PTN tra loro, con altre proposte di circuito [37] e con compilatori specifici per atomi neutri [31, 35], gli autori stimano la fedeltà totale f di ciascun circuito, già tradotto nelle porte native. La stima è un prodotto di fattori, uno per ogni fonte di errore: porte globali, porte CZ, eccitazioni di Rydberg indesiderate (crosstalk), trasferimenti tra trappole e tempo di inattività. La formula è l'Eq. (3) e i parametri sono nella Tabella I.",
-      "it-expert": "Setup del benchmark: fedeltà totale f stimata via un modello analitico (Eq. 3) calibrato per confronto diretto con [37] (Gao), Enola [35] e Atomique [31]."
+      "it-intermediate": "Per confrontare le implementazioni PTN tra loro, con altre proposte di circuito [37] e con compilatori per atomi neutri [31, 35], serve una stima della fedeltà f del circuito già tradotto in porte native. È la formula dell'Eq. (3) [32, 35, 37].",
+      "it-expert": "Il benchmark contro [37] e i compilatori NA-specifici [31, 35] usa una stima analitica della fedeltà f del circuito transpilato al gate set nativo, Eq. (3) [32, 35, 37]."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1359,8 +1359,8 @@
     ],
     "sourceText": "TABLE I: Parameters used for the fidelity estimatesthroughout this work unless specified otherwise. ParameterDescriptionValue fCZCZ-gate fidelity99.5 %fGRGR-gate fidelity100.0 %fexcRydberg excitation fidelity99.75 %ftransTrap transfer fidelity99.9 % T2Atom coherence time1.5 sTtransTrap transfer time1.5 µsTCZRydberg pulse time0.36 µsaeffective atom acceleration2750 m/s2 dtwInteratomic spacing15 µmdintCZ interaction distance3 µmdbigBig-move distance12 µmdoffsetOffset-move distance2 µm",
     "explanations": {
-      "it-intermediate": "Tabella I: parametri usati per le stime di fedeltà in tutto il lavoro. Include: fedeltà della porta CZ (99.5%), fedeltà della rotazione globale GR (100%, assunta ideale), fedeltà di eccitazione di Rydberg (99.75%), fedeltà di trasferimento tra trappole (99.9%), tempo di coerenza atomica T2 (1.5 s), tempo di trasferimento tra trappole (1.5 µs), durata dell'impulso Rydberg per la CZ (0.36 µs), accelerazione atomica effettiva (2750 m/s²), spaziatura interatomica (15 µm), distanza di interazione per la CZ (3 µm), distanza del \"big move\" (12 µm) e distanza dell'\"offset move\" (2 µm).",
-      "it-expert": "Tab. I — parametri di riferimento: fCZ=99.5%, fGR=1.0 (normalizzazione, vedi blocco successivo), fexc=99.75%, ftrans=99.9%, T2=1.5s, Ttrans=1.5µs, TCZ=0.36µs, a=2750 m/s², dtw=15µm, dint=3µm, dbig=12µm, doffset=2µm — l'intero set di input numerici usato in Eq. (3) per ogni figura successiva."
+      "it-intermediate": "La Tabella I raccoglie i valori usati in tutto il paper. Fedeltà: CZ 99,5%, rotazioni globali 100% (una normalizzazione, spiegata sotto), eccitazione di Rydberg indesiderata 99,75%, trasferimento tra trappole 99,9%. Tempi: coerenza T₂ = 1,5 s, trasferimento 1,5 µs, impulso Rydberg 0,36 µs; accelerazione degli atomi 2750 m/s². Distanze: 15 µm tra atomi, 3 µm per la CZ, quindi 12 µm per un big move, e 2 µm per un offset move.",
+      "it-expert": "Tab. I: f_CZ = 99,5%, f_GR = 100% (normalizzazione), f_exc = 99,75%, f_trans = 99,9%; T₂ = 1,5 s, T_trans = 1,5 µs, T_CZ = 0,36 µs, a = 2750 m/s²; d_tw = 15 µm, d_int = 3 µm, d_big = 12 µm, d_offset = 2 µm."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1420,8 +1420,8 @@
     ],
     "sourceText": "f =(fGR)NGR · (fCZ)NCZ · (fexc)NqS−2NCZ NqY ! 1 −T jidleT2 (3) · (ftrans)Ntrans · . j=1",
     "explanations": {
-      "it-intermediate": "Equazione (3): il modello di fedeltà totale, dato dal prodotto di quattro fattori — (fedeltà GR)^(numero di rotazioni globali) × (fedeltà CZ)^(numero di CZ) × (fedeltà di eccitazione)^(numero di qubit idle durante gli stage Rydberg) × (fedeltà di trasferimento)^(numero di trasferimenti) × un fattore di decadimento lineare legato al tempo di idling di ciascun qubit rispetto al tempo di coerenza T2.",
-      "it-expert": "Eq. (3): f = fGR^NGR · fCZ^NCZ · fexc^(NqS−2NCZ) · ftrans^Ntrans · Π_j(1 − T_j,idle/T2) — modello a fattori moltiplicativi indipendenti (approssimazione al prim'ordine), un termine per ciascun canale di errore: rotazioni globali, CZ, crosstalk Rydberg da idling, trasferimenti trappola, decoerenza da idling."
+      "it-intermediate": "Eq. (3): la fedeltà totale è un prodotto di cinque fattori, uno per ogni fonte di errore. Ci sono le rotazioni globali (f_GR elevato al loro numero), le CZ, le eccitazioni di Rydberg indesiderate sugli atomi fermi, i trasferimenti tra trappole e, per ogni qubit, un fattore 1 − T_idle/T₂ per il tempo passato in attesa. Ogni fonte di errore è trattata come indipendente dalle altre.",
+      "it-expert": "Eq. (3): f = f_GR^N_GR · f_CZ^N_CZ · f_exc^(N_q S − 2N_CZ) · f_trans^N_trans · ∏_q (1 − T^q_idle/T₂), con canali d'errore indipendenti."
     },
     "section": "III.D Fidelity estimation and experimental parameters",
     "recall": [
@@ -1452,8 +1452,8 @@
     ],
     "sourceText": "Table I details all relevant experimental parameters usedin Eq. (3) and throughout this paper, unless specifiedotherwise. The first two terms describe the fidelity fromperforming the global rotation gates and the entanglingCZ gates, respectively. Here, NGR and NCZ denote thenumbers of global rotations and CZ gates. It is worthmentioning that we assume unit fidelity for global rota-tions, fGR = 1.0. This assumption should be understoodas a normalization rather than an assumption of error-free single-qubit gates.Since reliable fidelity data forglobal single-qubit rotations are not available for the non-PTN implementations considered here as comparisons,which rely on local single-qubit operations, we factor outsingle-qubit gate errors and focus the fidelity analysis onthe entangling operations and atom transport. In thissense, the reported fidelities can be viewed as normalizedwith respect to the total fidelity contribution of single-qubit gates.",
     "explanations": {
-      "it-intermediate": "La Tabella I dettaglia tutti i parametri sperimentali usati nell'Eq. (3). I primi due termini descrivono la fedeltà delle rotazioni globali e delle porte CZ entangling, con N_GR e N_CZ che ne indicano il numero. È importante notare che si assume fedeltà unitaria per le rotazioni globali (fGR=1.0): questo va inteso come una normalizzazione, non come un'assunzione di porte a singolo qubit prive di errore. Dato che non sono disponibili dati di fedeltà affidabili per le rotazioni globali negli approcci non-PTN usati come confronto (che si basano su operazioni locali a singolo qubit), gli autori fattorizzano via gli errori delle porte a singolo qubit e concentrano l'analisi sulle operazioni entangling e sul trasporto atomico. In questo senso le fedeltà riportate vanno viste come normalizzate rispetto al contributo totale di fedeltà delle porte a singolo qubit.",
-      "it-expert": "Chiarimento metodologico cruciale: fGR=1.0 è una normalizzazione, non un'assunzione fisica di gate a singolo qubit privi di errore — necessaria perché i metodi di confronto (locally-addressed) non hanno dati di fedeltà comparabili per le loro rotazioni locali. L'analisi di fedeltà è quindi normalizzata rispetto al contributo single-qubit, isolando l'effetto delle operazioni entangling e del trasporto — un dettaglio essenziale per interpretare correttamente i confronti assoluti di Fig. 5-6."
+      "it-intermediate": "I primi due fattori contano le rotazioni globali (N_GR) e le CZ (N_CZ). Porre f_GR = 1 non significa che le rotazioni siano perfette: è una normalizzazione. I metodi di confronto usano rotazioni locali, per cui non esistono dati di fedeltà paragonabili. Gli errori a un qubit vengono quindi tolti da tutti i conti, e il confronto riguarda solo le porte entangling e il trasporto.",
+      "it-expert": "f_GR = 1 è una normalizzazione, non un'ipotesi di gate ideali: i metodi di confronto usano rotazioni locali senza dati di fedeltà comparabili. Le fedeltà riportate sono quindi normalizzate rispetto al contributo single-qubit e confrontano solo entangling e trasporto."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1471,8 +1471,8 @@
     ],
     "sourceText": "Crosstalk arising from unintended Rydberg excitationsis modeled by the third term in Eq. (3). Here, fexc de-notes the idling fidelity associated with the unintentionalexcitation of idling atoms to the Rydberg state, whileNqS −2NCZ quantifies the number of idling qubits dur-ing the execution of CZ gates across all Rydberg stages,with each stage affecting all Nq qubits. S denotes thenumber of Rydberg stages, with each stage defined as atime interval during which the Rydberg laser is applied toinduce one or more parallel Rydberg-mediated CZ gates.",
     "explanations": {
-      "it-intermediate": "Il crosstalk dovuto a eccitazioni di Rydberg indesiderate è modellato dal terzo termine dell'Eq. (3). Qui f_exc indica la fedeltà di idling associata all'eccitazione accidentale verso lo stato di Rydberg di atomi inattivi, mentre N_qS − 2N_CZ quantifica il numero di qubit inattivi durante l'esecuzione delle porte CZ su tutti gli stage di Rydberg, con ogni stage che coinvolge tutti gli N_q qubit. S indica il numero di stage di Rydberg, ciascuno definito come un intervallo di tempo durante il quale il laser di Rydberg è applicato per indurre una o più porte CZ parallele.",
-      "it-expert": "Termine crosstalk: fexc^(NqS−2NCZ). Ogni Rydberg stage S espone tutti gli Nq qubit al laser (rischio di eccitazione indesiderata su atomi idle), tranne i 2 qubit effettivamente coinvolti in ciascuna CZ in quello stage — da cui l'esponente NqS−2NCZ. Definizione di stage: finestra temporale con uno o più impulsi Rydberg paralleli."
+      "it-intermediate": "Il terzo fattore è il crosstalk. Uno stadio Rydberg è un intervallo in cui il laser di Rydberg è acceso per eseguire una o più CZ in parallelo, e colpisce tutti gli N_q atomi. Su S stadi ci sono quindi N_q·S esposizioni, di cui 2N_CZ riguardano atomi che stanno davvero facendo una CZ. Le altre N_q·S − 2N_CZ colpiscono atomi inattivi, che possono essere eccitati per errore, ciascuna con fedeltà f_exc.",
+      "it-expert": "Crosstalk: ogni stadio Rydberg (una o più CZ parallele) espone tutti gli N_q qubit; esclusi i 2N_CZ partecipanti, restano N_q S − 2N_CZ esposizioni idle, ciascuna con f_exc."
     },
     "section": "III.D Fidelity estimation and experimental parameters",
     "recall": [
@@ -1503,8 +1503,8 @@
     ],
     "sourceText": "The fourth term captures the fidelity associated withatom transfers between dynamic AOD and static SLMtraps. The total number of transfer operations is given byNtrans = 2NCZ + 4NCZSWAP, as discussed in Sec. III B.",
     "explanations": {
-      "it-intermediate": "Il quarto termine cattura la fedeltà associata ai trasferimenti degli atomi tra trappole dinamiche AOD e trappole statiche SLM. Il numero totale di operazioni di trasferimento è dato da N_trans = 2N_CZ + 4N_CZSWAP, come discusso in Sez. III B.",
-      "it-expert": "Termine transfer: ftrans^Ntrans con Ntrans = 2NCZ + 4NCZSWAP (coerente con i conteggi derivati in III.B: 2 transfer/CZ ottimizzata, 4 transfer/CZSWAP per il vincolo di non-incrocio degli AOD)."
+      "it-intermediate": "Il quarto fattore conta i passaggi tra pinzette mobili AOD e trappole fisse SLM: N_trans = 2N_CZ + 4N_CZSWAP, cioè due per ogni CZ e quattro per ogni CZSWAP, come ricavato in III.B.",
+      "it-expert": "Transfer: N_trans = 2N_CZ + 4N_CZSWAP, dai conteggi di III.B (CZ inter-tweezer; non-crossing AOD per CZSWAP)."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1522,8 +1522,8 @@
     ],
     "sourceText": "Finally, idling errors are described by the last termin Eq. (3), where T q",
     "explanations": {
-      "it-intermediate": "Il termine di inattività conta il tempo totale in cui ciascun qubit aspetta o viene trasportato. Gli autori assumono sequenze di disaccoppiamento dinamico in questi intervalli e usano il tempo di coerenza effettivo risultante. Per durate molto più brevi di T2, approssimano il decadimento al primo ordine.",
-      "it-expert": "Tidleq accumula gli intervalli di idling per qubit, incluso lo shuttling nel modello. T2 è effettivo sotto dynamical decoupling; la correzione lineare è usata nel regime Tidleq≪T2, senza un termine di rumore di trasporto indipendente."
+      "it-intermediate": "L'ultimo fattore dell'Eq. (3) riguarda il tempo: T^q_idle è il tempo totale che il qubit q passa senza partecipare a una porta.",
+      "it-expert": "Ultimo termine: decoerenza da idling, con T^q_idle tempo di inattività accumulato dal qubit q."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1541,8 +1541,8 @@
     ],
     "sourceText": "idle denotes the total idle time accu-mulated by qubit q. Throughout this work, we assumethat dynamical decoupling sequences are applied duringall idle periods and atom transports to suppress dephas-ing [50]. Consequently, the T2 value reported in Table Irepresents the effective coherence time achieved underthese sequences [51].Because the total shuttling andidle times remain well below T2, the residual decoher-ence from idling is approximated to first order as a lineardecay.",
     "explanations": {
-      "it-intermediate": "L'ultimo termine dell'Eq. (3) descrive gli errori dovuti all'inattività: T^q_idle è il tempo totale in cui il qubit q resta fermo senza operazioni. Gli autori assumono che durante tutti i periodi di inattività e durante i trasporti si applichino sequenze di disaccoppiamento dinamico, che riducono il dephasing. Quindi il T2 della Tabella I è il tempo di coerenza efficace ottenuto con queste sequenze. Poiché i tempi totali di trasporto e inattività sono molto più brevi di T2, la perdita di coerenza si approssima al primo ordine con un decadimento lineare.",
-      "it-expert": "T^q_idle = tempo di inattività accumulato dal qubit q. Si assume dynamical decoupling attivo durante idling/trasporto (quindi T2 in Tab. I è già il T2 effettivo post-DD [51]). Dato T_idle << T2, il decadimento (1−T_idle/T2) è l'approssimazione lineare al prim'ordine dell'esponenziale — valida nel regime considerato."
+      "it-intermediate": "Durante le attese e i trasporti si applicano sequenze di disaccoppiamento dinamico, che riducono il dephasing [50]; il T₂ della Tabella I è il tempo di coerenza ottenuto con queste sequenze [51]. Poiché i tempi in gioco restano molto più brevi di T₂, la perdita di coerenza si approssima con un decadimento lineare, 1 − T_idle/T₂.",
+      "it-expert": "Dynamical decoupling attivo durante idle e trasporto [50]: T₂ in Tab. I è quello efficace [51]. Con T_idle ≪ T₂, il decadimento è approssimato al primo ordine come 1 − T_idle/T₂."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1560,8 +1560,8 @@
     ],
     "sourceText": "We assume that errors arising during atom shuttlingare fully captured by the idling errors.To estimatethe shuttling durations, we use the following geometricparameters. We assume a Rydberg blockade radius of6 µm and an interatomic spacing of dtw = 15 µm to sup-press crosstalk.For high-fidelity CZ gates, atoms arebrought to a separation of dint = 3 µm, well within theblockade radius. This corresponds to a displacement ofdbig = 12 µm for each of the two big-move shuttling op-",
     "explanations": {
-      "it-intermediate": "Gli atomi partono a 15 µm di distanza per limitare il crosstalk e vengono avvicinati a 3 µm per il CZ, dentro il raggio di blocco assunto di 6 µm. Ogni big move percorre quindi 12 µm. Il modello include il rumore del trasporto nel termine di inattività: è un'assunzione della stima, non l'assenza fisica di altri errori.",
-      "it-expert": "Errori di shuttling ⊆ errori di idling (nessun termine separato). Geometria: blockade radius 6µm, dtw=15µm (soppressione crosstalk), dint=3µm (regime CZ alta fedeltà) → dbig = dtw−dint = 12µm per big move."
+      "it-intermediate": "Il trasporto non ha un fattore d'errore proprio: si assume che i suoi errori siano tutti compresi nel tempo d'attesa. Per sapere quanto dura servono le distanze. Gli atomi stanno a 15 µm l'uno dall'altro per limitare il crosstalk, con un raggio di blockade di 6 µm; per una CZ ad alta fedeltà vengono avvicinati a 3 µm. Ogni big move copre quindi 12 µm.",
+      "it-expert": "Errori di shuttling inclusi nell'idling, senza termine separato. Geometria: blockade radius 6 µm, d_tw = 15 µm, d_int = 3 µm, quindi d_big = 12 µm per ciascuno dei due big move."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1579,8 +1579,8 @@
     ],
     "sourceText": "erations. For the implementation of a CZSWAP oper-ation, we require two big-move operations of the samedistance, together with four additional offset moves ofdoffset = 2 µm each to prevent the AOD arrays from cross-ing [see App. A for further details on the CZSWAP im-plementation]. The transport time is estimated using thescaling t =",
     "explanations": {
-      "it-intermediate": "CZSWAP usa due big move come il CZ e quattro piccoli spostamenti da 2 µm per evitare incroci degli array. I tempi sono stimati con una legge proporzionale a √(d/a), calibrata su un trasporto sperimentale di 110 µm in 200 µs. Le distanze diventano così durate da inserire nel modello di fedeltà.",
-      "it-expert": "CZSWAP: 2 big move (stessa distanza della CZ) + 4 offset move da doffset=2µm (anti-collisione AOD, dettagli App. A). Tempo di trasporto stimato via legge di scala t=√(d/a) (moto uniformemente accelerato)."
+      "it-intermediate": "Un CZSWAP usa gli stessi due big move della CZ più quattro offset move da 2 µm, che evitano l'incrocio delle righe e colonne AOD (dettagli nell'App. A). La durata di ogni spostamento si stima con t = √(d/a).",
+      "it-expert": "CZSWAP: 2 big move + 4 offset move da d_offset = 2 µm contro l'incrocio AOD (App. A). Tempo di trasporto stimato come t = √(d/a)."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
@@ -1604,8 +1604,8 @@
     ],
     "sourceText": "d/a, where d is the displacement associatedwith the corresponding CZ or CZSWAP operation and ais the effective atom acceleration calibrated to the ex-perimentally demonstrated transport time of 200 µs over110 µm reported in Ref. [16].Although Eq. (3) provides only a first-order fidelityapproximation, it facilitates direct benchmarking againstalternative proposals and NA-specific compilers using aconcise set of experimental parameters.Crucially, be-cause it relies exclusively on circuit-level metrics, thismodel scales to significantly larger qubit numbers thanwould be feasible with full circuit simulations. p",
     "explanations": {
-      "it-intermediate": "Il tempo di trasporto si stima come t = 2√(d/a), dove d è lo spostamento richiesto dalla CZ o dalla CZSWAP e a è l'accelerazione efficace dell'atomo. Il valore di a è calibrato su un esperimento che ha spostato un atomo di 110 µm in 200 µs [16]. L'Eq. (3) è solo un'approssimazione al primo ordine della fedeltà, ma permette di confrontare direttamente proposte e compilatori diversi con pochi parametri sperimentali. Soprattutto, poiché usa solo grandezze del circuito (numero di porte, trasporti, tempi), funziona anche per molti più qubit di quanti si potrebbero simulare per intero.",
-      "it-expert": "Calibrazione di a: da un dato sperimentale concreto (200µs su 110µm, [16]). Limitazioni dichiarate esplicitamente: Eq. (3) è un'approssimazione al prim'ordine (fattori indipendenti, nessuna correlazione tra canali d'errore) — ma il vantaggio decisivo è la scalabilità: essendo basata su metriche di circuito (conteggi, non simulazione a livello di stato), permette benchmark fino a n grandi, altrimenti proibitivi con simulazione completa (costo esponenziale in n)."
+      "it-intermediate": "Nella formula t = √(d/a), d è la distanza percorsa nella CZ o nel CZSWAP e a un'accelerazione efficace, calibrata su un trasporto sperimentale di 110 µm in 200 µs [16]. L'Eq. (3) è un'approssimazione al primo ordine, ma richiede pochi parametri e permette di confrontare direttamente proposte e compilatori diversi. Soprattutto usa solo grandezze del circuito, come numero di porte, spostamenti e tempi: per questo si applica a molti più qubit di quanti se ne potrebbero simulare.",
+      "it-expert": "a è calibrata su 200 µs per 110 µm [16]. Eq. (3) è un'approssimazione al primo ordine, ma basata solo su metriche di circuito: scala a numeri di qubit inaccessibili alla simulazione completa e consente benchmark diretti con pochi parametri."
     },
     "section": "III.D Fidelity estimation and experimental parameters"
   },
