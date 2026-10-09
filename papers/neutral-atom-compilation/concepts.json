@@ -143,7 +143,10 @@
       "self-inverso",
       "self-inversa",
       "gate self-inverse",
-      "self-inversione"
+      "self-inversione",
+      "autoinversa",
+      "autoinverse",
+      "porte autoinverse"
     ],
     "pdfTerms": [
       "self-inverse"
@@ -208,7 +211,9 @@
     "aliases": [
       "4/3-ottimale",
       "4/3-ottimali",
-      "4/3 del numero ottimo"
+      "4/3 del numero ottimo",
+      "fattore 4/3",
+      "bound 4/3"
     ],
     "pdfTerms": [
       "4/3-optimality",
@@ -230,7 +235,9 @@
     "term": "gate di fase",
     "aliases": [
       "gate di fase S",
-      "gruppo della fase"
+      "gruppo della fase",
+      "porte di fase",
+      "porta di fase"
     ],
     "pdfTerms": [
       "phase gates",
@@ -254,7 +261,9 @@
     "aliases": [
       "r4",
       "r8(M)",
-      "r8"
+      "r8",
+      "r₄(M)",
+      "r₈(M)"
     ],
     "pdfTerms": [
       "r4(M )",
@@ -277,7 +286,9 @@
     "id": "rho4",
     "term": "ρ4(M)",
     "aliases": [
-      "ρ4"
+      "ρ4",
+      "ρ₄(M)",
+      "ρ₄"
     ],
     "pdfTerms": [
       "ρ4(M)",
@@ -460,7 +471,9 @@
       "C-Z non allineati",
       "C-Z non-allineati",
       "C-Z allineati su riga",
-      "C-Z non-allineati generali"
+      "C-Z non-allineati generali",
+      "C-Z allineate",
+      "C-Z non allineate"
     ],
     "pdfTerms": [
       "row-aligned",
@@ -559,7 +572,10 @@
       "implementazione naive",
       "implementazioni naive",
       "metodi naive",
-      "naive"
+      "naive",
+      "naïve",
+      "baseline naïve",
+      "strategia naïve"
     ],
     "pdfTerms": [
       "naïve",

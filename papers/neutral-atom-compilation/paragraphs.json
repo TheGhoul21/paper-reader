@@ -14,13 +14,13 @@
     "sourceText": "We study the compilation of structured quantum gate families on two-dimensional neutral-atomarrays, aiming to reduce addressing and transport overhead under realistic hardware constraints.For single-qubit gates, we exploit the algebraic structures of gate families at the matrix level, en-abling eﬀicient rank-one decompositions over appropriate algebraic structures and thereby reducingthe number of addressing layers. For controlled-Z (C-Z) gates, we formulate the transport schedul-ing problem using graph-theoretic models, leading to eﬀicient compilation algorithms under realistictransport constraints. We provide provable performance guarantees for the proposed methods andvalidate them through extensive numerical experiments.Across representative single-qubit gatefamilies, our methods reduce the number of addressing layers by up to a factor of two comparedwith naïve row- or column-wise implementations. For C-Z gates, our scheduling strategy reducesthe required number of atom transport operations by approximately 50%. When applied to QAOAcircuits for MaxCut, the proposed framework reduces transport cost by more than 30% on average.These results show that the physical constraints of neutral-atom hardware can be converted into al-gebraic and graph-theoretic structure, turning a hardware-level scheduling bottleneck into tractabledecomposition and coloring problems.",
     "section": "Abstract",
     "explanations": {
-      "it-expert": "Abstract: per i gate a singolo qubit sfruttano la struttura algebrica delle famiglie di gate per decomposizioni rank-one efficienti sul livello matriciale, riducendo il numero di 'addressing layer'. Per i gate C-Z formulano lo scheduling del trasporto come problema grafo-teorico. Risultati: fino a 2x meno addressing layer rispetto a implementazioni naive riga/colonna, ~50% meno operazioni di trasporto per i C-Z, >30% di riduzione del costo di trasporto su QAOA-MaxCut. Garanzie di prestazione dimostrabili + validazione numerica estensiva."
+      "it-expert": "Il lavoro compila famiglie strutturate di porte su array 2D di atomi neutri con l'obiettivo di ridurre l'overhead di addressing e di trasporto. Per le porte a singolo qubit la struttura algebrica della famiglia, letta a livello di matrice, permette decomposizioni rank-one su un'opportuna struttura algebrica, e ogni termine è un addressing layer. Per le C-Z lo scheduling dei trasporti diventa un problema su grafi. I metodi hanno garanzie dimostrabili e la validazione numerica dà: fino a 2× meno addressing layer rispetto all'esecuzione naïve per righe o per colonne, circa il 50% di trasporti in meno per le C-Z e oltre il 30% di costo di trasporto in meno, in media, su QAOA-MaxCut. La tesi è che i vincoli fisici dell'hardware si trasformano in problemi trattabili di decomposizione e colorazione."
     }
   },
   {
     "id": "p0005",
     "page": 0,
-    "order": 5,
+    "order": 7,
     "rects": [
       [
         0.5441241794162326,
@@ -50,13 +50,13 @@
     "sourceText": "TABLE I: Summary of optimality guarantees for different single-qubit gate families. Gate familyAlgebra structure Optimality Self-inverse gates Z2OptimalPauli gates(Z2)243-optimalPhase gatesZ43-optimalπ/8 gatesZ87-optimal (conjectured)",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Tabella I: riepiloga le garanzie di ottimalità ottenute per le diverse famiglie di gate a singolo qubit — gate self-inverse (struttura Z2): ottimale; gate di Pauli ((Z2)^2): 4/3-ottimale; gate di fase (Z4): 3-ottimale; gate π/8 (Z8): 7-ottimale (congetturato)."
+      "it-expert": "La Tabella I riassume le garanzie per famiglia di porte a singolo qubit: porte autoinverse, struttura Z₂, compilazione ottimale; Pauli, (Z₂)², fattore 4/3; porte di fase, Z₄, fattore 3; porte π/8, Z₈, fattore 7, che però dipende da una congettura."
     }
   },
   {
     "id": "p0006",
     "page": 0,
-    "order": 6,
+    "order": 5,
     "rects": [
       [
         0.08823529411764706,
@@ -68,13 +68,13 @@
     "sourceText": "Quantum compilation plays a central role in bridgingthe gap between high-level quantum algorithms and theirphysical realization on hardware. Over the past decades,substantial progress has been made in compiler design forleading quantum computing platforms, including super-conducting circuits [1–3] and trapped ions [4, 5]. For su-perconducting architectures, compilation efforts primar-ily focus on qubit mapping and SWAP minimization un-der fixed, low-degree connectivity graphs, as well as gatescheduling subject to coherence-time constraints [6–8]. Incontrast, trapped-ion systems benefit from near all-to-allconnectivity, shifting the compilation emphasis towardlaser-control optimization, motional mode management,and gate parallelism [9, 10].",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Contesto: la compilazione quantistica è stata sviluppata soprattutto per circuiti superconduttori (focus su qubit mapping/SWAP minimization su grafi di connettività fissa e a basso grado, scheduling vincolato dai tempi di coerenza) e per ioni intrappolati (connettività quasi all-to-all, ottimizzazione del controllo laser, gestione dei modi di moto, parallelismo dei gate)."
+      "it-expert": "La compilazione quantistica si è sviluppata soprattutto per due piattaforme. Sui superconduttori la connettività è fissa e di grado basso, quindi il lavoro si concentra su qubit mapping, minimizzazione degli SWAP e scheduling entro i tempi di coerenza. Sugli ioni intrappolati la connettività è quasi all-to-all e l'enfasi si sposta sull'ottimizzazione del controllo laser, sulla gestione dei modi di moto e sul parallelismo delle porte."
     }
   },
   {
     "id": "p0007",
     "page": 0,
-    "order": 7,
+    "order": 8,
     "rects": [
       [
         0.5179966945274204,
@@ -86,13 +86,13 @@
     "sourceText": "In this work, we develop a systematic framework fortranspiling quantum circuits on neutral-atom arrays byexplicitly exploiting the algebraic structure of the under-lying gate sets.For single-qubit gates, including self-inverse gates, Pauli gates, phase gates, and T (π/8)gates, we reformulate the parallelization problem as amatrix decomposition problem over appropriate alge-braic structures. This perspective enables us to deriveprovable bounds on the number of required operationsfor each gate family. The resulting optimality guaran-tees are summarized in Table I. For two-qubit C-Z gates,we adopt a graph-theoretical formulation that capturesthe interaction pattern among atoms. By distinguishingbetween row/column-aligned and non-aligned gates un-der realistic transport constraints, we design schedulingstrategies that significantly reduce the required numberof transport operations.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Sintesi del contributo: per i gate a singolo qubit (self-inverse, Pauli, fase, T/π8) riformulano la parallelizzazione come problema di decomposizione matriciale su opportune strutture algebriche, ottenendo bound dimostrabili sul numero di operazioni (Tabella I). Per i C-Z, una formulazione grafo-teorica che distingue gate allineati e non-allineati riduce le operazioni di trasporto."
+      "it-expert": "Il framework sfrutta esplicitamente la struttura algebrica degli insiemi di porte. Per le porte a singolo qubit (autoinverse, Pauli, fase e T = π/8) la parallelizzazione diventa una decomposizione di matrici sulla struttura algebrica della famiglia, e da qui vengono i bound dimostrabili sul numero di operazioni della Tabella I. Per le C-Z una formulazione su grafi descrive il pattern di interazione fra atomi; distinguendo le porte allineate per riga o colonna da quelle non allineate, si ottengono strategie di scheduling che riducono i trasporti."
     }
   },
   {
     "id": "p0008",
     "page": 0,
-    "order": 8,
+    "order": 6,
     "rects": [
       [
         0.0882352878844816,
@@ -104,7 +104,7 @@
     "sourceText": "The compilation landscape of neutral-atom quantumcomputers differs fundamentally from that of both super-conducting and trapped-ion platforms. By leveraging op-tical tweezer arrays and Rydberg-mediated interactions,neutral-atom platforms support reconfigurable qubit lay-outs, long coherence time, and the ability to physicallytransport atoms during computation [11–15]. These fea-tures make neutral-atom platforms a promising candi-date for scalable quantum computation, enabling nativeparallel in-place single-qubit operations and flexible im-plementations of entangling gates through atomic trans-port.Eﬀiciently transpiling abstract quantum circuitsinto hardware-compatible instruction sequences on suchplatforms, however, remains a nontrivial challenge, par-ticularly when achievable parallelism is limited by circuitstructure and overhead associated with atomic transport.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Specificità della piattaforma ad atomi neutri rispetto a superconduttori/ioni intrappolati: array di tweezer ottici riconfigurabili, interazioni mediate da stati di Rydberg, tempi di coerenza lunghi e possibilità di trasportare fisicamente gli atomi durante il calcolo — da cui nasce il problema specifico di compilazione qui affrontato (parallelismo in-place + overhead di trasporto)."
+      "it-expert": "Gli atomi neutri cambiano il quadro: tweezer ottici riconfigurabili, interazioni mediate dagli stati di Rydberg, coerenza lunga e la possibilità di spostare fisicamente gli atomi durante il calcolo. Ne derivano operazioni a singolo qubit parallele e in loco, e porte entangling realizzate trasportando gli atomi. La difficoltà di compilazione nasce proprio qui: il parallelismo effettivo dipende dalla struttura del circuito, e ogni trasporto ha un costo."
     },
     "recall": [
       {
@@ -133,7 +133,7 @@
     "sourceText": "We evaluate the proposed methods through numericalexperiments on randomly generated instances.Acrossall considered single-qubit gate families, our methods re-duce the number of addressing layers by up to a factor oftwo compared with naïve row- or column-wise implemen-tations. For C-Z gates, the proposed scheduling strat-egy reduces the required number of atom transport op-",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Sulle istanze casuali testate, gli addressing layers si riducono fino a 2× rispetto alle baseline row/column e il trasporto per CZ di circa il 50%. Il benchmark QAOA-MaxCut completo riporta una riduzione media del costo di trasporto CZ superiore al 30%. I test esaustivi piccoli confermano la garanzia 4/3 per Pauli; i tempi sotto un secondo riguardano le dimensioni di array valutate."
+      "it-expert": "Le valutazioni usano istanze generate casualmente. Per tutte le famiglie di porte a singolo qubit considerate gli addressing layer scendono fino a un fattore 2 rispetto all'esecuzione naïve per righe o per colonne, e per le C-Z lo scheduling proposto riduce i trasporti di circa il 50%."
     }
   },
   {
@@ -157,7 +157,7 @@
     "sourceText": "erations by approximately 50%. We further benchmarkthe complete compilation framework on randomly gen-erated QAOA-MaxCut instances, where it reduces theC-Z transport cost by more than 30% on average. In ad-dition, small-scale exhaustive tests confirm the theoret-ical 4 3-optimality for Pauli gates. Runtime benchmarksfurther show that all compilation procedures completewithin one second for the tested array sizes, indicatingthat the proposed methods are computationally eﬀicientat near-term neutral-atom scales.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Continua: riduzione di ~50% delle operazioni di trasporto per C-Z; su istanze QAOA-MaxCut generate casualmente, riduzione >30% del costo di trasporto in media; test esaustivi su piccola scala confermano il bound teorico di 4/3-ottimalità per i gate di Pauli; tutte le procedure di compilazione completano in meno di un secondo alle scale testate."
+      "it-expert": "Sul framework completo, applicato a istanze casuali di QAOA-MaxCut, il costo di trasporto delle C-Z cala in media di oltre il 30%. Test esaustivi su piccola scala confermano il fattore 4/3 teorico per le Pauli, e ogni procedura di compilazione termina in meno di un secondo sulle dimensioni di array provate."
     }
   },
   {
@@ -175,7 +175,7 @@
     "sourceText": "The main contributions of this work are summarizedas follows:",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Lead-in all'elenco puntato dei contributi principali del paper."
+      "it-expert": "Gli autori elencano quattro contributi principali."
     }
   },
   {
@@ -193,7 +193,7 @@
     "sourceText": "• We introduce a unified algebraic framework for de-composing and scheduling several families of single-qubit gates on neutral-atom arrays, with provablebounds on the operation count.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Contributo 1: un framework algebrico unificato per decomporre e schedulare diverse famiglie di gate a singolo qubit su array di atomi neutri, con bound dimostrabili sul numero di operazioni."
+      "it-expert": "Il primo è un framework algebrico unificato per decomporre e schedulare diverse famiglie di porte a singolo qubit sugli array di atomi neutri, con bound dimostrabili sul numero di operazioni."
     }
   },
   {
@@ -211,7 +211,7 @@
     "sourceText": "• We develop eﬀicient scheduling algorithms for C-Zgates under realistic transport constraints, leverag-ing graph-theoretical tools such as interval graphcoloring and the computation of a minimum num-ber of strictly increasing subsequences.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Contributo 2: algoritmi di scheduling efficienti per i gate C-Z sotto vincoli di trasporto realistici, basati su strumenti grafo-teorici — colorazione di grafi a intervalli e calcolo del numero minimo di sottosequenze strettamente crescenti."
+      "it-expert": "Il secondo riguarda le C-Z: algoritmi di scheduling efficienti sotto vincoli di trasporto realistici, costruiti su due strumenti classici, la colorazione di grafi a intervalli e il numero minimo di sottosequenze strettamente crescenti in cui partizionare una sequenza."
     }
   },
   {
@@ -229,7 +229,7 @@
     "sourceText": "• We validate the effectiveness of our approachthrough numerical simulations, demonstrating sub-stantial reductions in operation counts relative tonaïve strategies and verifying theoretical guaran-tees for Pauli gates.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Contributo 3: validazione numerica dell'approccio, con riduzioni sostanziali del conteggio di operazioni rispetto a strategie naive e verifica empirica delle garanzie teoriche per i gate di Pauli."
+      "it-expert": "Il terzo è la validazione numerica: riduzioni sostanziali del numero di operazioni rispetto alle strategie naïve e verifica empirica delle garanzie per le Pauli."
     }
   },
   {
@@ -247,7 +247,7 @@
     "sourceText": "• We apply the proposed compilation framework toQAOA circuits for the MaxCut problem and nu-merically demonstrate significant improvements incompilation eﬀiciency on neutral-atom architec-tures.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Contributo 4: applicazione del framework di compilazione a circuiti QAOA per il problema MaxCut, con miglioramenti numerici significativi dell'efficienza di compilazione."
+      "it-expert": "Il quarto è l'applicazione del framework ai circuiti QAOA per MaxCut, con miglioramenti numerici significativi dell'efficienza di compilazione sulle architetture ad atomi neutri."
     }
   },
   {
@@ -265,7 +265,7 @@
     "sourceText": "Taken together, these results provide practical guidancefor compiling quantum algorithms on neutral-atom plat-forms, helping to bridge the gap between abstract algo-rithm design and hardware-aware circuit optimization.",
     "section": "I. Introduction",
     "explanations": {
-      "it-expert": "Chiusura dell'introduzione: questi risultati offrono indicazioni pratiche per compilare algoritmi quantistici su piattaforme ad atomi neutri, collegando il design astratto degli algoritmi all'ottimizzazione hardware-aware dei circuiti."
+      "it-expert": "Nel complesso i risultati vengono proposti come indicazioni pratiche per compilare algoritmi su atomi neutri, tra il design astratto degli algoritmi e l'ottimizzazione dei circuiti consapevole dell'hardware."
     }
   },
   {
@@ -283,13 +283,13 @@
     "sourceText": "In a neutral-atom quantum computer, single-qubitgates are implemented by driving qubit transitions us-ing externally applied control fields. Under neutral-atomarchitecture, each single-qubit addressing layer projectsmultiple horizontal and vertical laser beams onto theatomic array, so that atoms located at the intersectionsof these beams are simultaneously addressed and undergoidentical single-qubit operations. This addressing schemeis illustrated in Figure 1.",
     "section": "II.A Single-Qubit Gates",
     "explanations": {
-      "it-expert": "Meccanismo fisico di addressing: ogni addressing layer proietta fasci laser orizzontali e verticali sull'array atomico; gli atomi alle intersezioni dei fasci vengono indirizzati simultaneamente e subiscono la stessa operazione a singolo qubit (illustrato in Fig. 1)."
+      "it-expert": "Le porte a singolo qubit si realizzano pilotando le transizioni dei qubit con campi di controllo esterni. Ogni addressing layer proietta sull'array più fasci laser orizzontali e verticali: gli atomi che stanno alle intersezioni dei fasci vengono indirizzati insieme e ricevono la stessa operazione (Fig. 1)."
     }
   },
   {
     "id": "p0021",
     "page": 1,
-    "order": 21,
+    "order": 22,
     "rects": [
       [
         0.5231077904794731,
@@ -307,13 +307,13 @@
     "sourceText": "FIG. 1: Single-qubit gate addressing. Qubits (yellowcircles) are addressed by horizontal and vertical laserbeams (semi-transparent green rectangles). Qubits atbeam intersections undergo identical single-qubit gates simultaneously.",
     "section": "II.A Single-Qubit Gates",
     "explanations": {
-      "it-expert": "Didascalia Fig. 1: qubit (cerchi gialli) indirizzati da fasci laser orizzontali/verticali (rettangoli verdi semi-trasparenti); i qubit alle intersezioni dei fasci subiscono simultaneamente lo stesso gate a singolo qubit."
+      "it-expert": "Nella Fig. 1 i qubit (cerchi gialli) sono attraversati da fasci orizzontali e verticali (rettangoli verdi semitrasparenti); quelli alle intersezioni ricevono la stessa porta nello stesso istante."
     }
   },
   {
     "id": "p0022",
     "page": 1,
-    "order": 22,
+    "order": 21,
     "rects": [
       [
         0.0882352878844816,
@@ -331,7 +331,7 @@
     "sourceText": "We focus on several families of single-qubit gates anddevelop optimized strategies for implementing them ona neutral-atom quantum computer. Consider an m × natomic array on which a collection of single-qubit gatesfrom a group G is to be applied.This target can be represented by a matrix M ∈Gm×n, where Mij specifiesthe gate to be applied to the qubit at position (i, j).",
     "section": "II.A Single-Qubit Gates",
     "explanations": {
-      "it-expert": "Formalizzazione: un pattern di gate a singolo qubit su un array m×n è rappresentato da una matrice M ∈ G^(m×n), dove l'entrata M_ij specifica il gate da applicare al qubit in posizione (i,j), con G il gruppo dei gate considerati."
+      "it-expert": "Su un array m×n, l'insieme di porte da applicare, prese da un gruppo G, si scrive come una matrice M ∈ Gᵐˣⁿ: l'entrata Mᵢⱼ è la porta da applicare al qubit in posizione (i, j)."
     }
   },
   {
@@ -391,7 +391,7 @@
     "sourceText": "Each single-qubit addressing layer selects a subset ofrows and columns and applies a single-qubit gate uni-formly to all qubits at their intersections. The goal isto realize the target matrix M with as few such steps aspossible. Each step can be expressed as \u0000 uv⊤\u0001 · G,G ∈G, u ∈{0, 1}m, v ∈{0, 1}n, where the binary vectors u and v indicate the selectedrows and columns, respectively. The outer product uv⊤ specifies the subset of addressed qubits, and multiplica-tion by a group element G corresponds to applying G tothe selected positions according to 0 · G = I,1 · G = G, where I denotes the identity element of G.",
     "section": "II.A Single-Qubit Gates",
     "explanations": {
-      "it-expert": "Ogni addressing layer seleziona un sottoinsieme di righe e colonne (vettori binari u,v) e applica uniformemente un elemento G del gruppo alle intersezioni selezionate: un passo si scrive come uv^T · G. Il prodotto esterno uv^T individua i qubit indirizzati; moltiplicare per G corrisponde ad applicare G alle posizioni selezionate (0·G=I, 1·G=G, con I elemento identità del gruppo)."
+      "it-expert": "Un addressing layer sceglie un sottoinsieme di righe e di colonne e applica un unico G ∈ G a tutte le loro intersezioni, quindi si scrive (uvᵀ)·G con u ∈ {0,1}ᵐ e v ∈ {0,1}ⁿ vettori indicatori delle righe e delle colonne scelte. Il prodotto esterno uvᵀ individua i qubit indirizzati, e la moltiplicazione segue la regola 0·G = I, 1·G = G, con I identità del gruppo. L'obiettivo è ottenere M con il minor numero di layer."
     },
     "recall": [
       {
@@ -492,7 +492,7 @@
     "sourceText": "Using this notation, the compilation problem can beformulated as the following optimization problem: mink kX \u0000 \u0001 utv⊤ (1) s.t.M = · Gt, t t=1 Gt ∈G, ut ∈{0, 1}m, vt ∈{0, 1}n, where the sum is taken element-wise in Gm×n using thegroup operation.",
     "section": "II.A Single-Qubit Gates",
     "explanations": {
-      "it-expert": "Equazione (1), il problema di ottimizzazione centrale: minimizzare k tale che M si decomponga come somma di k termini rank-one u_t v_t^T · G_t, con G_t∈G, sotto la costrizione che la somma (nel senso della struttura di gruppo/anello su G^(m×n)) ricostruisca esattamente M. k rappresenta il numero minimo di addressing layer necessari."
+      "it-expert": "Il problema di compilazione diventa l'Eq. (1): minimizzare k tale che M = Σₜ₌₁ᵏ (uₜvₜᵀ)·Gₜ, con Gₜ ∈ G, uₜ ∈ {0,1}ᵐ, vₜ ∈ {0,1}ⁿ, dove la somma è presa elemento per elemento in Gᵐˣⁿ con l'operazione del gruppo. Il k ottimo è il numero minimo di addressing layer."
     }
   },
   {
@@ -510,7 +510,7 @@
     "sourceText": "We first consider the case G = {I, X}, where X isa self-inverse single-qubit gate, i.e., X2 = I.Many",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Caso G = {I, X} con X self-inverse (X² = I): include molti gate a singolo qubit comuni, come i Pauli e l'Hadamard. In questo caso G ≅ GF(2) e il problema (1) diventa una decomposizione di rango su GF(2) della matrice pattern M."
+      "it-expert": "Il primo caso è G = {I, X}, con X autoinversa (X² = I)."
     }
   },
   {
@@ -564,7 +564,7 @@
     "sourceText": "commonly used single-qubit gates, including the Pauligates and the Hadamard gates, satisfy this property. Inthis setting, the group G is isomorphic to the finite fieldGF(2), and the optimization problem (1) reduces to mink kX utv⊤ t ,ut ∈{0, 1}m, vt ∈{0, 1}n, s.t.M = t=1",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Per un gate autoinverso X, il pattern di operazioni è una matrice binaria M e ogni layer contribuisce con un prodotto esterno utvtᵀ. Poiché le composizioni si sommano modulo 2, minimizzare il numero di layer equivale a decomporre M su GF(2); il minimo è il rango binario e si costruisce con eliminazione di Gauss."
+      "it-expert": "Molte porte comuni sono autoinverse, tra cui le Pauli e l'Hadamard. In questo caso G è isomorfo al campo GF(2) e il problema (1) diventa: minimizzare k tale che M = Σₜ uₜvₜᵀ, con uₜ ∈ {0,1}ᵐ e vₜ ∈ {0,1}ⁿ."
     }
   },
   {
@@ -582,7 +582,7 @@
     "sourceText": "where M ∈{0, 1}m×n encodes the target single-qubitgate pattern, and the summation is element-wise inGF(2).",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "M ∈{0,1}^(m×n) codifica il pattern target dei gate self-inverse; la somma nell'equazione è element-wise su GF(2)."
+      "it-expert": "Qui M ∈ {0,1}ᵐˣⁿ è il pattern delle porte da applicare e la somma è elemento per elemento in GF(2): due applicazioni della stessa porta si annullano."
     }
   },
   {
@@ -600,7 +600,7 @@
     "sourceText": "The reduced problem is equivalent to computing therank of M over GF(2). Since GF(2) is a field, Gaussianelimination can be applied to determine the GF(2)-rankand to explicitly construct a corresponding decomposi-tion. The procedure is as follows:",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Il problema ridotto equivale a calcolare il rango di M su GF(2): essendo GF(2) un campo, l'eliminazione gaussiana determina il rango e costruisce esplicitamente la decomposizione."
+      "it-expert": "Il problema ridotto equivale a calcolare il rango di M su GF(2). Poiché GF(2) è un campo, l'eliminazione gaussiana dà il rango e costruisce esplicitamente una decomposizione, in due passi."
     },
     "recall": [
       {
@@ -647,7 +647,7 @@
     "sourceText": "1. Apply a sequence of elementary row operations,represented by an invertible matrix Tr, to trans-form M into reduced row echelon form 1 + e2v⊤2 + · · · + ekv⊤k , TrM = e1v⊤ where ei is the i-th column of the m × m identitymatrix, {v1, . . . , vk} are linearly independent overGF(2).",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Passo 1 dell'algoritmo: applicare operazioni elementari di riga (matrice invertibile T_r) per portare M in forma a scala ridotta per righe, T_r M = e1 v1^T + ... + ek vk^T, con {v1,...,vk} linearmente indipendenti su GF(2)."
+      "it-expert": "Si applicano operazioni elementari di riga, raccolte in una matrice invertibile Tᵣ, fino alla forma a scala ridotta: TᵣM = e₁v₁ᵀ + e₂v₂ᵀ + ⋯ + eₖvₖᵀ, dove eᵢ è l'i-esima colonna dell'identità m×m e v₁, …, vₖ sono linearmente indipendenti su GF(2)."
     }
   },
   {
@@ -677,7 +677,7 @@
     "sourceText": "2. Define ut = T −1ret. Then M admits the decompo-sition 1 + u2v⊤2 + · · · + ukv⊤k . M = u1v⊤",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Passo 2: definendo u_t = T_r^{-1} e_t si ottiene la decomposizione M = u1 v1^T + ... + uk vk^T — k termini rank-one, dove k è esattamente il rango GF(2) di M."
+      "it-expert": "Ponendo uₜ = Tᵣ⁻¹eₜ si ottiene M = u₁v₁ᵀ + u₂v₂ᵀ + ⋯ + uₖvₖᵀ, con k uguale al rango di M su GF(2)."
     }
   },
   {
@@ -695,7 +695,7 @@
     "sourceText": "The GF(2)-rank of M thus characterizes the minimumnumber of addressing layers required to realize the targetgate pattern under the row-column addressing constraintof the neutral-atom architecture.In contrast, a naïveimplementation that applies gates sequentially column-by-column or row-by-row would generally require up tomin{m, n} steps.This self-inverse scenario provides abaseline, illustrating how algebraic structure can be ex-ploited to optimize the compilation process.",
     "section": "II.A.1 Self-inverse Gates",
     "explanations": {
-      "it-expert": "Il rango GF(2) di M è quindi il numero minimo di addressing layer necessari per il pattern target, contro i fino a min(m,n) passi di un'implementazione naive riga-per-riga o colonna-per-colonna — questo caso funge da baseline per mostrare quanto la struttura algebrica riduca il costo."
+      "it-expert": "Il rango di M su GF(2) è quindi il numero minimo di addressing layer compatibile con il vincolo di addressing per righe e colonne. Un'esecuzione naïve per colonne o per righe richiede in generale fino a min{m, n} passi. Questo caso fa da riferimento per gli altri: mostra come la struttura algebrica della famiglia riduce il costo."
     }
   },
   {
@@ -725,7 +725,7 @@
     "sourceText": "We now consider the Pauli group {±I, ±X, ±Y, ±Z, ±iI, ±iX, ±iY, ±iZ} . Since global phases are physically irrelevant, we restrictattention to the phase-free Pauli group G = {I, X, Y, Z}.The group operation, denoted by + and defined by Paulimultiplication modulo global phase, is summarized in thefollowing table:",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Gruppo di Pauli {±I,±X,±Y,±Z,±iI,±iX,±iY,±iZ}; poiché le fasi globali sono fisicamente irrilevanti, si restringe l'attenzione al gruppo di Pauli senza fase G={I,X,Y,Z}, con operazione di gruppo + data dalla moltiplicazione di Pauli modulo fase globale."
+      "it-expert": "Il gruppo di Pauli completo {±I, ±X, ±Y, ±Z, ±iI, ±iX, ±iY, ±iZ} contiene fasi globali, che sono fisicamente irrilevanti; si lavora quindi con il gruppo di Pauli senza fase G = {I, X, Y, Z}, la cui operazione + è il prodotto di Pauli modulo fase globale, riassunto nella tabella seguente."
     }
   },
   {
@@ -743,7 +743,7 @@
     "sourceText": "+ I X YZII X YZX X IZ YY YZ I XZ Z Y X I",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Tavola di Cayley del gruppo (I agisce come elemento neutro)."
+      "it-expert": "La tabella di composizione: I è l'elemento neutro, ogni elemento è inverso di se stesso, e il prodotto di due Pauli diverse non identiche è la terza (X+Y = Z, X+Z = Y, Y+Z = X)."
     }
   },
   {
@@ -773,7 +773,7 @@
     "sourceText": "Here, the identity I acts as the zero element. The groupG is Abelian and isomorphic to (Z2)2 via the mapping I ↔(0, 0), X ↔(0, 1), Y ↔(1, 0), Z ↔(1, 1), under which the group operation reduces to component-wise addition modulo 2, i.e., the bitwise XOR operation.",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "G è abeliano e isomorfo a (Z2)² tramite I↔(0,0), X↔(0,1), Y↔(1,0), Z↔(1,1); sotto questa identificazione l'operazione di gruppo diventa somma componente-per-componente modulo 2 (XOR bit a bit)."
+      "it-expert": "Il gruppo è abeliano e isomorfo a (Z₂)² tramite I ↔ (0,0), X ↔ (0,1), Y ↔ (1,0), Z ↔ (1,1); con questa identificazione l'operazione diventa la somma componente per componente modulo 2, cioè lo XOR bit a bit."
     }
   },
   {
@@ -851,7 +851,7 @@
     "sourceText": "With this identification, the optimization problem (1)can be reformulated as mink kX \u0000 \u0001 utv⊤ s.t.M = · Gt, t t=1 Gt ∈{0, 1}2, ut ∈{0, 1}m, vt ∈{0, 1}n,",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Con l'identificazione a (Z2)², il problema (1) si riformula come minimizzare k con M = Σ u_t v_t^T · G_t, G_t∈{0,1}²."
+      "it-expert": "Il problema (1) diventa quindi: minimizzare k tale che M = Σₜ (uₜvₜᵀ)·Gₜ, con Gₜ ∈ {0,1}², uₜ ∈ {0,1}ᵐ e vₜ ∈ {0,1}ⁿ."
     }
   },
   {
@@ -869,7 +869,7 @@
     "sourceText": "which is equivalent to computing the rank and construct-ing a rank-one decomposition of an m×n×2 tensor overGF(2). For a third-order tensor T = [X1|X2| · · · |Xp] ∈Fm×n×p, where F is a given field, the tensor rank is theminimal number r such that each slice Xi ∈Fm×n can beexpressed as a linear combination of r rank-one matricesover F.",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Questo equivale a calcolare il rango e costruire una decomposizione rank-one di un tensore del terzo ordine m×n×2 su GF(2): per T=[X1|X2|...|Xp]∈F^(m×n×p), il rango tensoriale è il minimo r tale che ogni slice Xi si esprima come combinazione lineare di r matrici rank-one su F."
+      "it-expert": "Ogni Pauli porta due bit, quindi il pattern è un tensore m×n×2 su GF(2), e il problema equivale a calcolarne il rango tensoriale e a costruirne una decomposizione rank-one. Per un tensore del terzo ordine T = [X₁|X₂|⋯|Xₚ] ∈ Fᵐˣⁿˣᵖ su un campo F, il rango è il minimo r tale che ogni fetta Xᵢ si scriva come combinazione lineare delle stesse r matrici rank-one su F."
     },
     "recall": [
       {
@@ -898,7 +898,7 @@
     "sourceText": "In general, computing the rank of a third-order tensorover a finite field is NP-complete [16]. Here, the third di-mension is fixed to be 2, for which several special-case re-sults exist [17–19], though the exact complexity remainsopen.",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Nota di complessità: calcolare il rango di un tensore del terzo ordine su un campo finito è in generale NP-completo [16]; qui la terza dimensione è fissata a 2 (alcuni casi speciali noti [17–19]), ma la complessità esatta resta aperta."
+      "it-expert": "Il rango di un tensore del terzo ordine su un campo finito è in generale NP-completo da calcolare [16]. Con la terza dimensione fissata a 2 esistono risultati per casi speciali [17–19], ma la complessità esatta resta aperta: da qui la scelta di un algoritmo approssimato."
     }
   },
   {
@@ -1066,7 +1066,7 @@
     "sourceText": "We present a simple algorithm that produces a rank-one decomposition of an m × n × 2 tensor over GF(2)using at most 4/3 times the optimal number of terms.Let T = [X1|X2] be a tensor with two slices. It admitsthree equivalent decompositions: \" # \" # 01 10 T = X1 ⊗ + X2 ⊗ \" # \" # 01 11 = (X1 + X2) ⊗ + X2 ⊗ \" # \" # 11 10 = X1 ⊗ + (X1 + X2) ⊗ .",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Presentano un algoritmo semplice che produce una decomposizione rank-one di un tensore m×n×2 su GF(2) usando al più 4/3 del numero ottimo di termini. Per T=[X1|X2], esistono tre decomposizioni equivalenti (illustrate di seguito)."
+      "it-expert": "L'algoritmo proposto produce una decomposizione rank-one di un tensore m×n×2 su GF(2) con al più 4/3 dei termini ottimi. Per T = [X₁|X₂] ci sono tre scritture equivalenti, ognuna come somma di due prodotti matrice⊗vettore con vettori colonna in GF(2)²: T = X₁⊗(0,1)ᵀ + X₂⊗(1,0)ᵀ = (X₁+X₂)⊗(0,1)ᵀ + X₂⊗(1,1)ᵀ = X₁⊗(1,1)ᵀ + (X₁+X₂)⊗(1,0)ᵀ."
     }
   },
   {
@@ -1084,7 +1084,7 @@
     "sourceText": "Each representation expresses Tas the sum of twomatrix-vector tensor products. Decomposing the matri-ces into rank-one components gives rank-one expansionswith",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Ogni rappresentazione esprime T come somma di due prodotti tensoriali matrice-vettore; decomponendo le matrici nelle loro componenti rank-one si ottengono espansioni rank-one con rispettivamente rank(X1)+rank(X2), rank(X1+X2)+rank(X2), rank(X1)+rank(X1+X2) termini."
+      "it-expert": "Decomponendo ciascuna delle due matrici di una scrittura nelle sue componenti rank-one su GF(2) si ottiene un'espansione rank-one di T."
     }
   },
   {
@@ -1120,7 +1120,7 @@
     "sourceText": "rank(X1) + rank(X2),rank(X1 + X2) + rank(X2),rank(X1) + rank(X1 + X2) terms, respectively. Our algorithm chooses the decom-position with the fewest rank-one terms, ∆:= min{rank(X1) + rank(X2), rank(X1) + rank(X1 + X2),rank(X2) + rank(X1 + X2)}.",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "L'algoritmo sceglie la decomposizione con il minor numero di termini rank-one, Δ := min{rank(X1)+rank(X2), rank(X1)+rank(X1+X2), rank(X2)+rank(X1+X2)}."
+      "it-expert": "Le tre espansioni hanno rispettivamente rank(X₁) + rank(X₂), rank(X₁+X₂) + rank(X₂) e rank(X₁) + rank(X₁+X₂) termini. L'algoritmo sceglie la più corta, con Δ := min{rank(X₁) + rank(X₂), rank(X₁) + rank(X₁+X₂), rank(X₂) + rank(X₁+X₂)} termini."
     }
   },
   {
@@ -1186,7 +1186,7 @@
     "sourceText": "Applying Lemma 8 of [19] (see Section A), rank(T ) ≥rank(X1) + rank(X2) + rank(X1 + X2) 2, we obtain ∆≤2 3 (rank(X1) + rank(X2) + rank(X1 + X2)) ≤4 3rank(T ), establishing that our algorithm produces a rank-one de-composition using at most 4/3 times the optimal numberof terms.",
     "section": "II.A.2 Pauli Gates",
     "explanations": {
-      "it-expert": "Derivazione del bound di 4/3-ottimalità: applicando il Lemma 8 di [19] (dimostrato in Appendice A) si ha rank(T) ≥ (rank(X1)+rank(X2)+rank(X1+X2))/2, da cui Δ ≤ (2/3)(rank(X1)+rank(X2)+rank(X1+X2)) ≤ (4/3)·rank(T) — l'algoritmo usa quindi al più 4/3 volte il numero ottimo di termini."
+      "it-expert": "Il fattore 4/3 viene dal Lemma 8 di [19], dimostrato nell'Appendice A: rank(T) ≥ [rank(X₁) + rank(X₂) + rank(X₁+X₂)]/2. Poiché il minimo di tre quantità non supera i 2/3 della somma delle tre somme a coppie, Δ ≤ (2/3)[rank(X₁) + rank(X₂) + rank(X₁+X₂)] ≤ (4/3)·rank(T)."
     },
     "recall": [
       {
@@ -1245,7 +1245,7 @@
     "sourceText": "We next consider the cyclic group generated by thephase gate \" # 1 00 i S = ,",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Gruppo ciclico generato dal gate di fase S = diag(1, i)."
+      "it-expert": "Il caso successivo è il gruppo ciclico generato dalla porta di fase S = diag(1, i)."
     }
   },
   {
@@ -1335,7 +1335,7 @@
     "sourceText": "namely G = {I, S, S2, S3}.The group has order fourand is isomorphic to the additive group modulo 4, Z4 ={0, 1, 2, 3}.Under this identification, the optimizationproblem (1) becomes mink kX \u0000 \u0001 utv⊤ (2) s.t.M = · Gt, t t=1 Gt ∈Z4, ut ∈{0, 1}m, vt ∈{0, 1}n, with all additions performed modulo 4. We denote theoptimal value of k by r4(M).",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "G={I,S,S²,S³}, gruppo di ordine 4 isomorfo a Z4={0,1,2,3}; con questa identificazione il problema (1) diventa un problema di decomposizione su Z4."
+      "it-expert": "Il gruppo è G = {I, S, S², S³}, di ordine quattro e isomorfo al gruppo additivo Z₄ = {0, 1, 2, 3}. Con questa identificazione il problema (1) diventa l'Eq. (2): minimizzare k tale che M = Σₜ (uₜvₜᵀ)·Gₜ, con Gₜ ∈ Z₄, uₜ ∈ {0,1}ᵐ, vₜ ∈ {0,1}ⁿ e somme modulo 4. Il valore ottimo di k si indica con r₄(M)."
     }
   },
   {
@@ -1353,7 +1353,7 @@
     "sourceText": "We present a polynomial-time algorithm that producesa decomposition of M using at most 3r4(M) terms. Theprocedure consists of two stages:",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Presentano un algoritmo polinomiale che produce una decomposizione con al più 3·r4(M) termini, in due stadi."
+      "it-expert": "L'algoritmo è polinomiale e usa al più 3·r₄(M) termini, in due stadi."
     }
   },
   {
@@ -1449,7 +1449,7 @@
     "sourceText": "1. Let M1 = M mod 2. Compute its rank over GF(2)and obtain a rank-one decomposition \u0010 \u0011⊤ k1X u(1) v(1) M1 = , t t t=1 where u(1) t∈{0, 1}m, v(1) t∈{0, 1}n.",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Stadio 1: sia M1 = M mod 2; se ne calcola il rango su GF(2) e si ottiene una decomposizione rank-one M1 = Σ_{t=1}^{k1} u_t^(1) (v_t^(1))^T, con u_t^(1)∈{0,1}^m, v_t^(1)∈{0,1}^n — esattamente l'algoritmo dei gate self-inverse applicato alla componente binaria di M."
+      "it-expert": "Nel primo stadio si prende M₁ = M mod 2, se ne calcola il rango su GF(2) e si ottiene M₁ = Σₜ₌₁^{k₁} uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ con vettori binari: è l'algoritmo delle porte autoinverse applicato alla parte dispari di M."
     },
     "recall": [
       {
@@ -1622,7 +1622,7 @@
     "sourceText": "2. Define \u0010 \u0011⊤ k1X u(1) v(1) M2 = M − (mod4), t t t=1 so that M2 ∈{0, 2}m×n.Compute the rank ofM2/2 over GF(2) and obtain \u0010 \u0011⊤ k2X 12M2 = u(2) v(2) , t t t=1 where u(2) t∈{0, 1}m, v(2) t∈{0, 1}n.",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Stadio 2: si definisce il residuo M2 = M − Σ 2·u_t^(1)(v_t^(1))^T (mod 4), che risulta in {0,2}^(m×n). Si calcola poi il rango di M2/2 su GF(2), ottenendo una seconda decomposizione con k2 termini."
+      "it-expert": "Nel secondo stadio si sottrae questa decomposizione: M₂ = M − Σₜ uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ (mod 4). Ora M₂ ∈ {0,2}ᵐˣⁿ, quindi M₂/2 è binaria; se ne calcola il rango su GF(2) e si ottiene ½M₂ = Σₜ₌₁^{k₂} uₜ⁽²⁾(vₜ⁽²⁾)ᵀ."
     }
   },
   {
@@ -1754,7 +1754,7 @@
     "sourceText": "Combining the two stages, we obtain a decomposition \u0010 \u0011⊤ \u0010 \u0011⊤ k1X k2X u(1) v(1) 2u(2)t v(2) (mod4),(3) M = + t t t t=1 t=1 which is valid under the constraints of (2).",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Equazione (3): combinando i due stadi si ottiene una decomposizione valida di M modulo 4, M = Σ_{t=1}^{k1} u_t^(1)(v_t^(1))^T + Σ_{t=1}^{k2} 2u_t^(2)(v_t^(2))^T, valida sotto i vincoli di (2)."
+      "it-expert": "Mettendo insieme i due stadi, l'Eq. (3) dà M = Σₜ₌₁^{k₁} uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ + Σₜ₌₁^{k₂} 2uₜ⁽²⁾(vₜ⁽²⁾)ᵀ (mod 4), una decomposizione ammessa dai vincoli di (2): i termini del secondo stadio applicano S²."
     }
   },
   {
@@ -1826,7 +1826,7 @@
     "sourceText": "Since by definition there exists a decomposition of Msatisfying the constraints of (2) using k = r4(M) terms,reducing each coeﬀicient modulo 2 produces a valid de-composition of M1 over GF(2): r4(M)X \u0000 \u0001 utv⊤ · (Gt mod 2) . M1 = t t=1 This immediately implies that k1 ≤r4(M).",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Poiché esiste per definizione una decomposizione ottima di M su Z4 con r4(M) termini, riducendola modulo 2 si ottiene una decomposizione valida di M1 su GF(2): questo implica immediatamente k1 ≤ r4(M)."
+      "it-expert": "Per il primo stadio il bound è immediato. Una decomposizione ottima di M con r₄(M) termini, ridotta modulo 2 nei coefficienti, è una decomposizione valida di M₁ su GF(2): M₁ = Σₜ (uₜvₜᵀ)·(Gₜ mod 2). Quindi k₁ ≤ r₄(M)."
     }
   },
   {
@@ -1910,7 +1910,7 @@
     "sourceText": "To analyze the second stage, it is convenient to intro-duce an auxiliary quantity ) ( kX utv⊤ t mod 4, ut ∈Zm 4 , vt ∈Zn4 , min k : M = t=1 (4)which is denoted by ρ4(M).In contrast to r4(M), itallows multiplication between elements of Z4 and thusendows Z4 with its standard ring structure. In the fol-lowing, ρ4(M) will serve as an intermediate measure tobound the number of rank-one terms produced in the sec-ond stage. A relationship between ρ4(M) and the matrixGF(2)-rank is formalized in the following lemma, whoseproof is given in Section A.",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Equazione (4): per analizzare il secondo stadio introducono una quantità ausiliaria ρ4(M), il minimo k per una decomposizione di M su Z4 dove però ai termini è permesso un fattore moltiplicativo in Z4 (a differenza di r4(M) che usa solo prodotti 0/1·G); ρ4 sfrutta la struttura d'anello di Z4 e servirà come misura intermedia per limitare k2."
+      "it-expert": "Per il secondo stadio serve una quantità ausiliaria, l'Eq. (4): ρ₄(M) è il minimo k tale che M = Σₜ uₜvₜᵀ mod 4 con uₜ ∈ Z₄ᵐ e vₜ ∈ Z₄ⁿ. A differenza di r₄(M), qui i vettori hanno entrate in Z₄ e si usa la moltiplicazione dell'anello Z₄. ρ₄ serve da misura intermedia per limitare k₂, e il suo legame con il rango su GF(2) è il lemma che segue, dimostrato nell'Appendice A."
     }
   },
   {
@@ -1952,7 +1952,7 @@
     "sourceText": "Lemma II.1. Suppose M ∈{0, 2}m×n and define N ∈{0, 1}m×n by ( 1,Mij = 2,0,Mij = 0. Nij = Then ρ4(M) is equal to the rank of N over GF(2).",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Lemma II.1: se M∈{0,2}^(m×n) e si definisce N∈{0,1}^(m×n) da N_ij=1 se M_ij=2 e N_ij=0 se M_ij=0, allora ρ4(M) è uguale al rango di N su GF(2) — collega la quantità ausiliaria ρ4 al rango GF(2), calcolabile con eliminazione gaussiana (dimostrazione in Appendice A)."
+      "it-expert": "Lemma II.1: se M ∈ {0,2}ᵐˣⁿ e N ∈ {0,1}ᵐˣⁿ vale 1 dove Mᵢⱼ = 2 e 0 dove Mᵢⱼ = 0, allora ρ₄(M) è uguale al rango di N su GF(2). In appendice lo stesso enunciato è chiamato Teorema II.1."
     }
   },
   {
@@ -2078,7 +2078,7 @@
     "sourceText": "Applying Theorem II.1 to M2 gives k2 = ρ4(M2). Byconstruction, M2 can be expressed as \u0010 \u0011 r4(M)X k1X u(1) v(1) (utv⊤ t ) · Gt − M2 = , t t t=1 t=1 which is a valid decomposition under the definition ofρ4(·). It then follows that k2 = ρ4(M2) ≤r4(M) + k1 ≤2r4(M). so that the total number of terms in the final decompo-sition (3) satisfies k1 + k2 ≤3r4(M).",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Applicando il Lemma II.1 a M2 si ottiene k2=ρ4(M2), e per costruzione M2 può essere espresso in modo da dare k2 = ρ4(M2) ≤ r4(M) + k1 ≤ 2·r4(M). Combinando con k1≤r4(M), il numero totale di termini della decomposizione finale soddisfa k1+k2 ≤ 3·r4(M) — il bound garantito per i gate di fase."
+      "it-expert": "Applicato a M₂, il lemma dà k₂ = ρ₄(M₂). D'altra parte M₂ = Σₜ₌₁^{r₄(M)} (uₜvₜᵀ)·Gₜ − Σₜ₌₁^{k₁} uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ è una decomposizione ammessa nella definizione di ρ₄, con r₄(M) + k₁ termini. Quindi k₂ = ρ₄(M₂) ≤ r₄(M) + k₁ ≤ 2r₄(M), e il totale della decomposizione (3) soddisfa k₁ + k₂ ≤ 3r₄(M)."
     }
   },
   {
@@ -2180,7 +2180,7 @@
     "sourceText": "Remark II.2. The vectors u(1) t , v(1) tobtained in the firststage provide some flexibility in the second stage. Specif-ically, one may alternatively define \u0012 \u0011⊤\u0013 \u0010 k1X u(1) v(1) M2 = M − · Gt t t t=1 for any choice Gt ∈{1, 3}, and in practice the coeﬀicientsGt can be selected to minimize k2.",
     "section": "II.A.3 Phase Gates",
     "explanations": {
-      "it-expert": "Osservazione II.2: i vettori u_t^(1),v_t^(1) ottenuti nel primo stadio offrono flessibilità nel secondo — si può definire M2 = M − Σ u_t^(1)(v_t^(1))^T·G_t per qualunque scelta di G_t∈{1,3}, e in pratica questi coefficienti possono essere scelti per minimizzare k2."
+      "it-expert": "Osservazione II.2: i vettori uₜ⁽¹⁾, vₜ⁽¹⁾ del primo stadio lasciano un grado di libertà. Si può definire M₂ = M − Σₜ (uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ)·Gₜ con qualunque scelta di Gₜ ∈ {1, 3}, cioè applicando S oppure S³, e in pratica si scelgono i Gₜ che minimizzano k₂."
     }
   },
   {
@@ -2210,7 +2210,7 @@
     "sourceText": "We now consider the single-qubit Clifford group gen-erated by {I, X, Y, Z, S, H}. Up to an irrelevant globalphase, any single-qubit Clifford operator admits a decom-position of the form U = PHaSb where P ∈{I, X, Y, Z}, a ∈{0, 1}, and b ∈{0, 1, 2, 3}.",
     "section": "II.A.4 Clifford Gates",
     "explanations": {
-      "it-expert": "Gruppo di Clifford a singolo qubit generato da {I,X,Y,Z,S,H}: a meno di una fase globale irrilevante, ogni operatore di Clifford a singolo qubit si decompone come U = P·H^a·S^b, con P∈{I,X,Y,Z}, a∈{0,1}, b∈{0,1,2,3}."
+      "it-expert": "Il gruppo di Clifford a singolo qubit è generato da {I, X, Y, Z, S, H}. A meno di una fase globale, ogni Clifford si scrive U = PHᵃSᵇ con P ∈ {I, X, Y, Z}, a ∈ {0, 1} e b ∈ {0, 1, 2, 3}."
     }
   },
   {
@@ -2228,7 +2228,7 @@
     "sourceText": "This factorization suggests a natural compilation strat-egy for Clifford gates on a neutral-atom array. In par-ticular, the Clifford compilation problem can be decom-posed into three independent subproblems correspondingto the implementation of phase gates, Hadamard gates,and Pauli gates. Concretely, we first realize the requiredphase-gate pattern using the algorithm developed in Sec-tion II A 3. We then implement the Hadamard gates us-ing the method for self-inverse gates described in Sec-tion II A 1. Finally, the remaining Pauli gates are syn-thesized using the approach presented in Section II A 2.",
     "section": "II.A.4 Clifford Gates",
     "explanations": {
-      "it-expert": "Questa fattorizzazione suggerisce una strategia naturale: il problema di compilazione dei Clifford si decompone in tre sottoproblemi indipendenti (gate di fase, Hadamard, Pauli), risolti rispettivamente con gli algoritmi delle Sezioni II.A.3, II.A.1 e II.A.2."
+      "it-expert": "La fattorizzazione suggerisce di dividere la compilazione in tre sottoproblemi indipendenti. Prima si realizza il pattern delle porte di fase con l'algoritmo della Sezione II.A.3, poi le Hadamard con il metodo per porte autoinverse della Sezione II.A.1, e infine le Pauli restanti con l'approccio della Sezione II.A.2."
     },
     "recall": [
       {
@@ -2257,7 +2257,7 @@
     "sourceText": "The modular decomposition enables the Clifford com-pilation problem to be addressed by combining special-ized algorithms for each gate family, each with provableperformance guarantees. As a result, the overall compi-lation procedure is eﬀicient, scalable, and well suited tothe row-column addressing constraints of neutral-atomarchitectures.",
     "section": "II.A.4 Clifford Gates",
     "explanations": {
-      "it-expert": "La decomposizione modulare permette di affrontare la compilazione dei Clifford combinando algoritmi specializzati per ciascuna famiglia, ciascuno con garanzie di prestazione dimostrabili — risultando efficiente, scalabile e adatto ai vincoli di addressing riga-colonna."
+      "it-expert": "Ciascun sottoproblema ha un algoritmo specializzato con garanzie dimostrabili, quindi anche la procedura complessiva è efficiente, scalabile e compatibile con l'addressing per righe e colonne."
     }
   },
   {
@@ -2311,7 +2311,7 @@
     "sourceText": "In this subsection, we consider the group generated bythe π 8 gate \" # 100 ei π4 T = .",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Gruppo generato dal gate T=π/8, T=diag(1, e^{iπ/4})."
+      "it-expert": "L'ultima famiglia è quella generata dalla porta π/8, T = diag(1, e^{iπ/4})."
     }
   },
   {
@@ -2395,7 +2395,7 @@
     "sourceText": "Analogous to the phase-gate group, this group is cyclicof order eight and is isomorphic to the additive groupmodulo 8, Z8 = {0, 1, 2, 3, 4, 5, 6, 7}. Under this identifi-cation, the compilation problem (1) reduces to mink kX \u0000 \u0001 utv⊤ (5) s.t.M = · Gt, t t=1 Gt ∈Z8, ut ∈{0, 1}m, vt ∈{0, 1}n,",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Il gruppo è ciclico di ordine 8, isomorfo a Z8={0,...,7}; con questa identificazione il problema (1) si riduce a un problema di decomposizione su Z8."
+      "it-expert": "Come per la fase, il gruppo è ciclico, qui di ordine otto, e isomorfo a Z₈ = {0, …, 7}. Il problema (1) diventa l'Eq. (5): minimizzare k tale che M = Σₜ (uₜvₜᵀ)·Gₜ, con Gₜ ∈ Z₈ e vettori di selezione binari."
     }
   },
   {
@@ -2413,7 +2413,7 @@
     "sourceText": "where all additions are performed modulo 8. We denotethe optimal value of k by r8(M).",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Si denota con r8(M) il valore ottimo di k per il problema (5)."
+      "it-expert": "Le somme sono modulo 8 e il valore ottimo di k si indica con r₈(M)."
     }
   },
   {
@@ -2431,7 +2431,7 @@
     "sourceText": "As in the phase-gate case, we adopt a two-stage de-composition strategy:",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Come per i gate di fase, adottano una strategia di decomposizione a due stadi."
+      "it-expert": "La strategia ripete i due stadi del caso della fase."
     }
   },
   {
@@ -2527,7 +2527,7 @@
     "sourceText": "1. Let M1 = M mod 2. Compute its rank over GF(2)and obtain a rank-one decomposition \u0010 \u0011⊤ k1X u(1) v(1) M1 = , t t t=1 where u(1) t∈{0, 1}m, v(1) t∈{0, 1}n.",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Stadio 1 (identico nella struttura al caso dei gate di fase): M1=M mod 2, calcolo del rango GF(2) e decomposizione rank-one M1=Σ_{t=1}^{k1} u_t^(1)(v_t^(1))^T."
+      "it-expert": "Nel primo stadio M₁ = M mod 2 viene decomposta su GF(2) con k₁ termini rank-one, M₁ = Σₜ₌₁^{k₁} uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ."
     }
   },
   {
@@ -2695,7 +2695,7 @@
     "sourceText": "2. Define \u0010 \u0011⊤ k1X u(1) v(1) M2 = M − (mod8), t t t=1 so that M2 ∈{0, 2, 4, 6}m×n. Apply the algorithmfor compiling phase gates and obtain \u0011⊤\u0013 \u0012 \u0010 k2X 12M2 = u(2) v(2) · Gt, t t t=1 where Gt ∈Z4, u(2) t∈{0, 1}m, v(2) t∈{0, 1}n.",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Stadio 2: M2 = M − Σ 2u_t^(1)(v_t^(1))^T (mod 8), risultando in {0,2,4,6}^(m×n); si applica poi l'algoritmo dei gate di fase (mod 4) a M2/2, ottenendo k2 termini con G_t∈Z4."
+      "it-expert": "Nel secondo stadio il residuo M₂ = M − Σₜ uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ (mod 8) ha entrate in {0, 2, 4, 6}, quindi M₂/2 è un pattern di fase su Z₄. L'algoritmo per le porte di fase lo decompone come ½M₂ = Σₜ₌₁^{k₂} (uₜ⁽²⁾(vₜ⁽²⁾)ᵀ)·Gₜ con Gₜ ∈ Z₄."
     }
   },
   {
@@ -2827,7 +2827,7 @@
     "sourceText": "Combining the two stages, we obtain a valid decomposi-tion \u0010 \u0011⊤ \u0010 \u0011⊤ k1X k2X u(1) v(1) (2Gt) u(2) v(2) M = + (mod8). t t t t t=1 t=1",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Combinando i due stadi si ottiene una decomposizione valida modulo 8: M = Σ u_t^(1)(v_t^(1))^T + Σ (2G_t) u_t^(2)(v_t^(2))^T (mod 8)."
+      "it-expert": "Insieme, i due stadi danno M = Σₜ₌₁^{k₁} uₜ⁽¹⁾(vₜ⁽¹⁾)ᵀ + Σₜ₌₁^{k₂} (2Gₜ)·uₜ⁽²⁾(vₜ⁽²⁾)ᵀ (mod 8)."
     }
   },
   {
@@ -2857,7 +2857,7 @@
     "sourceText": "As in the phase gate case, reducing an optimal Z8 de-composition modulo 2 implies k1 ≤r8(M). Moreover,applying the phase-gate algorithm to M2/2 yields k2 ≤3r4(M2/2).We conjecture that r4(M2/2) = r8(M2),which implies r4(M2/2) = r8(M2) ≤r8(M) + k1 ≤2r8(M). Under this conjecture, the total number of terms pro-duced by the algorithm satisfies k1 + k2 ≤7r8(M).",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Come nel caso della fase, k1≤r8(M); applicando l'algoritmo per la fase a M2/2 si ha k2≤3·r4(M2/2). Sotto la congettura r4(M2/2)=r8(M2) (non dimostrata), si ottiene k2≤2·r8(M) e quindi il bound totale k1+k2≤7·r8(M)."
+      "it-expert": "Come per la fase, ridurre modulo 2 una decomposizione ottima su Z₈ dà k₁ ≤ r₈(M), e l'algoritmo della fase su M₂/2 dà k₂ ≤ 3r₄(M₂/2). Gli autori congetturano che r₄(M₂/2) = r₈(M₂); in quel caso r₄(M₂/2) ≤ r₈(M) + k₁ ≤ 2r₈(M), quindi k₂ ≤ 6r₈(M) e il totale è k₁ + k₂ ≤ 7r₈(M). Il fattore 7 resta quindi condizionato alla congettura."
     },
     "recall": [
       {
@@ -2922,7 +2922,7 @@
     "sourceText": "Remark II.3. The recursive structure of the above al-gorithm extends naturally to the cyclic group generatedby a π/2p rotation, \" # 100 eiπ/2p Rp = , which is isomorphic to Z2p+1.Under this identifica-tion, the compilation problem reduces to an optimizationproblem analogous to (5), with the coeﬀicients satisfy-ing Gt ∈Z2p+1.One can then first reduce the targetmatrix modulo 2 and compute a rank-one decompositionover GF(2), as in the first stage of the phase- and π/8-gate algorithms. After subtracting this binary decompo-sition, all entries of the residual matrix become even, sothe residual can be divided by two and regarded as aninstance over Z2p. Repeating this procedure recursivelyreduces the original compilation problem to a sequenceof binary matrix decompositions and lower-order cyclic-group compilation problems.",
     "section": "II.A.5 π/8 Gates",
     "explanations": {
-      "it-expert": "Osservazione II.3: la struttura ricorsiva si estende naturalmente al gruppo ciclico generato da una rotazione π/2^p, isomorfo a Z_{2^(p+1)}. Riducendo ricorsivamente modulo 2 e dividendo per 2 il residuo, il problema si riduce a una sequenza di decomposizioni binarie e problemi di compilazione su gruppi ciclici di ordine inferiore."
+      "it-expert": "Osservazione II.3: la ricorsione si estende al gruppo ciclico generato da una rotazione di π/2ᵖ, Rₚ = diag(1, e^{iπ/2ᵖ}), isomorfo a Z_{2^{p+1}}. Si riduce il bersaglio modulo 2 e lo si decompone su GF(2); il residuo ha entrate tutte pari, si divide per due e diventa un'istanza su Z_{2^p}. Ripetendo, il problema si riduce a una sequenza di decomposizioni binarie e di problemi su gruppi ciclici di ordine minore."
     }
   },
   {
@@ -2940,7 +2940,7 @@
     "sourceText": "Unlike single-qubit gates, the execution of C-Z gatesrequires the participating qubits to be physically trans-ported to a designated entangling zone. Within this zone,",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "A differenza dei gate a singolo qubit, i C-Z richiedono di trasportare fisicamente i qubit coinvolti in una entangling zone dedicata. Lì il C-Z si può eseguire tra righe o colonne adiacenti di qubit; il trasporto via AOD (righe × colonne, intersezioni mosse in blocco) è descritto nel blocco successivo."
+      "it-expert": "Le C-Z, a differenza delle porte a singolo qubit, richiedono di portare fisicamente i qubit coinvolti in una zona di entangling dedicata."
     }
   },
   {
@@ -2958,7 +2958,7 @@
     "sourceText": "C-Z gates can be performed between adjacent rows orcolumns of qubits.An acousto-optic deflector (AOD)is used to extract multiple qubits from the atom arrayand transport them into the entangling zone. In a singletransport, several rows and columns of the atom arrayare selected, and all atoms located at their intersectionsare moved simultaneously. During the transport, the rel-ative positions of the selected atoms are preserved [20].The transportation process is illustrated in Figure 2.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Meccanismo di trasporto: un deflettore acusto-ottico (AOD) estrae più qubit dall'array e li trasporta nella zona di entangling; in un singolo trasporto si selezionano più righe/colonne e tutti gli atomi alle intersezioni si muovono simultaneamente, preservando le posizioni relative."
+      "it-expert": "Nella zona di entangling le C-Z si eseguono fra righe o colonne adiacenti. Un deflettore acusto-ottico (AOD) estrae i qubit dall'array: in un trasporto si selezionano più righe e colonne e tutti gli atomi alle intersezioni si spostano insieme, mantenendo le posizioni relative [20] (Fig. 2)."
     }
   },
   {
@@ -2982,7 +2982,7 @@
     "sourceText": "Entangling Zone FIG. 2: Illustration of qubit transport.In the origi-nal neutral-atom array, several qubits (highlighted withdarker colors) are selected by AOD and transported tothe entangling zone.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Didascalia Fig. 2: nell'array originale, alcuni qubit selezionati (evidenziati) vengono estratti dall'AOD e trasportati nella zona di entangling."
+      "it-expert": "Nella Fig. 2 i qubit evidenziati in colore più scuro sono selezionati dall'AOD nell'array di partenza e portati nella zona di entangling."
     }
   },
   {
@@ -3000,7 +3000,7 @@
     "sourceText": "In the entangling zone, C-Z gates are implementedby bringing two adjacent rows (or columns) of atomssuﬀiciently close such that their separation is smallerthan the characteristic Rydberg blockade radius.Inthis regime, corresponding atoms in the two rows (orcolumns) can undergo simultaneous C-Z gate operations.Consequently, the following constraints must be satisfiedwhen performing C-Z gates in the entangling zone:",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Nella zona di entangling, i C-Z si eseguono avvicinando due righe (o colonne) adiacenti a una distanza inferiore al raggio caratteristico di blocco di Rydberg, permettendo l'operazione simultanea su tutte le coppie corrispondenti."
+      "it-expert": "Lì due righe (o colonne) adiacenti vengono avvicinate a una distanza inferiore al raggio di blocco di Rydberg, e tutte le coppie di atomi corrispondenti eseguono la C-Z contemporaneamente. Ne seguono due vincoli."
     },
     "recall": [
       {
@@ -3029,7 +3029,7 @@
     "sourceText": "• C-Z gates can only be applied between vertically orhorizontally adjacent qubits.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Vincolo 1: i C-Z si possono applicare solo tra qubit adiacenti verticalmente o orizzontalmente."
+      "it-expert": "Primo vincolo: una C-Z si applica solo fra qubit adiacenti in verticale o in orizzontale."
     }
   },
   {
@@ -3047,7 +3047,7 @@
     "sourceText": "• C-Z gates must be executed simultaneously on allcorresponding atom pairs between two adjacentrows (or columns), rather than on only a subsetof those pairs.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Vincolo 2: i C-Z devono essere eseguiti simultaneamente su tutte le coppie corrispondenti tra due righe (o colonne) adiacenti, non su un sottoinsieme."
+      "it-expert": "Secondo vincolo: fra due righe (o colonne) adiacenti la C-Z agisce su tutte le coppie corrispondenti insieme, non su una parte di esse."
     }
   },
   {
@@ -3065,7 +3065,7 @@
     "sourceText": "Under the transportation and entangling constraints, aC-Z gate between two qubits located in different rows anddifferent columns cannot be implemented within a singletransport operation. To realize such C-Z gates, atomsselected from two rows are transported to the entanglingzone in two separate steps. The process is illustrated inFigure 3.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Un C-Z tra qubit in righe e colonne diverse non è realizzabile in un solo trasporto: richiede due trasporti separati (illustrato in Fig. 3)."
+      "it-expert": "Con questi vincoli, una C-Z fra due qubit in righe diverse e colonne diverse non si realizza con un solo trasporto: gli atomi delle due righe vanno portati nella zona di entangling in due passi separati (Fig. 3)."
     }
   },
   {
@@ -3082,7 +3082,7 @@
     ],
     "sourceText": "6",
     "explanations": {
-      "it-expert": "Numero di pagina (elemento decorativo del PDF)."
+      "it-expert": "Numero di pagina del PDF."
     }
   },
   {
@@ -3118,7 +3118,7 @@
     "sourceText": "① ② Entangling Zone FIG. 3: Transporting selected rows of qubits in two steps.After the transport operations, C-Z gates between qubitslocated in different rows and columns become column-aligned in the entangling zone, enabling their implemen-tation.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Didascalia Fig. 3: trasportando righe selezionate di qubit in due passi (①②), i C-Z tra qubit di righe e colonne diverse diventano allineati per colonna nella zona di entangling, rendendone possibile l'implementazione."
+      "it-expert": "Nella Fig. 3 le righe selezionate arrivano nella zona di entangling in due trasporti, ① e ②. Dopo i due spostamenti le C-Z fra qubit di righe e colonne diverse risultano allineate per colonna e si possono eseguire."
     }
   },
   {
@@ -3136,7 +3136,7 @@
     "sourceText": "Because qubit transport is both the most time-consuming operation and a dominant source of error inneutral-atom architectures, an essential goal of C-Z gatecompilation is to realize a given set of target C-Z gatesusing as few transport operations as possible.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "Il trasporto è sia l'operazione più lenta sia la principale fonte di errore nelle architetture ad atomi neutri: l'obiettivo della compilazione dei C-Z è quindi minimizzare il numero di operazioni di trasporto per un dato insieme di gate target."
+      "it-expert": "Il trasporto è l'operazione più lenta e una delle principali fonti di errore negli atomi neutri, quindi la compilazione delle C-Z punta a realizzare l'insieme di porte richieste con il minor numero di trasporti."
     },
     "recall": [
       {
@@ -3165,7 +3165,7 @@
     "sourceText": "Under the assumptions described above, C-Z gates nat-urally divide into two categories: row/column-aligned C-Z gates, which act on pairs of qubits within the samerow or the same column, and non-aligned C-Z gates,which couple qubits located in different rows and dif-ferent columns. We analyze these two cases separatelyand develop corresponding compilation strategies in thefollowing subsections. By combining these strategies, weultimately obtain a unified compilation framework ca-pable of realizing arbitrary patterns of C-Z gates on aneutral-atom quantum computer.",
     "section": "II.B C-Z Gates",
     "explanations": {
-      "it-expert": "I C-Z si dividono in due categorie: allineati (stessa riga o colonna) e non-allineati (righe e colonne diverse); le due strategie vengono sviluppate separatamente e poi combinate in un framework unificato."
+      "it-expert": "Le C-Z si dividono in due categorie: allineate, fra qubit della stessa riga o della stessa colonna, e non allineate, fra qubit in righe e colonne diverse. Le due categorie vengono trattate separatamente e poi combinate in un unico schema capace di realizzare qualunque pattern di C-Z."
     }
   },
   {
@@ -3183,7 +3183,7 @@
     "sourceText": "We consider the compilation problem for row-alignedC-Z gates, namely, implementing a set of C-Z gates inwhich each gate acts on a pair of qubits within the samerow of the atom array, while minimizing the numberof transport operations.The compilation problem forcolumn-aligned C-Z gates can be treated analogously.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Problema per i C-Z allineati su riga: implementare un insieme di gate che agiscono su coppie di qubit nella stessa riga, minimizzando le operazioni di trasporto (il caso colonna è analogo)."
+      "it-expert": "Per le C-Z allineate per riga si vuole realizzare un insieme di porte, ciascuna su due qubit della stessa riga, con il minimo numero di trasporti; il caso per colonna è identico."
     }
   },
   {
@@ -3201,7 +3201,7 @@
     "sourceText": "We first consider a simpler setting in which all C-Zgates act on qubits within a single row. Suppose the rowcontains n qubits, labeled 0, 1, . . . , n−1 from left to rightaccording to their spatial order in the array. Each C-Zgate is uniquely specified by an ordered pair (a, b) with0 ≤a < b ≤n −1, indicating that the gate acts onqubits a and b. Because the relative ordering of qubitsis preserved during transport, two C-Z gates (a1, b1) and(a2, b2) can be executed within a single transport oper-ation if and only if their corresponding intervals do notoverlap, namely",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Caso base a una riga di n qubit etichettati 0..n-1: un C-Z è la coppia ordinata (a,b), 0≤a<b≤n-1. Poiché l'ordine relativo dei qubit si preserva durante il trasporto, due gate (a1,b1) e (a2,b2) sono eseguibili nello stesso trasporto se e solo se gli intervalli corrispondenti non si sovrappongono."
+      "it-expert": "Si parte da una sola riga di n qubit, numerati 0, …, n−1 da sinistra a destra. Ogni C-Z è una coppia (a, b) con 0 ≤ a < b ≤ n−1. Poiché il trasporto conserva l'ordine relativo dei qubit, due porte (a₁, b₁) e (a₂, b₂) stanno nello stesso trasporto se e solo se i loro intervalli non si sovrappongono."
     }
   },
   {
@@ -3219,7 +3219,7 @@
     "sourceText": "(a1, b1) ∩(a2, b2) = ∅,",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Condizione di compatibilità: (a1,b1)∩(a2,b2)=∅, interpretando ogni gate come l'intervallo aperto (a,b) sulla retta reale."
+      "it-expert": "In formula: (a₁, b₁) ∩ (a₂, b₂) = ∅."
     }
   },
   {
@@ -3237,7 +3237,7 @@
     "sourceText": "where each gate is identified with the open interval (a, b)on the real line.Under this interpretation, the physi-cal scheduling problem reduces to a purely combinato-rial one. Given a set of intervals {(ai, bi)}, the goal is",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Sotto questa interpretazione, lo scheduling fisico si riduce a un problema puramente combinatorio: dato un insieme di intervalli, partizionarli nel minimo numero di gruppi tali che nessuna coppia nello stesso gruppo si intersechi."
+      "it-expert": "Ogni porta si identifica con l'intervallo aperto (a, b) sulla retta reale, e lo scheduling fisico diventa un problema combinatorio: dato un insieme di intervalli, partizionarlo nel minor numero di gruppi senza intersezioni interne."
     }
   },
   {
@@ -3255,7 +3255,7 @@
     "sourceText": "to partition them into the minimum number of groupssuch that no two intervals within the same group inter-sect. From a graph-theoretic perspective, this is preciselythe graph-coloring problem on an interval graph, whosevertices correspond to the intervals (ai, bi), with edgesconnecting pairs of overlapping intervals. Since intervalgraphs are perfect [21], their chromatic number, namely,the minimum number of colors required so that adja-cent vertices receive different colors, can be computed inpolynomial time by sorting the intervals and greedily as-signing colors. The resulting coloring directly yields anoptimal transport schedule for the corresponding set ofC–Z gates.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Questo è esattamente il problema di colorazione di grafi su un grafo a intervalli (vertici = intervalli, archi = coppie che si sovrappongono). I grafi a intervalli sono perfetti, quindi il numero cromatico si calcola in tempo polinomiale ordinando gli intervalli e assegnando colori greedy — la colorazione risultante è direttamente uno scheduling ottimo del trasporto."
+      "it-expert": "È la colorazione di un grafo a intervalli, con un vertice per intervallo e un arco fra intervalli sovrapposti. I grafi a intervalli sono perfetti [21], quindi il numero cromatico si calcola in tempo polinomiale ordinando gli intervalli e assegnando i colori in modo greedy. La colorazione dà direttamente uno scheduling ottimo dei trasporti per quelle C-Z."
     },
     "recall": [
       {
@@ -3284,7 +3284,7 @@
     "sourceText": "When the set of row-aligned C-Z gates involves m dif-ferent rows, a straightforward approach is to implementthe gates row by row using the strategy described inthe previous paragraph. Here, we present an alternativemethod that exploits the structure of qubit transport andthe self-inverse property of C-Z gates.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Per m righe diverse coinvolte, un approccio diretto è applicare la strategia riga-per-riga. Presentano un metodo alternativo che sfrutta la struttura del trasporto e la self-inversione dei C-Z."
+      "it-expert": "Quando le C-Z occupano m righe diverse, la via diretta è applicare la colorazione riga per riga. Il metodo alternativo sfrutta invece la struttura del trasporto e il fatto che la C-Z è autoinversa."
     }
   },
   {
@@ -3302,7 +3302,7 @@
     "sourceText": "Specifically, the row-aligned C-Z gates acting on anm×n atom array can be represented by an m×n(n−1)/2binary matrix M. The columns of M are indexed by or-dered pairs (a, b) with 0 ≤a < b ≤n −1. The entryMi,(a,b) equals 1 (respectively, 0) if a C-Z gate is (respec-tively, is not) applied between qubits a and b in the i-throw. An illustration example is shown in Figure 4.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "I C-Z allineati su un array m×n si rappresentano con una matrice binaria M di dimensione m×n(n-1)/2, indicizzata per colonne dalle coppie ordinate (a,b); M_{i,(a,b)}=1 se il gate è applicato tra i qubit a,b nella riga i (esempio in Fig. 4)."
+      "it-expert": "Le C-Z allineate su un array m×n si codificano in una matrice binaria M di dimensione m × n(n−1)/2, con colonne indicizzate dalle coppie (a, b), 0 ≤ a < b ≤ n−1: Mᵢ,₍ₐ,b₎ = 1 se nella riga i c'è una C-Z fra i qubit a e b (Fig. 4)."
     }
   },
   {
@@ -3320,7 +3320,7 @@
     "sourceText": "FIG. 4: Encoding a set of C-Z gates into a binary matrixrepresentation.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Didascalia Fig. 4: codifica di un insieme di gate C-Z in rappresentazione matriciale binaria."
+      "it-expert": "Nella Fig. 4, su tre righe di quattro qubit, gli archi a sinistra sono le C-Z richieste e la tabella a destra è la matrice binaria che le codifica, con colonne (0,1), (0,2), (0,3), (1,2), (1,3), (2,3)."
     }
   },
   {
@@ -3338,7 +3338,7 @@
     "sourceText": "Then, the matrix is partitioned according to its columnindexes, such that any two indexes (interpreted as inter-vals) within the same group are disjoint. This groupingcan be obtained in two steps:",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "La matrice viene poi partizionata per indice di colonna, in modo che due indici (interpretati come intervalli) nello stesso gruppo siano disgiunti — ottenibile in due passi."
+      "it-expert": "Poi si partizionano le colonne di M in gruppi in cui gli indici, letti come intervalli, sono a due a due disgiunti. Il raggruppamento richiede due passi."
     }
   },
   {
@@ -3356,7 +3356,7 @@
     "sourceText": "1. Collect the indexes of all nonzero columns.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Passo 1: raccogliere gli indici di tutte le colonne non nulle."
+      "it-expert": "Si raccolgono gli indici di tutte le colonne non nulle."
     }
   },
   {
@@ -3374,7 +3374,7 @@
     "sourceText": "2. Interpret these column indexes as open intervalsand apply interval-graph coloring to obtain a validgrouping.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Passo 2: interpretare questi indici come intervalli aperti e applicare la colorazione di grafi a intervalli per ottenere un raggruppamento valido."
+      "it-expert": "Si leggono questi indici come intervalli aperti e si colora il grafo a intervalli corrispondente: ogni colore è un gruppo valido."
     }
   },
   {
@@ -3398,7 +3398,7 @@
     "sourceText": "For example, after removing all-zero columns, the matrixin Figure 4 can be grouped as follows: (0, 1) (1, 2)(0, 2)(0, 3)011001101020101",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Esempio: rimosse le colonne nulle, la matrice di Fig. 4 si raggruppa come mostrato (gruppi di colonne compatibili)."
+      "it-expert": "Nell'esempio della Fig. 4, tolte le colonne nulle, i gruppi sono {(0,1), (1,2)}, {(0,2)} e {(0,3)}."
     }
   },
   {
@@ -3422,7 +3422,7 @@
     "sourceText": "Note that within each group, any collection of C-Z gatescorresponding to a rank-1 pattern can be implementedusing a single transport operation. Moreover, since the C-Z gate is self-inverse, Gaussian elimination can beapplied to determine the minimum number of trans-port operations required to realize the desired gate setwithin each group. Combining the implementations forall groups then yields a complete procedure for executingthe full set of C-Z gates.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "All'interno di ogni gruppo, un pattern di C-Z rank-1 è implementabile con un solo trasporto; poiché il C-Z è self-inverso, l'eliminazione gaussiana determina il numero minimo di trasporti necessari per il gruppo — combinando tutti i gruppi si ottiene la procedura completa."
+      "it-expert": "Dentro un gruppo, ogni insieme di C-Z con pattern di rango 1 si realizza con un solo trasporto. Poiché la C-Z è autoinversa, l'eliminazione gaussiana su GF(2) dà il numero minimo di trasporti per il gruppo, come per le porte autoinverse a singolo qubit; unendo i gruppi si ottiene la procedura completa."
     },
     "recall": [
       {
@@ -3450,7 +3450,7 @@
     ],
     "sourceText": "7",
     "explanations": {
-      "it-expert": "Numero di pagina."
+      "it-expert": "Numero di pagina del PDF."
     }
   },
   {
@@ -3468,7 +3468,7 @@
     "sourceText": "In the above example, the first group of columns hasrank two, whereas the remaining two groups each haverank one. Consequently, the entire set of C-Z gates canbe implemented using a total of 4 transport operations.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Nell'esempio, il primo gruppo di colonne ha rango 2, gli altri due rango 1: l'intero insieme di C-Z si implementa con un totale di 4 operazioni di trasporto."
+      "it-expert": "Nell'esempio il primo gruppo ha rango due e gli altri due rango uno, quindi tutte le C-Z richiedono 4 trasporti."
     }
   },
   {
@@ -3486,7 +3486,7 @@
     "sourceText": "Remark II.4. We now present a unified perspectivethat encompasses both the row-by-row method and thegrouping-and-elimination method.Specifically, the rowindexes can first be partitioned into k groups, where the i-th group contains mi rows. The grouping-and-eliminationprocedure is then applied independently to each group.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Osservazione II.4: prospettiva unificata che comprende sia il metodo riga-per-riga sia quello raggruppa-ed-elimina — gli indici di riga si partizionano in k gruppi da m_i righe ciascuno, applicando la procedura di raggruppamento-eliminazione indipendentemente a ciascun gruppo."
+      "it-expert": "Osservazione II.4: i due metodi sono casi di uno schema unico. Si partizionano le righe in k gruppi, l'i-esimo con mᵢ righe, e si applica il raggruppamento con eliminazione a ciascun gruppo separatamente."
     }
   },
   {
@@ -3504,7 +3504,7 @@
     "sourceText": "From this viewpoint, the row-by-row method corre-sponds to the special case in which all mi = 1, whereasthe grouping-and-elimination method corresponds to thecase k = 1. In practice, heuristic strategies can be devel-oped to optimize the grouping of both rows and columnsof the matrix M, thereby reducing the overall transportcost.",
     "section": "II.B.1 C-Z allineati",
     "explanations": {
-      "it-expert": "Il metodo riga-per-riga corrisponde al caso speciale m_i=1 per tutti i, quello raggruppa-ed-elimina al caso k=1. In pratica si possono sviluppare euristiche per ottimizzare il raggruppamento di righe e colonne di M, riducendo ulteriormente il costo di trasporto."
+      "it-expert": "Il metodo riga per riga corrisponde a mᵢ = 1 per ogni i, quello con raggruppamento ed eliminazione a k = 1. In pratica si possono cercare euristiche che raggruppino righe e colonne di M in modo da ridurre ancora i trasporti."
     }
   },
   {
@@ -3521,7 +3521,7 @@
     ],
     "sourceText": "2.Non-aligned C-Z Gates",
     "explanations": {
-      "it-expert": "Inizio Sezione II.B.2, Non-aligned C-Z Gates."
+      "it-expert": "Titolo della Sezione II.B.2, dedicata alle C-Z non allineate."
     }
   },
   {
@@ -3539,7 +3539,7 @@
     "sourceText": "We consider the problem of implementing non-alignedC-Z gates, namely, C-Z gates acting on pairs of qubitslocated in different rows and columns of the atom ar-ray, with the goal of minimizing the number of transportoperations.",
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
-      "it-expert": "Problema per i C-Z non allineati: gate che agiscono su qubit in righe e colonne diverse, minimizzando le operazioni di trasporto."
+      "it-expert": "Le C-Z non allineate agiscono su qubit in righe e colonne diverse; anche qui l'obiettivo è il minimo numero di trasporti."
     }
   },
   {
@@ -3557,7 +3557,7 @@
     "sourceText": "We first consider the case of two rows of qubits, eachcontaining n qubits labeled 1, 2, . . . , n from left to right.An inter-row C-Z gate is uniquely specified by a pair(a1, a2), indicating that the gate acts on qubit a1 inthe first row and qubit a2 in the second row. Since therelative ordering of qubits within each row is preservedduring transport, two inter-row C-Z gates (a1, a2) and(b1, b2) can be executed within a single transport opera-tion if and only if their induced connections do not cross,i.e.,",
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
-      "it-expert": "Caso base a due righe di n qubit: un C-Z inter-riga è la coppia (a1,a2). Poiché l'ordine relativo entro ciascuna riga si preserva, due gate (a1,a2) e (b1,b2) sono eseguibili nello stesso trasporto se e solo se le connessioni indotte non si incrociano, cioè (a1-b1)(a2-b2)>0."
+      "it-expert": "Si parte da due righe di n qubit, numerati 1, …, n da sinistra a destra. Una C-Z fra le righe è una coppia (a₁, a₂): qubit a₁ nella prima riga, a₂ nella seconda. Poiché ogni riga conserva il proprio ordine durante il trasporto, due porte (a₁, a₂) e (b₁, b₂) stanno nello stesso trasporto se e solo se i collegamenti che inducono non si incrociano."
     }
   },
   {
@@ -3575,7 +3575,7 @@
     "sourceText": "(a1 −b1)(a2 −b2) > 0.",
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
-      "it-expert": "Condizione di non-incrocio: (a1-b1)(a2-b2)>0."
+      "it-expert": "In formula: (a₁ − b₁)(a₂ − b₂) > 0."
     }
   },
   {
@@ -3665,7 +3665,7 @@
     "sourceText": "Under this condition, the scheduling problem admits acombinatorial reformulation. Given a set of pairs S ⊂Z2 +, the task is to find the smallest integer k togetherwith a partition {S1, . . . , Sk} of S such that (a1−b1)(a2−b2) > 0, ∀(ai, bi) ∈Sj, i = 1, 2, j = 1, . . . , k. \u0010 1 , a(i)2\u0011 Let S = {a(1), . . . , a(m)} with a(i) = a(i) . We sort these points by non-decreasing order of a(i) 1 , breaking tiesby decreasing a(i) 2 , and define the resulting sequence xi = a(i) 2 ,i = 1, · · · , m.",
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
-      "it-expert": "Riformulazione combinatoria: dato un insieme di coppie S, trovare la partizione {S1,...,Sk} di cardinalità minima tale che entro ciascun sottoinsieme la condizione di non-incrocio valga per ogni coppia di elementi."
+      "it-expert": "Il problema diventa combinatorio: dato S ⊂ Z₊², trovare il minimo k e una partizione {S₁, …, Sₖ} di S in cui ogni coppia di elementi dello stesso Sⱼ soddisfa la condizione di non incrocio. Per risolverlo si ordinano i punti a⁽ⁱ⁾ = (a₁⁽ⁱ⁾, a₂⁽ⁱ⁾) per a₁⁽ⁱ⁾ non decrescente, a parità per a₂⁽ⁱ⁾ decrescente, e si definisce la sequenza xᵢ = a₂⁽ⁱ⁾, i = 1, …, m."
     }
   },
   {
@@ -3683,7 +3683,7 @@
     "sourceText": "Under this ordering, each subset Sj corresponds to astrictly increasing subsequence of (x1, . . . , xm).Con-sequently, the minimum number of transport opera-tions is equal to the minimum number of strictly in-creasing subsequences required to partition the sequence(x1, . . . , xm).This quantity can be computed opti-mally using a greedy algorithm with time complexityO(m log m).",
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
-      "it-expert": "Il numero minimo di operazioni di trasporto è quindi uguale al numero minimo di sottosequenze strettamente crescenti necessarie per partizionare la sequenza — calcolabile in modo ottimo con un algoritmo greedy in tempo O(m log m)."
+      "it-expert": "Con questo ordinamento ogni Sⱼ è una sottosequenza strettamente crescente di (x₁, …, xₘ); l'ordine decrescente a parità di a₁ impedisce che due porte sullo stesso qubit della prima riga finiscano nello stesso gruppo. Il minimo numero di trasporti è quindi il minimo numero di sottosequenze strettamente crescenti che partizionano la sequenza, calcolabile in modo ottimo con un algoritmo greedy in O(m log m)."
     },
     "recall": [
       {
@@ -3712,7 +3712,7 @@
     "sourceText": "Consequently, a straightforward strategy for compilingnon-aligned C-Z gates is to process the gates row pair byrow pair. Specifically, for each pair of rows, all requiredinter-row C-Z gates are implemented using the methoddescribed above.",
     "section": "II.B.2 C-Z non allineati",
     "explanations": {
-      "it-expert": "Strategia pratica per i C-Z non allineati generali: processare le coppie di righe una alla volta, applicando il metodo sopra a ciascuna coppia."
+      "it-expert": "Per C-Z non allineate qualsiasi, la strategia diretta tratta le righe a coppie: per ogni coppia di righe si eseguono tutte le C-Z fra le due con il metodo appena descritto."
     }
   },
   {
@@ -3730,7 +3730,7 @@
     "sourceText": "By combining the two cases discussed above, arbitraryC-Z gates on a neutral-atom array can be scheduled eﬀi-ciently.",
     "section": "II.B.3 Scheduling generale",
     "explanations": {
-      "it-expert": "Combinando i due casi (allineati e non-allineati) si ottiene uno scheduling efficiente per C-Z arbitrari su un array ad atomi neutri."
+      "it-expert": "Combinando il caso allineato e quello non allineato si schedulano in modo efficiente C-Z arbitrarie sull'array."
     }
   },
   {
@@ -3748,7 +3748,7 @@
     "sourceText": "First, all non-aligned C-Z gates are scheduled row pairby row pair using the method described in Section II B 2.During this process, some row- or column-aligned C-Zgates may also be executed without requiring additionaltransport operations.The remaining row-aligned andcolumn-aligned gates are then scheduled separately us-ing the approach developed in Section II B 1.",
     "section": "II.B.3 Scheduling generale",
     "explanations": {
-      "it-expert": "Procedura completa: prima si schedulano tutti i C-Z non-allineati riga-coppia per riga-coppia (Sezione II.B.2) — nel processo alcuni C-Z allineati vengono già eseguiti gratuitamente; i rimanenti C-Z allineati (riga/colonna) si schedulano poi con l'approccio della Sezione II.B.1."
+      "it-expert": "Prima si schedulano tutte le C-Z non allineate, coppia di righe per coppia di righe, come nella Sezione II.B.2; in questo passaggio alcune C-Z allineate per riga o per colonna possono essere eseguite senza trasporti aggiuntivi. Le C-Z allineate rimaste si schedulano poi a parte con il metodo della Sezione II.B.1."
     }
   },
   {
@@ -3766,7 +3766,7 @@
     "sourceText": "The Quantum Approximation Optimization Algo-rithm (QAOA) circuit for the MaxCut problem is ap-layer parameterized quantum-classical hybrid circuit.Each layer consists of a fixed gate sequence, with rota-tion angles determined by a parameter pair (γ, β) thatgoverns the controlled-phase (Zγ) and Rx gates. An ex-ample graph and the corresponding single-layer QAOA-MaxCut circuit are shown in Figure 5.",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Il circuito QAOA per MaxCut è un circuito ibrido quantistico-classico parametrico a p layer; ogni layer ha una sequenza fissa di gate con angoli di rotazione determinati dalla coppia di parametri (γ,β) che governa i gate controlled-phase (Zγ) e Rx (esempio in Fig. 5)."
+      "it-expert": "Il circuito QAOA per MaxCut è un circuito ibrido quantistico-classico parametrizzato con p layer. Ogni layer ha una sequenza fissa di porte, con angoli fissati dalla coppia (γ, β): γ per le controlled-phase Zγ, β per le Rₓ. La Fig. 5 mostra un grafo di esempio e il corrispondente circuito a un layer."
     }
   },
   {
@@ -3802,7 +3802,7 @@
     "sourceText": "Here, the controlled-Zγ gate is defined as Zγ Rz(γ) :=",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Il gate controlled-Zγ è definito come Zγ := Rz(γ)."
+      "it-expert": "La controlled-Zγ è definita come una Rz(γ) sul secondo qubit racchiusa fra due CNOT con lo stesso controllo."
     }
   },
   {
@@ -3826,7 +3826,7 @@
     "sourceText": "Each controlled-Zγ gate is symmetric on the two tar-get qubits and commutes with all other controlled-Zγgates, allowing flexible rearrangement when multiplegates share qubits. On neutral-atom quantum comput-ers, the gate can be further decomposed into a sequenceof native C-Z and single-qubit gates: HZHRz(γ)HZH",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Ogni controlled-Zγ è simmetrico sui due qubit target e commuta con gli altri controlled-Zγ, permettendo un riarrangiamento flessibile quando più gate condividono qubit; su atomi neutri si decompone in una sequenza di gate C-Z e a singolo qubit nativi: H·Z·H·Rz(γ)·H·Z·H."
+      "it-expert": "Ogni controlled-Zγ è simmetrica nei due qubit e commuta con tutte le altre controlled-Zγ, quindi le porte che condividono qubit si possono riordinare liberamente. Sugli atomi neutri si scompone in porte native, scrivendo ogni CNOT come H·C-Z·H sul bersaglio: sul secondo qubit la sequenza è H, Z, H, Rz(γ), H, Z, H, dove Z indica la C-Z con il primo qubit."
     }
   },
   {
@@ -3874,7 +3874,7 @@
     "sourceText": "Consider two controlled-Zγ with one common targetqubit, the circuit on these three qubits can be arranged 8 as HZHRz(γ)HZH HZHRz(γ)HZH where we use the facts that controlled-Zγ gate is sym-metric on the two target qubits and C-Z gates commute.More generally, if a set of controlled-Zγ gates correspondsto a graph with paths no longer than 1, i.e., a star forestin graph theory, then the corresponding quantum circuitcan be arranged in a layered structure as",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Esempio con due controlled-Zγ che condividono un qubit target: sfruttando simmetria e commutatività dei C-Z, il circuito sui tre qubit si riorganizza in una struttura a strati H-Z-H-Rz(γ)-H-Z-H condivisa."
+      "it-expert": "Con due controlled-Zγ che condividono un qubit, simmetria e commutatività delle C-Z permettono di disporre il circuito sui tre qubit con i blocchi H, Z, H, Rz(γ), H, Z, H allineati negli stessi strati. Più in generale questo vale quando le controlled-Zγ formano un grafo senza cammini di lunghezza maggiore di 1, cioè una star forest."
     }
   },
   {
@@ -3898,7 +3898,7 @@
     "sourceText": "HZHRHZH(6) Here, H, Z, and R denote sets of Hadamard, C-Z, andRz gates, respectively. Each block can be compiled inde-pendently using the algorithms developed in Section II",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Equazione (6): più in generale, se un insieme di controlled-Zγ corrisponde a un grafo con cammini di lunghezza al più 1 (una 'star forest' in teoria dei grafi), il circuito si organizza in strati H-Z-H-R-H-Z-H, dove H, Z, R denotano insiemi di gate Hadamard, C-Z e Rz rispettivamente — ogni blocco compilabile indipendentemente con gli algoritmi della Sezione II."
+      "it-expert": "Per una star forest il circuito prende la forma a strati dell'Eq. (6), H Z H R H Z H, dove H, Z e R sono insiemi di Hadamard, C-Z e Rz. Ogni strato si compila da solo con gli algoritmi della Sezione II: le Hadamard come porte autoinverse, le C-Z con lo scheduling dei trasporti."
     },
     "recall": [
       {
@@ -3927,7 +3927,7 @@
     "sourceText": "In summary, our compilation of QAOA-MaxCut cir-cuits proceeds in two stages: (i) the input graph is de-composed into a collection of star forests; (ii) for eachstar forest, the associated Hadamard, C-Z, and Rz layersare compiled independently.Star-forest decompositionis performed via a greedy edge-ordering heuristic alignedwith the qubit layout, as described in Section B. TheHadamard layer at the end of a star-forest subcircuit canbe merged with the Hadamard layer at the beginning ofthe subsequent subcircuit to reduce depth.",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "La compilazione di QAOA-MaxCut procede in due stadi: (i) il grafo di input viene decomposto in una collezione di star forest (euristica greedy di ordinamento degli archi allineata al layout dei qubit, dettagliata in Appendice B); (ii) per ciascuna star forest si compilano indipendentemente i layer Hadamard, C-Z e Rz. Il layer Hadamard finale di una sotto-circuito si può fondere con quello iniziale del successivo per ridurre la profondità."
+      "it-expert": "La compilazione di QAOA-MaxCut ha quindi due stadi: il grafo di input viene scomposto in star forest, e per ciascuna si compilano separatamente gli strati di Hadamard, C-Z e Rz. La scomposizione usa un'euristica greedy che ordina gli archi seguendo il layout dei qubit (Appendice B). Lo strato di Hadamard finale di una star forest si fonde con quello iniziale della successiva, riducendo la profondità."
     }
   },
   {
@@ -3945,7 +3945,7 @@
     "sourceText": "In this section, we evaluate the performance of theproposed compilation methods through numerical exper-iments. The results demonstrate both the effectivenessof our algorithm in reducing circuit layers and transportoperations, and their practical computational eﬀiciency.",
     "section": "IV. Numerical Experiments",
     "explanations": {
-      "it-expert": "Valutazione sperimentale del metodo: efficacia nella riduzione di layer di circuito/operazioni di trasporto ed efficienza computazionale pratica."
+      "it-expert": "Gli esperimenti numerici devono mostrare due cose: che i metodi riducono layer e trasporti, e che la compilazione è veloce in pratica."
     }
   },
   {
@@ -3963,7 +3963,7 @@
     "sourceText": "Our experiments consist of five parts. We first com-pare our single-qubit gate compilation scheme with anaïve row-by-row or column-by-column strategy.Wethen use small-scale instances to empirically verify the4/3-optimality for Pauli gate compilation. Next, we eval-uate the proposed scheduling algorithm for C-Z gates.We further apply the full compilation pipeline to QAOA-MaxCut circuits to assess its performance. Finally, wemeasure the runtime of the compilation procedures forboth single-qubit and C-Z gates under different arraysizes, illustrating their scalability.",
     "section": "IV. Numerical Experiments",
     "explanations": {
-      "it-expert": "Cinque esperimenti: confronto con strategia naive riga/colonna per i gate a singolo qubit; verifica empirica della 4/3-ottimalità per i gate di Pauli; valutazione dello scheduling C-Z; applicazione della pipeline completa a QAOA-MaxCut; misura del runtime di compilazione al variare della dimensione dell'array."
+      "it-expert": "Gli esperimenti sono cinque: confronto della compilazione a singolo qubit con la strategia naïve per righe o per colonne; verifica empirica del fattore 4/3 per le Pauli su istanze piccole; valutazione dello scheduling delle C-Z; applicazione della pipeline completa a QAOA-MaxCut; misura del tempo di compilazione, per singolo qubit e C-Z, al crescere dell'array."
     }
   },
   {
@@ -3981,13 +3981,13 @@
     "sourceText": "We evaluate the performance of the proposed single-qubit gate compilation methods through numerical ex-periments.For each gate family, we generate random",
     "section": "IV.A Valutazione gate singolo qubit",
     "explanations": {
-      "it-expert": "Valutazione numerica della compilazione dei gate a singolo qubit: per ciascuna famiglia di gate si generano matrici pattern M casuali sul gruppo corrispondente, con n da 10 a 200 e 100 istanze per dimensione (dettagli del campionamento nel blocco successivo)."
+      "it-expert": "Per la compilazione a singolo qubit, per ogni famiglia di porte si generano matrici di pattern casuali sul gruppo corrispondente."
     }
   },
   {
     "id": "p0128",
     "page": 8,
-    "order": 128,
+    "order": 133,
     "rects": [
       [
         0.4894918304642821,
@@ -4029,13 +4029,13 @@
     "sourceText": "q0HZγZγRx(β) q1HZγZγRx(β) q2HRx(β) q3HZγRx(β) q4HRx(β) FIG. 5: Example graph and QAOA-MaxCut circuit for a single layer.",
     "section": "III. QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Fig. 5: grafo di esempio e relativo circuito QAOA-MaxCut a un layer (righe q0..q4 con sequenze di gate H, Zγ, Rx(β))."
+      "it-expert": "La Fig. 5, citata nella Sezione III, mostra un grafo con cinque vertici e archi 0–1, 0–4, 1–2, 1–4, 3–4, e il circuito QAOA-MaxCut a un layer: Hadamard su q₀…q₄, una controlled-Zγ per ogni arco, e Rₓ(β) su ogni qubit."
     }
   },
   {
     "id": "p0130",
     "page": 8,
-    "order": 130,
+    "order": 135,
     "rects": [
       [
         0.5179965947967728,
@@ -4047,13 +4047,13 @@
     "sourceText": "To empirically validate the theoretical 4/3-optimalityguarantee for Pauli gates compilation, we conduct nu-merical experiments on small-scale instances.Specifi-cally, for atom arrays of sizes 4 × 4, 4 × 5, 5 × 5, and5 × 6, we randomly generate Pauli gates acting on eachatom.For each instance, the optimal implementationsolution is obtained via exhaustive search and comparedagainst the output of our algorithm by computing theratio of required operations.",
     "section": "IV.B Verifica 4/3-ottimalità",
     "explanations": {
-      "it-expert": "Per validare empiricamente il bound teorico di 4/3-ottimalità sui gate di Pauli, conducono esperimenti su istanze a piccola scala (array 4×4, 4×5, 5×5, 5×6): per ciascuna istanza la soluzione ottima è ottenuta per ricerca esaustiva e confrontata con l'output dell'algoritmo tramite il rapporto tra operazioni richieste."
+      "it-expert": "Per verificare il fattore 4/3 sulle Pauli si usano array piccoli, 4×4, 4×5, 5×5 e 5×6, con una Pauli casuale su ogni atomo. L'ottimo di ogni istanza si trova per ricerca esaustiva e si confronta con l'algoritmo tramite il rapporto fra numero di operazioni."
     }
   },
   {
     "id": "p0131",
     "page": 8,
-    "order": 131,
+    "order": 130,
     "rects": [
       [
         0.12436601227405024,
@@ -4065,13 +4065,13 @@
     "sourceText": "FIG. 6: Randomly generated matrix patterns.",
     "section": "IV.B Verifica 4/3-ottimalità",
     "explanations": {
-      "it-expert": "Didascalia Fig. 6: pattern di matrici generate casualmente usate nei test."
+      "it-expert": "La Fig. 6 mostra tre pattern generati così, a 2, 4 e 8 valori."
     }
   },
   {
     "id": "p0132",
     "page": 8,
-    "order": 132,
+    "order": 136,
     "rects": [
       [
         0.5179965947967728,
@@ -4083,13 +4083,13 @@
     "sourceText": "Since the ratios take values from a small discrete set,we visualize their frequency and cumulative frequency inFigure 8. Separate histograms are shown for each arraysize, illustrating the occurrence of different approxima-tion ratios.Together, these results provide numericalevidence supporting the 4/3-optimality bound on smallinstances.",
     "section": "IV.B Verifica 4/3-ottimalità",
     "explanations": {
-      "it-expert": "Poiché i rapporti assumono valori da un piccolo insieme discreto, ne visualizzano frequenza e frequenza cumulativa in istogrammi separati per dimensione dell'array (Fig. 8), a supporto empirico del bound di 4/3-ottimalità su piccole istanze."
+      "it-expert": "I rapporti assumono pochi valori discreti, quindi la Fig. 8 ne mostra frequenza e frequenza cumulata, con un istogramma per dimensione dell'array. Sono un'evidenza numerica a favore del bound 4/3 sulle istanze piccole."
     }
   },
   {
     "id": "p0133",
     "page": 8,
-    "order": 133,
+    "order": 128,
     "rects": [
       [
         0.08823529411764706,
@@ -4107,13 +4107,13 @@
     "sourceText": "pattern matrices M over the corresponding group, withmatrix dimensions ranging from n = 10 to n = 200. Foreach dimension n, 100 independent instances are sam-pled. To reflect locally correlated gate patterns, the randommatrices are generated as follows.We first sample asparse binary matrix with a prescribed density. This pat-tern is then smoothed using a Gaussian filter to introduceshort-range correlations, followed by thresholding to ob-tain a binary support.Finally, each nonzero entry ismapped uniformly at random to an element of the targetgate set, producing the final pattern matrix. Examplesare shown in Figure 6.",
     "section": "IV.A Valutazione gate singolo qubit",
     "explanations": {
-      "it-expert": "Matrici pattern generate su gruppi corrispondenti, dimensioni da n=10 a n=200, 100 istanze indipendenti per dimensione. Per riflettere pattern di gate localmente correlati: si campiona una matrice binaria sparsa con densità prescritta, la si smussa con un filtro gaussiano per introdurre correlazioni a corto raggio, si sogliano i valori per ottenere un supporto binario, e infine si mappa ogni entrata non-nulla a un elemento casuale del gruppo target (esempi in Fig. 6)."
+      "it-expert": "Le matrici vanno da n = 10 a n = 200, con 100 istanze indipendenti per ogni n. Per avere pattern correlati localmente si campiona una matrice binaria sparsa con densità fissata, la si smussa con un filtro gaussiano e la si riporta a binaria con una soglia; infine ogni entrata non nulla riceve un elemento casuale uniforme della famiglia di porte (esempi in Fig. 6)."
     }
   },
   {
     "id": "p0135",
     "page": 8,
-    "order": 135,
+    "order": 137,
     "rects": [
       [
         0.5179966945274204,
@@ -4125,13 +4125,13 @@
     "sourceText": "In our numerical evaluation of C-Z gate compilation,we consider neutral-atom arrays of size n×n with n rang-ing from 10 to 200. For each array size, a random set ofrequired C-Z gates is generated by independently includ-ing each pair of atoms with probability 8/n2. With thischoice, the expected number of C-Z gates scales quadrat-ically with the array size n, or equivalently linearly withthe total number of atoms. This keeps the gate densitycomparable across different array sizes.",
     "section": "IV.C Valutazione C-Z",
     "explanations": {
-      "it-expert": "Array n×n con n da 10 a 200; per ciascuna dimensione, un insieme casuale di C-Z richiesti generato includendo indipendentemente ogni coppia di atomi con probabilità 8/n² — così il numero atteso di gate scala quadraticamente con n (linearmente col numero totale di atomi), mantenendo la densità di gate comparabile tra le diverse scale."
+      "it-expert": "Per le C-Z gli array sono n×n con n da 10 a 200, e ogni coppia di atomi riceve una C-Z con probabilità indipendente 8/n². Il numero atteso di porte cresce quindi come n², cioè linearmente nel numero di atomi, e la densità di porte resta comparabile fra le dimensioni."
     }
   },
   {
     "id": "p0136",
     "page": 8,
-    "order": 136,
+    "order": 131,
     "rects": [
       [
         0.0882352878844816,
@@ -4143,13 +4143,13 @@
     "sourceText": "We compare our methods with a naïve strategy thatapplies single-qubit gates independently row-by-row orcolumn-by-column. For each instance, we record the to-tal number of required operations. We report the averageoperation count with one standard deviation, as well asthe ratio between our methods and the naïve method.We conduct this evaluation for four representative gatefamilies: self-inverse gates, Pauli gates, phase gates, andπ/8 gates. The results are summarized in Figure 7, wherethe upper panels show the average operation counts andthe lower panels show the corresponding ratios.",
     "section": "IV.C Valutazione C-Z",
     "explanations": {
-      "it-expert": "Confronto con una strategia naive che applica i C-Z riga-per-riga o colonna-per-colonna; valutazione su quattro famiglie rappresentative (self-inverse, Pauli, fase, π/8), riepilogata in Fig. 7 (conteggi medi sopra, rapporti sotto)."
+      "it-expert": "Il confronto è con una strategia naïve che applica le porte a singolo qubit una riga o una colonna alla volta. Per ogni istanza si conta il totale delle operazioni e si riportano media, deviazione standard e rapporto fra metodo proposto e naïve, per quattro famiglie: autoinverse, Pauli, fase e π/8. La Fig. 7 mostra i conteggi medi in alto e i rapporti in basso."
     }
   },
   {
     "id": "p0137",
     "page": 8,
-    "order": 137,
+    "order": 138,
     "rects": [
       [
         0.5179967443927441,
@@ -4161,13 +4161,13 @@
     "sourceText": "For each value of n, we generate 20 independent in-stances and record the average number of transport op-erations required by our compilation methods, as wellas by a naïve baseline that implements the required C-Z gates one at a time. The results are summarized inFigure 9. In particular, we compare the two strategiesfor compiling row/column-aligned C-Z gates introducedin Section II B 1, labeled as “row by row” and “group andreduce” in Figure 9, respectively. The left panel showsthe average number of transports as a function of the ar-ray size, while the right panel shows the ratio between the",
     "section": "IV.C Valutazione C-Z",
     "explanations": {
-      "it-expert": "Per ciascun n, 20 istanze indipendenti; confrontano le due strategie per C-Z allineati ('row by row' vs 'group and reduce', Fig. 9): pannello sinistro = trasporti medi in funzione della dimensione dell'array, pannello destro = rapporto naive/proposto."
+      "it-expert": "Per ogni n si generano 20 istanze e si registra il numero medio di trasporti dei metodi proposti e di una baseline naïve che esegue le C-Z una alla volta (Fig. 9). Per le C-Z allineate si confrontano le due strategie della Sezione II.B.1, «row by row» e «group and reduce». Il pannello sinistro dà i trasporti medi in funzione della dimensione dell'array, il destro il rapporto fra il costo della baseline e quello dei metodi proposti."
     }
   },
   {
     "id": "p0138",
     "page": 8,
-    "order": 138,
+    "order": 132,
     "rects": [
       [
         0.08823529411764706,
@@ -4179,13 +4179,13 @@
     "sourceText": "Across all tested dimensions, our methods outperformthe naïve approach for self-inverse and Pauli gates, with adiminishing relative gap as the matrix size increases. Incontrast, for phase gates and π/8 gates, the advantageof our methods becomes increasingly pronounced withgrowing system size.",
     "section": "IV.C Valutazione C-Z",
     "explanations": {
-      "it-expert": "Per gate self-inverse e Pauli i metodi proposti battono la strategia naive con un vantaggio relativo che si riduce all'aumentare della dimensione; per fase e π/8, invece, il vantaggio cresce con la dimensione del sistema."
+      "it-expert": "Su tutte le dimensioni provate i metodi proposti battono la strategia naïve. Per autoinverse e Pauli il vantaggio relativo si riduce al crescere della matrice; per fase e π/8 invece cresce con la dimensione del sistema."
     }
   },
   {
     "id": "p0139",
     "page": 9,
-    "order": 139,
+    "order": 140,
     "rects": [
       [
         0.09132842768251506,
@@ -4197,13 +4197,13 @@
     "sourceText": "FIG. 7: Comparison between our compilation methods and the naïve methods for several single-qubit gate families.",
     "section": "IV.C Valutazione C-Z",
     "explanations": {
-      "it-expert": "Didascalia Fig. 7: confronto tra i metodi di compilazione proposti e i metodi naive per diverse famiglie di gate a singolo qubit."
+      "it-expert": "La Fig. 7 confronta i metodi proposti con quelli naïve per le diverse famiglie di porte a singolo qubit."
     }
   },
   {
     "id": "p0140",
     "page": 9,
-    "order": 140,
+    "order": 142,
     "rects": [
       [
         0.23782189063776552,
@@ -4215,13 +4215,13 @@
     "sourceText": "FIG. 8: Empirical verification of the 4/3-optimality bound for Pauli gates.",
     "section": "IV.B Verifica 4/3-ottimalità",
     "explanations": {
-      "it-expert": "Didascalia Fig. 8: verifica empirica del bound di 4/3-ottimalità per i gate di Pauli."
+      "it-expert": "La Fig. 8 è la verifica empirica del bound 4/3 per le Pauli."
     }
   },
   {
     "id": "p0142",
     "page": 9,
-    "order": 142,
+    "order": 144,
     "rects": [
       [
         0.5179966446620966,
@@ -4233,7 +4233,7 @@
     "sourceText": "To evaluate the performance of our compilationmethod on structured circuits, we consider QAOA cir-cuits for MaxCut on random graphs. We fix the neutral-atom array size to 30 × 30 and generate Erdős–Rényigraphs with the number of vertices ranging from 30 to500 and edge probability ρ = 0.05. For each graph size,we generate 50 independent instances to mitigate statis-tical fluctuations.",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Array 30×30 fisso; grafi Erdős–Rényi con numero di vertici da 30 a 500 ed probabilità di arco ρ=0.05; 50 istanze indipendenti per dimensione del grafo, per mitigare fluttuazioni statistiche."
+      "it-expert": "Per i circuiti strutturati si usa QAOA-MaxCut su grafi casuali: array fisso 30×30, grafi di Erdős–Rényi con 30–500 vertici e probabilità d'arco ρ = 0.05, 50 istanze per ogni dimensione del grafo."
     }
   },
   {
@@ -4251,13 +4251,13 @@
     "sourceText": "FIG. 9: Numerical results of C-Z gates compilation.",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Didascalia Fig. 9: risultati numerici della compilazione dei C-Z."
+      "it-expert": "La Fig. 9 riporta i risultati numerici della compilazione delle C-Z."
     }
   },
   {
     "id": "p0144",
     "page": 9,
-    "order": 144,
+    "order": 139,
     "rects": [
       [
         0.08823529411764706,
@@ -4275,7 +4275,7 @@
     "sourceText": "transport cost of the naïve baseline and that of our pro-posed compilation methods. We observe that the naïvebaseline requires approximately twice as many transportoperations as either proposed method, while the two pro-posed methods exhibit nearly identical performance. Amore detailed characterization of the regimes in whicheach strategy offers a relative advantage is an interesting direction for future work.",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "La baseline naive richiede circa il doppio delle operazioni di trasporto rispetto a entrambi i metodi proposti, che a loro volta hanno prestazioni quasi identiche tra loro; caratterizzare più precisamente i regimi in cui ciascuna strategia ha un vantaggio relativo è indicato come direzione di lavoro futuro."
+      "it-expert": "La baseline naïve richiede circa il doppio dei trasporti di entrambi i metodi, che fra loro si equivalgono quasi del tutto. Capire in quali regimi convenga l'una o l'altra strategia resta un problema aperto."
     },
     "recall": [
       {
@@ -4304,13 +4304,13 @@
     "sourceText": "For each instance, we record the total number ofatom transports required for implementing C-Z gates,as well as the number of addressing layers required forHadamard gates and Rz rotations, as produced by ourcompilation method. For comparison, we also record thecorresponding number of atom transports for C-Z gates",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Metriche per ciascuna istanza QAOA-MaxCut: trasporti atomici totali per i C-Z e numero di addressing layer per Hadamard e rotazioni Rz prodotti dal metodo proposto; per confronto, i trasporti C-Z della baseline naive. Media e deviazione standard sui trial sono in Fig. 10."
+      "it-expert": "Per ogni istanza si registrano i trasporti totali per le C-Z e il numero di addressing layer per le Hadamard e le rotazioni Rz prodotti dal metodo; per confronto si registrano anche i trasporti delle C-Z con il metodo naïve."
     }
   },
   {
     "id": "p0146",
     "page": 10,
-    "order": 146,
+    "order": 147,
     "rects": [
       [
         0.10736274719238281,
@@ -4322,13 +4322,13 @@
     "sourceText": "FIG. 10: QAOA-MaxCut compilation performance",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Didascalia Fig. 10: prestazioni di compilazione su QAOA-MaxCut."
+      "it-expert": "La Fig. 10 riporta le prestazioni della compilazione su QAOA-MaxCut."
     }
   },
   {
     "id": "p0147",
     "page": 10,
-    "order": 147,
+    "order": 146,
     "rects": [
       [
         0.08823529411764706,
@@ -4340,7 +4340,7 @@
     "sourceText": "under the naïve method. We report the mean and stan-dard deviation of these quantities over all trials. The re-sults are summarized in Figure 10. The left panel showsthe average number of transports or addressing layers asa function of the graph size, while the right panel showsthe ratio between the transport cost of the naïve baselineand that of our proposed compilation method. We ob-serve that the overall circuit depth is dominated by theimplementation of C-Z gates, and that our compilationmethod reduces the C-Z transport cost by more than 30%compared with a naïve sequential implementation of C-Zgates.",
     "section": "IV.D Valutazione QAOA-MaxCut",
     "explanations": {
-      "it-expert": "Riportano media e deviazione standard su tutte le prove (Fig. 10): pannello sinistro = trasporti/addressing layer medi in funzione della dimensione del grafo, pannello destro = rapporto naive/proposto. La profondità complessiva del circuito è dominata dall'implementazione dei C-Z, e il metodo proposto riduce il costo di trasporto C-Z di oltre il 30% rispetto a un'implementazione sequenziale naive."
+      "it-expert": "La Fig. 10 riporta media e deviazione standard: a sinistra trasporti e addressing layer in funzione della dimensione del grafo, a destra il rapporto fra il costo di trasporto naïve e quello del metodo. La profondità complessiva è dominata dalle C-Z, e il metodo ne riduce il costo di trasporto di oltre il 30% rispetto all'esecuzione sequenziale naïve."
     }
   },
   {
@@ -4358,7 +4358,7 @@
     "sourceText": "We further evaluate the classical runtime of our com-pilation algorithms. We consider atom arrays with linearsizes 20, 40, 60, 80, 100, 120, 140, 160, 180, and 200, wherethe array size denotes the array dimension rather thanthe total number of atoms. For each size, we examinefive representative gate families: self-inverse gates, Pauligates, phase gates, π/8 gates, and C-Z gates. For eachcombination of array size and gate family, we generate100 independent random instances using the same gen-eration procedure as in the previous experiments. Ourcompilation methods are applied to each instance, andthe compilation time is recorded. We report the meancompilation time over the 100 samples for each setting,thereby characterizing the scaling behavior of the clas-sical compilation cost across different gate families andsystem sizes.",
     "section": "IV.E Tempo di compilazione",
     "explanations": {
-      "it-expert": "Array con dimensioni lineari 20,40,...,200; cinque famiglie rappresentative (self-inverse, Pauli, fase, π/8, C-Z); 100 istanze casuali indipendenti per ogni combinazione dimensione/famiglia, misurando il tempo medio di compilazione per caratterizzare la scalabilità classica del metodo."
+      "it-expert": "Il tempo classico di compilazione si misura su array di lato 20, 40, …, 200 (la dimensione indica il lato, non il numero di atomi), per cinque famiglie: autoinverse, Pauli, fase, π/8 e C-Z. Per ogni combinazione si generano 100 istanze con le procedure degli esperimenti precedenti e si riporta il tempo medio."
     }
   },
   {
@@ -4376,7 +4376,7 @@
     "sourceText": "All experiments were performed on a standard desk-top workstation equipped with a 12th Gen Intel Corei7-12700H CPU (2.30 GHz) and 16 GB of RAM, run-ning a 64-bit operating system on an x64 architecture.The results are summarized in Figure 11.Each curveshows the average compilation time as a function of theatom array size for the compilation method for a fixedgate family. All compilation tasks complete within onesecond across the tested array sizes, indicating that theproposed methods are computationally eﬀicient and wellsuited for near-term neutral-atom array scales.",
     "section": "IV.E Tempo di compilazione",
     "explanations": {
-      "it-expert": "Esperimenti su workstation desktop standard (Intel Core i7-12700H 12ª gen, 2.30GHz, 16GB RAM, x64). Risultati in Fig. 11: tutte le compilazioni completano entro un secondo alle scale testate, indicando efficienza computazionale adeguata alle scale near-term."
+      "it-expert": "La macchina è una workstation desktop con Intel Core i7-12700H di 12ª generazione (2,30 GHz) e 16 GB di RAM. Nella Fig. 11 ogni curva è il tempo medio per una famiglia in funzione del lato dell'array: tutte le compilazioni finiscono entro un secondo, quindi il costo classico è adeguato alle scale degli array attuali."
     }
   },
   {
@@ -4394,7 +4394,7 @@
     "sourceText": "FIG. 11: Compilation time evaluation.",
     "section": "IV.E Tempo di compilazione",
     "explanations": {
-      "it-expert": "Didascalia Fig. 11: valutazione del tempo di compilazione."
+      "it-expert": "La Fig. 11 riporta i tempi di compilazione."
     }
   },
   {
@@ -4412,7 +4412,7 @@
     "sourceText": "In this work, we have presented a comprehensive com-pilation framework for structured quantum gate fami-lies on neutral-atom arrays. For single-qubit gates, weexploit the algebraic structures of gate families at thematrix level, enabling low-rank decompositions over ap-propriate groups and reducing the number of physicaloperations. For C-Z gates, we map the transport and ad-jacency constraints to classical graph-theoretic problems,allowing eﬀicient scheduling using standard algorithms.",
     "section": "V. Conclusion",
     "explanations": {
-      "it-expert": "Riepilogo: framework di compilazione completo per famiglie strutturate di gate su array ad atomi neutri. Per i gate a singolo qubit, decomposizioni a basso rango su gruppi appropriati sfruttando la struttura algebrica; per i C-Z, mappatura dei vincoli di trasporto/adiacenza su problemi grafo-teorici classici risolvibili con algoritmi standard."
+      "it-expert": "In sintesi, il framework compila famiglie strutturate di porte su array di atomi neutri. Per le porte a singolo qubit sfrutta la struttura algebrica delle famiglie con decomposizioni di basso rango sui gruppi opportuni; per le C-Z traduce i vincoli di trasporto e adiacenza in problemi classici su grafi, risolti con algoritmi standard."
     }
   },
   {
@@ -4436,7 +4436,7 @@
     "sourceText": "We demonstrated the effectiveness of our methodsthrough extensive numerical experiments.Across rep-resentative single-qubit gate families, our compilationmethods reduce the number of addressing layers by upto a factor of two compared with naïve row- or column-wise implementations, and small-scale tests confirm thetheoretical 4 3-optimality bound for Pauli gates. For C-Zgates, the proposed scheduling strategy reduces the re-quired number of atom transport operations by approx-imately 50%. When applied to QAOA circuits for Max-Cut, the complete framework reduces the C-Z transportcost by more than 30% on average. In addition, our tim-ing benchmarks show that all compilation tasks completewithin one second fofr the tested array sizes, indicatingthat the proposed methods are computationally eﬀicientat near-term neutral-atom scales.",
     "section": "V. Conclusion",
     "explanations": {
-      "it-expert": "Le famiglie di gate a singolo qubit testate riducono gli addressing layer fino a un fattore 2 rispetto a implementazioni naive; test a piccola scala confermano il bound teorico di 4/3-ottimalità per i gate di Pauli."
+      "it-expert": "Gli esperimenti danno fino a 2× meno addressing layer per le famiglie a singolo qubit rispetto all'esecuzione naïve per righe o colonne, la conferma del fattore 4/3 per le Pauli su istanze piccole, circa il 50% di trasporti in meno per le C-Z e oltre il 30% in media su QAOA-MaxCut, con tempi di compilazione sotto il secondo sugli array provati."
     }
   },
   {
@@ -4454,7 +4454,7 @@
     "sourceText": "These results indicate that our compilation techniquescan eﬀiciently handle realistic neutral-atom arrays withinfeasible runtime limits. Looking forward, our approachprovides a foundation for optimizing larger-scale quan-tum circuits and can be extended to other gate fami-lies and quantum algorithms, facilitating more practi-cal and scalable implementations on near-term neutral-atom quantum processors. Our evaluation focuses on ad-dressing layers and atom transports as direct measuresof scheduling and shuttling overhead.In future work,it would be useful to incorporate more comprehensivehardware-aware metrics, such as fidelity, decoherence,movement duration, and approximate success probabil-ity, as suggested by recent unified evaluation frameworksfor neutral-atom compilers [22].",
     "section": "V. Conclusion",
     "explanations": {
-      "it-expert": "Per i C-Z, riduzione di ~50% delle operazioni di trasporto; su QAOA-MaxCut, riduzione >30% del costo di trasporto in media; benchmark di timing sub-secondo. Direzioni future: estensione ad altre famiglie di gate/algoritmi, e incorporazione di metriche hardware-aware più complete (fedeltà, decoerenza, durata del movimento, probabilità di successo approssimata), come suggerito da recenti framework di valutazione unificati per compilatori ad atomi neutri [22]."
+      "it-expert": "Gli autori ne concludono che il metodo gestisce array realistici con tempi praticabili e può estendersi ad altre famiglie di porte e ad altri algoritmi. La valutazione però conta solo addressing layer e trasporti: in futuro andrebbero incluse metriche più vicine all'hardware, come fedeltà, decoerenza, durata dei movimenti e probabilità di successo approssimata, come propongono i framework di valutazione unificati per compilatori ad atomi neutri [22]."
     }
   },
   {
@@ -4538,7 +4538,7 @@
     "sourceText": "Such a matrix is also invertible over the ring Z4.Itsinverse is given by   Lemma A.1 (Lemma 8 in [19]). Let T = [X1|X2] be anm × n × 2 tensor over GF(2). Then 1...   rank(T ) ≥rank(X1) + rank(X2) + rank(X1 + X2) 2. 1ev1 1 L−1 = ,",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Nota preliminare: la matrice descritta è invertibile anche sull'anello Z4, con inversa data da una formula esplicita (usata nella dimostrazione del Lemma A.1)."
+      "it-expert": "A sinistra c'è il Lemma A.1 (Lemma 8 di [19]): per un tensore T = [X₁|X₂] m×n×2 su GF(2), rank(T) ≥ [rank(X₁) + rank(X₂) + rank(X₁+X₂)]/2. È il bound usato per il fattore 4/3 delle Pauli. La colonna destra appartiene invece alla dimostrazione del Teorema II.1, che inizia più in basso a sinistra: la matrice elementare L è invertibile anche su Z₄, con inversa che ha ṽᵢ al posto di vᵢ."
     }
   },
   {
@@ -4712,7 +4712,7 @@
     "sourceText": "Proof. In this proof, addition in GF(2) is denoted by ⊕.Let rank(T ) = r, rank(X1) = r1, rank(X2) = r2, andrank(X1 + X2) = r3. By definition of tensor rank, wehave r1, r2 ≤r ≤r1 + r2. Since rank(T ) = r, there existmatrices G ∈GF(2)m×r, F ∈GF(2)r×n, and λ1, . . . , λr,µ1, . . . , µr ∈GF(2) such that ......evt1 where (     3,vi = 1,0,vi = 0,∀i = 1, . . . , t. evi = λ1 µ1     λ2 µ2 X1 = G F,X2 = G F. ... ... Similarly, any elementary column transformation overGF(2) and any permutation matrix remain invertibleover Z4. Since the matrices S and T are products of per-mutation matrices and elementary row or column trans-formations over GF(2), they are therefore invertible overZ4 as well. λr µr By r1, r2 ≤r, there are at least r1 ones among {λi} and atleast r2 ones among {µi}. Furthermore, since r ≤r1+r2,at least r1 + r2 −r entries of λi ⊕µi are zero, implyingthat at most 2r−(r1 +r2) entries are one. It then followsthat",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Dimostrazione, impostazione: siano r=rank(T), r1=rank(X1), r2=rank(X2), r3=rank(X1+X2); da r1,r2≤r≤r1+r2 e dall'esistenza di matrici G,F e coefficienti λ_i,µ_i∈GF(2) tali che X1=G·diag(λ)·F, X2=G·diag(µ)·F, si ha che X1+X2=G·diag(λ⊕µ)·F. Poiché r1,r2≤r, almeno r1 dei λ_i e almeno r2 dei µ_i sono 1; da r≤r1+r2 segue che al più 2r-(r1+r2) delle entrate λ_i⊕µ_i sono 1, ossia r3≤2r-(r1+r2)."
+      "it-expert": "Nella dimostrazione del lemma ⊕ è la somma in GF(2). Con r = rank(T), r₁ = rank(X₁), r₂ = rank(X₂) e r₃ = rank(X₁+X₂), la definizione dà r₁, r₂ ≤ r ≤ r₁ + r₂, e si possono scrivere X₁ = G·diag(λ₁, …, λᵣ)·F e X₂ = G·diag(μ₁, …, μᵣ)·F con G ∈ GF(2)ᵐˣʳ, F ∈ GF(2)ʳˣⁿ. Almeno r₁ dei λᵢ e r₂ dei μᵢ valgono 1; poiché r ≤ r₁ + r₂, almeno r₁ + r₂ − r dei λᵢ ⊕ μᵢ sono zero, quindi al più 2r − (r₁ + r₂) valgono 1. A destra, per il Teorema II.1: ṽᵢ = 3 se vᵢ = 1 e 0 altrimenti, e anche trasformazioni di colonna e permutazioni su GF(2) restano invertibili su Z₄, quindi lo sono S e T."
     }
   },
   {
@@ -4880,7 +4880,7 @@
     "sourceText": "Applying the row transformation S and column trans-formation T to M over the ring Z4, we obtain \" #   λ1 ⊕µ1 Dr 0 ,where Dr = Ir · 2.(A1) SMT =   λ2 ⊕µ2 00 X1 + X2 = G F, ... Since any decomposition of M of the form (4) induces adecomposition of SMT with the same number of terms,and vice versa due to the invertibility of S and T, wehave λr ⊕µr and hence r3 ≤2r −(r1 + r2). ρ4(M) = ρ4(SMT). Rearranging gives The diagonal form in (A1) immediately yields a decom-position with r rank-one terms, implying 2r ≥r1 + r2 + r3, which concludes the proof. ρ4(M) = ρ4(SMT) ≤r.",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Applicando trasformazioni di riga/colonna invertibili S,T a M su Z4 si ottiene SMT in forma diagonale a blocchi con D_r=2·I_r; questa forma dà direttamente una decomposizione con r termini rank-one, quindi 2r≥r1+r2+r3 — riarrangiando si ottiene r3≤2r-(r1+r2), che conclude la dimostrazione del Lemma A.1."
+      "it-expert": "Ne segue X₁ + X₂ = G·diag(λᵢ ⊕ μᵢ)·F, quindi r₃ ≤ 2r − (r₁ + r₂), cioè 2r ≥ r₁ + r₂ + r₃: è il lemma. A destra prosegue il Teorema II.1: applicando S e T a M su Z₄ si ottiene SMT = diag(Dᵣ, 0) con Dᵣ = 2Iᵣ (Eq. A1). Ogni decomposizione di M nella forma (4) dà una decomposizione di SMT con lo stesso numero di termini e viceversa, quindi ρ₄(M) = ρ₄(SMT), e la forma diagonale dà subito ρ₄(M) ≤ r."
     }
   },
   {
@@ -5180,7 +5180,7 @@
     "sourceText": "Proof of Theorem II.1. There exist invertible matrices Sand T over GF(2) such that SNT is in Smith normalform, namely, On the other hand, since Dr is a submatrix of SMT, wehave \" # ρ4(M) = ρ4(SMT) ≥ρ(Dr).(A2) Ir 0 SNT = , 0 0 It therefore suﬀices to show that ρ4(Dr) = r. Indeed, since where Ir denotes the r × r identity matrix. Hence, theGF(2)-rank of N is r. rX \u0000 \u0001 eie⊤ · 2, Dr = Consider any elementary row transformation matrix Lover GF(2), which must be of the form i t=1   we have ρ4(Dr) ≤r. We prove the reverse inequality byinduction on r. 1...     v1 • First, consider the case r = 2. Suppose ρ4(D2) = 1.Then there exist a, b, c, d ∈Z4 such that 1v1 1 ∈{0, 1}t.  ...vt ,where L = \" # h \" # ......vt1 i ab 2 00 2 = , c d",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Dimostrazione del Teorema II.1 (ρ4(M)=rango GF(2) di N): esistono matrici invertibili S,T su GF(2) tali che SNT è in forma normale di Smith, diag(I_r,0); poiché D_r=2·I_r è sottomatrice di SMT, si ha ρ4(M)=ρ4(SMT)≥ρ(D_r) (Eq. A2). Resta da mostrare ρ4(D_r)=r: poiché D_r=Σ 2·e_i e_i^T ammette banalmente una decomposizione a r termini, ρ4(D_r)≤r; la disuguaglianza inversa si dimostra per induzione su r."
+      "it-expert": "La dimostrazione del Teorema II.1, cioè del Lemma II.1 del testo, parte dalla forma normale di Smith: esistono S e T invertibili su GF(2) con SNT = diag(Iᵣ, 0), quindi il rango di N su GF(2) è r, e ogni trasformazione elementare di riga su GF(2) ha la forma L con una colonna (v₁, …, vₜ) ∈ {0,1}ᵗ sotto la diagonale. A destra si chiude il bound inferiore: Dᵣ è una sottomatrice di SMT, quindi ρ₄(M) ≥ ρ₄(Dᵣ) (Eq. A2), e basta mostrare ρ₄(Dᵣ) = r. Da Dᵣ = Σᵢ (eᵢeᵢᵀ)·2 viene ρ₄(Dᵣ) ≤ r; l'altra disuguaglianza si prova per induzione. Per r = 2, se fosse ρ₄(D₂) = 1 esisterebbero a, b, c, d ∈ Z₄ con (a, b)ᵀ(c, d) = diag(2, 2)."
     }
   },
   {
@@ -5210,7 +5210,7 @@
     "sourceText": "which implies ac = 2,ad = 0,bc = 0,bd = 2. From the first and fourth equations, we concludethat a, b, c, d̸ = 0. The second and third equationsthen force a = b = c = d = 2, which contradictsac = 2 and bd = 2. Hence, ρ(D2) ≥2.",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Le relazioni ac=2, ad=0, bc=0, bd=2 forzano a,b,c,d≠0 (dalla prima e quarta) e poi a=b=c=d=2 (dalla seconda e terza) — il che contraddice ac=2 e bd=2 simultaneamente (2·2=4≡0 mod4, non 2). Quindi ρ4(D2)≥2, stabilendo il caso base."
+      "it-expert": "Quindi ac = 2, ad = 0, bc = 0, bd = 2. Dalla prima e dalla quarta, a, b, c, d sono tutti non nulli; la seconda e la terza li forzano allora a valere 2, ma 2·2 = 0 in Z₄, contro ac = 2. Dunque ρ₄(D₂) ≥ 2."
     }
   },
   {
@@ -5678,7 +5678,7 @@
     "sourceText": "• Next, assume that ρ4(Dr) ≥r but ρ4(Dr+1) ≤r.Then there exists a decomposition rX t ,ut, vt ∈Zr+1 utv⊤ Dr+1 = 4. t=1 Write \" # \" # ut,0 vt,0 ut = ,vt = ,t = 1, . . . , r. but bvt Then \" # # \" rX ut,0vt,0 ut,0bv⊤ 200 Dr tvt,0butbutbv⊤ .(A3) = t t=1 Since Pr t=1 ut,0vt,0 = 2̸ = 0, there must be aninvertible element among {ut,0, vt,0}r t=1. Withoutloss of generality, assume ut0,0 is invertible. From(A3), we have rX ut,0bvt = 0, t=1 which implies X bvt0 = −u−1 ut,0bvt. t0,0 t̸=t0 Substituting this into (A3) yields rX butbv⊤ Dr = t t=1 X butbv⊤ t + but0bv⊤ = t0 t̸=t0 X X u−1 butbv⊤ t0,0ut,0but0bv⊤ t − = t t̸=t0 t̸=t0 X \u0000 \u0001 but −u−1 bv⊤ t0,0ut,0but0 = t , t̸=t0 which expresses Dr as a sum of at most r −1 rank-one terms, contradicting the induction hypothesisρ4(Dr) ≥r. Therefore, ρ4(Dr+1) ≥r + 1.",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Passo induttivo, setup: assumendo ρ4(D_r)≥r, si suppone per assurdo ρ4(D_{r+1})≤r, cioè esiste una decomposizione D_{r+1}=Σ_{t=1}^r u_t v_t^T (mod 4) con u_t,v_t∈Z4^{r+1}; scrivendo u_t,v_t in blocchi (componente 0 + resto)."
+      "it-expert": "Passo induttivo: si suppone ρ₄(Dᵣ) ≥ r ma ρ₄(Dᵣ₊₁) ≤ r, cioè Dᵣ₊₁ = Σₜ₌₁ʳ uₜvₜᵀ con uₜ, vₜ ∈ Z₄ʳ⁺¹. Separando la prima componente, uₜ = (uₜ,₀, ûₜ) e vₜ = (vₜ,₀, v̂ₜ), il confronto a blocchi (A3) dà Σₜ uₜ,₀vₜ,₀ = 2, Σₜ uₜ,₀v̂ₜ = 0 e Σₜ ûₜv̂ₜᵀ = Dᵣ. Poiché la prima somma non è zero, qualche uₜ,₀ o vₜ,₀ è invertibile in Z₄; sia uₜ₀,₀. Allora v̂ₜ₀ = −uₜ₀,₀⁻¹ Σ_{t≠t₀} uₜ,₀v̂ₜ, e sostituendo Dᵣ = Σ_{t≠t₀} (ûₜ − uₜ₀,₀⁻¹uₜ,₀ûₜ₀)v̂ₜᵀ, una somma di r − 1 termini rank-one: contraddice l'ipotesi induttiva. Quindi ρ₄(Dᵣ₊₁) ≥ r + 1."
     }
   },
   {
@@ -5696,7 +5696,7 @@
     "sourceText": "By induction, we conclude that ρ4(Dr) ≥r for all r ≥2.Combined with the upper bound, this yields ρ4(Dr) = r,and consequently ρ4(M) = r, completing the proof.",
     "section": "Appendix A",
     "explanations": {
-      "it-expert": "Per induzione, ρ4(D_r)≥r per ogni r≥2; combinato col limite superiore, ρ4(D_r)=r e quindi ρ4(M)=r, concludendo la dimostrazione del Teorema II.1."
+      "it-expert": "Per induzione ρ₄(Dᵣ) ≥ r per ogni r ≥ 2; con il bound superiore ρ₄(Dᵣ) = r, e quindi ρ₄(M) = r, il rango di N su GF(2)."
     }
   },
   {
@@ -5714,7 +5714,7 @@
     "sourceText": "In our implementation, we employ a simple greedy al-gorithm to decompose the graph into a collection of starforests. The algorithm iteratively assigns edges to exist-ing groups whenever the star-forest property is preserved;if not, a new group is created.",
     "section": "Appendix B",
     "explanations": {
-      "it-expert": "Algoritmo greedy per decomporre il grafo in una collezione di star forest: assegna iterativamente ogni arco a un gruppo esistente se la proprietà di star forest è preservata, altrimenti crea un nuovo gruppo."
+      "it-expert": "Per scomporre il grafo in star forest l'implementazione usa un greedy: ogni arco va in un gruppo esistente se questo resta una star forest, altrimenti apre un nuovo gruppo."
     }
   },
   {
@@ -5738,7 +5738,7 @@
     "sourceText": "A key design choice is the order in which edges are pro-cessed. Rather than traversing edges arbitrarily, edgesare processed in lexicographic order of their endpoints,sorted increasingly first by the smaller endpoint and thenby the larger one. This ordering is motivated by the phys-ical layout of neutral-atom arrays, where graph verticesare mapped to qubits row by row according to their in-dices.By prioritizing edges in this way, the resultingstar forests tend to involve qubits concentrated withinadjacent rows, which can reduce the number of trans-port operations required for implementing C-Z gates. We emphasize that this ordering does not affect thecorrectness of the star-forest decomposition; it is purelya heuristic to improve compilation eﬀiciency under hard-ware constraints.Any valid star-forest decompositioncan be used in our compilation framework, and the strat-egy described here is one concrete choice that performswell in practice.",
     "section": "Appendix B",
     "explanations": {
-      "it-expert": "Gli archi sono processati in ordine lessicografico degli estremi (crescente per l'estremo minore, poi per il maggiore), motivato dal layout fisico dell'array (i vertici del grafo sono mappati a qubit riga per riga secondo il loro indice) — così le star forest risultanti coinvolgono qubit concentrati in righe adiacenti, riducendo il trasporto. Questo ordinamento è puramente euristico e non influisce sulla correttezza: qualunque decomposizione valida in star forest è compatibile col framework."
+      "it-expert": "La scelta che conta è l'ordine degli archi: lessicografico sugli estremi, crescente prima per l'estremo minore e poi per il maggiore. I vertici sono assegnati ai qubit riga per riga secondo l'indice, quindi questo ordine produce star forest con qubit concentrati in righe vicine, il che può ridurre i trasporti per le C-Z. L'ordine non tocca la correttezza: qualunque scomposizione valida in star forest funziona nel framework, e questa è solo una scelta che in pratica rende bene."
     }
   }
 ]

@@ -93,10 +93,10 @@
           },
           "paragraphs": [
             "p0002",
-            "p0005",
             "p0006",
-            "p0007",
-            "p0008"
+            "p0008",
+            "p0005",
+            "p0007"
           ],
           "meaning": {
             "it-expert": "L’array è la disposizione 2D degli atomi-qubit. Il circuito specifica operazioni logiche; il compilatore deve realizzarle con fasci di controllo e trasporti consentiti dalla piattaforma."
@@ -151,8 +151,8 @@
           },
           "paragraphs": [
             "p0020",
-            "p0021",
             "p0022",
+            "p0021",
             "p0023",
             "p0024"
           ],
@@ -590,17 +590,19 @@
             "p0124",
             "p0125",
             "p0127",
+            "p0133",
+            "p0131",
+            "p0136",
+            "p0138",
             "p0128",
             "p0130",
-            "p0131",
             "p0132",
-            "p0133",
             "p0135",
-            "p0136",
             "p0137",
-            "p0138",
+            "p0144",
             "p0139",
-            "p0140"
+            "p0140",
+            "p0143"
           ],
           "meaning": {
             "it-expert": "I pattern sono insiemi di gate richiesti su array simulati. I test piccoli confrontano le Pauli con ricerca esaustiva; quelli grandi misurano layer e trasporti rispetto a metodi naïve."
@@ -616,11 +618,9 @@
           },
           "paragraphs": [
             "p0142",
-            "p0143",
-            "p0144",
             "p0145",
-            "p0146",
-            "p0147"
+            "p0147",
+            "p0146"
           ],
           "meaning": {
             "it-expert": "Le istanze sono grafi MaxCut mappati su un array 30×30. Le risorse contate sono trasporti C-Z e layer di addressing per Hadamard e Rz."
@@ -705,7 +705,8 @@
           "paragraphs": [
             "p0156",
             "p0159",
-            "p0160"
+            "p0160",
+            "p0161"
           ],
           "meaning": {
             "it-expert": "Le matrici e i tensori rappresentano pattern di gate; le trasformazioni invertibili conservano le quantità usate per delimitare il numero di termini."
@@ -720,7 +721,6 @@
             "it-expert": "La forma diagonale chiude la prova"
           },
           "paragraphs": [
-            "p0161",
             "p0163",
             "p0164",
             "p0167"
